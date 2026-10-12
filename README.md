@@ -53,8 +53,8 @@ supabase db push
 
 Le site publié est le dossier `dist/` (application seule, environ 5 Mo) ; les PDF sont servis par Supabase. Les en-têtes de sécurité (CSP limitée au projet Supabase et à Google Fonts) sont dans `public/_headers`, lu par Cloudflare Pages comme par Netlify. Les variables `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` doivent être définies au moment du build.
 
-**Cloudflare Pages** (offre gratuite sans crédits, 500 builds par mois), au choix :
-- *Relié à GitHub* : Workers & Pages → Create → Pages → Connect to Git → dépôt `xam-xam-bey`, branche `main`. Build command `npm run build`, output directory `dist`, variables d’environnement `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY`. Chaque push sur `main` redéploie le site.
+**Cloudflare** (offre gratuite sans crédits). Le nouveau parcours crée un projet *Workers* : `wrangler.jsonc` lui indique de publier `dist/` tel quel (pas de configuration automatique de Vite). Réglages du projet relié à GitHub : build command `npm run build`, deploy command `npx wrangler deploy`, variables de **build** `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY`. Autres possibilités :
+- *Projet Pages relié à GitHub* : Workers & Pages → Create → Pages → Connect to Git → dépôt `xam-xam-bey`, branche `main`. Build command `npm run build`, output directory `dist`, variables d’environnement `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY`. Chaque push sur `main` redéploie le site.
 - *Envoi direct* : `npm run deploy:cloudflare` (connexion Cloudflare demandée au premier lancement), ou glisser le dossier `dist/` dans Workers & Pages → Create → Pages → Upload assets.
 
 **Netlify** : `netlify.toml` construit et publie `dist/`.
