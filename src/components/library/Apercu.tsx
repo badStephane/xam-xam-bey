@@ -2,6 +2,7 @@ import { useApp } from '../../AppContext'
 import { docById } from '../../lib/docs'
 import { docFormat } from './PreviewPanel'
 import { share } from '../../lib/share'
+import { PdfViewer } from './PdfViewer'
 
 /** Aperçu plein écran (mobile). */
 export function Apercu() {
@@ -20,8 +21,7 @@ export function Apercu() {
           <h1 style={{ margin: 0, font: '800 26px/1.1 var(--f-doc)' }}>{d.title}</h1>
           <span className="mono muted" style={{ fontSize: 11, lineHeight: 1.4 }}>{docFormat(d).toUpperCase()} · {d.folder.toUpperCase()}</span>
         </div>
-        <div className="viewer"><iframe src={d.file} title={d.title} /></div>
-        <p className="mono muted" style={{ margin: 0, fontSize: 11 }}>LE DOCUMENT NE S’AFFICHE PAS ? <a href={d.file} target="_blank" rel="noopener">OUVRIR DANS UN ONGLET</a></p>
+        <div className="viewer"><PdfViewer file={d.file} title={d.title} /></div>
         <div className="two">
           <a className="btn tall" style={{ display: 'grid', placeItems: 'center', textDecoration: 'none', color: 'var(--hud)' }} href={d.file} download>TÉLÉCHARGER</a>
           <button className="btn tall acc" onClick={() => share({ title: d.title, url }, url, () => patch({ shared: true }))}>{ui.shared ? 'LIEN COPIÉ ✓' : 'PARTAGER'}</button>
