@@ -186,9 +186,9 @@ button.open{font:inherit;font-weight:600;color:var(--ink);cursor:pointer}
 .drawer[hidden]{display:none}
 .drawer header{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line)}
 .drawer h2{font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.dbody{overflow:auto;background:var(--surface-2);padding:10px;display:grid;gap:10px;align-content:start;min-height:0}
+.dbody{overflow:auto;background:var(--surface-2);padding:10px;min-height:0}
 .dbody canvas{width:100%;height:auto;display:block;background:#fff;border-radius:4px;box-shadow:0 1px 3px rgb(0 0 0 / .2)}
-.dbody .pg{width:100%;background:#fff;border-radius:4px;min-height:200px}
+.dbody .pg{width:100%;background:#fff;border-radius:4px;min-height:200px;margin-bottom:10px}
 .dmsg{padding:24px 14px;color:var(--muted);text-align:center}
 .lv{display:flex;height:12px;border-radius:99px;overflow:hidden;background:var(--surface-2);margin:10px 0 6px}
 .lv i{display:block;height:100%}
@@ -381,25 +381,27 @@ function showPv(file,title){
   $('#dtitle').textContent=title;DL={url:url,name:title.replace(/[\\\/:*?"<>|]+/g,' ').trim()+'.pdf'};DR.hidden=false;body.scrollTop=0;
   pvMsg('Chargement de l\'aperçu…');
   loadPdfjs().then(function(lib){
-    return lib.getDocument({url:url}).promise;
+    return lib.getDocument({url:url,isEvalSupported:false}).promise;
   }).then(function(doc){
     if(tok!==PVTOKEN)return;
     body.innerHTML='';
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){
-      if(!e.isIntersecting)return;
-      var box=e.target;io.unobserve(box);
-      doc.getPage(+box.dataset.n).then(function(pg){
-        if(tok!==PVTOKEN)return;
-        var w=Math.max(300,body.clientWidth-20),v0=pg.getViewport({scale:1}),sc=Math.min(2,(w/v0.width)*(window.devicePixelRatio||1)),v=pg.getViewport({scale:sc});
+    var boxes=[];
+    for(var i=1;i<=doc.numPages;i++){var bx=document.createElement('div');bx.className='pg';body.appendChild(bx);boxes.push(bx)}
+    var w=Math.max(300,body.clientWidth-20);
+    function go(n){
+      if(tok!==PVTOKEN||n>doc.numPages)return;
+      var box=boxes[n-1];
+      doc.getPage(n).then(function(pg){
+        var v0=pg.getViewport({scale:1}),sc=Math.min(2,(w/v0.width)*(window.devicePixelRatio||1)),v=pg.getViewport({scale:sc});
         var cv=document.createElement('canvas');cv.width=v.width;cv.height=v.height;
         box.style.minHeight='0';box.innerHTML='';box.appendChild(cv);
-        pg.render({canvasContext:cv.getContext('2d'),viewport:v});
-      });
-    })},{root:body,rootMargin:'600px 0px'});
-    for(var i=1;i<=doc.numPages;i++){var b=document.createElement('div');b.className='pg';b.dataset.n=i;body.appendChild(b);io.observe(b)}
-  }).catch(function(){
+        return pg.render({canvasContext:cv.getContext('2d'),viewport:v}).promise;
+      }).catch(function(err){box.style.minHeight='60px';box.innerHTML='<div class="dmsg">Page '+n+' : '+esc(err&&err.message||err)+'</div>'}).then(function(){go(n+1)});
+    }
+    go(1);
+  }).catch(function(err){
     if(tok!==PVTOKEN)return;
-    pvMsg('L\'aperçu n\'a pas pu se charger. Réessaie dans un instant.');
+    pvMsg('L\'aperçu n\'a pas pu se charger ('+esc(err&&err.message||err)+').');
   });
 }
 function closePv(){PVTOKEN++;DR.hidden=true;$('#dbody').innerHTML=''}
