@@ -64,7 +64,7 @@ function UploadForm() {
         <p className="note-box" role="note">Ce fichier pèse {mo(file.size)} Mo. Pour les téléphones, compressez-le avant de l’envoyer (par exemple avec « Réduire la taille du fichier » de l’Aperçu sur Mac, ou un compresseur PDF en ligne).</p>
       )}
       <div className="col g6"><label htmlFor="up-title" className="f-lbl">TITRE</label><input id="up-title" className="field" value={meta.title} maxLength={200} onChange={e => setMeta({ ...meta, title: e.target.value })} /></div>
-      <div className="two">
+      <div className="form-row">
         <div className="col g6"><label htmlFor="up-zone" className="f-lbl">ZONE</label><ZoneSelect id="up-zone" value={meta.zone} onChange={zone => setMeta({ ...meta, zone })} /></div>
         <div className="col g6"><label htmlFor="up-folder" className="f-lbl">DOSSIER · FACULTATIF</label><input id="up-folder" className="field" value={meta.folder} maxLength={200} placeholder="Ex. Bases Générales" onChange={e => setMeta({ ...meta, folder: e.target.value })} /></div>
       </div>
@@ -98,7 +98,7 @@ function DocRow({ d }: { d: Doc }) {
       <li className="sheet punch col g8" style={{ padding: '12px 12px 12px 30px' }}>
         <span className="cote">{d.cote} · MODIFIER</span>
         <input className="field" aria-label="Titre" value={edit.title} maxLength={200} onChange={e => setEdit({ ...edit, title: e.target.value })} />
-        <div className="two"><ZoneSelect id={`z-${d.id}`} value={edit.zone} onChange={zone => setEdit({ ...edit, zone })} /><input className="field" aria-label="Dossier" value={edit.folder} onChange={e => setEdit({ ...edit, folder: e.target.value })} /></div>
+        <div className="form-row"><ZoneSelect id={`z-${d.id}`} value={edit.zone} onChange={zone => setEdit({ ...edit, zone })} /><input className="field" aria-label="Dossier" value={edit.folder} onChange={e => setEdit({ ...edit, folder: e.target.value })} /></div>
         <label className="row" style={{ gap: 10, fontSize: 14 }}><input type="checkbox" checked={edit.essential} onChange={e => setEdit({ ...edit, essential: e.target.checked })} />Essentiel du mois</label>
         <StatusLine status={status} />
         <div className="row">

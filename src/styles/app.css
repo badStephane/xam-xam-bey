@@ -289,3 +289,39 @@ kbd{font:500 11px/1 var(--f-mono);padding:5px 7px;border:1px solid currentColor}
 .verdict.ok{background:var(--green)}.verdict.ko{background:var(--stamp)}
 .gap-row{display:grid;grid-template-columns:62px minmax(0,1fr) 52px auto;align-items:center;gap:10px;min-height:40px}
 textarea.field{padding:10px;font:inherit;font-size:16px;line-height:1.45;resize:vertical}
+
+/* ── Responsive : téléphones (360 px et plus) ─────────────────────────────── */
+/* Une ligne d'informations en nowrap ne doit jamais élargir la colonne de la grille. */
+.grid-docs>*{min-width:0}
+.doc-top{flex-wrap:wrap;row-gap:4px}
+/* Zones tactiles : 44 px minimum partout. */
+.subnav .chip,.btn-mono,.chip{min-height:44px}
+.examiner .ink-line{min-height:44px!important}
+/* Formulaires : deux colonnes sur ordinateur, une seule sur téléphone. */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@container (max-width:560px){
+  .form-row{grid-template-columns:1fr}
+  /* Lisibilité en plein soleil : pas de texte d'information sous 11 px. */
+  .lbl,.f-lbl,.d-meta,.stats dt,.kpi span,.tag-ess,.tag-scan,.stop .k,.stop .k small,.who,.cote,.go span,.rate span{font-size:11px}
+  .tag-resp{font-size:10px}
+  .stamp,.verso,.xp-row{font-size:11px}
+  .brand-name{font-size:17px;letter-spacing:.04em;white-space:nowrap}
+  .brand{gap:8px}
+  .days span{font-size:10px;line-height:16px;height:18px}
+  .stats dd{font-size:20px}
+  main{padding:14px 16px 24px}
+}
+/* Barre de navigation du bas (téléphone) : dans la zone du pouce. */
+.bottom-nav{display:none}
+@media (max-width:759px){
+  .has-bottom-nav{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+  .bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);
+    padding-bottom:env(safe-area-inset-bottom,0px);background:var(--bg);border-top:1px solid var(--line);box-shadow:0 -6px 18px rgba(0,0,0,.18)}
+  .bottom-nav button{min-height:60px;border:none;background:transparent;color:var(--hud2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+    font:600 11px/1 var(--f-hud);letter-spacing:.03em;touch-action:manipulation;transition:color 160ms}
+  .bottom-nav button svg{width:22px;height:22px}
+  .bottom-nav button[aria-current=page]{color:var(--acc)}
+  .bottom-nav button[aria-current=page] svg{filter:drop-shadow(0 0 6px var(--acc-soft))}
+  .bottom-nav button:active{transform:scale(.95)}
+  .shell-h .tabs,.shell-h .subnav{display:none}
+}

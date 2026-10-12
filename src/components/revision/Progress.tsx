@@ -80,7 +80,7 @@ function GapsBox() {
             <span className="mono muted" style={{ fontSize: 11 }}>{r.seen}/{r.cards} VUES</span>
             <b className="mono" style={{ fontSize: 13, color: rateColor(r.rate) }}>{pct(r.rate)}</b>
             {r.gaps > 0
-              ? <button className="btn-mono" style={{ minHeight: 40 }} onClick={() => revise(r.zone)} aria-label={`Réviser les ${r.gaps} lacunes de la zone ${r.zone}`}>{r.gaps} LACUNE{r.gaps > 1 ? 'S' : ''} →</button>
+              ? <button className="btn-mono" onClick={() => revise(r.zone)} aria-label={`Réviser les ${r.gaps} lacunes de la zone ${r.zone}`}>{r.gaps} LACUNE{r.gaps > 1 ? 'S' : ''} →</button>
               : <span className="mono muted" style={{ fontSize: 11, textAlign: 'right' }}>{r.seen ? 'AUCUNE' : '—'}</span>}
           </li>
         ))}

@@ -3,6 +3,7 @@ import { useApp } from '../AppContext'
 import { XP_BAR_SEGMENTS } from '../lib/constants'
 import { isRevScreen, type Screen } from '../lib/params'
 import { xpLevel } from '../lib/srs'
+import { BottomNav } from './BottomNav'
 import { Segments } from './Segments'
 
 const SUBNAV: Array<[Screen, string]> = [['revision', 'AUJOURD’HUI'], ['plan', 'PLAN ANNUEL'], ['fiches', 'FICHES'], ['progression', 'PROGRESSION']]
@@ -11,22 +12,23 @@ const Sun = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" st
 const Moon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" /></svg>
 
 export function Shell({ children }: { children: ReactNode }) {
-  const { ui, rev, docs, isAdmin, go, toggleTheme } = useApp()
+  const { ui, rev, docs, isAdmin, mobile, go, toggleTheme } = useApp()
   const lvl = rev.status === 'ready' ? xpLevel(rev.prog.xp) : null
   const showSub = rev.status === 'ready' && SUBNAV.some(([s]) => s === ui.screen)
   const current = (on: boolean) => (on ? 'page' as const : undefined)
   return (
-    <>
+    <div className="has-bottom-nav">
       <header className="shell-h">
         <div className="brand">
           <span className="logo" aria-hidden="true">XXB</span>
           <span className="brand-name">XAM XAM BËY</span>
+          {isAdmin && mobile && <button className="btn-mono" onClick={() => go('admin')} aria-current={current(ui.screen === 'admin')}>ADMIN</button>}
           <span className="who">{lvl && <>NIV. {lvl.lv}<br /></>}{ui.seen.filter(id => docs.some(d => d.id === id)).length}/{docs.length} PIÈCES</span>
           <button className="icon-btn" onClick={toggleTheme} aria-label={ui.dark ? 'Passer en mode clair' : 'Passer en mode sombre'}>{ui.dark ? <Sun /> : <Moon />}</button>
         </div>
         {lvl && (
           <div className="col g6">
-            <div className="row mono" style={{ justifyContent: 'space-between', fontSize: 10.5, fontWeight: 500, letterSpacing: '.06em' }}>
+            <div className="row mono xp-row" style={{ justifyContent: 'space-between', fontSize: 10.5, fontWeight: 500, letterSpacing: '.06em' }}>
               <span style={{ color: 'var(--acc)' }}>NIV. {lvl.lv} · {lvl.rank.toUpperCase()}</span>
               <span className="muted">{lvl.xp} / {lvl.next} XP</span>
             </div>
@@ -47,6 +49,7 @@ export function Shell({ children }: { children: ReactNode }) {
       </header>
       <main>{children}</main>
       <footer className="foot">Plateforme de révision indépendante, construite sur les documents du dossier Xam Xam Bëy. Ce n’est pas un site officiel de l’association.</footer>
-    </>
+      <BottomNav />
+    </div>
   )
 }
