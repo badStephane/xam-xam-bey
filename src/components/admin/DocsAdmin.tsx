@@ -23,6 +23,8 @@ function ZoneSelect({ id, value, onChange }: { id: string; value: number; onChan
 }
 
 const titleFromFile = (name: string) => name.replace(/\.pdf$/i, '').replace(/[_]+/g, ' ').trim()
+/** Au-delà, le fichier pèse sur le téléchargement mobile et le quota Supabase : on invite à le compresser. */
+const HEAVY_BYTES = 10 * 1024 * 1024
 
 function UploadForm() {
   const { cur, reloadCatalog } = useApp()
@@ -58,6 +60,9 @@ function UploadForm() {
         <label htmlFor="up-file" className="f-lbl">FICHIER PDF · 50 MO AU PLUS</label>
         <input id="up-file" className="field" type="file" accept="application/pdf,.pdf" onChange={e => pick(e.target.files?.[0] || null)} style={{ paddingTop: 10 }} />
       </div>
+      {file && file.size > HEAVY_BYTES && (
+        <p className="note-box" role="note">Ce fichier pèse {mo(file.size)} Mo. Pour les téléphones, compressez-le avant de l’envoyer (par exemple avec « Réduire la taille du fichier » de l’Aperçu sur Mac, ou un compresseur PDF en ligne).</p>
+      )}
       <div className="col g6"><label htmlFor="up-title" className="f-lbl">TITRE</label><input id="up-title" className="field" value={meta.title} maxLength={200} onChange={e => setMeta({ ...meta, title: e.target.value })} /></div>
       <div className="two">
         <div className="col g6"><label htmlFor="up-zone" className="f-lbl">ZONE</label><ZoneSelect id="up-zone" value={meta.zone} onChange={zone => setMeta({ ...meta, zone })} /></div>

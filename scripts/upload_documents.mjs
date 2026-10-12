@@ -1,5 +1,7 @@
 /**
- * Envoie les PDF de site/f/ dans le bucket Supabase « documents » (une seule fois, après la migration library).
+ * Envoie les PDF dans le bucket Supabase « documents » (une seule fois, après la migration library).
+ * Prend la version compressée de site/f-min/ si elle existe (scripts/compress_pdfs.py), sinon l'original de site/f/,
+ * puis met à jour la taille enregistrée dans la table documents.
  *
  * Usage (dans votre terminal, jamais dans un fichier versionné) :
  *   SUPABASE_SERVICE_ROLE_KEY=… node scripts/upload_documents.mjs
@@ -36,10 +38,16 @@ const supabase = createClient(url, key, { auth: { persistSession: false } })
 let done = 0
 const failures = []
 async function upload(name) {
-  const path = resolve(ROOT, 'site/f', name)
+  const compressed = resolve(ROOT, 'site/f-min', name)
+  const path = existsSync(compressed) ? compressed : resolve(ROOT, 'site/f', name)
   if (!existsSync(path)) { failures.push(`${name} : fichier absent de site/f`); return }
-  const { error } = await supabase.storage.from(BUCKET).upload(name, readFileSync(path), { contentType: 'application/pdf', upsert: true, cacheControl: '604800' })
+  const body = readFileSync(path)
+  const { error } = await supabase.storage.from(BUCKET).upload(name, body, { contentType: 'application/pdf', upsert: true, cacheControl: '604800' })
   if (error) failures.push(`${name} : ${error.message}`)
+  else {
+    const sized = await supabase.from('documents').update({ size: body.length }).eq('storage_path', name)
+    if (sized.error) failures.push(`${name} : envoyé, mais taille non mise à jour (${sized.error.message})`)
+  }
   done++
   process.stdout.write(`\r${done}/${files.length} fichiers envoyés`)
 }

@@ -52,6 +52,8 @@ interface AppValue {
   patch(p: Partial<Ui>): void
   go(screen: Screen, p?: Partial<Ui>): void
   openDoc(id: number): void
+  /** Marque une pièce comme consultée (ouverture dans un nouvel onglet sur mobile). */
+  markSeen(id: number): void
   toggleTheme(): void
   startSession(mode: QuizMode, kind: string, label: string, cards: readonly Card[]): void
   reveal(): void
@@ -139,6 +141,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
       if (!PARAMS.frame) savePref('seen', seen)
       if (mobile) go('apercu', { sel: id, seen })
       else patch({ sel: id, seen })
+    },
+    markSeen: id => {
+      if (ui.seen.includes(id)) return
+      const seen = [...ui.seen, id]
+      if (!PARAMS.frame) savePref('seen', seen)
+      patch({ seen })
     },
     toggleTheme: () => { if (!PARAMS.frame) savePref('theme', ui.dark ? 'light' : 'dark'); patch({ dark: !ui.dark }) },
     startSession: (mode, kind, label, cards) => {
