@@ -1,5 +1,5 @@
 /** Paramètres d'URL : les planches pilotent l'écran, le thème et l'état affichés. */
-export const SCREENS = ['bibliotheque', 'apercu', 'revision', 'session', 'fin', 'plan', 'fiches', 'progression', 'acces', 'horsligne'] as const
+export const SCREENS = ['bibliotheque', 'apercu', 'revision', 'session', 'fin', 'plan', 'fiches', 'progression', 'acces', 'horsligne', 'admin'] as const
 export type Screen = typeof SCREENS[number]
 
 const p = new URLSearchParams(typeof location === 'undefined' ? '' : location.search)
@@ -18,4 +18,4 @@ export const PARAMS = {
   phase: raw('phase') || 'question',
 }
 
-export const isRevScreen = (s: Screen): boolean => !['bibliotheque', 'apercu'].includes(s)
+export const isRevScreen = (s: Screen): boolean => !['bibliotheque', 'apercu', 'admin'].includes(s)

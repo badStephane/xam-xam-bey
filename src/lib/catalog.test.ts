@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { buildDocs, isFiltering, matchDoc, zoneCounts } from './catalog'
+import { buildDocs, catalogStats, docsFromRows, isFiltering, matchDoc, rowsFromCatalog, zoneCounts } from './catalog'
 import { cleanTitle, currentZone, keyPoints, mdSpans, plural, shuffle } from './format'
 import type { RawDoc } from './types'
 
@@ -66,5 +66,23 @@ describe('format', () => {
     expect(plural(1, 'pièce', 'pièces')).toBe('1 pièce')
     expect(plural(2, 'pièce', 'pièces')).toBe('2 pièces')
     expect(shuffle([1, 2, 3], () => 0)).toEqual([2, 3, 1])
+  })
+})
+
+describe('catalogue depuis la base', () => {
+  const urls = { file: (p: string) => `https://x/${p}`, download: (p: string, n: string) => `https://x/${p}?download=${n}` }
+  const rows = rowsFromCatalog(raw)
+  test('rowsFromCatalog retire les doublons et garde nom de fichier et chemin', () => {
+    expect(rows.map(r => r.id)).toEqual([1, 2, 4])
+    expect(rows[0]).toMatchObject({ zone: 1, file_name: 'Bases du scoutisme.pdf', storage_path: '1.pdf', essential: true })
+  })
+  test('docsFromRows trie par zone, numérote les cotes et construit les adresses', () => {
+    const docs = docsFromRows([...rows].reverse(), urls)
+    expect(docs.map(d => d.cote)).toEqual(['Z1·001', 'Z1·002', 'Z4·001'])
+    expect(docs[0].file).toBe('https://x/1.pdf')
+    expect(docs[0].download).toBe('https://x/1.pdf?download=Bases du scoutisme.pdf')
+  })
+  test('catalogStats', () => {
+    expect(catalogStats(docsFromRows(rows, urls))).toEqual({ count: 3, ess: 2, mo: 1 })
   })
 })

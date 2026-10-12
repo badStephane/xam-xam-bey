@@ -1,22 +1,42 @@
 import { TYPE_BY_EXT } from './constants'
 import { cleanTitle, norm, p3 } from './format'
-import type { Doc, RawDoc, TypeFilter } from './types'
+import type { Doc, DocumentRow, RawDoc, TypeFilter } from './types'
 
-/** Transforme le catalogue compact en pièces affichables (doublons retirés, cotes Zn·NNN). */
-export function buildDocs(raw: readonly RawDoc[]): Doc[] {
+export interface DocUrls { file(path: string): string; download(path: string, name: string): string }
+
+/** Adresses locales (développement sans stockage) : site/f/<chemin>. */
+export const LOCAL_URLS: DocUrls = { file: path => `f/${path}`, download: path => `f/${path}` }
+
+const extOf = (name: string): string => (name.split('.').pop() || '').toLowerCase()
+
+/** Pièces affichables triées par zone puis identifiant, avec cotes Zn·NNN numérotées dans chaque zone. */
+export function docsFromRows(rows: readonly DocumentRow[], urls: DocUrls): Doc[] {
   const perZone: Record<number, number> = {}
-  return raw.map((it, i) => {
-    perZone[it.th] = (perZone[it.th] || 0) + 1
-    const cote = `Z${it.th}·${p3(perZone[it.th])}`
+  return rows.slice().sort((a, b) => a.zone - b.zone || a.id - b.id).map(r => {
+    perZone[r.zone] = (perZone[r.zone] || 0) + 1
+    const cote = `Z${r.zone}·${p3(perZone[r.zone])}`
+    const title = cleanTitle(r.title)
     return {
-      doc: {
-        id: i + 1, th: it.th, title: cleanTitle(it.t), folder: it.p, ty: TYPE_BY_EXT[it.e] || 'PDF',
-        ess: !!it.es, scan: !!it.x, pages: it.g ?? null, size: it.s, file: `f/${it.f}`, cote,
-        key: norm(`${it.t} ${it.p} ${cote}`),
-      },
-      dup: !!it.d,
+      id: r.id, th: r.zone, title, folder: r.folder, ty: TYPE_BY_EXT[extOf(r.file_name)] || 'PDF', ess: r.essential, scan: r.scan,
+      pages: r.pages, size: r.size, fileName: r.file_name, storagePath: r.storage_path,
+      file: urls.file(r.storage_path), download: urls.download(r.storage_path, `${title}.pdf`), cote, key: norm(`${r.title} ${r.folder} ${cote}`),
     }
-  }).filter(x => !x.dup).map(x => x.doc)
+  })
+}
+
+/** Catalogue compact d'origine (data/catalog.site.json) converti en lignes de la table documents, doublons retirés. */
+export function rowsFromCatalog(raw: readonly RawDoc[]): DocumentRow[] {
+  return raw.flatMap((it, i) => (it.d ? [] : [{
+    id: i + 1, zone: it.th, title: it.t, folder: it.p, file_name: it.n || `${it.t}.${it.e}`, storage_path: it.f,
+    size: it.s, pages: it.g ?? null, essential: !!it.es, scan: !!it.x,
+  }]))
+}
+
+/** Compatibilité : catalogue compact vers pièces, adresses locales. */
+export const buildDocs = (raw: readonly RawDoc[], urls: DocUrls = LOCAL_URLS): Doc[] => docsFromRows(rowsFromCatalog(raw), urls)
+
+export function catalogStats(docs: readonly Doc[]): { count: number; ess: number; mo: number } {
+  return { count: docs.length, ess: docs.filter(d => d.ess).length, mo: Math.round(docs.reduce((a, d) => a + d.size, 0) / 1e6) }
 }
 
 export interface LibFilters {

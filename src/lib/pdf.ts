@@ -34,11 +34,12 @@ function loadLib(): Promise<typeof import('pdfjs-dist')> {
 
 export interface LoadedPdf { doc: PDFDocumentProxy; cancel(): void }
 
-export async function openPdf(url: string): Promise<LoadedPdf> {
+/** Ouvre un PDF depuis une adresse, ou depuis son contenu (fichier choisi avant envoi). */
+export async function openPdf(source: string | ArrayBuffer): Promise<LoadedPdf> {
   const pdfjs = await loadLib()
   const base = new URL(ASSETS, document.baseURI).href
   const task = pdfjs.getDocument({
-    url,
+    ...(typeof source === 'string' ? { url: source } : { data: new Uint8Array(source.slice(0)) }),
     isEvalSupported: false,
     standardFontDataUrl: `${base}standard_fonts/`,
     cMapUrl: `${base}cmaps/`,

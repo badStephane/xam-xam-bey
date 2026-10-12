@@ -1,7 +1,6 @@
 import { useApp } from '../../AppContext'
 import { GROUP_CAP_DESKTOP, GROUP_CAP_MOBILE, TYPE_OPTS, ZONES } from '../../lib/constants'
-import { isFiltering, matchDoc, zoneCounts, type LibFilters } from '../../lib/catalog'
-import { DOCS, docById, N_ESS, TOTAL_MO } from '../../lib/docs'
+import { catalogStats, isFiltering, matchDoc, zoneCounts, type LibFilters } from '../../lib/catalog'
 import { p2, plural, zoneColor } from '../../lib/format'
 import { PARAMS } from '../../lib/params'
 import type { Doc } from '../../lib/types'
@@ -78,10 +77,11 @@ function Results({ items, filtering }: { items: Doc[]; filtering: boolean }) {
 }
 
 export function Library() {
-  const { ui, mobile, offline, patch } = useApp()
+  const { ui, mobile, offline, patch, docs, docById, catalogStatus } = useApp()
+  const stats = catalogStats(docs)
   const filters: LibFilters = { q: ui.q, type: ui.type, ess: ui.ess, month: ui.month }
   const filtering = isFiltering(filters)
-  const items = DOCS.filter(d => matchDoc(d, filters))
+  const items = docs.filter(d => matchDoc(d, filters))
   const sel = docById(ui.sel)
   return (
     <div className="col g16">
@@ -90,10 +90,11 @@ export function Library() {
         <p style={{ margin: 0, fontSize: 15.5 }} className="muted">Trouvez un document en quelques secondes. Révisez une zone par mois, toute l’année.</p>
       </div>
       <dl className="stats">
-        {[[DOCS.length, 'PIÈCES'], [ZONES.length, 'ZONES'], [N_ESS, 'ESSENTIELS'], [TOTAL_MO, 'MO']].map(([v, l]) => <div key={l}><dd>{v}</dd><dt>{l}</dt></div>)}
+        {[[stats.count, 'PIÈCES'], [ZONES.length, 'ZONES'], [stats.ess, 'ESSENTIELS'], [stats.mo, 'MO']].map(([v, l]) => <div key={l}><dd>{v}</dd><dt>{l}</dt></div>)}
       </dl>
+      {catalogStatus === 'cached' && !offline && <div className="banner" role="status"><b>CATALOGUE HORS LIGNE</b><span style={{ fontSize: 14 }}>La liste affichée est la dernière enregistrée sur cet appareil ; les nouveaux documents apparaîtront au retour de la connexion.</span></div>}
       {offline && <div className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: 14 }}>Les pièces déjà consultées restent lisibles. Les autres s’ouvriront au retour de la connexion.</span></div>}
-      <ZoneRoute counts={zoneCounts(DOCS, filters)} />
+      <ZoneRoute counts={zoneCounts(docs, filters)} />
       <div className="lib-cols">
         <div className="lib-main">
           {!filtering && PARAMS.lib !== 'loading' && <ZoneCard />}

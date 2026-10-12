@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { useApp } from '../AppContext'
 import { XP_BAR_SEGMENTS } from '../lib/constants'
-import { DOCS } from '../lib/docs'
 import { isRevScreen, type Screen } from '../lib/params'
 import { xpLevel } from '../lib/srs'
 import { Segments } from './Segments'
@@ -12,7 +11,7 @@ const Sun = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" st
 const Moon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" /></svg>
 
 export function Shell({ children }: { children: ReactNode }) {
-  const { ui, rev, go, toggleTheme } = useApp()
+  const { ui, rev, docs, isAdmin, go, toggleTheme } = useApp()
   const lvl = rev.status === 'ready' ? xpLevel(rev.prog.xp) : null
   const showSub = rev.status === 'ready' && SUBNAV.some(([s]) => s === ui.screen)
   const current = (on: boolean) => (on ? 'page' as const : undefined)
@@ -22,7 +21,7 @@ export function Shell({ children }: { children: ReactNode }) {
         <div className="brand">
           <span className="logo" aria-hidden="true">XXB</span>
           <span className="brand-name">XAM XAM BËY</span>
-          <span className="who">{lvl && <>NIV. {lvl.lv}<br /></>}{ui.seen.length}/{DOCS.length} PIÈCES</span>
+          <span className="who">{lvl && <>NIV. {lvl.lv}<br /></>}{ui.seen.filter(id => docs.some(d => d.id === id)).length}/{docs.length} PIÈCES</span>
           <button className="icon-btn" onClick={toggleTheme} aria-label={ui.dark ? 'Passer en mode clair' : 'Passer en mode sombre'}>{ui.dark ? <Sun /> : <Moon />}</button>
         </div>
         {lvl && (
@@ -37,6 +36,7 @@ export function Shell({ children }: { children: ReactNode }) {
         <nav className="tabs" aria-label="Navigation principale">
           <button className="tab" onClick={() => go('bibliotheque')} aria-current={current(ui.screen === 'bibliotheque')}>BIBLIOTHÈQUE</button>
           <button className="tab" onClick={() => go('revision', { session: null })} aria-current={current(isRevScreen(ui.screen))}>RÉVISION<span className="tag-resp">RESPONSABLES</span></button>
+          {isAdmin && <button className="tab" style={{ maxWidth: 140 }} onClick={() => go('admin')} aria-current={current(ui.screen === 'admin')}>ADMIN</button>}
         </nav>
         {showSub && (
           <nav className="chips subnav" aria-label="Révision">

@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { KEPT_SESSIONS, SAVE_DELAY } from '../lib/constants'
 import { PARAMS } from '../lib/params'
-import { applyGrade, EMPTY_PROGRESS, readProgress, validCards } from '../lib/srs'
+import { applyGrade, cardsByZone, EMPTY_PROGRESS, readProgress, validCards } from '../lib/srs'
 import { isValidEmail, magicLinkRedirect, supabase } from '../lib/supabase'
-import type { Fiche, Grade, Plan, Progress, RevisionContent, RevStatus, SessionLog } from '../lib/types'
+import type { CardRow, Fiche, Grade, Plan, Progress, RevisionContent, RevStatus, SessionLog } from '../lib/types'
 
 const EMPTY_CONTENT: RevisionContent = { plan: null, fiches: {}, cards: {} }
 const SEED_FILES = ['plan', 'fiche-1', 'cards-1']
@@ -29,11 +29,19 @@ async function loadSeeds(): Promise<RevisionContent> {
   return toContent(docs)
 }
 
+const CARD_COLUMNS = 'id, zone, document_id, position, q, a, src, note, qcm, status'
+
+/** Plan et fiches (revision_content) et cartes publiées (table cards). */
 async function loadContent(): Promise<RevisionContent> {
   if (!supabase) throw new Error('Supabase non configuré')
-  const { data, error } = await supabase.from('revision_content').select('id, data')
-  if (error) throw error
-  return toContent(data || [])
+  const [content, cards] = await Promise.all([
+    supabase.from('revision_content').select('id, data'),
+    supabase.from('cards').select(CARD_COLUMNS).eq('status', 'published').order('zone').order('position'),
+  ])
+  if (content.error) throw content.error
+  if (cards.error) throw cards.error
+  const base = toContent(content.data || [])
+  return { ...base, cards: cardsByZone((cards.data || []) as CardRow[]) }
 }
 
 export type SignInState = { step: 'idle' | 'sending' | 'sent' | 'error'; message?: string }

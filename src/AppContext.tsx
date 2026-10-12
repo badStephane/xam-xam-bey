@@ -3,12 +3,14 @@ import { ASK_COUNTS } from './lib/constants'
 import { demoProgress, demoSession } from './lib/demo'
 import { currentZone, dayNum } from './lib/format'
 import { isRevScreen, PARAMS, type Screen } from './lib/params'
+import { checkIsAdmin } from './lib/adminApi'
 import { gradeOf, withChoices } from './lib/qcm'
 import { answerCard, isLogged, mkSession } from './lib/session'
 import { allCards } from './lib/srs'
 import { loadPref, savePref } from './lib/storage'
 import type { Scope } from './lib/practice'
-import type { Card, Grade, QuizMode, Session, TypeFilter } from './lib/types'
+import type { Card, Doc, Grade, QuizMode, Session, TypeFilter } from './lib/types'
+import { useCatalog, type CatalogStatus } from './hooks/useCatalog'
 import { useRevision, type Revision } from './hooks/useRevision'
 import { useIsMobile, useOnline } from './hooks/useViewport'
 
@@ -37,6 +39,11 @@ export interface Ui {
 interface AppValue {
   ui: Ui
   rev: Revision
+  isAdmin: boolean
+  docs: Doc[]
+  catalogStatus: CatalogStatus
+  reloadCatalog(): Promise<void>
+  docById(id: number | null): Doc | null
   today: number
   cur: number
   now: Date
@@ -79,6 +86,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     session: null, checks: {}, hideAns: false, shared: false, seen: loadPref<number[]>('seen', []),
   }))
   const rev = useRevision(PARAMS.demo)
+  const catalog = useCatalog()
+  const [isAdmin, setIsAdmin] = useState(false)
+  useEffect(() => {
+    if (!rev.email || PARAMS.frame) { setIsAdmin(false); return }
+    let alive = true
+    void checkIsAdmin().then(v => { if (alive) setIsAdmin(v) })
+    return () => { alive = false }
+  }, [rev.email])
   const mobile = useIsMobile()
   const online = useOnline()
   const uiRef = useRef(ui)
@@ -116,7 +131,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [logSession, go])
 
   const value: AppValue = {
-    ui, rev, today, cur, now, mobile, offline: PARAMS.lib === 'offline' || !online, patch, go,
+    ui, rev, isAdmin, today, cur, now, mobile,
+    docs: catalog.docs, catalogStatus: catalog.status, reloadCatalog: catalog.reload,
+    docById: id => (id === null ? null : catalog.docs.find(d => d.id === id) || null), offline: PARAMS.lib === 'offline' || !online, patch, go,
     openDoc: id => {
       const seen = ui.seen.includes(id) ? ui.seen : [...ui.seen, id]
       if (!PARAMS.frame) savePref('seen', seen)

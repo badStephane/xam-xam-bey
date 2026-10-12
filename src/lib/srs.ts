@@ -1,5 +1,5 @@
 import { ACQUIRED_LV, INTERVAL, LEVEL_LABELS, MAX_LV, NEW_PER_DAY, RANKS, XP_BAR_SEGMENTS, XP_HES, XP_PER_LEVEL, XP_SU } from './constants'
-import type { Card, CardProgress, Grade, Progress, Qcm, RawCard, RevisionContent } from './types'
+import type { Card, CardProgress, CardRow, Grade, Progress, Qcm, RawCard, RevisionContent } from './types'
 
 export const EMPTY_PROGRESS: Progress = { cards: {}, sessions: [], xp: 0 }
 
@@ -21,6 +21,15 @@ function validQcm(q: unknown): Qcm | null {
   if (typeof ok !== 'string' || !ok.trim() || !Array.isArray(no)) return null
   const wrong = no.filter((x): x is string => typeof x === 'string' && !!x.trim() && x !== ok)
   return wrong.length ? { ok, no: wrong } : null
+}
+
+/** Cartes publiées de la table cards, regroupées par zone dans l'ordre de leur position. */
+export function cardsByZone(rows: readonly CardRow[]): Record<number, Card[]> {
+  const sorted = rows.filter(r => r.status === 'published').slice().sort((a, b) => a.zone - b.zone || a.position - b.position)
+  return sorted.reduce<Record<number, Card[]>>((acc, r) => {
+    const [card] = validCards([r], r.zone)
+    return card ? { ...acc, [r.zone]: [...(acc[r.zone] || []), card] } : acc
+  }, {})
 }
 
 export function allCards(content: RevisionContent): Card[] {

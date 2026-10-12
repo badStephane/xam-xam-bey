@@ -18,4 +18,13 @@ export const supabase = makeClient()
 /** Adresse de retour du lien magique : la page courante, ouverte sur la révision. */
 export const magicLinkRedirect = (): string => `${location.origin}${location.pathname}?screen=revision`
 
+const BUCKET = 'documents'
+
+/** Adresses des fichiers du bucket public « documents » ; repli sur site/f en l'absence de configuration. */
+export const storageUrls = {
+  file: (path: string): string => (url ? `${url.replace(/\/$/, '')}/storage/v1/object/public/${BUCKET}/${encodeURIComponent(path)}` : `f/${path}`),
+  download: (path: string, name: string): string =>
+    (url ? `${url.replace(/\/$/, '')}/storage/v1/object/public/${BUCKET}/${encodeURIComponent(path)}?download=${encodeURIComponent(name)}` : `f/${path}`),
+}
+
 export const isValidEmail = (s: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s.trim())

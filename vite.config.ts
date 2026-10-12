@@ -4,8 +4,8 @@ import { resolve } from 'node:path'
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 
-const OUT_DIR = resolve(__dirname, 'site')
-const DOCS_DIR = resolve(OUT_DIR, 'f')
+const OUT_DIR = resolve(__dirname, 'dist')
+const DOCS_DIR = resolve(__dirname, 'site', 'f')
 const PDFJS_DIR = resolve(__dirname, 'node_modules/pdfjs-dist')
 /** Données de pdf.js servies sous /pdfjs/ : polices standard (évite les polices manquantes) et tables CMap. */
 const PDFJS_ASSETS = ['standard_fonts', 'cmaps']

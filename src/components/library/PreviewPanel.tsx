@@ -22,7 +22,7 @@ export function PreviewPanel({ d }: { d: Doc }) {
             <dt>ZONE</dt><dd>{p2(d.th)} · {ZONES[d.th - 1][2]}</dd>
           </dl>
           <div className="two">
-            <a className="ink-line" href={d.file} download>Télécharger</a>
+            <a className="ink-line" href={d.download} download>Télécharger</a>
             <a className="ink-btn" href={d.file} target="_blank" rel="noopener">Plein écran</a>
           </div>
         </div>

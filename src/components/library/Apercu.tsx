@@ -1,15 +1,14 @@
 import { useApp } from '../../AppContext'
-import { docById } from '../../lib/docs'
 import { docFormat } from './PreviewPanel'
 import { share } from '../../lib/share'
 import { PdfViewer } from './PdfViewer'
 
 /** Aperçu plein écran (mobile). */
 export function Apercu() {
-  const { ui, go, patch } = useApp()
+  const { ui, go, patch, docById } = useApp()
   const d = docById(ui.sel)
   if (!d) return null
-  const url = new URL(d.file, location.href).href
+  const url = new URL(d.download, location.href).href
   return (
     <div className="col" style={{ minHeight: '100vh' }}>
       <div className="ap-bar">
@@ -23,7 +22,7 @@ export function Apercu() {
         </div>
         <div className="viewer"><PdfViewer file={d.file} title={d.title} /></div>
         <div className="two">
-          <a className="btn tall" style={{ display: 'grid', placeItems: 'center', textDecoration: 'none', color: 'var(--hud)' }} href={d.file} download>TÉLÉCHARGER</a>
+          <a className="btn tall" style={{ display: 'grid', placeItems: 'center', textDecoration: 'none', color: 'var(--hud)' }} href={d.download} download>TÉLÉCHARGER</a>
           <button className="btn tall acc" onClick={() => share({ title: d.title, url }, url, () => patch({ shared: true }))}>{ui.shared ? 'LIEN COPIÉ ✓' : 'PARTAGER'}</button>
         </div>
       </div>

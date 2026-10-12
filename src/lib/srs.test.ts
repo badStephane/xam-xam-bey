@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { allCards, applyGrade, bestStreak, dailyCards, EMPTY_PROGRESS, levelBuckets, readProgress, seenCurve, streak, validCards, xpLevel, zoneStats } from './srs'
+import { allCards, applyGrade, cardsByZone, bestStreak, dailyCards, EMPTY_PROGRESS, levelBuckets, readProgress, seenCurve, streak, validCards, xpLevel, zoneStats } from './srs'
 import type { Card, Progress } from './types'
 
 const T = 20000
@@ -92,5 +92,16 @@ describe('statistiques', () => {
   test('xpLevel : 640 XP = niveau 4, Éclaireur, 640/800', () => {
     expect(xpLevel(640)).toEqual({ lv: 4, rank: 'Éclaireur', xp: 640, next: 800, fill: 16 })
     expect(xpLevel(99999).rank).toBe('Ancien')
+  })
+})
+
+describe('cardsByZone', () => {
+  test('ne garde que les cartes publiées, par zone et dans l’ordre', () => {
+    const row = (id: string, zone: number, position: number, status: 'draft' | 'published') =>
+      ({ id, zone, position, status, document_id: null, q: 'q', a: 'a', src: '', note: '', qcm: null })
+    const out = cardsByZone([row('b', 1, 2, 'published'), row('a', 1, 1, 'published'), row('d', 1, 3, 'draft'), row('c', 2, 1, 'published')])
+    expect(Object.keys(out)).toEqual(['1', '2'])
+    expect(out[1].map(c => c.id)).toEqual(['a', 'b'])
+    expect(out[2][0].th).toBe(2)
   })
 })

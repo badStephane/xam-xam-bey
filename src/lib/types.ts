@@ -26,9 +26,29 @@ export interface Doc {
   scan: boolean
   pages: number | null
   size: number
+  /** Nom du fichier d'origine (cité comme source par les cartes). */
+  fileName: string
+  /** Chemin dans le bucket de stockage « documents ». */
+  storagePath: string
+  /** Adresse de lecture et adresse de téléchargement. */
   file: string
+  download: string
   cote: string
   key: string
+}
+
+/** Ligne de la table documents (Supabase). */
+export interface DocumentRow {
+  id: number
+  zone: number
+  title: string
+  folder: string
+  file_name: string
+  storage_path: string
+  size: number
+  pages: number | null
+  essential: boolean
+  scan: boolean
 }
 
 /** QCM rédigé : bonne réponse courte et mauvaises réponses plausibles. */
@@ -94,6 +114,22 @@ export interface Fiche {
 }
 
 export type RawCard = Partial<Omit<Card, 'th'>>
+
+export type CardStatus = 'draft' | 'published'
+
+/** Ligne de la table cards (Supabase). */
+export interface CardRow {
+  id: string
+  zone: number
+  document_id: number | null
+  position: number
+  q: string
+  a: string
+  src: string
+  note: string
+  qcm: unknown
+  status: CardStatus
+}
 
 export type Grade = 0 | 1 | 2
 export type QuizMode = 'self' | 'ask'

@@ -1,14 +1,13 @@
 import { useApp } from '../../AppContext'
 import { ZONES } from '../../lib/constants'
-import { DOCS } from '../../lib/docs'
 import { p2, plain, plural } from '../../lib/format'
 import { allCards, dailyCards, zoneStats } from '../../lib/srs'
 
 /** Fiche « ce mois-ci » : la zone en cours et la quête du jour. */
 export function ZoneCard() {
-  const { ui, rev, cur, today, patch, go, startSession } = useApp()
+  const { ui, rev, docs: allDocs, cur, today, patch, go, startSession } = useApp()
   const [, month, theme] = ZONES[cur - 1]
-  const docs = DOCS.filter(d => d.th === cur)
+  const docs = allDocs.filter(d => d.th === cur)
   const ready = rev.status === 'ready'
   const st = zoneStats(rev.content.cards[cur], rev.prog)
   const goal = ready ? rev.content.plan?.months?.find(m => m.n === cur)?.o : ''
