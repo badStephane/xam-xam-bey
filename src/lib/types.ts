@@ -31,6 +31,12 @@ export interface Doc {
   key: string
 }
 
+/** QCM rédigé : bonne réponse courte et mauvaises réponses plausibles. */
+export interface Qcm {
+  ok: string
+  no: string[]
+}
+
 export interface Card {
   id: string
   q: string
@@ -38,6 +44,13 @@ export interface Card {
   src: string
   note: string
   th: number
+  qcm?: Qcm
+}
+
+/** Propositions affichées pour une carte (ordre mélangé) et indice de la bonne. */
+export interface Choices {
+  options: string[]
+  correct: number
 }
 
 /** [niveau, jour d'échéance, vues, réussites, premier jour vu] — jours depuis 1970 (UTC). */
@@ -88,6 +101,7 @@ export type QuizMode = 'self' | 'ask'
 export interface QueueItem {
   c: Card
   second: boolean
+  ch?: Choices
 }
 
 export interface Session {
@@ -100,6 +114,8 @@ export interface Session {
   rev: boolean
   res: Record<string, Grade>
   hist: Grade[]
+  /** Proposition choisie dans le QCM en cours (avant validation). */
+  picked: number | null
   xp: number
   done: boolean
 }

@@ -45,7 +45,7 @@ function ThemeColumn({ theme, label }: { theme: 'dark' | 'light'; label: string 
           </div>
         </div>
       </div>
-      <div className="col" style={{ gap: 8 }}><span className="k">CARTE DE RÉVISION · AUTO-ÉVALUATION</span>
+      <div className="col" style={{ gap: 8 }}><span className="k">CARTE DE RÉVISION · QCM</span>
         <div style={{ position: 'relative' }}>
           <span style={{ position: 'absolute', inset: '6px -5px -6px 5px', border: '1.5px solid var(--card-bd)', borderRadius: 14, background: 'var(--stack)' }} />
           <div style={{ position: 'relative', background: 'var(--card)', color: INK, border: '2px solid var(--card-bd)', borderRadius: 14, overflow: 'hidden' }}>
@@ -53,12 +53,14 @@ function ThemeColumn({ theme, label }: { theme: 'dark' | 'light'; label: string 
             <div style={{ padding: 14, font: '800 20px/1.15 var(--f-doc)' }}>Quand et où est né Baden-Powell ?</div>
           </div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 6, paddingTop: 6 }}>
-          <span className="rate" style={{ borderColor: 'var(--err)', background: 'var(--err-soft)', color: 'var(--err)' }}>✕ RATÉ<span>[1]</span></span>
-          <span className="rate" style={{ borderColor: 'var(--amber)', background: 'var(--amber-soft)', color: 'var(--amber)' }}>~ HÉSITANT<span>[2]</span></span>
-          <span className="rate" style={{ borderColor: 'var(--acc)', background: 'var(--acc)', color: 'var(--on-acc)' }}>✓ SU<span>[3]</span></span>
+        <div className="col" style={{ gap: 6, paddingTop: 6 }}>
+          {[['A', '8 janvier 1857, à Oxford', ''], ['✓', '22 février 1857, à Londres', 'ok'], ['✕', '22 février 1867, à Londres', 'ko']].map(([l, t, k]) => (
+            <span key={t} className="row" style={{ gap: 10, padding: '8px 10px', background: 'var(--card)', color: INK, border: `2px solid ${k === 'ok' ? '#1D5A3F' : k === 'ko' ? STAMP : '#C9C0AE'}`, flexWrap: 'nowrap' }}>
+              <b className="t10" style={{ width: 22, height: 22, display: 'grid', placeItems: 'center', background: k === 'ok' ? '#1D5A3F' : k === 'ko' ? STAMP : 'transparent', color: k ? PAPER : INK, border: k ? 'none' : `1.5px solid ${INK}` }}>{l}</b>{t}
+            </span>
+          ))}
         </div>
-        <span style={{ fontSize: 12.5, color: 'var(--hud2)' }}>Mode « J’interroge » : mêmes positions, libellés Faux, Partiel, Juste. Bande de carte noire au lieu de vermillon.</span>
+        <span style={{ fontSize: 12.5, color: 'var(--hud2)' }}>« Je réponds » : choisir, valider, correction automatique (bonne réponse en vert, erreur en vermillon). « J’interroge » : oral noté Faux, Partiel, Juste, bande de carte noire.</span>
       </div>
     </div>
   )

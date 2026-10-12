@@ -17,7 +17,7 @@ import type { Grade } from './lib/types'
 const BG = { dark: '#0D1512', light: '#EEE8DA' }
 
 function useKeyboard() {
-  const { ui, go, reveal, answer, quitSession } = useApp()
+  const { ui, go, answer, pick, validate, next, quitSession } = useApp()
   useEffect(() => {
     if (PARAMS.frame) return
     const onKey = (e: KeyboardEvent) => {
@@ -26,13 +26,18 @@ function useKeyboard() {
       if (e.key === 'Escape' && ui.screen === 'apercu') { go('bibliotheque'); return }
       const s = ui.session
       if (ui.screen !== 'session' || !s || s.done) return
-      if (e.key === ' ' && !s.rev) { e.preventDefault(); reveal() }
-      else if (s.rev && /^[123]$/.test(e.key)) { e.preventDefault(); answer((Number(e.key) - 1) as Grade) }
-      else if (e.key === 'Escape') quitSession()
+      if (e.key === 'Escape') { quitSession(); return }
+      if (s.mode === 'ask') {
+        if (/^[123]$/.test(e.key)) { e.preventDefault(); answer((Number(e.key) - 1) as Grade) }
+        return
+      }
+      if (!s.rev && /^[1-4]$/.test(e.key)) { e.preventDefault(); pick(Number(e.key) - 1) }
+      else if (!s.rev && e.key === 'Enter' && tag !== 'BUTTON') { e.preventDefault(); validate() }
+      else if (s.rev && (e.key === 'Enter' || e.key === ' ') && tag !== 'BUTTON') { e.preventDefault(); next() }
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [ui.screen, ui.session, go, reveal, answer, quitSession])
+  }, [ui.screen, ui.session, go, answer, pick, validate, next, quitSession])
 }
 
 function Screen() {

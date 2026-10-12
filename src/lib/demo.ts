@@ -1,4 +1,5 @@
 import { ACQUIRED_LV, XP_SU } from './constants'
+import { seeded, withChoices } from './qcm'
 import { mkSession } from './session'
 import { xpFor } from './srs'
 import type { Card, CardProgress, Grade, Progress, QuizMode, Session } from './types'
@@ -33,7 +34,18 @@ const resOf = (cards: readonly Card[], g: readonly Grade[]): Record<string, Grad
   Object.fromEntries(cards.map((c, i) => [c.id, g[i]]))
 const xpOf = (h: readonly Grade[]): number => h.reduce<number>((a, g) => a + xpFor(g), 0)
 
+const DEMO_SEED = 7
+
 export function demoSession(cards: readonly Card[], mode: QuizMode, phase: string, finished: boolean): { session: Session; checks: Record<number, boolean> } {
+  const r = buildDemoSession(cards, mode, phase, finished)
+  if (mode === 'ask') return r
+  const s = withChoices(r.session, cards, seeded(DEMO_SEED))
+  // Phase « réponse » : la bonne proposition a été choisie et validée.
+  const picked = s.rev ? s.queue[s.i]?.ch?.correct ?? null : null
+  return { ...r, session: { ...s, picked } }
+}
+
+function buildDemoSession(cards: readonly Card[], mode: QuizMode, phase: string, finished: boolean): { session: Session; checks: Record<number, boolean> } {
   const byId = new Map(cards.map(c => [c.id, c]))
   const pick = (ids: string[]) => ids.map(id => byId.get(id)).filter((c): c is Card => !!c)
   const daily = pick(DEMO_DAILY)
@@ -43,7 +55,7 @@ export function demoSession(cards: readonly Card[], mode: QuizMode, phase: strin
     const n = finished ? q.length : 2
     return { session: mkSession('ask', 'ask', 'Interrogation', q, 'Awa', { i: n, res: resOf(q.slice(0, n), g), hist: g.slice(0, n) }), checks: finished ? {} : { 0: true, 1: true } }
   }
-  const g: Grade[] = [2, 1, 2, 0, 2, 2, 0, 2]
+  const g: Grade[] = [2, 2, 2, 0, 2, 2, 0, 2]
   const full = { i: daily.length, res: resOf(daily, g), hist: g, xp: xpOf(g) }
   if (finished) return { session: mkSession('self', 'daily', 'Session du jour', daily, '', full), checks: {} }
   if (phase === 'second') {

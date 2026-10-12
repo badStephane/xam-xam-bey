@@ -17,10 +17,10 @@ export const SECTIONS: Section[] = [
     m('Hors réseau', 'bibliotheque', 'dark', { lib: 'offline' }), m('Aperçu plein écran', 'apercu', 'dark', { sel: 3 }),
     d('Ordinateur · hors réseau', 'bibliotheque', 'light', { lib: 'offline', sel: 2 })] },
   { n: '02', title: 'Révision · Aujourd’hui', desc: 'Indicateurs, session du jour, zone d’entraînement et choix du mode.', frames: [...four('revision'), m('Mobile · mode J’interroge', 'revision', 'dark', { mode: 'ask' })] },
-  { n: '03', title: 'Session · Je réponds', desc: 'Question, carte retournée avec source et vigilance, auto-évaluation, deuxième chance.', frames: [
-    m('Mobile · question', 'session', 'dark'), m('Mobile · réponse + vigilance', 'session', 'dark', { phase: 'answer' }),
+  { n: '03', title: 'Session · Je réponds', desc: 'Question en QCM, correction avec la réponse complète, source et vigilance, deuxième chance.', frames: [
+    m('Mobile · question', 'session', 'dark'), m('Mobile · correction + vigilance', 'session', 'dark', { phase: 'answer' }),
     m('Mobile · deuxième chance · clair', 'session', 'light', { phase: 'second' }),
-    d('Ordinateur · réponse · sombre', 'session', 'dark', { phase: 'answer' }), d('Ordinateur · question · clair', 'session', 'light')] },
+    d('Ordinateur · correction · sombre', 'session', 'dark', { phase: 'answer' }), d('Ordinateur · question · clair', 'session', 'light')] },
   { n: '03b', title: 'Session · J’interroge', desc: 'La réponse et ses points clés pour l’examinateur seul, notation de la personne.', frames: four('session', { m: { mode: 'ask' } }) },
   { n: '03c', title: 'Fin de session', desc: 'Bilan personnel avec XP, ou bilan de la personne interrogée à partager.', frames: [
     m('Je réponds · mobile sombre', 'fin', 'dark'), m('Je réponds · mobile clair', 'fin', 'light'),

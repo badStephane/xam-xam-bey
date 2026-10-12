@@ -3,6 +3,7 @@ import { ASK_COUNTS } from './lib/constants'
 import { demoProgress, demoSession } from './lib/demo'
 import { currentZone, dayNum } from './lib/format'
 import { isRevScreen, PARAMS, type Screen } from './lib/params'
+import { gradeOf, withChoices } from './lib/qcm'
 import { answerCard, isLogged, mkSession } from './lib/session'
 import { allCards } from './lib/srs'
 import { loadPref, savePref } from './lib/storage'
@@ -45,6 +46,9 @@ interface AppValue {
   startSession(mode: QuizMode, kind: string, label: string, cards: readonly Card[]): void
   reveal(): void
   answer(g: Grade): void
+  pick(i: number): void
+  validate(): void
+  next(): void
   quitSession(): void
 }
 
@@ -119,9 +123,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
     toggleTheme: () => { if (!PARAMS.frame) savePref('theme', ui.dark ? 'light' : 'dark'); patch({ dark: !ui.dark }) },
     startSession: (mode, kind, label, cards) => {
       if (!cards.length) return
-      go('session', { session: mkSession(mode, kind, label, cards, mode === 'ask' ? ui.askName.trim() : ''), checks: {}, hideAns: false })
+      const s = mkSession(mode, kind, label, cards, mode === 'ask' ? ui.askName.trim() : '')
+      go('session', { session: mode === 'self' ? withChoices(s, allCards(rev.content)) : s, checks: {}, hideAns: false })
     },
     reveal: () => { const s = ui.session; if (s && !s.rev && !s.done) patch({ session: { ...s, rev: true } }) },
+    pick: i => {
+      const s = ui.session
+      if (s && !s.rev && !s.done && s.queue[s.i]?.ch && i >= 0 && i < s.queue[s.i].ch!.options.length) patch({ session: { ...s, picked: i } })
+    },
+    validate: () => {
+      const s = ui.session
+      if (s && !s.rev && !s.done && s.picked !== null) patch({ session: { ...s, rev: true } })
+    },
+    next: () => {
+      const s = ui.session
+      const g = s && s.rev ? gradeOf(s) : null
+      if (g !== null) value.answer(g)
+    },
     answer: g => {
       const r = ui.session && answerCard(ui.session, g)
       if (!r) return

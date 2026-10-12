@@ -9,7 +9,7 @@ export const isLogged = (s: Session): boolean => s.mode === 'self' && s.kind !==
 export function mkSession(mode: QuizMode, kind: string, label: string, cards: readonly Card[], name = '', extra: Partial<Session> = {}): Session {
   return {
     mode, kind, label, name, queue: cards.map(c => ({ c, second: false })), i: 0, rev: mode === 'ask',
-    res: {}, hist: [], xp: 0, done: false, ...extra,
+    res: {}, hist: [], xp: 0, done: false, picked: null, ...extra,
   }
 }
 
@@ -27,9 +27,9 @@ export function answerCard(s: Session, g: Grade): AnswerResult | null {
   const first = !(card.id in s.res)
   // Les cartes « à retravailler » ont déjà été notées aujourd'hui : on s'entraîne sans renoter.
   const self = s.mode === 'self' && s.kind !== REDO
-  const queue = first && self && g === 0 ? [...s.queue, { c: card, second: true }] : s.queue
+  const queue = first && self && g === 0 ? [...s.queue, { c: card, second: true, ch: s.queue[s.i].ch }] : s.queue
   const next: Session = {
-    ...s, queue, i: s.i + 1, rev: s.mode === 'ask', hist: [...s.hist, g],
+    ...s, queue, i: s.i + 1, rev: s.mode === 'ask', hist: [...s.hist, g], picked: null,
     res: first ? { ...s.res, [card.id]: g } : s.res,
     xp: s.xp + (first && self ? xpFor(g) : 0),
   }

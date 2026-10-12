@@ -13,14 +13,14 @@ export function Fin() {
   const pct = (v: number) => `${n ? Math.round(v / n * 100) : 0} %`
   const miss = missedCards(s)
   const name = s.name || 'la personne'
-  const stamps = ask ? [['FAUX', 'var(--stamp)'], ['PARTIEL', 'var(--ochre)']] : [['RATÉ', 'var(--stamp)'], ['HÉSITANT', 'var(--ochre)']]
+  const stamps = ask ? [['FAUX', 'var(--stamp)'], ['PARTIEL', 'var(--ochre)']] : [['FAUSSE', 'var(--stamp)'], ['HÉSITANT', 'var(--ochre)']]
   const f = ask
     ? { tag: 'INTERROGATION TERMINÉE · NE COMPTE PAS DANS VOTRE PROGRESSION', title: `Bilan de ${name}`, list: 'Questions à reprendre', redo: 'REPOSER CES QUESTIONS',
         stats: [[`${String(juste + partiel / 2).replace('.', ',')}/${n}`, 'SCORE', 'var(--hud)'], [pct(juste), 'RÉPONSES JUSTES', 'var(--acc)'], [String(partiel), 'PARTIELLES', 'var(--amber)']],
         chips: [[`✓ JUSTE ${juste}`, 'var(--acc)'], [`~ PARTIEL ${partiel}`, 'var(--amber)'], [`✕ FAUX ${faux}`, 'var(--err)']] }
     : { tag: s.kind === REDO ? 'REPRISE TERMINÉE · DÉJÀ COMPTÉE AUJOURD’HUI' : 'SESSION TERMINÉE', title: 'Quête accomplie', list: 'À retravailler', redo: 'REFAIRE CES CARTES',
-        stats: [[`${juste}/${n}`, 'SCORE', 'var(--hud)'], [pct(juste), 'SUES DU PREMIER COUP', 'var(--acc)'], [`+${s.xp}`, 'XP GAGNÉS', 'var(--amber)']],
-        chips: [[`✓ SU ${juste}`, 'var(--acc)'], [`~ HÉSITANT ${partiel}`, 'var(--amber)'], [`✕ RATÉ ${faux}`, 'var(--err)']] }
+        stats: [[`${juste}/${n}`, 'SCORE', 'var(--hud)'], [pct(juste), 'JUSTES DU PREMIER COUP', 'var(--acc)'], [`+${s.xp}`, 'XP GAGNÉS', 'var(--amber)']],
+        chips: [[`✓ JUSTES ${juste}`, 'var(--acc)'], [`✕ FAUSSES ${faux}`, 'var(--err)'], ...(partiel ? [[`~ HÉSITANT ${partiel}`, 'var(--amber)']] : [])] }
   const redo = () => go('session', { session: mkSession(s.mode, ask ? 'ask' : REDO, ask ? 'Interrogation' : 'Cartes à retravailler', miss, s.name), checks: {}, hideAns: false })
   const shareFin = () => {
     const txt = `Xam Xam Bëy · Bilan de ${name} : ${juste} justes, ${partiel} partiels, ${faux} faux sur ${n}.`
@@ -44,7 +44,7 @@ export function Fin() {
               </div>
             )
           })
-          : <p className="muted" style={{ margin: 0 }}>{n ? 'Rien à retravailler. Toutes les cartes sont sues du premier coup.' : 'Aucune réponse enregistrée.'}</p>}
+          : <p className="muted" style={{ margin: 0 }}>{n ? 'Rien à retravailler. Toutes les réponses sont justes du premier coup.' : 'Aucune réponse enregistrée.'}</p>}
       </section>
       <div className="row">
         {miss.length > 0 && <button className="btn tall acc" onClick={redo}>{f.redo}</button>}

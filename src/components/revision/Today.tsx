@@ -26,7 +26,7 @@ function TrainCard() {
       <div className="col g6">
         <span id="t-mode" className="f-lbl">QUI RÉPOND ?</span>
         <div className="two" role="radiogroup" aria-labelledby="t-mode" style={{ gap: 6 }}>
-          <button className="mode-btn" role="radio" aria-checked={!ask} onClick={() => patch({ mode: 'self' })}><strong>Je réponds</strong><span>Je m’évalue. Compte dans ma progression.</span></button>
+          <button className="mode-btn" role="radio" aria-checked={!ask} onClick={() => patch({ mode: 'self' })}><strong>Je réponds</strong><span>QCM corrigé automatiquement. Compte dans ma progression.</span></button>
           <button className="mode-btn" role="radio" aria-checked={ask} onClick={() => patch({ mode: 'ask' })}><strong>J’interroge</strong><span>Je pose les questions à quelqu’un et je le note.</span></button>
         </div>
       </div>
@@ -73,16 +73,16 @@ export function Today() {
         <div className="kpi"><b style={{ color: 'var(--amber)' }}>{st}</b><span>{st > 1 ? 'JOURS' : 'JOUR'} DE SUITE</span></div>
       </div>
       {n
-        ? <button className="go" onClick={() => startSession('self', 'daily', 'Session du jour', [...due, ...fresh])}><b>DÉMARRER LA SESSION DU JOUR ({plural(n, 'CARTE', 'CARTES')})</b><span>ENVIRON {Math.max(1, Math.round(n * SECONDS_PER_CARD / 60))} MIN · JE RÉPONDS</span></button>
+        ? <button className="go" onClick={() => startSession('self', 'daily', 'Session du jour', [...due, ...fresh])}><b>DÉMARRER LA SESSION DU JOUR ({plural(n, 'CARTE', 'CARTES')})</b><span>ENVIRON {Math.max(1, Math.round(n * SECONDS_PER_CARD / 60))} MIN · QCM</span></button>
         : <button className="go" disabled><b>RIEN À RÉVISER AUJOURD’HUI</b><span>VOUS ÊTES À JOUR · ENTRAÎNEZ-VOUS SUR UNE ZONE</span></button>}
       <div className="duo">
         <TrainCard />
         <section className="box" aria-labelledby="t-meth">
           <h2 id="t-meth" className="h-sec" style={{ fontSize: 19 }}>LA MÉTHODE</h2>
           <ol className="steps">
-            <li><b>01</b><span>Lisez la question.</span></li>
-            <li><b>02</b><span>Répondez à voix haute avant de retourner la carte.</span></li>
-            <li><b>03</b><span>Évaluez-vous : Raté, Hésitant ou Su. Une carte sue revient à J+1, J+3, J+7, J+21, puis J+60. Une carte ratée revient le lendemain.</span></li>
+            <li><b>01</b><span>Lisez la question et cherchez la réponse de mémoire.</span></li>
+            <li><b>02</b><span>Choisissez parmi les quatre propositions, puis validez.</span></li>
+            <li><b>03</b><span>Bonne réponse : la carte revient à J+1, J+3, J+7, J+21, puis J+60. Mauvaise : elle revient en fin de session, puis le lendemain.</span></li>
           </ol>
         </section>
       </div>

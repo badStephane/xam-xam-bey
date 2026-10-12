@@ -1,5 +1,5 @@
 import { ACQUIRED_LV, INTERVAL, LEVEL_LABELS, MAX_LV, NEW_PER_DAY, RANKS, XP_BAR_SEGMENTS, XP_HES, XP_PER_LEVEL, XP_SU } from './constants'
-import type { Card, CardProgress, Grade, Progress, RawCard, RevisionContent } from './types'
+import type { Card, CardProgress, Grade, Progress, Qcm, RawCard, RevisionContent } from './types'
 
 export const EMPTY_PROGRESS: Progress = { cards: {}, sessions: [], xp: 0 }
 
@@ -9,7 +9,18 @@ export function validCards(list: unknown, th: number): Card[] {
   if (!Array.isArray(list)) return []
   return (list as RawCard[])
     .filter(c => c && typeof c.id === 'string' && typeof c.q === 'string' && typeof c.a === 'string')
-    .map(c => ({ id: c.id as string, q: c.q as string, a: c.a as string, src: c.src || '', note: c.note || '', th }))
+    .map(c => {
+      const qcm = validQcm(c.qcm)
+      return { id: c.id as string, q: c.q as string, a: c.a as string, src: c.src || '', note: c.note || '', th, ...(qcm ? { qcm } : {}) }
+    })
+}
+
+function validQcm(q: unknown): Qcm | null {
+  if (!q || typeof q !== 'object') return null
+  const { ok, no } = q as { ok?: unknown; no?: unknown }
+  if (typeof ok !== 'string' || !ok.trim() || !Array.isArray(no)) return null
+  const wrong = no.filter((x): x is string => typeof x === 'string' && !!x.trim() && x !== ok)
+  return wrong.length ? { ok, no: wrong } : null
 }
 
 export function allCards(content: RevisionContent): Card[] {

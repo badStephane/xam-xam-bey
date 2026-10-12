@@ -35,6 +35,7 @@ npm run build        # vérifie les types puis écrit site/index.html, site/plan
   - `revision_content` : documents `plan`, `fiche-N`, `cards-N` (JSON). Lecture pour les personnes connectées, écriture réservée au rôle service.
   - `progress` : une ligne par personne, `{ cards: { id: [niveau, échéance, vues, réussites, premier jour] }, sessions, xp }`, jours comptés depuis 1970. Chacun ne lit et n’écrit que sa ligne (RLS).
 - **Publier du contenu** : déposer `fiche-N.json` / `cards-N.json` dans `data/seed/`, lancer `python3 scripts/content_sql.py`, puis `supabase db push`.
+- **QCM** : chaque carte peut porter `"qcm": { "ok": "bonne réponse courte", "no": ["3 mauvaises réponses plausibles"] }`. Sans ce champ, l’application prend comme propositions les réponses d’autres cartes de la même zone.
 - **Réglages du tableau de bord** (Authentication → URL Configuration) : *Site URL* = l’adresse Netlify ; *Redirect URLs* = cette adresse et `http://localhost:5173`. Le service e-mail intégré de Supabase est limité à quelques envois par heure : configurer un SMTP (Authentication → Emails) avant d’ouvrir aux responsables.
 
 ```bash

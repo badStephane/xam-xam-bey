@@ -265,3 +265,20 @@ kbd{font:500 11px/1 var(--f-mono);padding:5px 7px;border:1px solid currentColor}
 }
 .qcard h1:focus,.answer:focus{outline:none}
 .qcard h1:focus-visible,.answer:focus-visible{outline:2px solid var(--amber);outline-offset:4px}
+
+/* QCM */
+.qcm{display:flex;flex-direction:column;gap:8px}
+.opt{min-height:52px;display:flex;align-items:center;gap:12px;padding:10px 12px;border:1.5px solid #C9C0AE;background:transparent;color:var(--ink);text-align:left;font:500 16px/1.35 var(--f-body);transition:border-color 150ms,background 150ms}
+.opt i{flex:none;width:28px;height:28px;display:grid;place-items:center;border:1.5px solid var(--ink);font:700 12px/1 var(--f-mono);font-style:normal}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt.sel{border:2.5px solid var(--ink);background:#FFFFFF}
+.opt.sel i{background:var(--ink);color:var(--paper)}
+.opt.ok{border:2.5px solid var(--green);background:rgba(29,90,63,.08)}
+.opt.ok i{background:var(--green);border-color:var(--green);color:var(--paper)}
+.opt.ko{border:2.5px solid var(--stamp);background:rgba(200,52,28,.06)}
+.opt.ko i{background:var(--stamp);border-color:var(--stamp);color:var(--paper)}
+.opt.dim{opacity:.55}
+#app .opt:disabled{cursor:default;opacity:1}
+#app .opt.dim:disabled{opacity:.55}
+.verdict{padding:10px 12px;font:700 12px/1.2 var(--f-mono);letter-spacing:.06em;color:var(--paper)}
+.verdict.ok{background:var(--green)}.verdict.ko{background:var(--stamp)}
