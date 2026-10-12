@@ -185,7 +185,10 @@ h3.sec{font-size:18px;margin:26px 0 10px}
 .drawer[hidden]{display:none}
 .drawer header{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line)}
 .drawer h2{font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.drawer iframe{width:100%;height:100%;border:0;background:var(--surface-2)}
+.dbody{overflow:auto;background:var(--surface-2);padding:10px;display:grid;gap:10px;align-content:start;min-height:0}
+.dbody canvas{width:100%;height:auto;display:block;background:#fff;border-radius:4px;box-shadow:0 1px 3px rgb(0 0 0 / .2)}
+.dbody .pg{width:100%;background:#fff;border-radius:4px;min-height:200px}
+.dmsg{padding:24px 14px;color:var(--muted);text-align:center}
 .lv{display:flex;height:12px;border-radius:99px;overflow:hidden;background:var(--surface-2);margin:10px 0 6px}
 .lv i{display:block;height:100%}
 .lvl{display:flex;flex-wrap:wrap;gap:4px 14px;font:400 12px var(--font-mono);color:var(--muted)}
@@ -253,7 +256,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
     </section>
   </main>
 
-  <aside class="drawer" id="drawer" hidden aria-label="Aperçu du document"><header><h2 id="dtitle"></h2><span class="row"><a class="btn sm" id="dopen" target="_blank" rel="noopener">Nouvel onglet</a><button class="btn sm" id="dclose" type="button">Fermer</button></span></header><iframe id="dframe" title="Aperçu du document"></iframe></aside>
+  <aside class="drawer" id="drawer" hidden aria-label="Aperçu du document"><header><h2 id="dtitle"></h2><span class="row"><a class="btn sm" id="dopen" target="_blank" rel="noopener">Nouvel onglet</a><button class="btn sm" id="dclose" type="button">Fermer</button></span></header><div class="dbody" id="dbody" tabindex="0"></div></aside>
 
   <footer>Plateforme de révision indépendante, construite sur les documents du dossier Xam Xam Bëy. Elle n'est pas un site officiel de l'association.</footer>
 </div>
@@ -362,10 +365,46 @@ $('#fess').addEventListener('change',function(e){L.ess=e.target.checked;renderLi
 $('#fdup').addEventListener('change',function(e){L.nodup=e.target.checked;renderList()});
 $('#nowcard').addEventListener('click',function(e){var b=e.target.closest('#nowall');if(b){L.th=CUR;renderList()}});
 var DR=$('#drawer');
-function closePv(){DR.hidden=true;$('#dframe').removeAttribute('src')}
+var PDFJS=null,PVTOKEN=0;
+function loadPdfjs(){
+  if(PDFJS)return PDFJS;
+  var base='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+  function sc(u){return new Promise(function(ok,ko){var s=document.createElement('script');s.src=u;s.onload=ok;s.onerror=ko;document.head.appendChild(s)})}
+  PDFJS=sc(base+'pdf.min.js').then(function(){return sc(base+'pdf.worker.min.js')}).then(function(){return window.pdfjsLib});
+  PDFJS.catch(function(){PDFJS=null});
+  return PDFJS;
+}
+function pvMsg(h){$('#dbody').innerHTML='<div class="dmsg">'+h+'</div>'}
+function showPv(file,title){
+  var tok=++PVTOKEN,url='f/'+file,body=$('#dbody');
+  $('#dtitle').textContent=title;$('#dopen').href=url;DR.hidden=false;body.scrollTop=0;
+  pvMsg('Chargement de l\'aperçu…');
+  loadPdfjs().then(function(lib){
+    return lib.getDocument({url:url}).promise;
+  }).then(function(doc){
+    if(tok!==PVTOKEN)return;
+    body.innerHTML='';
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(!e.isIntersecting)return;
+      var box=e.target;io.unobserve(box);
+      doc.getPage(+box.dataset.n).then(function(pg){
+        if(tok!==PVTOKEN)return;
+        var w=Math.max(300,body.clientWidth-20),v0=pg.getViewport({scale:1}),sc=Math.min(2,(w/v0.width)*(window.devicePixelRatio||1)),v=pg.getViewport({scale:sc});
+        var cv=document.createElement('canvas');cv.width=v.width;cv.height=v.height;
+        box.style.minHeight='0';box.innerHTML='';box.appendChild(cv);
+        pg.render({canvasContext:cv.getContext('2d'),viewport:v});
+      });
+    })},{root:body,rootMargin:'600px 0px'});
+    for(var i=1;i<=doc.numPages;i++){var b=document.createElement('div');b.className='pg';b.dataset.n=i;body.appendChild(b);io.observe(b)}
+  }).catch(function(){
+    if(tok!==PVTOKEN)return;
+    pvMsg('L\'aperçu n\'a pas pu se charger. Utilise « Nouvel onglet » pour lire le document.');
+  });
+}
+function closePv(){PVTOKEN++;DR.hidden=true;$('#dbody').innerHTML=''}
 document.addEventListener('click',function(e){
   var b=e.target.closest('[data-pv]');
-  if(b){$('#dtitle').textContent=b.dataset.t;$('#dopen').href='f/'+b.dataset.pv;$('#dframe').src='f/'+b.dataset.pv;DR.hidden=false;$('#dclose').focus();return}
+  if(b){showPv(b.dataset.pv,b.dataset.t);$('#dclose').focus();return}
   if(e.target.closest('#dclose'))closePv();
 });
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!DR.hidden)closePv()});
