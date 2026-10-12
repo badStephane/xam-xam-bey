@@ -179,9 +179,10 @@ h3.sec{font-size:18px;margin:26px 0 10px}
 .pv{font-weight:600;font-size:14px;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--surface);white-space:nowrap}
 .pv:hover{border-color:var(--accent);background:var(--surface-2)}
 .acts-r{grid-row:1/3;grid-column:3;display:flex;gap:8px}
+button.open{font:inherit;font-weight:600;color:var(--ink);cursor:pointer}
 .acts-r .open{grid-row:auto;grid-column:auto}
 /* Aperçu */
-.drawer{position:fixed;inset:0 0 0 auto;width:min(560px,100%);background:var(--surface);border-left:1px solid var(--line);box-shadow:-12px 0 32px rgb(0 0 0 / .18);display:grid;grid-template-rows:auto 1fr;z-index:20}
+.drawer{position:fixed;inset:0 0 0 auto;width:min(920px,100%);background:var(--surface);border-left:1px solid var(--line);box-shadow:-12px 0 32px rgb(0 0 0 / .18);display:grid;grid-template-rows:auto 1fr;z-index:20}
 .drawer[hidden]{display:none}
 .drawer header{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line)}
 .drawer h2{font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -247,7 +248,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
       </div>
       <div id="nowcard"></div>
       <div class="chips" id="chips" role="group" aria-label="Filtrer par thème"></div>
-      <p class="note">Les documents sont intégrés à l'application : « Ouvrir » les affiche dans un nouvel onglet (les fichiers Word et PowerPoint sont convertis en PDF, les tableurs se téléchargent). Les « essentiels » sont une sélection indicative, confirmée mois par mois.</p>
+      <p class="note">Les documents sont intégrés à l'application : « Ouvrir » les lit directement ici (les fichiers Word, PowerPoint et Excel sont convertis en PDF). Les « essentiels » sont une sélection indicative, confirmée mois par mois.</p>
       <div id="list" aria-live="polite"></div>
     </section>
 
@@ -256,7 +257,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
     </section>
   </main>
 
-  <aside class="drawer" id="drawer" hidden aria-label="Aperçu du document"><header><h2 id="dtitle"></h2><span class="row"><a class="btn sm" id="dopen" target="_blank" rel="noopener">Nouvel onglet</a><button class="btn sm" id="dclose" type="button">Fermer</button></span></header><div class="dbody" id="dbody" tabindex="0"></div></aside>
+  <aside class="drawer" id="drawer" hidden aria-label="Aperçu du document"><header><h2 id="dtitle"></h2><span class="row"><button class="btn sm" id="ddl" type="button" hidden>Télécharger</button><button class="btn sm" id="dclose" type="button">Fermer</button></span></header><div class="dbody" id="dbody" tabindex="0"></div></aside>
 
   <footer>Plateforme de révision indépendante, construite sur les documents du dossier Xam Xam Bëy. Elle n'est pas un site officiel de l'association.</footer>
 </div>
@@ -327,14 +328,13 @@ function renderChips(){
   $('#chips').innerHTML=h;
 }
 function rowHTML(it){
-  var url='f/'+it.f;
   var bits=[it.p.replace(/\//g,' / ')];
   if(it.g)bits.push(it.g+' p.');
   bits.push(fsize(it.s));
   return '<li class="res"><span class="ft">'+(TYPE_LABEL[it.e]||esc(it.e.toUpperCase()))+'</span>'+
     '<div class="rn">'+esc(it.t)+(it.es?'<span class="pill pill-ess">Essentiel</span>':'')+(it.x?'<span class="pill pill-scan" title="PDF numérisé, le texte n\'est pas sélectionnable">Scan</span>':'')+(it.d?'<span class="pill">Doublon</span>':'')+'</div>'+
     '<div class="rm">'+esc(bits.join(' · '))+'</div>'+
-    '<span class="acts-r"><button class="pv" type="button" data-pv="'+esc(it.f)+'" data-t="'+esc(it.t)+'">Aperçu<span class="sr"> '+esc(it.t)+'</span></button><a class="open" href="'+url+'" target="_blank" rel="noopener">Ouvrir<span class="sr"> '+esc(it.t)+'</span></a></span></li>';
+    '<span class="acts-r"><button class="open" type="button" data-pv="'+esc(it.f)+'" data-t="'+esc(it.t)+'">Ouvrir<span class="sr"> '+esc(it.t)+'</span></button></span></li>';
 }
 function renderNow(){
   var el=$('#nowcard');
@@ -344,7 +344,7 @@ function renderNow(){
   var top=its.filter(function(i){return i.es}).slice(0,3);
   if(!top.length)top=its.slice(0,3);
   el.innerHTML='<div class="now-card mc" style="--h:'+mh(CUR)+'"><div class="k">Ce mois-ci, '+mlabel(CUR)+'</div><h2>'+esc(THEME_TITLES[CUR-1])+'</h2>'+
-    '<ul>'+top.map(function(i){return '<li><span>'+esc(i.t)+'</span><button class="pv" type="button" data-pv="'+esc(i.f)+'" data-t="'+esc(i.t)+'">Aperçu</button></li>'}).join('')+'</ul>'+
+    '<ul>'+top.map(function(i){return '<li><span>'+esc(i.t)+'</span><button class="pv" type="button" data-pv="'+esc(i.f)+'" data-t="'+esc(i.t)+'">Ouvrir</button></li>'}).join('')+'</ul>'+
     '<div class="go"><button class="btn sm" type="button" data-th="'+CUR+'" id="nowall">Voir les '+its.length+' ressources du thème</button></div></div>';
 }
 function renderList(){
@@ -365,7 +365,8 @@ $('#fess').addEventListener('change',function(e){L.ess=e.target.checked;renderLi
 $('#fdup').addEventListener('change',function(e){L.nodup=e.target.checked;renderList()});
 $('#nowcard').addEventListener('click',function(e){var b=e.target.closest('#nowall');if(b){L.th=CUR;renderList()}});
 var DR=$('#drawer');
-var PDFJS=null,PVTOKEN=0;
+var PDFJS=null,PVTOKEN=0,DL=null,DLCAP=null;
+if(window.claude&&window.claude.use)window.claude.use('downloads').then(function(d){DLCAP=d;if(d)$('#ddl').hidden=false}).catch(function(){});
 function loadPdfjs(){
   if(PDFJS)return PDFJS;
   var base='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
@@ -377,7 +378,7 @@ function loadPdfjs(){
 function pvMsg(h){$('#dbody').innerHTML='<div class="dmsg">'+h+'</div>'}
 function showPv(file,title){
   var tok=++PVTOKEN,url='f/'+file,body=$('#dbody');
-  $('#dtitle').textContent=title;$('#dopen').href=url;DR.hidden=false;body.scrollTop=0;
+  $('#dtitle').textContent=title;DL={url:url,name:title.replace(/[\\\/:*?"<>|]+/g,' ').trim()+'.pdf'};DR.hidden=false;body.scrollTop=0;
   pvMsg('Chargement de l\'aperçu…');
   loadPdfjs().then(function(lib){
     return lib.getDocument({url:url}).promise;
@@ -398,7 +399,7 @@ function showPv(file,title){
     for(var i=1;i<=doc.numPages;i++){var b=document.createElement('div');b.className='pg';b.dataset.n=i;body.appendChild(b);io.observe(b)}
   }).catch(function(){
     if(tok!==PVTOKEN)return;
-    pvMsg('L\'aperçu n\'a pas pu se charger. Utilise « Nouvel onglet » pour lire le document.');
+    pvMsg('L\'aperçu n\'a pas pu se charger. Réessaie dans un instant.');
   });
 }
 function closePv(){PVTOKEN++;DR.hidden=true;$('#dbody').innerHTML=''}
@@ -406,6 +407,9 @@ document.addEventListener('click',function(e){
   var b=e.target.closest('[data-pv]');
   if(b){showPv(b.dataset.pv,b.dataset.t);$('#dclose').focus();return}
   if(e.target.closest('#dclose'))closePv();
+  if(e.target.closest('#ddl')&&DLCAP&&DL){
+    var d=DL;fetch(d.url).then(function(r){return r.blob()}).then(function(bl){return DLCAP.save({filename:d.name,data:bl})}).catch(function(){});
+  }
 });
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!DR.hidden)closePv()});
 $('#chips').addEventListener('click',function(e){var b=e.target.closest('[data-th]');if(!b)return;L.th=+b.dataset.th;renderList()});
