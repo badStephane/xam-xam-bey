@@ -44,7 +44,7 @@ function siteDocs(): Plugin {
 
 export default defineConfig({
   base: './',
-  publicDir: false,
+  publicDir: 'public',
   plugins: [react(), siteDocs()],
   build: {
     outDir: OUT_DIR,

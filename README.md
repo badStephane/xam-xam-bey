@@ -49,9 +49,17 @@ supabase link --project-ref <ref>
 supabase db push
 ```
 
-## Netlify
+## Hébergement
 
-`netlify.toml` construit le site (`npm run build`) et publie `dist/` (l’application seule ; les PDF sont servis par Supabase). Renseigner `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` dans les variables d’environnement du site Netlify. Les en-têtes de sécurité (CSP limitée à Supabase et Google Fonts) y sont définis.
+Le site publié est le dossier `dist/` (application seule, environ 5 Mo) ; les PDF sont servis par Supabase. Les en-têtes de sécurité (CSP limitée au projet Supabase et à Google Fonts) sont dans `public/_headers`, lu par Cloudflare Pages comme par Netlify. Les variables `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` doivent être définies au moment du build.
+
+**Cloudflare Pages** (offre gratuite sans crédits, 500 builds par mois), au choix :
+- *Relié à GitHub* : Workers & Pages → Create → Pages → Connect to Git → dépôt `xam-xam-bey`, branche `main`. Build command `npm run build`, output directory `dist`, variables d’environnement `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY`. Chaque push sur `main` redéploie le site.
+- *Envoi direct* : `npm run deploy:cloudflare` (connexion Cloudflare demandée au premier lancement), ou glisser le dossier `dist/` dans Workers & Pages → Create → Pages → Upload assets.
+
+**Netlify** : `netlify.toml` construit et publie `dist/`.
+
+Après un changement d’adresse, l’ajouter dans Supabase : Authentication → URL Configuration (Site URL et Redirect URLs, par exemple `https://xam-xam-bey.pages.dev/**`).
 
 ## Planches
 
