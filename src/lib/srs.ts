@@ -1,0 +1,95 @@
+import { ACQUIRED_LV, INTERVAL, LEVEL_LABELS, MAX_LV, NEW_PER_DAY, RANKS, XP_BAR_SEGMENTS, XP_HES, XP_PER_LEVEL, XP_SU } from './constants'
+import type { Card, CardProgress, Grade, Progress, RawCard, RevisionContent } from './types'
+
+export const EMPTY_PROGRESS: Progress = { cards: {}, sessions: [], xp: 0 }
+
+export const xpFor = (g: Grade): number => (g === 2 ? XP_SU : g === 1 ? XP_HES : 0)
+
+export function validCards(list: unknown, th: number): Card[] {
+  if (!Array.isArray(list)) return []
+  return (list as RawCard[])
+    .filter(c => c && typeof c.id === 'string' && typeof c.q === 'string' && typeof c.a === 'string')
+    .map(c => ({ id: c.id as string, q: c.q as string, a: c.a as string, src: c.src || '', note: c.note || '', th }))
+}
+
+export function allCards(content: RevisionContent): Card[] {
+  return Object.keys(content.cards).map(Number).sort((a, b) => a - b).flatMap(t => content.cards[t])
+}
+
+export function readProgress(d: Partial<Progress> & Record<string, unknown>): Progress {
+  const sessions = Array.isArray(d.sessions) ? d.sessions.slice() : []
+  const xp = typeof d.xp === 'number' ? d.xp : sessions.reduce((a, s) => a + (s.ok || 0) * XP_SU, 0)
+  return { cards: { ...(d.cards || {}) }, sessions, xp }
+}
+
+/** Répétition espacée : Su monte d'un niveau, Hésitant garde l'intervalle (min. 1), Raté repart à zéro. */
+export function applyGrade(prog: Progress, cardId: string, g: Grade, today: number): Progress {
+  const p: CardProgress = prog.cards[cardId] || [0, today, 0, 0, today]
+  const lv = g === 2 ? Math.min(MAX_LV, p[0] + 1) : g === 0 ? 0 : Math.max(1, p[0])
+  const entry: CardProgress = [lv, today + (g === 0 ? 1 : INTERVAL[lv]), p[2] + 1, p[3] + (g === 2 ? 1 : 0), p[4] || today]
+  return { ...prog, cards: { ...prog.cards, [cardId]: entry }, xp: prog.xp + xpFor(g) }
+}
+
+export const cardLevel = (prog: Progress, id: string): number => prog.cards[id]?.[0] ?? 0
+
+export const dueCards = (cards: readonly Card[], prog: Progress, today: number): Card[] =>
+  cards.filter(c => prog.cards[c.id] && prog.cards[c.id][1] <= today)
+
+export const newToday = (prog: Progress, today: number): number =>
+  Object.values(prog.cards).filter(p => p[4] === today).length
+
+export const newCards = (cards: readonly Card[], prog: Progress, curZone: number, limit: number): Card[] =>
+  cards.filter(c => !prog.cards[c.id] && c.th <= curZone).slice(0, Math.max(0, limit))
+
+export function dailyCards(cards: readonly Card[], prog: Progress, today: number, curZone: number): { due: Card[]; fresh: Card[] } {
+  return { due: dueCards(cards, prog, today), fresh: newCards(cards, prog, curZone, NEW_PER_DAY - newToday(prog, today)) }
+}
+
+export const sessionDays = (prog: Progress): Set<number> => new Set(prog.sessions.map(s => s.d))
+
+export function streak(prog: Progress, today: number): number {
+  const days = sessionDays(prog)
+  let d = days.has(today) ? today : today - 1
+  let n = 0
+  while (days.has(d)) { n++; d-- }
+  return n
+}
+
+export function bestStreak(prog: Progress): number {
+  const ds = [...sessionDays(prog)].sort((a, b) => a - b)
+  return ds.reduce<{ best: number; run: number }>((acc, d, i) => {
+    const run = i && d === ds[i - 1] + 1 ? acc.run + 1 : 1
+    return { run, best: Math.max(acc.best, run) }
+  }, { best: 0, run: 0 }).best
+}
+
+export function zoneStats(cards: readonly Card[] | undefined, prog: Progress): { cards: number; acq: number } {
+  const list = cards || []
+  return { cards: list.length, acq: list.filter(c => cardLevel(prog, c.id) >= ACQUIRED_LV && !!prog.cards[c.id]).length }
+}
+
+export interface XpLevel { lv: number; rank: string; xp: number; next: number; fill: number }
+export function xpLevel(xp: number): XpLevel {
+  const lv = Math.floor(xp / XP_PER_LEVEL) + 1
+  const next = lv * XP_PER_LEVEL
+  return { lv, rank: RANKS[Math.min(RANKS.length, lv) - 1], xp, next, fill: Math.round(XP_BAR_SEGMENTS * xp / next) }
+}
+
+/** Répartition par niveau : indice 0 = jamais vue, puis niveaux 0 à 5. */
+export function levelBuckets(cards: readonly Card[], prog: Progress): number[] {
+  return cards.reduce((acc, c) => {
+    const p = prog.cards[c.id]
+    const i = p ? Math.min(MAX_LV, p[0]) + 1 : 0
+    return acc.map((v, k) => (k === i ? v + 1 : v))
+  }, LEVEL_LABELS.map(() => 0))
+}
+
+/** Cartes vues cumulées par jour sur une fenêtre se terminant aujourd'hui. */
+export function seenCurve(prog: Progress, today: number, days: number): Array<{ d: number; v: number; on: boolean }> {
+  const firsts = Object.values(prog.cards).map(p => p[4])
+  const active = sessionDays(prog)
+  return Array.from({ length: days }, (_, i) => {
+    const d = today - days + 1 + i
+    return { d, v: firsts.filter(f => f <= d).length, on: active.has(d) }
+  })
+}

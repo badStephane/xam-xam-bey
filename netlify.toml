@@ -1,0 +1,26 @@
+[build]
+  command = "npm run build"
+  publish = "site"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY se règlent dans Netlify : Site configuration → Environment variables.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/f/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
