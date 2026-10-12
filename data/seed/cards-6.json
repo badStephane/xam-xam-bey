@@ -1,0 +1,853 @@
+{
+ "theme": 6,
+ "cards": [
+  {
+   "id": "t6-01",
+   "q": "Comment le document « Organisation d'un camp de patrouille » définit-il le camp ?",
+   "a": "Le camp est le **lieu d'application par excellence de la méthode scoute**. Différent d'une colonie de vacances, il rassemble des scouts ayant un **vécu commun** et se prépare **plusieurs semaines à l'avance**.",
+   "src": "Organisation d_un camp de patrouille BV.pdf",
+   "qcm": {
+    "ok": "Le lieu d'application par excellence de la méthode scoute",
+    "no": [
+     "Le lieu de repos de fin d'année de la troupe",
+     "Le lieu de formation réservé aux chefs de patrouille",
+     "Le lieu de rencontre entre plusieurs groupes scouts"
+    ]
+   }
+  },
+  {
+   "id": "t6-02",
+   "q": "Qu'est-ce qui distingue en principe un camp scout d'une colonie de vacances ?",
+   "a": "Le camp scout rassemble des jeunes qui ont **déjà vécu des expériences ensemble** et qui ont effectué une **préparation plusieurs semaines avant** (thème, activités, collecte de fonds, techniques, équipement). Différence essentielle : c'est un **lieu d'application de la méthode scoute**.",
+   "src": "Cahier CEP Vert.pdf, Organisation d_un camp de patrouille BV.pdf",
+   "qcm": {
+    "ok": "Des jeunes au vécu commun qui préparent le camp des semaines avant",
+    "no": [
+     "Des jeunes qui se découvrent le premier jour du camp",
+     "Des activités entièrement préparées par les seuls adultes",
+     "Un séjour plus long que celui d'une colonie de vacances"
+    ]
+   }
+  },
+  {
+   "id": "t6-03",
+   "q": "Selon le Cahier CEP Vert, combien d'éléments essentiels la méthode scoute combine-t-elle au camp ?",
+   "a": "**Sept** : éducation par l'action, activités dans la nature, intégration des valeurs de la Loi et de la Promesse, relation éducative adultes/jeunes, progression personnelle, vie en équipes, référence à un cadre symbolique. L'originalité tient à leur **combinaison**.",
+   "src": "Cahier CEP Vert.pdf",
+   "qcm": {
+    "ok": "Sept éléments",
+    "no": [
+     "Cinq éléments",
+     "Quatre éléments",
+     "Dix éléments"
+    ]
+   }
+  },
+  {
+   "id": "t6-04",
+   "q": "Quels sont les deux types de camp distingués par « Organisation d'un camp de patrouille » ?",
+   "a": "Les **camps fixes**, qui se déroulent dans la même zone du début à la fin (camp service, camp de formation…), et les **camps volants**, dont le lieu est changeant ou non défini.",
+   "src": "Organisation d_un camp de patrouille BV.pdf, Cahier CEP Vert.pdf",
+   "note": "La Déclaration de camp propose trois cases : infrastructures résidentielles, sous tente, itinérant.",
+   "qcm": {
+    "ok": "Camps fixes et camps volants",
+    "no": [
+     "Camps d'été et camps d'hiver",
+     "Camps de troupe et camps de groupe",
+     "Camps courts et camps de longue durée"
+    ]
+   }
+  },
+  {
+   "id": "t6-05",
+   "q": "Quels exemples de camps fixes et de camps volants donne le Cahier CEP Vert ?",
+   "a": "Camps **fixes** : chantier, formation, de vacance, week-end. Camps **volants** (ou bohémiens, itinérants) : **exploration, découverte**.",
+   "src": "Cahier CEP Vert.pdf",
+   "qcm": {
+    "ok": "Fixes : chantier, formation ; volants : exploration, découverte",
+    "no": [
+     "Fixes : exploration, découverte ; volants : chantier, week-end",
+     "Fixes : raid, hike ; volants : formation, vacances",
+     "Fixes : jamboree, rallye ; volants : chantier, service"
+    ]
+   }
+  },
+  {
+   "id": "t6-06",
+   "q": "Comment se déroule la cérémonie d'ouverture d'un camp décrite dans le Cahier CI ?",
+   "a": "L'unité forme un **rectangle autour du kraal** (étendard sur deux branches en Y). Le CT remet **trois brindilles** au servant, qui allume le kraal en entonnant **Ingonyama** ; maîtrise et campeurs y mettent chacun leur brindille : tous **acceptent la loi du camp**. Le kraal reste allumé tout le camp.",
+   "src": "CAHIER CI-1.pdf",
+   "qcm": {
+    "ok": "Le servant allume le kraal avec trois brindilles en chantant Ingonyama",
+    "no": [
+     "Le CP allume un feu avec une allumette en chantant l'hymne national",
+     "Le CT hisse le drapeau pendant que la troupe chante la Promesse",
+     "Chaque patrouille allume son propre feu en chantant le chant des adieux"
+    ]
+   }
+  },
+  {
+   "id": "t6-07",
+   "q": "Quels sont les 4 moments clés d'un camp de patrouille ?",
+   "a": "La **préparation du camp**, le **début de camp ou pré-camp**, les **derniers jours du camp** et le **retour du camp**.",
+   "src": "Organisation d_un camp de patrouille BV.pdf",
+   "qcm": {
+    "ok": "Préparation, pré-camp, derniers jours, retour",
+    "no": [
+     "Reconnaissance, montage, activités, démontage",
+     "Préparation, installation, veillée, évaluation",
+     "Déclaration, voyage, vie de camp, rapport"
+    ]
+   }
+  },
+  {
+   "id": "t6-08",
+   "q": "Citez des tâches de la phase de préparation du camp.",
+   "a": "Choix du type, durée et dates du camp ; répartition des rôles ; choix, réservation et **inspection du lieu** ; prévisions budgétaires, grille des menus, achat des denrées non périssables ; thème et activités ; transport ; **demande d'autorisation** ; programme ; **autorisation des parents** ; inventaire ; assurances ; inscriptions ; réglementation.",
+   "src": "Organisation d_un camp de patrouille BV.pdf, Cahier CEP Vert.pdf",
+   "qcm": {
+    "ok": "Inspection du lieu, budget, autorisations, programme",
+    "no": [
+     "Démontage, inventaire, visites de remerciements",
+     "Signalisation, montage des bâches, contacts locaux",
+     "Rangement du matériel, bilan financier, classement"
+    ]
+   }
+  },
+  {
+   "id": "t6-09",
+   "q": "Que fait-on pendant le pré-camp (début de camp) ?",
+   "a": "Prendre contact avec le **propriétaire ou gestionnaire** des lieux, **vérifier la sécurité** des lieux, monter l'**équipement lourd** (bâches) s'il y a lieu, et assurer la **signalisation** (signes de piste pour retrouver le lieu de camp).",
+   "src": "Organisation d_un camp de patrouille BV.pdf",
+   "qcm": {
+    "ok": "Contact propriétaire, sécurité, bâches, signes de piste",
+    "no": [
+     "Choix du thème, budget, réservation du transport",
+     "Inventaire complet, démontage, nettoyage des lieux",
+     "Bilan financier, photos, classement des documents"
+    ]
+   }
+  },
+  {
+   "id": "t6-10",
+   "q": "Quelle règle donne-t-on pour le budget du transport retour ?",
+   "a": "On **dégage le budget du transport aller et retour dès le début du camp** et on **n'y touche pas**. Les derniers jours, on confirme le transport de retour.",
+   "src": "Organisation d_un camp de patrouille BV.pdf",
+   "qcm": {
+    "ok": "Le dégager dès le début du camp et ne pas y toucher",
+    "no": [
+     "Le collecter auprès des parents le dernier jour",
+     "Le prévoir avec le reste de la caisse en fin de camp",
+     "Le faire avancer par le chef de camp et rembourser au retour"
+    ]
+   }
+  },
+  {
+   "id": "t6-11",
+   "q": "Quelle est la « loi du Campeur » rappelée à la fin du camp ?",
+   "a": "**« Le scout décampe sans laisser de trace »**.",
+   "src": "Organisation d_un camp de patrouille BV.pdf",
+   "qcm": {
+    "ok": "Le scout décampe sans laisser de trace",
+    "no": [
+     "Le scout campe là où il est invité",
+     "Le scout laisse le lieu plus beau qu'il ne l'a trouvé",
+     "Le scout ne décampe qu'après le dernier repas"
+    ]
+   }
+  },
+  {
+   "id": "t6-12",
+   "q": "En quoi consiste le nettoyage des lieux en fin de camp ?",
+   "a": "**Incinération des déchets combustibles** et **rebouchage des trous**, suivis de visites de remerciements et d'une dernière vérification des lieux.",
+   "src": "Organisation d_un camp de patrouille BV.pdf, Cahier CEP Vert.pdf",
+   "qcm": {
+    "ok": "Incinérer les déchets combustibles et reboucher les trous",
+    "no": [
+     "Enterrer tous les déchets et laisser les installations",
+     "Remettre les déchets au propriétaire et démonter",
+     "Brûler les constructions et ramener les déchets"
+    ]
+   }
+  },
+  {
+   "id": "t6-13",
+   "q": "Que fait-on au retour du camp ?",
+   "a": "**Ranger le matériel** (bien sec, avec fiches de réparation), faire le **bilan financier**, développer et archiver les photos, **classer les documents**, faire un **rapport** si requis.",
+   "src": "Organisation d_un camp de patrouille BV.pdf, Cahier CEP Vert.pdf",
+   "note": "Rapport « à la maîtrise » selon Organisation d'un camp de patrouille, « au groupe » selon le Cahier CEP Vert.",
+   "qcm": {
+    "ok": "Rangement du matériel sec, bilan financier, rapport",
+    "no": [
+     "Démontage, nettoyage, visites de remerciements",
+     "Inspection du lieu, réservation du transport",
+     "Signalisation, montage de l'équipement lourd"
+    ]
+   }
+  },
+  {
+   "id": "t6-14",
+   "q": "Que doit contenir le rapport de reconnaissance du lieu de camp ?",
+   "a": "À rédiger **le plus vite possible après la reconnaissance** : présence de **bois et d'eau** en suffisance, terrain propice aux activités (jeux, constructions, feu de camp) et **coordonnées complètes du propriétaire**.",
+   "src": "Contenu dun projet de camp de patrouille.pdf",
+   "qcm": {
+    "ok": "Bois, eau, terrain adapté et coordonnées du propriétaire",
+    "no": [
+     "Liste des participants, menus et budget",
+     "Horaires des transports et prix des denrées",
+     "Programme des veillées et thème du camp"
+    ]
+   }
+  },
+  {
+   "id": "t6-15",
+   "q": "Quelle question se poser pour fixer le but d'un camp de patrouille ?",
+   "a": "**« Qu'est-ce que je veux que ma patrouille retire de ce camp ? »** Le but doit être réalisable et apporter quelque chose au camp.",
+   "src": "Contenu dun projet de camp de patrouille.pdf",
+   "qcm": {
+    "ok": "Qu'est-ce que je veux que ma patrouille retire de ce camp ?",
+    "no": [
+     "Combien de jeunes vont venir à ce camp ?",
+     "Quel lieu de camp est le moins cher ?",
+     "Qu'est-ce que la maîtrise attend de ma patrouille ?"
+    ]
+   }
+  },
+  {
+   "id": "t6-16",
+   "q": "Quelles sont les trois colonnes du timing détaillé d'un projet de camp ?",
+   "a": "**Quand ? Quoi ? Qui ?**",
+   "src": "Contenu dun projet de camp de patrouille.pdf",
+   "qcm": {
+    "ok": "Quand ? Quoi ? Qui ?",
+    "no": [
+     "Où ? Quoi ? Combien ?",
+     "Quand ? Comment ? Pourquoi ?",
+     "Qui ? Où ? Avec quoi ?"
+    ]
+   }
+  },
+  {
+   "id": "t6-17",
+   "q": "Que doit contenir un plan de marche ?",
+   "a": "Une **carte avec le trajet tracé**, la **distance**, la **dénivellation**, le **temps de marche** et la manière de gérer la marche (fréquence des pauses, répartition CP/sCP, qui mène).",
+   "src": "Contenu dun projet de camp de patrouille.pdf",
+   "qcm": {
+    "ok": "Carte du trajet, distance, dénivelé, temps et gestion de la marche",
+    "no": [
+     "Liste du matériel, menus et budget de la marche",
+     "Nom des marcheurs, numéros des parents, assurances",
+     "Horaires du car, prix du billet et lieu d'arrivée"
+    ]
+   }
+  },
+  {
+   "id": "t6-18",
+   "q": "Quelles questions de sécurité le projet de camp de patrouille doit-il traiter ?",
+   "a": "Que faire en cas d'**accident grave** ? Le lieu est-il accessible en voiture ou pour une **ambulance** ? Y a-t-il une voiture à proximité ? Coordonnées du **médecin** et de l'**hôpital** les plus proches. La **pharmacie de patrouille** est-elle complète ?",
+   "src": "Contenu dun projet de camp de patrouille.pdf",
+   "qcm": {
+    "ok": "Accès ambulance, médecin et hôpital proches, pharmacie complète",
+    "no": [
+     "Assurance du matériel, météo, horaires des repas",
+     "Clôture du terrain, gardiennage, éclairage nocturne",
+     "Liste des veillées, règlement intérieur, uniforme"
+    ]
+   }
+  },
+  {
+   "id": "t6-19",
+   "q": "Quels numéros de téléphone faut-il emporter au camp de patrouille ?",
+   "a": "Ceux du **CT, CTa, CBE, CB, CBa**, du **médecin le plus proche** et des **parents de chaque participant**.",
+   "src": "Contenu dun projet de camp de patrouille.pdf",
+   "qcm": {
+    "ok": "Chefs (CT, CTa, CB…), médecin le plus proche, parents",
+    "no": [
+     "Commissaire national, pompiers, mairie",
+     "Propriétaire, boutiquier, transporteur",
+     "Aumônier, chef de village, gendarmerie"
+    ]
+   }
+  },
+  {
+   "id": "t6-20",
+   "q": "Comment organiser la rubrique « Matériel » du projet de camp de patrouille ?",
+   "a": "Deux listes distinctes : la **commande matériel** donnée au CMAT **2 semaines à l'avance minimum** (prêté gratuitement par la brigade) et la liste du matériel **à acheter** en trois colonnes : Quoi, Combien, Prix.",
+   "src": "Contenu dun projet de camp de patrouille.pdf",
+   "qcm": {
+    "ok": "Commande au CMAT 2 semaines avant, et liste d'achats",
+    "no": [
+     "Commande au CMAT la veille, et liste de location",
+     "Une seule liste remise au CT le jour du départ",
+     "Liste remise aux parents 1 mois avant le camp"
+    ]
+   }
+  },
+  {
+   "id": "t6-21",
+   "q": "Quelles colonnes contient la liste de Q-Métrance (intendance) ?",
+   "a": "Quatre colonnes : les **ingrédients**, la **quantité**, le **prix à l'unité** et le **prix total**, établies à partir des menus prévus pour chaque repas.",
+   "src": "Contenu dun projet de camp de patrouille.pdf",
+   "qcm": {
+    "ok": "Ingrédients, quantité, prix unitaire, prix total",
+    "no": [
+     "Plat, jour, cuisinier, prix",
+     "Ingrédient, fournisseur, date d'achat",
+     "Repas, nombre de convives, reste en stock"
+    ]
+   }
+  },
+  {
+   "id": "t6-22",
+   "q": "Quand faut-il établir le budget prévisionnel du camp de patrouille ?",
+   "a": "**Avant d'envoyer la première lettre**, pour savoir quel sera le montant de la finance d'inscription. Il est **complété à la fin du camp avec les chiffres réels**.",
+   "src": "Contenu dun projet de camp de patrouille.pdf",
+   "qcm": {
+    "ok": "Avant la première lettre, pour fixer l'inscription",
+    "no": [
+     "Après le retour, avec les factures",
+     "Le premier jour du camp, avec l'intendant",
+     "Après le versement de toutes les inscriptions"
+    ]
+   }
+  },
+  {
+   "id": "t6-23",
+   "q": "Que doit contenir au minimum la rubrique « Correspondances » ?",
+   "a": "La **première lettre aux parents**, la **deuxième lettre aux gars** et l'**accord écrit du propriétaire** du lieu de camp.",
+   "src": "Contenu dun projet de camp de patrouille.pdf",
+   "qcm": {
+    "ok": "Lettre aux parents, lettre aux gars, accord écrit du propriétaire",
+    "no": [
+     "Lettre au Préfet, lettre au district, liste des campeurs",
+     "Autorisation de camper et déclaration de camp",
+     "Lettre au médecin et lettre à l'aumônier"
+    ]
+   }
+  },
+  {
+   "id": "t6-24",
+   "q": "Quel test permet de savoir si un projet de camp est bon ?",
+   "a": "Se demander : **« si je suis absent, la personne qui me remplace peut-elle mener ce camp à bien sans même devoir m'appeler ? »** Si oui, le projet est bon.",
+   "src": "Contenu dun projet de camp de patrouille.pdf",
+   "qcm": {
+    "ok": "Mon remplaçant peut-il mener le camp sans m'appeler ?",
+    "no": [
+     "La maîtrise l'a-t-elle signé sans correction ?",
+     "Le budget est-il équilibré sans subvention ?",
+     "Les jeunes l'ont-ils approuvé à l'unanimité ?"
+    ]
+   }
+  },
+  {
+   "id": "t6-25",
+   "q": "Comment définir une fiche technique de camp ?",
+   "a": "Un **document opérationnel synthétique** regroupant les informations pédagogiques, logistiques, organisationnelles et pratiques nécessaires au camp. Synthétique mais assez complète pour être mise en pratique : elle **se suffit à elle-même**.",
+   "src": "Rédaction d_une fiche technique de camp.pdf",
+   "qcm": {
+    "ok": "Un document opérationnel synthétique qui se suffit à lui-même",
+    "no": [
+     "Le rapport final rédigé après le retour du camp",
+     "La lettre de demande d'autorisation au district",
+     "Le formulaire d'inscription rempli par les parents"
+    ]
+   }
+  },
+  {
+   "id": "t6-26",
+   "q": "Que contient la rubrique « Identification du camp » d'une fiche technique ?",
+   "a": "**Nom du camp, troupe/patrouille, dates, lieu**. C'est la « **carte d'identité** » du document.",
+   "src": "Rédaction d_une fiche technique de camp.pdf",
+   "qcm": {
+    "ok": "Nom du camp, troupe ou patrouille, dates, lieu",
+    "no": [
+     "Thème, objectifs, résultats attendus",
+     "Staff, rythme journalier, grille des menus",
+     "Tarif, conditions, matériel à prévoir"
+    ]
+   }
+  },
+  {
+   "id": "t6-27",
+   "q": "Quelles rubriques de la fiche technique sont signalées comme facultatives ?",
+   "a": "Le **contexte et justification** et les **moyens** (humains, matériels, financiers), ainsi que les **annexes** dans l'exemple.",
+   "src": "Rédaction d_une fiche technique de camp.pdf",
+   "qcm": {
+    "ok": "Contexte et justification, et moyens",
+    "no": [
+     "Objectifs et résultats attendus",
+     "Staff et programme des activités",
+     "Budget prévisionnel et grille des menus"
+    ]
+   }
+  },
+  {
+   "id": "t6-28",
+   "q": "Combien d'objectifs spécifiques une fiche technique de camp doit-elle compter ?",
+   "a": "Un objectif général et **3 à 5 objectifs spécifiques au maximum**. Ils doivent être clairs, mesurables et réalistes, et commencer par un **verbe d'action à l'infinitif**.",
+   "src": "Rédaction d_une fiche technique de camp.pdf",
+   "qcm": {
+    "ok": "3 à 5 au maximum",
+    "no": [
+     "1 à 2 au maximum",
+     "6 à 8 au maximum",
+     "Autant que d'activités prévues"
+    ]
+   }
+  },
+  {
+   "id": "t6-29",
+   "q": "Que signifie l'acronyme SMART utilisé pour formuler les objectifs ?",
+   "a": "**Spécifiques, Mesurables, Atteignables, Réalistes et Temporels**.",
+   "src": "Rédaction d_une fiche technique de camp.pdf",
+   "qcm": {
+    "ok": "Spécifiques, Mesurables, Atteignables, Réalistes, Temporels",
+    "no": [
+     "Simples, Motivants, Ambitieux, Rapides, Testés",
+     "Scouts, Méthodiques, Actifs, Responsables, Techniques",
+     "Spécifiques, Modestes, Adaptés, Rigoureux, Tenables"
+    ]
+   }
+  },
+  {
+   "id": "t6-30",
+   "q": "Comment formuler les résultats attendus d'un camp ?",
+   "a": "Par des phrases **au présent ou au passé** décrivant un **changement concret**. Ils servent de référence pour évaluer le succès en **comparant la situation finale à la situation initiale**.",
+   "src": "Rédaction d_une fiche technique de camp.pdf",
+   "qcm": {
+    "ok": "Au présent ou au passé, en décrivant un changement concret",
+    "no": [
+     "Au futur, en décrivant les activités prévues",
+     "À l'infinitif, en commençant par un verbe d'action",
+     "Au conditionnel, en listant les risques possibles"
+    ]
+   }
+  },
+  {
+   "id": "t6-31",
+   "q": "Quels rôles du staff la fiche technique cite-t-elle ?",
+   "a": "**Chef de camp, intendant, secouriste, secrétaire, trésorier, matérialiste, liturgiste**… Le staff clarifie **« qui fait quoi »** pour éviter les confusions.",
+   "src": "Rédaction d_une fiche technique de camp.pdf",
+   "qcm": {
+    "ok": "Chef de camp, intendant, secouriste, trésorier, matérialiste…",
+    "no": [
+     "CP, SP, cuistot, boute-en-train, infirmier…",
+     "Commissaire, aumônier, parrain, chauffeur…",
+     "Chef de groupe, CT, CTa, CBE, CB…"
+    ]
+   }
+  },
+  {
+   "id": "t6-32",
+   "q": "Que comprend le programme des activités d'une fiche technique ?",
+   "a": "Le **rythme journalier** et le **chronogramme des activités** (description des activités principales). C'est le **cœur opérationnel du camp**.",
+   "src": "Rédaction d_une fiche technique de camp.pdf",
+   "qcm": {
+    "ok": "Le rythme journalier et le chronogramme des activités",
+    "no": [
+     "La grille des menus et la liste des courses",
+     "Les objectifs et les résultats attendus",
+     "Le staff et les conditions de participation"
+    ]
+   }
+  },
+  {
+   "id": "t6-33",
+   "q": "À quoi sert la grille des menus ?",
+   "a": "Organisée en tableau, elle sert à **équilibrer l'alimentation**, **faciliter la gestion des stocks** et **assurer la diversité** des mets.",
+   "src": "Rédaction d_une fiche technique de camp.pdf",
+   "qcm": {
+    "ok": "Équilibrer l'alimentation, gérer les stocks, varier les mets",
+    "no": [
+     "Fixer le montant de la participation des jeunes",
+     "Désigner le cuistot de chaque patrouille",
+     "Justifier les dépenses auprès du district"
+    ]
+   }
+  },
+  {
+   "id": "t6-34",
+   "q": "Dans l'exemple de fiche technique (patrouille Antilope), quelle est la participation demandée ?",
+   "a": "**3 500 FCFA** par jeune, pour une cible de **8 jeunes** de la patrouille Antilope XXIIIème Dakar, camp du 8 au 11 avril 2026.",
+   "src": "Rédaction d_une fiche technique de camp.pdf",
+   "note": "Dans le budget de cet exemple, les dépenses listées totalisent 65 000 FCFA mais le total affiché est 63 500 et le solde indiqué (3 000) ne correspond pas au calcul 68 000 – 63 500.",
+   "qcm": {
+    "ok": "3 500 FCFA",
+    "no": [
+     "5 000 FCFA",
+     "2 500 FCFA",
+     "8 000 FCFA"
+    ]
+   }
+  },
+  {
+   "id": "t6-35",
+   "q": "Quelles conditions de participation figurent dans l'exemple de fiche technique ?",
+   "a": "**Être assuré**, avoir versé sa **cotisation mensuelle** de patrouille, venir avec son **matériel de camp au complet** et son **uniforme scout impeccable**.",
+   "src": "Rédaction d_une fiche technique de camp.pdf",
+   "qcm": {
+    "ok": "Être assuré, cotisation versée, matériel complet, uniforme impeccable",
+    "no": [
+     "Avoir 12 ans, un certificat médical et un badge",
+     "Être CP, avoir fait sa Promesse et un hike",
+     "Avoir l'accord du district et payer 10 000 FCFA"
+    ]
+   }
+  },
+  {
+   "id": "t6-36",
+   "q": "Quelle marge le Cahier CEP Vert recommande-t-il d'ajouter aux prévisions budgétaires du camp ?",
+   "a": "Ajouter **10 % « au cas où »**, après avoir tenu compte de l'expérience des camps antérieurs, du coût de la vie et des prix de la région.",
+   "src": "Cahier CEP Vert.pdf",
+   "qcm": {
+    "ok": "10 %",
+    "no": [
+     "5 %",
+     "20 %",
+     "25 %"
+    ]
+   }
+  },
+  {
+   "id": "t6-37",
+   "q": "Comment gérer l'argent au camp selon le Cahier CEP Vert ?",
+   "a": "**Un seul chef** (de préférence) tient la comptabilité, obtient un **reçu pour chaque achat**, ne mélange pas l'argent de l'unité avec le sien, et fait le point **tous les jours** si possible.",
+   "src": "Cahier CEP Vert.pdf",
+   "qcm": {
+    "ok": "Un seul responsable, un reçu par achat, caisse vérifiée chaque jour",
+    "no": [
+     "Chaque patrouille gère sa caisse sans justificatif",
+     "Le chef de camp paie de sa poche puis se rembourse",
+     "Les comptes sont faits une seule fois au retour"
+    ]
+   }
+  },
+  {
+   "id": "t6-38",
+   "q": "Quelles assurances couvrent déjà les membres des Scouts du Sénégal ?",
+   "a": "L'**assurance responsabilité civile** et l'**assurance accident**.",
+   "src": "Cahier CEP Vert.pdf",
+   "qcm": {
+    "ok": "Responsabilité civile et assurance accident",
+    "no": [
+     "Assurance maladie et assurance voyage",
+     "Assurance matériel et assurance incendie",
+     "Assurance rapatriement et assurance vol"
+    ]
+   }
+  },
+  {
+   "id": "t6-39",
+   "q": "Sur quoi repose la prévention au camp selon le Cahier CEP Vert ?",
+   "a": "Connaître chaque jeune (santé, capacités) grâce à la **fiche de renseignement individuelle**, savoir en tout temps où il se trouve, surveiller plus étroitement **sur l'eau, sur la route, en forêt, par mauvais temps**, vérifier l'équipement et les vêtements.",
+   "src": "Cahier CEP Vert.pdf",
+   "qcm": {
+    "ok": "Fiche de renseignement individuelle et savoir où sont les jeunes",
+    "no": [
+     "Garder tous les jeunes sous les yeux en permanence",
+     "Interdire les activités en dehors du terrain de camp",
+     "Confier toute la sécurité au secouriste du camp"
+    ]
+   }
+  },
+  {
+   "id": "t6-40",
+   "q": "Quelles formalités le programme de camp doit-il mentionner selon le Cahier CEP Vert ?",
+   "a": "**Assurances, autorisation des parents, permis de camp, fiche de santé**.",
+   "src": "Cahier CEP Vert.pdf",
+   "qcm": {
+    "ok": "Assurances, autorisation des parents, permis de camp, fiche de santé",
+    "no": [
+     "Passeport, vaccins, carte scoute, photo",
+     "Lettre au Préfet, devis, facture, reçu",
+     "Badge de bois, carnet de chants, brevet"
+    ]
+   }
+  },
+  {
+   "id": "t6-41",
+   "q": "Quels sont les objectifs du dossier de camp selon les Procédures administratives ?",
+   "a": "Informer le **District, la Région et la Nation** du projet, ce qui permet au camp d'être **couvert par l'assurance** et fournit les données pour une **intervention d'urgence** ; montrer l'engagement de la maîtrise et la conformité à la pédagogie des SDS ; préparer à l'avance pour être disponible pour les enfants.",
+   "src": "Procédures administratives Camps Scouts.ppt",
+   "qcm": {
+    "ok": "Informer District, Région et Nation pour l'assurance et l'urgence",
+    "no": [
+     "Obtenir une subvention de l'État pour le camp",
+     "Informer uniquement les parents des dates du camp",
+     "Faire valider le thème par l'aumônier national"
+    ]
+   }
+  },
+  {
+   "id": "t6-42",
+   "q": "Quels documents composent le dossier destiné aux autorités scoutes ?",
+   "a": "La **fiche de déclaration de camp**, le **programme du camp**, la **liste des campeurs**, l'**autorisation de camper** et la **fiche d'évaluation du camp**.",
+   "src": "Procédures administratives Camps Scouts.ppt",
+   "qcm": {
+    "ok": "Déclaration, programme, liste des campeurs, autorisation, évaluation",
+    "no": [
+     "Lettre au Préfet, lettre au propriétaire, autorisation parentale",
+     "Budget, grille des menus, inventaire du matériel",
+     "Fiche de santé, carte scoute, certificat médical"
+    ]
+   }
+  },
+  {
+   "id": "t6-43",
+   "q": "Quels documents sont destinés aux autorités administratives et aux parents ?",
+   "a": "Une **lettre au Préfet / Gouverneur**, une **lettre au propriétaire des lieux ou à la Direction des Eaux et Forêts**, et la **lettre d'autorisation de camper des parents**.",
+   "src": "Procédures administratives Camps Scouts.ppt",
+   "qcm": {
+    "ok": "Lettre au Préfet, lettre au propriétaire ou aux Eaux et Forêts, accord parental",
+    "no": [
+     "Fiche de déclaration, programme, liste des campeurs",
+     "Lettre au commissaire national et au chef de groupe",
+     "Fiche d'évaluation, rapport final et bilan financier"
+    ]
+   }
+  },
+  {
+   "id": "t6-44",
+   "q": "À qui les dossiers de camp doivent-ils être adressés selon la Déclaration de camp ?",
+   "a": "Au **Commissaire Régional**, qui assure la liaison avec les autorités administratives. Il a qualité pour **autoriser, refuser ou arrêter** un camp et se porte garant de la qualification des chefs.",
+   "src": "declaration de camp.doc",
+   "note": "Organisation d'un camp de patrouille parle d'une demande « à la maîtrise » et le Cahier CEP Vert d'une demande « au district ».",
+   "qcm": {
+    "ok": "Au Commissaire Régional",
+    "no": [
+     "Au Commissaire National",
+     "Au chef de groupe",
+     "Au Préfet du département"
+    ]
+   }
+  },
+  {
+   "id": "t6-45",
+   "q": "Quel délai faut-il prévoir entre la remise du dossier de camp et le début du camp ?",
+   "a": "**Un mois**. Pour les camps de **plus de 10 jours**, un délai de **deux mois** est requis.",
+   "src": "declaration de camp.doc",
+   "qcm": {
+    "ok": "1 mois, et 2 mois pour un camp de plus de 10 jours",
+    "no": [
+     "2 semaines, et 1 mois pour un camp de plus de 10 jours",
+     "1 mois, et 3 mois pour un camp de plus de 15 jours",
+     "2 mois, et 3 mois pour un camp de plus de 10 jours"
+    ]
+   }
+  },
+  {
+   "id": "t6-46",
+   "q": "Quand un chef est-il « qualifié » pour diriger un camp selon la Déclaration de camp ?",
+   "a": "Il possède un **badge de bois depuis au moins un an**, a **21 ans minimum** et a **animé au moins un an** dans un groupe après son badge de bois. Les SDS le désignent comme **chef confirmé**.",
+   "src": "declaration de camp.doc",
+   "note": "Le même document définit plus bas le chef confirmé comme « une personne qui a un badge de bois », sans les autres conditions.",
+   "qcm": {
+    "ok": "Badge de bois depuis 1 an, 21 ans, 1 an d'animation après",
+    "no": [
+     "Badge de bois depuis 2 ans, 25 ans, 2 ans d'animation",
+     "CEP depuis 1 an, 18 ans, 1 an d'animation",
+     "CNB depuis 1 an, 21 ans, 6 mois d'animation"
+    ]
+   }
+  },
+  {
+   "id": "t6-47",
+   "q": "Quels types de camp la fiche de déclaration propose-t-elle de cocher ?",
+   "a": "**Infrastructures résidentielles**, **sous tente** ou **itinérant**.",
+   "src": "declaration de camp.doc",
+   "note": "Organisation d'un camp de patrouille et le Cahier CEP Vert ne distinguent que deux types : fixes et volants.",
+   "qcm": {
+    "ok": "Infrastructures résidentielles, sous tente, itinérant",
+    "no": [
+     "Camp fixe, camp volant, camp chantier de service",
+     "Camp de patrouille, camp de troupe, camp de groupe",
+     "Camp de formation, camp de vacances, camp de service"
+    ]
+   }
+  },
+  {
+   "id": "t6-48",
+   "q": "Que certifie le chef de groupe sur l'autorisation de camper ?",
+   "a": "Que les responsables ont reçu la **formation nécessaire** à l'encadrement d'un camp, que les jeunes sont **régulièrement adhérents** des Scouts du Sénégal, et qu'**aucun jeune non-adhérent** ne participe. Le document est ensuite signé par les **commissaires de district et de région**.",
+   "src": "declaration de camp.doc",
+   "qcm": {
+    "ok": "Chefs formés, jeunes adhérents, aucun non-adhérent",
+    "no": [
+     "Budget équilibré, lieu réservé, transport payé",
+     "Parents d'accord, assurance payée, menus validés",
+     "Programme approuvé, matériel vérifié, médecin prévenu"
+    ]
+   }
+  },
+  {
+   "id": "t6-49",
+   "q": "Dans quel ordre se déroule le cursus de formation des responsables aux Scouts du Sénégal ?",
+   "a": "Du **Camp d'Initiation (CI)** au **Camp Badge de Bois (CBB)**, en passant par le **CEP** puis le **CNB**. À la fin, le stagiaire réalise un **projet à dimension communautaire ou régionale**, évalué et soutenu par un rapport.",
+   "src": "RAPPOR_1.PDF",
+   "qcm": {
+    "ok": "CI, puis CEP, puis CNB, puis CBB",
+    "no": [
+     "CEP, puis CI, puis CBB, puis CNB",
+     "CI, puis CNB, puis CEP, puis CBB",
+     "CNB, puis CI, puis CEP, puis CBB"
+    ]
+   }
+  },
+  {
+   "id": "t6-50",
+   "q": "Quelles grandes parties compte la Fiche d'évaluation camp ?",
+   "a": "**Description du projet**, **renseignements utiles** (pays, région, adresses), **déplacements**, **facilités** sur place (approvisionnement, détente), **réalisations** avec leur coût, et **qui a rempli** le questionnaire.",
+   "src": "Fiche évaluation camp.doc",
+   "qcm": {
+    "ok": "Description, renseignements, déplacements, facilités, réalisations",
+    "no": [
+     "Objectifs, staff, menus, budget, signatures",
+     "Thème, cible, conditions, matériel, programme",
+     "Déclaration, liste, autorisation, lettres, rapport"
+    ]
+   }
+  },
+  {
+   "id": "t6-51",
+   "q": "Quelles rubriques détaillent le coût de l'entreprise dans la Fiche d'évaluation camp ?",
+   "a": "**Réalisations**, **intendance**, **transport** et **autres frais**.",
+   "src": "Fiche évaluation camp.doc",
+   "qcm": {
+    "ok": "Réalisations, intendance, transport, autres frais",
+    "no": [
+     "Matériel, pharmacie, assurances, imprévus",
+     "Inscriptions, subventions, dons, ventes",
+     "Location, carburant, communication, cadeaux"
+    ]
+   }
+  },
+  {
+   "id": "t6-52",
+   "q": "Où et quand s'est déroulé le camp Badge de Bois de la IIIème Dakar ?",
+   "a": "**Du 29 juillet au 1er août 2022**, à **Ngazobil et Rof** (Petite Côte).",
+   "src": "Dossier de camp Badge de bois IIIème Dakar.pdf, RAPPOR_1.PDF",
+   "note": "Le chronogramme date par erreur le lundi 1er août de 2021.",
+   "qcm": {
+    "ok": "Du 29 juillet au 1er août 2022, à Ngazobil et Rof",
+    "no": [
+     "Du 8 au 11 avril 2022, à Ngazobil et Joal",
+     "Du 29 juillet au 1er août 2021, à Mbodiène et Rof",
+     "Du 11 au 13 juillet 2022, à Sébikotane"
+    ]
+   }
+  },
+  {
+   "id": "t6-53",
+   "q": "À qui la IIIème Dakar a-t-elle adressé ses demandes d'autorisation pour le camp Badge de Bois ?",
+   "a": "Au **commissaire régional de Dakar**, au **commissaire du District Grand Dakar I** et au **directeur du petit séminaire de Ngazobil** (autorisation de camper sur place). Les lettres sont signées par le chef de groupe.",
+   "src": "Dossier de camp Badge de bois IIIème Dakar.pdf",
+   "note": "Le directeur du séminaire est nommé « abbé Etienne DIOUF » dans la lettre et « Abbé Etienne SENE » dans le rapport final.",
+   "qcm": {
+    "ok": "Commissaire régional, commissaire de district, directeur du séminaire",
+    "no": [
+     "Préfet, gouverneur et maire de Joal",
+     "Commissaire national, aumônier et chef de village",
+     "Eaux et Forêts, parents et curé de la paroisse"
+    ]
+   }
+  },
+  {
+   "id": "t6-54",
+   "q": "Quel est l'objectif général du projet Badge de Bois de la IIIème Dakar ?",
+   "a": "**« Améliorer le cadre de vie naturel »**, avec des objectifs comme ralentir l'avancée de la mer, diminuer la pollution maritime et conscientiser les populations.",
+   "src": "Dossier de camp Badge de bois IIIème Dakar.pdf, PROJET_1.PDF",
+   "qcm": {
+    "ok": "Améliorer le cadre de vie naturel",
+    "no": [
+     "Renforcer l'esprit d'équipe de la troupe",
+     "Protéger les tortues marines de Ngazobil",
+     "Former les louveteaux au secourisme"
+    ]
+   }
+  },
+  {
+   "id": "t6-55",
+   "q": "Quelles modalités de participation le dossier Badge de Bois fixe-t-il ?",
+   "a": "Être **scout et assuré**, en uniforme impeccable avec son matériel, avoir une **autorisation parentale signée pour la branche jaune**, verser **5 000 FCFA** et apporter son **repas froid**.",
+   "src": "Dossier de camp Badge de bois IIIème Dakar.pdf",
+   "qcm": {
+    "ok": "Assurance, uniforme, accord parental (jaunes), 5 000 FCFA, repas froid",
+    "no": [
+     "Assurance, uniforme, accord parental (tous), 3 500 FCFA, tente",
+     "Carte scoute, badge, certificat médical, 10 000 FCFA",
+     "Uniforme, cotisation mensuelle, matériel, 2 500 FCFA"
+    ]
+   }
+  },
+  {
+   "id": "t6-56",
+   "q": "Quel a été le budget réellement exécuté du projet Badge de Bois, et comment a-t-il été financé ?",
+   "a": "**1 040 000 FCFA** : **600 000** d'aides et subventions et **440 000** de cotisations, les pépinières d'arbres ayant été **offertes**. Le budget prévisionnel annonçait 7 110 000 FCFA.",
+   "src": "RAPPOR_1.PDF, PROJET_1.PDF",
+   "qcm": {
+    "ok": "1 040 000 FCFA (aides 600 000, cotisations 440 000)",
+    "no": [
+     "7 110 000 FCFA (subventions 5 630 000, cotisations)",
+     "1 040 000 FCFA (cotisations 600 000, aides 440 000)",
+     "600 000 FCFA (aides 300 000, cotisations 300 000)"
+    ]
+   }
+  },
+  {
+   "id": "t6-57",
+   "q": "Quelles difficultés le rapport du Badge de Bois signale-t-il ?",
+   "a": "Un souci d'**acheminement des plantes**, les **intempéries** (fortes pluies **2 jours sur 3**), un **retard sur le programme** (fatigue et pluie) et un **manque de couverture médiatique**.",
+   "src": "RAPPOR_1.PDF",
+   "qcm": {
+    "ok": "Acheminement des plantes, pluie, retard, pas de médias",
+    "no": [
+     "Refus du propriétaire, vol de matériel, blessures",
+     "Manque d'eau, chaleur, conflits avec les villageois",
+     "Budget dépassé, annulation du transport, maladie"
+    ]
+   }
+  },
+  {
+   "id": "t6-58",
+   "q": "Quelle condition permet d'obtenir le badge « Messager de la paix » selon le rapport Badge de Bois ?",
+   "a": "Une moyenne de **10 heures de service communautaire**. À l'issue du camp, **24 louveteaux, 21 éclaireurs, 2 routiers et 8 responsables** ont dépassé 10 heures sur 3 jours de travaux.",
+   "src": "RAPPOR_1.PDF",
+   "qcm": {
+    "ok": "Au moins 10 heures de service communautaire",
+    "no": [
+     "Au moins 5 heures de service communautaire",
+     "Au moins 20 heures de service communautaire",
+     "La plantation d'au moins 10 arbres"
+    ]
+   }
+  },
+  {
+   "id": "t6-59",
+   "q": "Où le devoir de projet Badge de Bois doit-il être déposé selon le canevas ?",
+   "a": "Auprès du **Commissaire Régional aux Ressources**, avec **copie au Commissaire National aux Ressources adultes**, et enregistré au courrier de la Permanence nationale. La **version manuscrite est acceptée**.",
+   "src": "CANEVAS-PROJET-BADGE-DE-BOIS-ORIGINAL (2).doc",
+   "qcm": {
+    "ok": "Au Commissaire Régional aux Ressources, copie au national",
+    "no": [
+     "Au chef de groupe, copie au district",
+     "Au Commissaire National Programme des Jeunes",
+     "Au directeur de stage, sans copie"
+    ]
+   }
+  },
+  {
+   "id": "t6-60",
+   "q": "Quelles sont les caractéristiques d'un bon projet de service communautaire selon le CEP branche verte ?",
+   "a": "Motivation des participants, pas d'obstacle financier ou social sérieux, étapes réalisables, jeunes **impliqués du début à la fin**, rôle de chacun **clairement défini**, réponse à un **réel besoin**, échanges avec la communauté, possibilité de **poursuite**.",
+   "src": "CAHIER CEP BRANCHE VERTE.pdf",
+   "qcm": {
+    "ok": "Jeunes impliqués de bout en bout, réel besoin, rôles clairs",
+    "no": [
+     "Projet décidé par les adultes puis confié aux jeunes",
+     "Projet spectaculaire, même sans suite après le camp",
+     "Projet coûteux pour marquer la communauté"
+    ]
+   }
+  }
+ ]
+}

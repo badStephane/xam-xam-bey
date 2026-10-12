@@ -1,0 +1,850 @@
+{
+ "theme": 11,
+ "cards": [
+  {
+   "id": "t11-01",
+   "q": "Qui est le saint patron des éclaireurs, et à quelle date le fête-t-on ?",
+   "a": "**Saint Georges**, fêté le **23 avril**.",
+   "src": "Connaissance du mvt rallye dak23.pdf",
+   "qcm": {
+    "ok": "Saint Georges, le 23 avril",
+    "no": [
+     "Saint Paul, le 29 juin",
+     "Saint François, le 4 octobre",
+     "Saint Georges, le 22 février"
+    ]
+   }
+  },
+  {
+   "id": "t11-02",
+   "q": "Que rappellent les années 1907, 1908 et 1909 dans l'histoire du scoutisme ?",
+   "a": "**1907** : 1er camp scout à l'île de Brownsea. **1908** : publication de *Scouting for Boys*. **1909** : 1er rallye à Crystal Palace.",
+   "src": "Connaissance du mvt rallye dak23.pdf",
+   "qcm": {
+    "ok": "Brownsea, Scouting for Boys, rallye de Crystal Palace",
+    "no": [
+     "Scouting for Boys, Brownsea, rallye de Crystal Palace",
+     "Brownsea, louvetisme, Scouting for Boys",
+     "Rallye de Crystal Palace, Brownsea, création de la route"
+    ]
+   }
+  },
+  {
+   "id": "t11-03",
+   "q": "Que rappellent les années 1914, 1916, 1918 et 1922 ?",
+   "a": "**1914** : création du louvetisme. **1916** : publication du *Livre du louveteau*. **1918** : création de la route. **1922** : publication de *La route du succès*.",
+   "src": "Connaissance du mvt rallye dak23.pdf",
+   "qcm": {
+    "ok": "Louvetisme, Livre du louveteau, route, La route du succès",
+    "no": [
+     "Route, Livre du louveteau, louvetisme, La route du succès",
+     "Louvetisme, La route du succès, route, Livre du louveteau",
+     "Livre du louveteau, louvetisme, La route du succès, route"
+    ]
+   }
+  },
+  {
+   "id": "t11-04",
+   "q": "Quelle est la plus haute distinction du scoutisme, et qui est le premier Sénégalais à l'avoir reçue ?",
+   "a": "Le **Loup de bronze** ; le premier Sénégalais à l'avoir reçu est **Albert Ndiaye**.",
+   "src": "Connaissance du mvt rallye dak23.pdf",
+   "qcm": {
+    "ok": "Le Loup de bronze, reçu par Albert Ndiaye",
+    "no": [
+     "Le Loup d'argent, reçu par Albert Ndiaye",
+     "Le Loup de bronze, reçu par Léonard Pierre Sambou",
+     "La Croix de Saint Georges, reçue par Albert Ndiaye"
+    ]
+   }
+  },
+  {
+   "id": "t11-05",
+   "q": "Qui a inventé le morse, et en quelle année ?",
+   "a": "**Samuel Finlay Breese Morse**, en **1832**.",
+   "src": "Connaissance du mvt rallye dak23.pdf",
+   "qcm": {
+    "ok": "Samuel Morse, en 1832",
+    "no": [
+     "Samuel Morse, en 1907",
+     "Robert Stephenson, en 1832",
+     "Samuel Morse, en 1857"
+    ]
+   }
+  },
+  {
+   "id": "t11-06",
+   "q": "Quelles sont les parties du carnet de preuves ?",
+   "a": "Le carnet de preuves est le manuel-guide de l'éclaireur qui lui permet de progresser. Il a **4 parties** : **volontaire, engagé, technicien et animateur**.",
+   "src": "Connaissance du mvt rallye dak23.pdf, Questions Réponses Rallye 2017.pdf",
+   "note": "Le corrigé 2017 annonce aussi 4 parties mais n'en cite que trois (Engagé, Techniciens, Animateurs) ; le corrigé DAK23 ajoute la partie volontaire.",
+   "qcm": {
+    "ok": "Volontaire, engagé, technicien, animateur",
+    "no": [
+     "Aspirant, engagé, technicien, animateur",
+     "Volontaire, novice, technicien, animateur",
+     "Volontaire, engagé, animateur, routier"
+    ]
+   }
+  },
+  {
+   "id": "t11-07",
+   "q": "Selon le corrigé du Rallye DAK23, qui étaient le commissaire national à la branche verte, le commissaire de région et le Général ?",
+   "a": "CNBV : **Maurice Prospère Diatta** ; commissaire de région : **Rémi Niakh** ; Général : **Antoine Ghislain Kaly** (réponses valables en 2023).",
+   "src": "Connaissance du mvt rallye dak23.pdf",
+   "note": "Ces noms changent avec les mandats : en 2017, le corrigé donnait Serge Daniel Badji (Général) et Dimitri Coly (CNBV). Vérifier les titulaires actuels.",
+   "qcm": {
+    "ok": "Maurice P. Diatta, Rémi Niakh, Antoine G. Kaly",
+    "no": [
+     "Dimitri Coly, Michel A. Ndour, Serge D. Badji",
+     "Maurice P. Diatta, Patrice Ndour, Serge D. Badji",
+     "Rémi Niakh, Maurice P. Diatta, Joseph F. Preira"
+    ]
+   }
+  },
+  {
+   "id": "t11-08",
+   "q": "Combien de districts compte la région scoute de Dakar, et lesquels ?",
+   "a": "**5 districts** : **Plateau, Grand Dakar I, Grand Dakar II, Niayes, Magola**.",
+   "src": "Questions Réponses Rallye 2017.pdf, Questions Réponses Rallye 2022.pdf",
+   "qcm": {
+    "ok": "5 : Plateau, Grand Dakar I et II, Niayes, Magola",
+    "no": [
+     "4 : Plateau, Grand Dakar, Niayes, Magola",
+     "6 : Plateau, Grand Dakar I et II, Niayes, Magola, Pikine",
+     "5 : Plateau, Grand Dakar, Niayes, Magola, Rufisque"
+    ]
+   }
+  },
+  {
+   "id": "t11-09",
+   "q": "Combien de régions scoutes le corrigé 2017 compte-t-il au Sénégal ?",
+   "a": "**6 régions** : **Dakar, Fleuve, Petite Côte, Ziguinchor, Thiès, Kaolack**.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "6 : Dakar, Fleuve, Petite Côte, Ziguinchor, Thiès, Kaolack",
+    "no": [
+     "14, une par région administrative",
+     "5 : Dakar, Fleuve, Ziguinchor, Thiès, Kaolack",
+     "6 : Dakar, Fleuve, Petite Côte, Ziguinchor, Thiès, Louga"
+    ]
+   }
+  },
+  {
+   "id": "t11-10",
+   "q": "Combien de pays sont membres de l'OMMS selon le corrigé 2022, et quand célèbre-t-on le scoutisme africain ?",
+   "a": "**172 pays** ; le scoutisme africain est célébré le **13 mars**.",
+   "src": "Questions Réponses Rallye 2022.pdf",
+   "qcm": {
+    "ok": "172 pays ; le 13 mars",
+    "no": [
+     "193 pays ; le 13 mars",
+     "172 pays ; le 22 février",
+     "150 pays ; le 23 avril"
+    ]
+   }
+  },
+  {
+   "id": "t11-11",
+   "q": "Combien d'éléments compte la méthode scoute depuis la 41e Conférence mondiale (2017, Azerbaïdjan) ?",
+   "a": "**8 éléments** : la loi et la promesse, la progression personnelle, l'éducation par l'action, la relation adultes-jeunes, le cadre symbolique, le contact avec la nature, la vie en petit groupe (système des équipes), l'engagement communautaire (impact social).",
+   "src": "Questions Réponses Rallye 2022.pdf",
+   "qcm": {
+    "ok": "8 éléments",
+    "no": [
+     "7 éléments",
+     "5 éléments",
+     "10 éléments"
+    ]
+   }
+  },
+  {
+   "id": "t11-12",
+   "q": "Quel nouvel élément de la méthode scoute, ajouté en 2017, est aussi appelé « impact social » ?",
+   "a": "L'**engagement communautaire** (ou impact social).",
+   "src": "Questions Réponses Rallye 2022.pdf",
+   "qcm": {
+    "ok": "L'engagement communautaire",
+    "no": [
+     "La relation adultes-jeunes",
+     "Le cadre symbolique",
+     "L'éducation par l'action"
+    ]
+   }
+  },
+  {
+   "id": "t11-13",
+   "q": "Quels sont les principes fondamentaux du scoutisme ?",
+   "a": "**Devoir envers Dieu**, **devoir envers autrui**, **devoir envers soi-même**.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Devoir envers Dieu, envers autrui, envers soi-même",
+    "no": [
+     "Devoir envers Dieu, envers la patrie, envers la nature",
+     "Devoir envers soi-même, envers la patrouille, envers le chef",
+     "Devoir envers la famille, envers autrui, envers la patrie"
+    ]
+   }
+  },
+  {
+   "id": "t11-14",
+   "q": "Quelle est l'origine de la devise « Toujours prêt » et son double sens ?",
+   "a": "Elle vient de l'anglais **Be Prepared**. Double sens : **prêt pour ce qui est de l'esprit**, **prêt pour ce qui est du corps**.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Be Prepared ; prêt d'esprit et prêt de corps",
+    "no": [
+     "Do your best ; prêt d'esprit et prêt de corps",
+     "Be Prepared ; prêt à servir et prêt à obéir",
+     "Look wide ; prêt de cœur et prêt de corps"
+    ]
+   }
+  },
+  {
+   "id": "t11-15",
+   "q": "Comment se déroule le cérémonial de la montée des couleurs (corrigé 2017) ?",
+   "a": "« **Attention pour les couleurs** » puis « **Paré pour les couleurs** » ; « **Envoyez – Scouts saluez** » suivi de coups de sifflet saccadés ; **hymne national** ; « **Pour le Sénégal** » – « **Que Dieu nous garde** ».",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Attention, Paré, Envoyez-saluez, hymne, Pour le Sénégal",
+    "no": [
+     "Paré, Attention, hymne, Envoyez-saluez, Pour le Sénégal",
+     "Attention, Envoyez-saluez, prière, Paré, Toujours prêt",
+     "Rassemblement, hymne, Paré, Envoyez-saluez, Toujours prêt"
+    ]
+   }
+  },
+  {
+   "id": "t11-16",
+   "q": "Selon une annale de 2018, que célèbre-t-on à la Pensée scoute, et en quelle année le scoutisme est-il créé ?",
+   "a": "La Pensée scoute célèbre la **naissance de B-P** (né le **22 février 1857**). Le scoutisme est créé en **1907** ; en 2018 il avait **111 ans** dans le monde et **90 ans** au Sénégal.",
+   "src": "Questions-Reponses Rallye National Branche Verte Kaolack 2018.pdf",
+   "qcm": {
+    "ok": "La naissance de B-P ; scoutisme créé en 1907",
+    "no": [
+     "La mort de B-P ; scoutisme créé en 1907",
+     "La naissance de B-P ; scoutisme créé en 1908",
+     "Le camp de Brownsea ; scoutisme créé en 1909"
+    ]
+   }
+  },
+  {
+   "id": "t11-17",
+   "q": "Qu'est-ce que la Cour d'honneur, et quel est son rôle ?",
+   "a": "C'est l'**organe directeur de la troupe**, qui en assure la viabilité et le succès. Elle prend les décisions qui orientent la troupe : **objectifs de l'année, admission à la promesse, sanction des progressions**. C'est elle que le chef de troupe convoque pour finaliser le programme annuel.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "L'organe directeur de la troupe",
+    "no": [
+     "La réunion des seuls chefs de la maîtrise",
+     "Le conseil des parents de la troupe",
+     "La réunion hebdomadaire de patrouille"
+    ]
+   }
+  },
+  {
+   "id": "t11-18",
+   "q": "Qu'est-ce que le fanion et quelles sont ses dimensions ?",
+   "a": "L'**emblème de la patrouille** : il est pour la patrouille ce que l'étendard est pour la troupe. Dimensions : **longueur 40 cm, hauteur 25 cm, tresse 2 cm**, hampe 140.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "note": "Le corrigé donne « Hampe : 140 » sans unité.",
+   "qcm": {
+    "ok": "Emblème de la pat ; 40 cm sur 25 cm",
+    "no": [
+     "Emblème de la troupe ; 40 cm sur 25 cm",
+     "Emblème de la pat ; 60 cm sur 40 cm",
+     "Emblème de la pat ; 25 cm sur 15 cm"
+    ]
+   }
+  },
+  {
+   "id": "t11-19",
+   "q": "Citez quatre symboles de la branche verte (corrigé 2017).",
+   "a": "**Étendard, rassemblement, fanion, manoir**.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Étendard, rassemblement, fanion, manoir",
+    "no": [
+     "Totem, rocher du conseil, fanion, tanière",
+     "Étendard, flamme, fanion, clan",
+     "Étendard, rassemblement, totem, kraal"
+    ]
+   }
+  },
+  {
+   "id": "t11-20",
+   "q": "Que contient le livre d'or de la patrouille ?",
+   "a": "Le dessin ou la photo de l'**animal totem**, l'historique du **saint patron**, la **prière et l'hymne**, la **loi, la devise, le cri**, les règlements, le **langage secret**, la **liste des membres** avec filiation et adresse.",
+   "src": "CP RALLYE DAK23.pdf, Questions Réponses Rallye 2023.pdf, Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Totem, saint patron, prière, loi, membres",
+    "no": [
+     "Comptes rendus de réunions et de camps",
+     "Programme annuel et budget de la troupe",
+     "Fiches techniques des activités de la pat"
+    ]
+   }
+  },
+  {
+   "id": "t11-21",
+   "q": "Que contient le cahier de bord de la patrouille ?",
+   "a": "Les **comptes rendus** des conseils de pat, camps, week-ends, excursions et sorties, et les faits divers de la patrouille : c'est la **mémoire de la pat**.",
+   "src": "CP RALLYE DAK23.pdf, Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Les comptes rendus de la vie de la pat",
+    "no": [
+     "La liste des membres et leurs adresses",
+     "L'historique du saint patron et le totem",
+     "La loi, la devise et le cri de la pat"
+    ]
+   }
+  },
+  {
+   "id": "t11-22",
+   "q": "Combien de phases comprend la promesse scoute, et lesquelles ?",
+   "a": "**4 phases** : 1) la **décision du jeune** ; 2) la **décision du groupe**, qui prend effet lors de la cour d'honneur ; 3) la **veillée de promesse** ; 4) l'**engagement**.",
+   "src": "CP RALLYE DAK23.pdf",
+   "qcm": {
+    "ok": "4 : décision du jeune, du groupe, veillée, engagement",
+    "no": [
+     "3 : décision du jeune, veillée, engagement",
+     "4 : demande écrite, veillée, engagement, fête",
+     "5 : décision du jeune, du CP, du groupe, veillée, engagement"
+    ]
+   }
+  },
+  {
+   "id": "t11-23",
+   "q": "Quelles sont les étapes de nomination du CP ?",
+   "a": "**Choix du CP par les jeunes** ; lettre manuscrite de demande d'investiture au CT (facultative) ; **cour d'honneur** ; **cérémonie d'investiture**.",
+   "src": "CP RALLYE DAK23.pdf",
+   "qcm": {
+    "ok": "Choix des jeunes, lettre, cour d'honneur, investiture",
+    "no": [
+     "Désignation par le CT, cour d'honneur, investiture",
+     "Choix des jeunes, conseil des chefs, promesse",
+     "Élection en conseil de pat, lettre au CG, investiture"
+    ]
+   }
+  },
+  {
+   "id": "t11-24",
+   "q": "Dans quelle circonstance le fanion de patrouille est-il planté à terre ?",
+   "a": "Lors de l'**investiture du CP**.",
+   "src": "CP RALLYE DAK23.pdf",
+   "qcm": {
+    "ok": "Lors de l'investiture du CP",
+    "no": [
+     "Lors de la montée des couleurs",
+     "Lors de la veillée de promesse",
+     "Lors de l'allumage du kraal"
+    ]
+   }
+  },
+  {
+   "id": "t11-25",
+   "q": "Quelles sont les étapes d'un camp, et quels points comporte sa fiche technique ?",
+   "a": "Étapes : **préparation, vécu du camp, évaluation**. Fiche technique : intitulé, période, objectif, cible, lieu, modalités de participation, contenu pédagogique, horaires, staff, chronogramme.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Préparation, vécu du camp, évaluation",
+    "no": [
+     "Installation, vécu du camp, rangement",
+     "Préparation, installation, veillée",
+     "Inscription, vécu du camp, compte rendu"
+    ]
+   }
+  },
+  {
+   "id": "t11-26",
+   "q": "Quel chant entonne-t-on à l'allumage et à l'extinction du kraal, et que signifie-t-il ?",
+   "a": "Le chœur d'**Engonyama** (Ingonyama). Traduction : « **Il est un lion ; oui, il est mieux que ça ; il est un hippopotame** ».",
+   "src": "Questions Réponses Rallye 2023.pdf",
+   "qcm": {
+    "ok": "Engonyama : « Il est un lion… un hippopotame »",
+    "no": [
+     "Le chant des adieux : « Faut-il nous quitter… »",
+     "La légende du feu : « Il est un lion… un éléphant »",
+     "Engonyama : « Il est un aigle… un éléphant »"
+    ]
+   }
+  },
+  {
+   "id": "t11-27",
+   "q": "Qu'est-ce que la déclinaison ?",
+   "a": "Le **décalage entre le Nord magnétique et le Nord géographique**.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Écart entre Nord magnétique et Nord géographique",
+    "no": [
+     "Écart entre Nord géographique et Nord de la carte",
+     "Angle entre le Nord et la direction à suivre",
+     "Écart entre l'étoile polaire et le Nord magnétique"
+    ]
+   }
+  },
+  {
+   "id": "t11-28",
+   "q": "Comment trouver le nord avec une montre à aiguilles ?",
+   "a": "Poser la montre à plat, placer une brindille à côté, **faire coïncider l'ombre de la brindille avec l'aiguille des heures** : le nord est indiqué par la **bissectrice de l'angle** formé par l'axe 12h-6h et l'aiguille des heures.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Ombre sur l'aiguille des heures, puis bissectrice avec 12h",
+    "no": [
+     "Aiguille des minutes vers le soleil, puis bissectrice avec 6h",
+     "Ombre sur l'aiguille des minutes, le nord est à 12h",
+     "Aiguille des heures vers la lune, le nord est à 3h"
+    ]
+   }
+  },
+  {
+   "id": "t11-29",
+   "q": "Comment s'oriente-t-on avec la grande ourse, la petite ourse, Cassiopée et la croix du sud ?",
+   "a": "**Grande ourse** : sa queue indique le nord. **Petite ourse** : sa tête est dirigée vers le nord. **Cassiopée** : elle se trouve au nord. **Croix du sud** : sa pointe du bas indique le sud.",
+   "src": "Questions Réponses Rallye 2023.pdf, TOPO RALLYE DAK23.pdf",
+   "qcm": {
+    "ok": "Croix du sud : la pointe du bas indique le sud",
+    "no": [
+     "Croix du sud : la pointe du haut indique le nord",
+     "Cassiopée : elle se trouve au sud",
+     "Grande ourse : sa tête indique le sud"
+    ]
+   }
+  },
+  {
+   "id": "t11-30",
+   "q": "Peut-on s'orienter avec la pleine lune ? Comment utilise-t-on la lune ?",
+   "a": "**Non**. On ne s'oriente avec la lune que lorsqu'elle est en **croissant**. On trace une ligne imaginaire passant par les deux extrémités du croissant : les **bonnes lettres B et Q** indiquent le nord dans le sens du tracé ; avec les **mauvaises lettres P et D**, le nord est dans le sens opposé.",
+   "src": "TOPO RALLYE DAK23.pdf, Questions Réponses Rallye 2023.pdf",
+   "qcm": {
+    "ok": "Non : seulement en croissant (lettres B, Q bonnes)",
+    "no": [
+     "Oui : la pleine lune se lève toujours au nord",
+     "Non : seulement en croissant (lettres P, D bonnes)",
+     "Oui : la face éclairée indique le sud"
+    ]
+   }
+  },
+  {
+   "id": "t11-31",
+   "q": "Comment oriente-t-on une carte avec une boussole ?",
+   "a": "Mettre le **Nord du cadran devant le repère** de la boussole ; poser la boussole sur la carte en **alignant son bord avec celui de la carte** ; **tourner l'ensemble** carte-boussole jusqu'à ce que le Nord de l'aiguille arrive sur le Nord du cadran.",
+   "src": "TOPO RALLYE DAK23.pdf",
+   "qcm": {
+    "ok": "Aligner boussole et bord de carte, tourner l'ensemble",
+    "no": [
+     "Tourner seulement la boussole sur la carte immobile",
+     "Placer le Sud du cadran sur le bas de la carte",
+     "Viser une étoile puis tourner la carte vers elle"
+    ]
+   }
+  },
+  {
+   "id": "t11-32",
+   "q": "Quels sont les types de boussole et leur utilité ?",
+   "a": "**Boussole d'orientation** : orienter une carte. **Boussole de visée** : déterminer la direction d'un objectif (on lit dans un miroir avec un viseur). **Compas** : suivre une direction en continu (sur les bateaux).",
+   "src": "TOPO RALLYE DAK23.pdf",
+   "qcm": {
+    "ok": "Le compas sert à suivre une direction en continu",
+    "no": [
+     "Le compas sert à orienter une carte",
+     "La boussole de visée sert à suivre une direction en continu",
+     "La boussole d'orientation sert à viser un objectif"
+    ]
+   }
+  },
+  {
+   "id": "t11-33",
+   "q": "Qu'est-ce qu'une courbe de niveau, et qu'est-ce que la rose des vents ?",
+   "a": "**Courbe de niveau** : ligne formée par les points du relief situés à la **même altitude**. **Rose des vents** : cercle imaginaire représentant les **16 directions** du vent, chacune correspondant à un angle en degrés.",
+   "src": "TOPO RALLYE DAK23.pdf",
+   "qcm": {
+    "ok": "Ligne joignant des points de même altitude",
+    "no": [
+     "Ligne joignant des points de même distance",
+     "Ligne joignant des points de même latitude",
+     "Ligne indiquant la pente la plus forte"
+    ]
+   }
+  },
+  {
+   "id": "t11-34",
+   "q": "Citez trois codages autres que le morse, et décodez « MF TDPVU FTU MPZBM ».",
+   "a": "Codages : **dents de scie, alphabet clé de 100, clé de 10, sémaphore**. Le message se lit « **Le scout est loyal** » (chaque lettre décalée d'un rang).",
+   "src": "Questions Réponses Rallye 2017.pdf, Questions Réponses Rallye 2022.pdf",
+   "qcm": {
+    "ok": "Le scout est loyal",
+    "no": [
+     "Le scout est loyal et franc",
+     "Le chef est loyal",
+     "Le scout est pur"
+    ]
+   }
+  },
+  {
+   "id": "t11-35",
+   "q": "Quels types de signalisation existe-t-il (corrigé 2022) ? Et que signifie GPS ?",
+   "a": "Signalisation **verticale, horizontale, lumineuse**. GPS : **Global Positioning System**.",
+   "src": "Questions Réponses Rallye 2022.pdf, TOPO RALLYE DAK23.pdf",
+   "qcm": {
+    "ok": "Verticale, horizontale, lumineuse",
+    "no": [
+     "Verticale, horizontale, sonore",
+     "Routière, ferroviaire, maritime",
+     "Lumineuse, sonore, gestuelle"
+    ]
+   }
+  },
+  {
+   "id": "t11-36",
+   "q": "Quels sont les dix nœuds de l'aspirant ?",
+   "a": "**Ganse, demi-clé, simple, tour mort, ganse à tête d'alouette, plat, pêcheur, cabestan, tisserand, chaise**.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Ganse, demi-clé, simple, plat, pêcheur, cabestan, chaise…",
+    "no": [
+     "Carrick, tête de turc, pendu, gueule de raie, chaise…",
+     "Jambe de chien, capucin, carrick, pomme de touline…",
+     "Brêlage carré, diagonal, en long, en étoile, triple…"
+    ]
+   }
+  },
+  {
+   "id": "t11-37",
+   "q": "Quelles familles de nœuds citent les corrigés, et à quelle famille appartiennent le plat, le huit et le simple ?",
+   "a": "Familles citées : **arrêt, coulant, jonction**. Le **plat** est un nœud de **jonction** ; le **huit** et le **simple** sont des nœuds d'**arrêt**.",
+   "src": "Questions Réponses Rallye 2017.pdf, Questions Réponses Rallye 2022.pdf",
+   "qcm": {
+    "ok": "Plat : jonction ; huit et simple : arrêt",
+    "no": [
+     "Plat : arrêt ; huit et simple : jonction",
+     "Plat : coulant ; huit et simple : arrêt",
+     "Plat : jonction ; huit : coulant ; simple : arrêt"
+    ]
+   }
+  },
+  {
+   "id": "t11-38",
+   "q": "Quel nœud utiliser pour sortir un camarade tombé dans une fosse ou un puits ?",
+   "a": "Le nœud de **chaise**.",
+   "src": "Questions Réponses Rallye 2017.pdf, Questions Réponses Rallye 2022.pdf",
+   "qcm": {
+    "ok": "Le nœud de chaise",
+    "no": [
+     "Le nœud de cabestan",
+     "Le nœud de jambe de chien",
+     "Le nœud de capucin"
+    ]
+   }
+  },
+  {
+   "id": "t11-39",
+   "q": "Selon les corrigés, quel nœud relie deux cordes de diamètres différents ? Et quel nœud raccourcit une corde sans la couper ?",
+   "a": "Pour relier deux cordes d'inégale grosseur, les corrigés 2017 et 2022 donnent le **nœud de vache**. Pour raccourcir une corde : la **jambe de chien**.",
+   "src": "Questions Réponses Rallye 2017.pdf, Questions Réponses Rallye 2022.pdf",
+   "qcm": {
+    "ok": "Vache ; jambe de chien",
+    "no": [
+     "Plat ; capucin",
+     "Cabestan ; jambe de chien",
+     "Vache ; demi-clé"
+    ]
+   }
+  },
+  {
+   "id": "t11-40",
+   "q": "Quel nœud amarre vite une corde sur un crochet pour soulever une charge, et lequel sert à hisser un rondin ?",
+   "a": "Sur un crochet : la **gueule de raie**. Pour hisser ou tirer un rondin : le **nœud de bois** (simple ou double). Pour faire tomber des branches : la **ganse à tête d'alouette** (corrigé 2017).",
+   "src": "matelotage rallye dak23.pdf, Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Gueule de raie ; nœud de bois",
+    "no": [
+     "Nœud de bois ; gueule de raie",
+     "Cabestan ; nœud de chaise",
+     "Gueule de raie ; jambe de chien"
+    ]
+   }
+  },
+  {
+   "id": "t11-41",
+   "q": "Que signifient décommettre, toron et frapper un cordage ?",
+   "a": "**Décommettre** : desserrer les torons d'un cordage. **Toron** : élément constitutif d'un cordage. **Frapper** un cordage : l'attacher sur un point fixe.",
+   "src": "matelotage rallye dak23.pdf",
+   "qcm": {
+    "ok": "Frapper : attacher un cordage sur un point fixe",
+    "no": [
+     "Frapper : couper un cordage d'un coup sec",
+     "Frapper : ranger un cordage à plat en zigzag",
+     "Frapper : resserrer les torons d'un cordage"
+    ]
+   }
+  },
+  {
+   "id": "t11-42",
+   "q": "Que signifient élinguer, étaler en biture et glène ?",
+   "a": "**Élinguer** : placer un cordage autour d'un objet pour le hisser. **Étaler en biture** : ranger un cordage à plat et en zigzag. **Glène** : cordage enroulé de façon régulière avant d'être rangé.",
+   "src": "matelotage rallye dak23.pdf",
+   "qcm": {
+    "ok": "Glène : cordage enroulé régulièrement pour le ranger",
+    "no": [
+     "Glène : cordage rangé à plat et en zigzag",
+     "Glène : cordage placé autour d'un objet à hisser",
+     "Glène : élément constitutif d'un cordage"
+    ]
+   }
+  },
+  {
+   "id": "t11-43",
+   "q": "À quoi servent le brêlage carré, le brêlage en tête de bigue et le brêlage en long ?",
+   "a": "**Carré** : assembler 2 perches perpendiculaires. **Tête de bigue** : former un trépied. **En long** : assembler 2 perches parallèles. Le **triple** assemble 3 perches perpendiculaires deux à deux.",
+   "src": "matelotage rallye dak23.pdf",
+   "note": "Le corrigé donne la même utilité au brêlage diagonal et au brêlage en étoile (angle quelconque) ; ils diffèrent seulement par la disposition des perches.",
+   "qcm": {
+    "ok": "Tête de bigue : former un trépied",
+    "no": [
+     "Tête de bigue : assembler 2 perches parallèles",
+     "Brêlage en long : former un trépied",
+     "Brêlage carré : assembler 3 perches"
+    ]
+   }
+  },
+  {
+   "id": "t11-44",
+   "q": "Quels gestes composent le PAS et que doit contenir le message d'alerte ?",
+   "a": "**Protéger – Alerter – Secourir**. Message d'alerte : **présentation, nature de l'accident, adresse, nombre de victimes, premières mesures prises, risques particuliers**.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Protéger, Alerter, Secourir",
+    "no": [
+     "Prévenir, Alerter, Soigner",
+     "Protéger, Ausculter, Soigner",
+     "Prévenir, Assister, Secourir"
+    ]
+   }
+  },
+  {
+   "id": "t11-45",
+   "q": "Comment baliser le lieu d'un accident de la route ?",
+   "a": "Avec des triangles (ou moyens du bord) sur **100 à 150 m le jour** et **200 à 300 m la nuit**, dans les deux sens de circulation. Le **triangle de pré-signalisation** sert à ce balisage.",
+   "src": "Questions Réponses Rallye 2017.pdf, secourisme rallye dak23.pdf",
+   "qcm": {
+    "ok": "100 à 150 m le jour, 200 à 300 m la nuit",
+    "no": [
+     "50 à 100 m le jour, 100 à 150 m la nuit",
+     "200 à 300 m le jour, 100 à 150 m la nuit",
+     "100 à 150 m le jour comme la nuit"
+    ]
+   }
+  },
+  {
+   "id": "t11-46",
+   "q": "Quelle est la CAT face à une hémorragie externe ?",
+   "a": "**Compression manuelle locale** (main sur la plaie), **pansement compressif**, **point de compression** à distance (artère contre l'os), et le **garrot** seulement en dernier recours.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Compression locale, pansement compressif, garrot en dernier",
+    "no": [
+     "Garrot d'abord, puis pansement compressif",
+     "Position du choqué et diète absolue",
+     "Laver la plaie et laisser saigner"
+    ]
+   }
+  },
+  {
+   "id": "t11-47",
+   "q": "Quelle est la CAT face à une hémorragie interne ?",
+   "a": "**Position du choqué**, **diète absolue** (ni boire ni manger), **couvrir la victime**, **évacuation d'urgence** pour une intervention chirurgicale.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Position du choqué, diète, couvrir, évacuer",
+    "no": [
+     "Compression locale, pansement, garrot",
+     "Faire boire de l'eau sucrée, allonger, surveiller",
+     "PLS, faire marcher la victime, évacuer"
+    ]
+   }
+  },
+  {
+   "id": "t11-48",
+   "q": "En quoi consiste l'examen d'une victime ?",
+   "a": "Vérifier le **saignement**, la **conscience**, la **respiration**, la **circulation** (pouls) et le **squelette** (luxation, entorse, fracture).",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Saignement, conscience, respiration, circulation, squelette",
+    "no": [
+     "Température, tension, glycémie, vue, ouïe",
+     "Conscience, âge, poids, groupe sanguin",
+     "Saignement, fièvre, appétit, sommeil"
+    ]
+   }
+  },
+  {
+   "id": "t11-49",
+   "q": "Que signifient LVA, VA, MCE, RCP, EEE et DAE ?",
+   "a": "**LVA** : Libération des Voies Aériennes. **VA** : Ventilation Artificielle. **MCE** : Massage Cardiaque Externe. **RCP** : Réanimation Cardio-Pulmonaire. **EEE** : Emballer, Étiqueter, Évacuer. **DAE** : Défibrillateur Automatisé Externe.",
+   "src": "secourisme rallye dak23.pdf, Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "EEE : Emballer, Étiqueter, Évacuer",
+    "no": [
+     "EEE : Examiner, Écouter, Évacuer",
+     "EEE : Emballer, Examiner, Envoyer",
+     "EEE : Éloigner, Étiqueter, Évacuer"
+    ]
+   }
+  },
+  {
+   "id": "t11-50",
+   "q": "Quelle est la CAT en cas d'absence de respiration, et quelle est la fréquence cardiaque normale d'un adulte ?",
+   "a": "Absence de respiration : **LVA + VA**. Fréquence cardiaque normale d'un adulte : **60 à 80 battements par minute**.",
+   "src": "Questions Réponses Rallye 2017.pdf, secourisme rallye dak23.pdf",
+   "qcm": {
+    "ok": "LVA + VA ; 60 à 80 battements par minute",
+    "no": [
+     "MCE seul ; 60 à 80 battements par minute",
+     "LVA + VA ; 100 à 120 battements par minute",
+     "PLS ; 40 à 60 battements par minute"
+    ]
+   }
+  },
+  {
+   "id": "t11-51",
+   "q": "Quels sont les numéros d'urgence donnés dans les annales ?",
+   "a": "**Sapeurs-pompiers : 18** ; **Police : 17** ou 800 00 20 17 ; **Gendarmerie : 800 00 20 20** ; **SAMU : 1515** ; Assistance publique de Pikine : 800 55 55 55.",
+   "src": "Questions Réponses Rallye 2017.pdf, secourisme rallye dak23.pdf",
+   "qcm": {
+    "ok": "Pompiers 18, Police 17, SAMU 1515",
+    "no": [
+     "Pompiers 17, Police 18, SAMU 1515",
+     "Pompiers 18, Police 17, SAMU 15",
+     "Pompiers 15, Police 17, SAMU 1818"
+    ]
+   }
+  },
+  {
+   "id": "t11-52",
+   "q": "Quels sont les trois degrés de brûlure et la CAT du 3e degré ?",
+   "a": "**1er degré** : épiderme seul (peau rouge). **2e degré** : épiderme et derme (cloques, à ne pas percer). **3e degré** : jusqu'à l'hypoderme (peau cuite, cartonnée). CAT du 3e degré : protocole **EEE** : arroser à l'eau tiède environ 15 min (20 min si brûlure chimique), envelopper dans un drap stérile, évacuer à l'hôpital.",
+   "src": "secourisme rallye dak23.pdf, Questions Réponses Rallye 2023.pdf",
+   "qcm": {
+    "ok": "Protocole EEE : arroser, emballer, évacuer",
+    "no": [
+     "Percer les cloques puis appliquer un pansement",
+     "Protocole RIRE : refroidir, immobiliser, reposer",
+     "Appliquer de la glace directement sur la peau"
+    ]
+   }
+  },
+  {
+   "id": "t11-53",
+   "q": "Quelle est la CAT face à un coup de chaleur chez une victime consciente ?",
+   "a": "Amener la victime dans un **endroit frais**, l'**allonger sur le dos pieds surélevés**, **déboutonner ou enlever ses vêtements**, la **rafraîchir** et la surveiller.",
+   "src": "Questions Réponses Rallye 2017.pdf",
+   "qcm": {
+    "ok": "Endroit frais, allongée pieds surélevés, rafraîchir",
+    "no": [
+     "Couvrir la victime, la faire boire chaud",
+     "PLS au soleil, surveiller la respiration",
+     "La faire marcher, lui donner du sel"
+    ]
+   }
+  },
+  {
+   "id": "t11-54",
+   "q": "Que signifie le protocole RIRE pour une fracture fermée ?",
+   "a": "**Refroidissement** (glace dans un linge, jamais directement sur la peau), **Immobilisation** (attelle, écharpe), **Repos** du membre, **Élévation** du membre blessé. Pour une fracture ouverte : couvrir la plaie, point de compression à distance, puis RIRE.",
+   "src": "secourisme rallye dak23.pdf",
+   "qcm": {
+    "ok": "Refroidissement, Immobilisation, Repos, Élévation",
+    "no": [
+     "Réanimation, Immobilisation, Repos, Évacuation",
+     "Refroidissement, Isolement, Rééducation, Évacuation",
+     "Repos, Immobilisation, Réchauffement, Élévation"
+    ]
+   }
+  },
+  {
+   "id": "t11-55",
+   "q": "Quelles sont les classes de feu A, B, C et D ?",
+   "a": "**A** : solides formant des braises (bois, papier, charbon). **B** : hydrocarbures, alcool, solvants, plastiques. **C** : gaz. **D** : métaux. (E : origine électrique ; F : huiles et graisses.)",
+   "src": "secourisme rallye dak23.pdf",
+   "qcm": {
+    "ok": "A solides, B hydrocarbures, C gaz, D métaux",
+    "no": [
+     "A gaz, B solides, C métaux, D hydrocarbures",
+     "A solides, B gaz, C hydrocarbures, D électrique",
+     "A hydrocarbures, B solides, C gaz, D huiles"
+    ]
+   }
+  },
+  {
+   "id": "t11-56",
+   "q": "Comment utilise-t-on un extincteur, et quels types existe-t-il ?",
+   "a": "**Retirer la goupille**, **percuter** pour mettre sous pression, **faire un test** sur le côté, **viser la base des flammes**. Types : à **eau**, à **CO2**, à **mousse**, à **poudre**.",
+   "src": "secourisme rallye dak23.pdf",
+   "qcm": {
+    "ok": "Goupille, percuter, test, viser la base des flammes",
+    "no": [
+     "Goupille, percuter, viser le haut des flammes",
+     "Percuter, goupille, viser la fumée",
+     "Test, goupille, viser le centre des flammes"
+    ]
+   }
+  },
+  {
+   "id": "t11-57",
+   "q": "Quels principes doit respecter un dégagement d'urgence, et quelles techniques de relevage connaissez-vous ?",
+   "a": "Principes : **victime visible**, **alignement tête-cou-tronc**, **rapidité**, technique adaptée à la situation, prises solides. Relevage : **pont simple**, pont simple amélioré, **pont néerlandais**, pont néerlandais amélioré.",
+   "src": "secourisme rallye dak23.pdf",
+   "qcm": {
+    "ok": "Alignement tête-cou-tronc et rapidité d'exécution",
+    "no": [
+     "Attendre les secours avant tout déplacement",
+     "Tirer la victime par un seul bras",
+     "Toujours la mettre debout avant de la déplacer"
+    ]
+   }
+  },
+  {
+   "id": "t11-58",
+   "q": "Quels sont les quatre évangélistes et leurs symboles ?",
+   "a": "**Matthieu** : l'homme (ou l'ange). **Marc** : le lion. **Luc** : le taureau. **Jean** : l'aigle.",
+   "src": "Questions Réponses Rallye 2023.pdf",
+   "qcm": {
+    "ok": "Matthieu l'homme, Marc le lion, Luc le taureau, Jean l'aigle",
+    "no": [
+     "Matthieu le lion, Marc l'homme, Luc l'aigle, Jean le taureau",
+     "Matthieu l'homme, Marc le taureau, Luc le lion, Jean l'aigle",
+     "Matthieu l'aigle, Marc le lion, Luc l'homme, Jean le taureau"
+    ]
+   }
+  },
+  {
+   "id": "t11-59",
+   "q": "Quels sont les 5 piliers de l'islam selon les corrigés ?",
+   "a": "Les **5 prières quotidiennes**, le **jeûne**, l'**aumône**, le **pèlerinage à La Mecque**, et la profession de foi (« croire en Dieu » en 2015, « les deux témoignages » en 2017).",
+   "src": "QUESTIONS REPONSES RALLYE MBOUR 2015.pdf, Questions Réponses Rallye 2017.pdf",
+   "note": "Le 5e pilier est formulé « croire en Dieu » (2015) ou « les deux témoignages » (2017) ; le corrigé 2017 écrit aussi « L'Aumônier » pour l'aumône.",
+   "qcm": {
+    "ok": "Prière, jeûne, aumône, pèlerinage, profession de foi",
+    "no": [
+     "Prière, jeûne, aumône, pèlerinage, Tamkharit",
+     "Prière, jeûne, Tabaski, pèlerinage, profession de foi",
+     "Prière, lecture du Coran, aumône, jeûne, Achoura"
+    ]
+   }
+  },
+  {
+   "id": "t11-60",
+   "q": "Quels sont la devise et les sceaux du Sénégal ?",
+   "a": "Devise : **Un peuple, un but, une foi**. Sceaux : le **lion** (présidence) et le **baobab** (administration).",
+   "src": "QUESTIONS REPONSES RALLYE MBOUR 2015.pdf, Questions Réponses Rallye 2022.pdf",
+   "qcm": {
+    "ok": "Un peuple, un but, une foi ; lion et baobab",
+    "no": [
+     "Un peuple, un but, une foi ; lion et étoile",
+     "Un peuple, une foi, une loi ; lion et baobab",
+     "Unité, travail, progrès ; lion et baobab"
+    ]
+   }
+  }
+ ]
+}

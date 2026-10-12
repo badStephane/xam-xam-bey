@@ -1,0 +1,860 @@
+{
+ "theme": 3,
+ "cards": [
+  {
+   "id": "t3-01",
+   "q": "Quelles sont les étapes de la progression d'un garçon à la troupe ?",
+   "a": "À son entrée, il est **volontaire**. Il franchit ensuite trois étapes, dans l'ordre : **Engagé**, **Technicien**, **Animateur**.",
+   "src": "La Progression Personnelle (1).pdf, manuel du CP.pdf",
+   "qcm": {
+    "ok": "Volontaire, puis Engagé, Technicien, Animateur",
+    "no": [
+     "Volontaire, puis Technicien, Engagé, Animateur",
+     "Aspirant, puis Engagé, Animateur, Technicien",
+     "Volontaire, puis Engagé, Animateur, Assistant"
+    ]
+   }
+  },
+  {
+   "id": "t3-02",
+   "q": "Combien de temps dure l'étape de volontaire, et sous la responsabilité de qui ?",
+   "a": "Elle ne doit pas dépasser **3 à 6 mois**. Elle est sous la responsabilité du **chef de patrouille et du second**, avec la supervision du **chef de troupe**.",
+   "src": "Livret Carnet de Preuves.pdf",
+   "note": "Le Manuel du CT et le projet éducatif ne donnent pas de durée : on demande au volontaire de mûrir sa réflexion « pendant un temps assez long ».",
+   "qcm": {
+    "ok": "3 à 6 mois, sous la responsabilité du CP et du second",
+    "no": [
+     "1 à 2 mois, sous la responsabilité de l'aumônier",
+     "6 à 12 mois, sous la responsabilité du CT seul",
+     "Un an, sous la responsabilité du conseil de troupe"
+    ]
+   }
+  },
+  {
+   "id": "t3-03",
+   "q": "Comment le volontaire demande-t-il à faire sa promesse ?",
+   "a": "Il écrit une **lettre de demande de promesse** adressée à la **maîtrise**, **sous couvert de son CP**. Une **cour d'honneur** se réunit ensuite pour examiner la demande.",
+   "src": "La Progression Personnelle (1).pdf, Livret Carnet de Preuves.pdf",
+   "qcm": {
+    "ok": "Par une lettre à la maîtrise, sous couvert de son CP",
+    "no": [
+     "Oralement au CT, lors du conseil de troupe",
+     "Par une lettre de ses parents au commissaire",
+     "Par un vote à main levée en conseil de patrouille"
+    ]
+   }
+  },
+  {
+   "id": "t3-04",
+   "q": "Quel rôle joue le CP à la cour d'honneur quand un garçon de sa patrouille demande sa promesse ?",
+   "a": "En cautionnant la demande, le CP dit qu'il est sûr que le garçon est prêt. Il devient son **défenseur** devant la cour d'honneur, **tout en restant honnête**.",
+   "src": "La Progression Personnelle (1).pdf",
+   "qcm": {
+    "ok": "Il cautionne la demande et défend le garçon, en restant honnête",
+    "no": [
+     "Il préside la séance et vote en dernier",
+     "Il se retire de la séance car il est juge et partie",
+     "Il fait passer au garçon un examen écrit sur la loi"
+    ]
+   }
+  },
+  {
+   "id": "t3-05",
+   "q": "Selon La Progression Personnelle, quelle est la première obligation d'un scout ?",
+   "a": "Faire chaque jour une **B.A.** (bonne action). C'est l'une des conditions pour demander sa promesse, avec l'esprit scout et un cœur tourné vers Dieu.",
+   "src": "La Progression Personnelle (1).pdf",
+   "qcm": {
+    "ok": "Faire chaque jour une bonne action (B.A.)",
+    "no": [
+     "Porter chaque jour l'uniforme complet",
+     "Payer sa cotisation dès l'inscription",
+     "Assister chaque semaine à la réunion"
+    ]
+   }
+  },
+  {
+   "id": "t3-06",
+   "q": "Qui est Nangmo, dont le volontaire doit « suivre les pas » ?",
+   "a": "Un **enfant africain**, « d'un noir d'ébène », qui approchait de ses seize ans. Seul dans la forêt, il a affronté toutes les épreuves et il est revenu **guerrier de la tribu**, faisant la fierté de son village.",
+   "src": "La Progression Personnelle (1).pdf, Livret Carnet de Preuves.pdf",
+   "qcm": {
+    "ok": "Un enfant africain devenu guerrier de sa tribu",
+    "no": [
+     "Le premier chef de patrouille des Scouts du Sénégal",
+     "Un chef zoulou que Baden-Powell admirait",
+     "Le saint patron africain de la branche verte"
+    ]
+   }
+  },
+  {
+   "id": "t3-07",
+   "q": "Quelles sont les quatre étapes du cycle préparatoire à la promesse ?",
+   "a": "1. **Décision du jeune** (lettre de demande). 2. **Décision du groupe** par la cour d'honneur. 3. **Retraite spirituelle** : la veillée de promesse. 4. **Geste final** : la cérémonie, devant la troupe, le groupe et la famille.",
+   "src": "Manuel du CT.pdf, proposition educative eclaireurs VF.pdf",
+   "qcm": {
+    "ok": "Décision du jeune, décision de la CH, veillée, cérémonie",
+    "no": [
+     "Inscription, cotisation, examen écrit, remise du foulard",
+     "Décision du CT, accord des parents, camp, défilé",
+     "Lettre, conseil de patrouille, retraite, remise du badge"
+    ]
+   }
+  },
+  {
+   "id": "t3-08",
+   "q": "D'après le Manuel du CT, que représente la promesse ?",
+   "a": "La promesse **n'est pas un grade** (comme un passage de caporal à sergent). Ce n'est pas non plus la récompense d'une bonne action. C'est **le début de la vie scoute**.",
+   "src": "Manuel du CT.pdf, proposition educative eclaireurs VF.pdf",
+   "qcm": {
+    "ok": "Le début de la vie scoute",
+    "no": [
+     "Un grade, comme le passage de caporal à sergent",
+     "La récompense d'une bonne action quotidienne",
+     "Le couronnement du parcours d'éclaireur"
+    ]
+   }
+  },
+  {
+   "id": "t3-09",
+   "q": "Quel insigne sanctionne la promesse, et existe-t-il un insigne pour le 1er degré de compétence générale ?",
+   "a": "La promesse est sanctionnée par l'**insigne des SDS**. Il **n'y a pas d'insigne** pour le 1er degré de compétence générale, mais cette étape doit être pleinement vécue.",
+   "src": "La Progression Personnelle (1).pdf",
+   "qcm": {
+    "ok": "L'insigne des SDS ; pas d'insigne pour le 1er degré",
+    "no": [
+     "Le badge à tête de biche ; une bande rouge pour le 1er degré",
+     "La cordelière kaki ; un flot vert pour le 1er degré",
+     "Les deux bandes blanches ; une étoile pour le 1er degré"
+    ]
+   }
+  },
+  {
+   "id": "t3-10",
+   "q": "Que doit acquérir le scout, après sa promesse, pour devenir « Engagé » ?",
+   "a": "Le **1er degré de compétence générale** : esprit scout, vie religieuse, sport, observation, contact nature, hygiène, promotion socio-économique, civisme… L'engagé est « celui qui retrousse ses manches ».",
+   "src": "Livret Carnet de Preuves.pdf, La Progression Personnelle (1).pdf",
+   "qcm": {
+    "ok": "Le 1er degré de compétence générale",
+    "no": [
+     "Trois brevets de compétence d'animateur",
+     "Trois degrés dans deux séries de services",
+     "Le brevet de secouriste de la Croix-Rouge"
+    ]
+   }
+  },
+  {
+   "id": "t3-11",
+   "q": "Sur quels articles de la loi scoute l'engagé doit-il donner particulièrement l'exemple ?",
+   "a": "Les articles **4** (le scout est hospitalier, il est frère de tous) et **8** (le scout est maître de soi, il sourit et chante dans ses difficultés).",
+   "src": "Livret Carnet de Preuves.pdf",
+   "qcm": {
+    "ok": "Les articles 4 et 8",
+    "no": [
+     "Les articles 1 et 3",
+     "Les articles 2 et 7",
+     "Les articles 5 et 10"
+    ]
+   }
+  },
+  {
+   "id": "t3-12",
+   "q": "Quelle est la condition pour devenir technicien ?",
+   "a": "Obtenir **au moins 3 degrés de compétence dans 2 séries de services différentes**, et savoir les mettre en pratique chaque fois que l'occasion se présente.",
+   "src": "La Progression Personnelle (1).pdf, Livret Carnet de Preuves.pdf",
+   "qcm": {
+    "ok": "Au moins 3 degrés de compétence dans 2 séries différentes",
+    "no": [
+     "Au moins 2 degrés de compétence dans 3 séries différentes",
+     "Au moins 5 degrés de compétence dans une seule série",
+     "Au moins 3 brevets d'animateur dans 2 séries différentes"
+    ]
+   }
+  },
+  {
+   "id": "t3-13",
+   "q": "Combien de séries de services le carnet de preuves propose-t-il pour l'étape de technicien ?",
+   "a": "**Sept séries** selon *La Progression Personnelle*, par exemple « Art et Technique » (menuisier, couturier, maçon) ou « Pionnier » (cuisinier, campeur…).",
+   "src": "La Progression Personnelle (1).pdf",
+   "note": "Le Manuel du CP parle de six séries. La version Word du carnet en liste six (Art et techniques, Service dans l'Église, Beaux-arts, Contact, Sport, Ingéniosité pratique). La version PDF ajoute notamment une série « Pionnier ».",
+   "qcm": {
+    "ok": "Sept séries",
+    "no": [
+     "Quatre séries",
+     "Cinq séries",
+     "Dix séries"
+    ]
+   }
+  },
+  {
+   "id": "t3-14",
+   "q": "Qui décide de l'attribution du badge de technicien ?",
+   "a": "Une **cour d'honneur**, convoquée à la suite des épreuves. Ses membres jugent de l'aptitude du jeune à recevoir le badge.",
+   "src": "La Progression Personnelle (1).pdf, manuel du CP.pdf",
+   "qcm": {
+    "ok": "Une cour d'honneur convoquée après les épreuves",
+    "no": [
+     "Le conseil de patrouille, après un vote",
+     "Le commissaire de district, sur dossier",
+     "Le conseil de troupe, en fin d'année"
+    ]
+   }
+  },
+  {
+   "id": "t3-15",
+   "q": "Comment est fait le badge de technicien ?",
+   "a": "C'est une **tête de biche** traversée d'**une bande rouge horizontale**.",
+   "src": "La Progression Personnelle (1).pdf, manuel du CP.pdf",
+   "qcm": {
+    "ok": "Une tête de biche traversée d'une bande rouge",
+    "no": [
+     "Une tête de biche traversée de deux bandes rouges",
+     "Une fleur de lys traversée d'une bande verte",
+     "Une tête de lion traversée d'une bande rouge"
+    ]
+   }
+  },
+  {
+   "id": "t3-16",
+   "q": "Comment est fait le badge d'animateur ?",
+   "a": "C'est une **tête de biche** traversée de **deux bandes rouges horizontales**.",
+   "src": "La Progression Personnelle (1).pdf, manuel du CP.pdf",
+   "qcm": {
+    "ok": "Une tête de biche et deux bandes rouges",
+    "no": [
+     "Une tête de biche et trois bandes rouges",
+     "Une tête de biche et deux bandes blanches",
+     "Une fleur de lys et deux bandes rouges"
+    ]
+   }
+  },
+  {
+   "id": "t3-17",
+   "q": "Comment la cour d'honneur reconnaît-elle un animateur ?",
+   "a": "Elle réunit tous les animateurs, **après consultation des parents, professeurs ou patron**. Elle doit reconnaître un important effort sur soi et un exemple pour les autres. Le vote est **secret** et doit réunir les **¾ des voix**.",
+   "src": "La Progression Personnelle (1).pdf, Livret Carnet de Preuves.pdf",
+   "qcm": {
+    "ok": "Vote secret réunissant les ¾ des voix",
+    "no": [
+     "Vote à main levée à la majorité simple",
+     "Vote secret à l'unanimité des présents",
+     "Vote secret réunissant les deux tiers des voix"
+    ]
+   }
+  },
+  {
+   "id": "t3-18",
+   "q": "Citez des brevets de compétence demandés pour devenir animateur.",
+   "a": "Par exemple : **acolyte**, **évangéliste**, **catéchiste-missionnaire**, **campeur**, **secouriste**, **sportif**. D'autres compétences pointues sont aussi demandées.",
+   "src": "La Progression Personnelle (1).pdf, Livret Carnet de Preuves.pdf",
+   "qcm": {
+    "ok": "Acolyte, évangéliste, catéchiste-missionnaire, secouriste",
+    "no": [
+     "Menuisier, couturier, maçon, tisserand",
+     "Correspondant de presse, interprète, guide touristique",
+     "Musicien, sculpteur, bibliothécaire, meneur artiste"
+    ]
+   }
+  },
+  {
+   "id": "t3-19",
+   "q": "À quoi l'étape d'animateur prépare-t-elle le garçon ?",
+   "a": "L'animateur est un **éclaireur accompli**. Il s'initie au **métier de responsable**, à l'**esprit d'équipe et d'entreprise**, pour préparer son entrée dans la **Communauté (la Route)**.",
+   "src": "La Progression Personnelle (1).pdf, Manuel du CT.pdf",
+   "qcm": {
+    "ok": "Au métier de responsable, pour entrer à la Route",
+    "no": [
+     "Au rôle de vieux loup, pour encadrer la meute",
+     "À la fonction de commissaire de district",
+     "Au métier de chef de troupe, dès ses 16 ans"
+    ]
+   }
+  },
+  {
+   "id": "t3-20",
+   "q": "Comment doit-on évaluer la progression d'un garçon ?",
+   "a": "**Pas comme un examen** à un moment ponctuel, mais **chaque fois qu'il y a une activité** : à la maison, à l'école, partout. Faire ses preuves n'est pas une épreuve, c'est montrer qu'on a évolué.",
+   "src": "La Progression Personnelle (1).pdf",
+   "qcm": {
+    "ok": "En continu, à chaque activité, partout",
+    "no": [
+     "Par un examen écrit à la fin de l'année",
+     "Par une épreuve unique au camp d'été",
+     "Par un test oral devant le commissaire"
+    ]
+   }
+  },
+  {
+   "id": "t3-21",
+   "q": "Que fait le garçon dans son carnet de preuves quand il a maîtrisé une technique ?",
+   "a": "Il **colorie** (au crayon de couleur si possible) **le cercle** réservé à cette technique. Il peut ainsi contrôler sans cesse ses progrès.",
+   "src": "Livret Carnet de Preuves.pdf, La Progression Personnelle (1).pdf",
+   "qcm": {
+    "ok": "Il colorie le cercle réservé à cette technique",
+    "no": [
+     "Il colle le timbre de la troupe sur la page",
+     "Il recopie la technique dans le cahier de bord",
+     "Il demande au CP de raturer la ligne"
+    ]
+   }
+  },
+  {
+   "id": "t3-22",
+   "q": "De combien de rubriques et d'étapes se compose le carnet de preuves ?",
+   "a": "**4 rubriques** et **3 étapes de progression** : volontariat, promesse et 1er degré (Engagé), degrés de compétence (Technicien), brevets de compétence (Animateur).",
+   "src": "La Progression Personnelle (1).pdf",
+   "note": "Le Manuel du CP le décrit en quatre parties (volontaire, engagé, technicien, animateur), plus une partie sur les notions de base du scoutisme.",
+   "qcm": {
+    "ok": "4 rubriques et 3 étapes de progression",
+    "no": [
+     "3 rubriques et 4 étapes de progression",
+     "5 rubriques et 3 étapes de progression",
+     "4 rubriques et 5 étapes de progression"
+    ]
+   }
+  },
+  {
+   "id": "t3-23",
+   "q": "Comment est constituée une patrouille scoute ?",
+   "a": "D'une bande de **six à huit jeunes âgés de 13 à 17 ans**. C'est la **cellule de base** de la troupe.",
+   "src": "Structures et Instances à la Troupe.doc, Manuel du CT.pdf",
+   "note": "Le Manuel du CP indique des jeunes de 12 à 17 ans. Le projet éducatif parle à un endroit de « sept ou huit jeunes ».",
+   "qcm": {
+    "ok": "Six à huit jeunes de 13 à 17 ans",
+    "no": [
+     "Quatre à six jeunes de 11 à 15 ans",
+     "Huit à douze jeunes de 13 à 17 ans",
+     "Six à huit jeunes de 15 à 20 ans"
+    ]
+   }
+  },
+  {
+   "id": "t3-24",
+   "q": "Combien de patrouilles compte une troupe ?",
+   "a": "**De 2 à 4 patrouilles au plus.** « Ce n'est pas la troupe qui est divisée en quatre patrouilles, mais bien quatre patrouilles qui forment une troupe. »",
+   "src": "Manuel du CT.pdf, proposition educative eclaireurs VF.pdf",
+   "qcm": {
+    "ok": "De 2 à 4 patrouilles au plus",
+    "no": [
+     "De 3 à 6 patrouilles au plus",
+     "De 4 à 8 patrouilles au plus",
+     "De 1 à 3 patrouilles au plus"
+    ]
+   }
+  },
+  {
+   "id": "t3-25",
+   "q": "Qui compose la maîtrise de la troupe ?",
+   "a": "Le **chef de troupe (CT)**, son ou ses **assistants** et l'**aumônier**. La maîtrise veille sur la bonne marche de la troupe ; ses chefs doivent donner de bons exemples de vie.",
+   "src": "Structures et Instances à la Troupe.doc, Manuel du CT.pdf",
+   "note": "Le Manuel du CP ajoute les conseillers.",
+   "qcm": {
+    "ok": "Le CT, ses assistants et l'aumônier",
+    "no": [
+     "Le CT, les CP et les seconds",
+     "Le chef de groupe, le CT et le trésorier",
+     "Le CT, l'aumônier et les parents délégués"
+    ]
+   }
+  },
+  {
+   "id": "t3-26",
+   "q": "Qu'est-ce que la cour d'honneur, et que décide-t-elle ?",
+   "a": "C'est l'**organe directeur** de la troupe et la **gardienne de la loi scoute**. Elle est « **loin d'être un tribunal** » : c'est un lieu d'accueil, d'échange et de décision. Elle décide des **objectifs de l'année**, des **admissions à la promesse**, de la **progression et des sanctions**.",
+   "src": "Structures et Instances à la Troupe.doc, Manuel du CT.pdf",
+   "qcm": {
+    "ok": "L'organe directeur de la troupe, gardien de la loi",
+    "no": [
+     "Le tribunal qui juge les fautes des scouts",
+     "L'instance de formation technique des CP et SP",
+     "L'assemblée de toute la troupe qui évalue les activités"
+    ]
+   }
+  },
+  {
+   "id": "t3-27",
+   "q": "Quand la cour d'honneur se réunit-elle ?",
+   "a": "Seulement dans des **circonstances particulières** : en **début d'année** pour fixer les objectifs, à une **demande d'admission à la promesse**, et exceptionnellement lors d'un **événement important**.",
+   "src": "Structures et Instances à la Troupe.doc, Manuel du CT.pdf",
+   "note": "Le Manuel du CP dit au contraire qu'elle « se réunit régulièrement » pour évaluer le fonctionnement de la troupe.",
+   "qcm": {
+    "ok": "En début d'année, pour une promesse, ou pour un fait important",
+    "no": [
+     "Chaque semaine, après la réunion de troupe",
+     "Tous les quinze jours, avec le conseil de patrouille",
+     "Uniquement le dernier jour du camp d'été"
+    ]
+   }
+  },
+  {
+   "id": "t3-28",
+   "q": "Qui préside la cour d'honneur, et de quel pouvoir dispose-t-il ?",
+   "a": "Le **chef de troupe**. Il dirige les débats, conseille et possède un **droit de veto** sur toutes les décisions. Les assistants le conseillent ; le secrétaire est généralement un assistant.",
+   "src": "Manuel du CT.pdf",
+   "qcm": {
+    "ok": "Le chef de troupe, avec un droit de veto",
+    "no": [
+     "L'aumônier, avec un droit de veto",
+     "Le plus ancien CP, avec une voix prépondérante",
+     "Le commissaire de district, avec une voix consultative"
+    ]
+   }
+  },
+  {
+   "id": "t3-29",
+   "q": "Les délibérations de la cour d'honneur sont-elles publiques ? Peut-on revenir sur une décision ?",
+   "a": "Les délibérations sont **secrètes** : rien ne doit sortir de la CDH. **Seule une autre cour d'honneur** peut amender une décision, à condition d'avoir des **faits nouveaux**.",
+   "src": "Manuel du CT.pdf",
+   "qcm": {
+    "ok": "Secrètes ; seule une autre CH peut l'amender, sur faits nouveaux",
+    "no": [
+     "Publiques ; elles sont lues au conseil de troupe suivant",
+     "Secrètes ; le CT peut seul modifier la décision ensuite",
+     "Publiques ; elles sont affichées au local de la troupe"
+    ]
+   }
+  },
+  {
+   "id": "t3-30",
+   "q": "Qui compose le conseil des chefs, et quel est son rôle ?",
+   "a": "La **maîtrise** et les **chefs de patrouille**. Son rôle est d'**organiser la vie de la troupe** et de **coordonner toutes ses activités**.",
+   "src": "Structures et Instances à la Troupe.doc, Manuel du CT.pdf",
+   "note": "Le Manuel du CP y ajoute les SP et l'aumônier. Le projet éducatif lui donne la même composition que la cour d'honneur. La session de Yeumbeul précise que seuls le CT et les CP y votent.",
+   "qcm": {
+    "ok": "Maîtrise et CP ; organise et coordonne la vie de la troupe",
+    "no": [
+     "Toute la troupe ; évalue les activités avec tous les jeunes",
+     "Membres de la patrouille ; choisit ses moyens d'action",
+     "Maîtrise, CP et SP ; forme les CP aux techniques scoutes"
+    ]
+   }
+  },
+  {
+   "id": "t3-31",
+   "q": "Qu'est-ce que la haute patrouille ?",
+   "a": "Elle réunit la **maîtrise**, les **CP** et les **SP**. Son rôle est de **former les CP et leurs seconds** aux techniques scoutes. C'est « **l'université du chef de patrouille** » et la patrouille modèle de la troupe.",
+   "src": "Structures et Instances à la Troupe.doc, Manuel du CT.pdf, manuel du CP.pdf",
+   "qcm": {
+    "ok": "Maîtrise, CP et SP : l'université du chef de patrouille",
+    "no": [
+     "Les meilleurs techniciens : l'équipe de rallye de la troupe",
+     "Les CP seuls : le tribunal d'honneur de la troupe",
+     "Les animateurs : le conseil qui vote les promesses"
+    ]
+   }
+  },
+  {
+   "id": "t3-32",
+   "q": "Qu'est-ce que le conseil de troupe ?",
+   "a": "Il réunit **toute la troupe**. Son rôle est d'**évaluer les activités** de la troupe avec tous les jeunes. Selon le Manuel du CT, il peut se tenir **une fois tous les deux mois**.",
+   "src": "Structures et Instances à la Troupe.doc, Manuel du CT.pdf",
+   "qcm": {
+    "ok": "Toute la troupe ; évalue les activités, environ tous les 2 mois",
+    "no": [
+     "Les CP et la maîtrise ; fixe les objectifs, chaque semaine",
+     "La maîtrise seule ; juge les sanctions, une fois par an",
+     "Les SP et le CT ; prépare les camps, tous les 15 jours"
+    ]
+   }
+  },
+  {
+   "id": "t3-33",
+   "q": "Qui préside le conseil de patrouille, et à quelle fréquence se tient-il ?",
+   "a": "Il est **présidé par le CP**, qui dirige les discussions. C'est le « **cœur de la patrouille** ». Il se tient **au moins tous les 15 jours**, et chaque fois que le besoin s'en fait sentir.",
+   "src": "Manuel du CT.pdf, manuel du CP.pdf",
+   "note": "Le projet éducatif dit « pas moins de deux fois par trimestre », pas plus d'une demi-heure. Composition : tous les membres selon Structures et Instances, seulement ceux qui ont fait leur promesse selon le Manuel du CP.",
+   "qcm": {
+    "ok": "Le CP, au moins tous les quinze jours",
+    "no": [
+     "Le CT, une fois par mois",
+     "Le SP, une fois par trimestre",
+     "L'aumônier, chaque semaine"
+    ]
+   }
+  },
+  {
+   "id": "t3-34",
+   "q": "Comment le second de patrouille (SP) est-il choisi, et quel est son rôle ?",
+   "a": "Il est **choisi par le CP**, avec l'assentiment de la **maîtrise**. Il **aide le CP** et le **remplace en son absence**. Le CP et son second forment « **une paire d'amis** ».",
+   "src": "manuel du CP.pdf, proposition educative eclaireurs VF.pdf",
+   "note": "Le projet éducatif dit « en accord avec la cour d'honneur ».",
+   "qcm": {
+    "ok": "Choisi par le CP avec l'accord de la maîtrise",
+    "no": [
+     "Élu par la patrouille au vote secret",
+     "Nommé par l'aumônier après la promesse",
+     "Désigné d'office : le plus âgé de la patrouille"
+    ]
+   }
+  },
+  {
+   "id": "t3-35",
+   "q": "Selon le Manuel du CT, comment se déroule la désignation d'un CP avant son investiture ?",
+   "a": "Le CP qui veut servir sa patrouille fait une **demande manuscrite au chef de troupe**. Celui-ci réunit un **conseil de maîtrise**, puis convoque l'intéressé en **cour d'honneur**. C'est la **CH qui décide** de l'investiture.",
+   "src": "Manuel du CT.pdf",
+   "note": "Les sources divergent : le Manuel du CP dit que le CP « a été nommé par ses frères de patrouille ». Le projet éducatif dit que le chef d'unité l'appelle et le nomme après avis de la CH.",
+   "qcm": {
+    "ok": "Demande manuscrite au CT, puis décision de la CH",
+    "no": [
+     "Élection à main levée en conseil de troupe",
+     "Nomination par lettre du commissaire de district",
+     "Tirage au sort parmi les SP en haute patrouille"
+    ]
+   }
+  },
+  {
+   "id": "t3-36",
+   "q": "Que reçoit le nouveau CP lors de la cérémonie d'investiture ?",
+   "a": "La **cordelière kaki** et son **bâton portant le fanion** de sa patrouille. Les **deux bandes blanches** sont cousues d'avance à leur place.",
+   "src": "Manuel du CT.pdf",
+   "qcm": {
+    "ok": "La cordelière kaki et le bâton avec le fanion",
+    "no": [
+     "Le foulard de région et le carnet de preuves",
+     "La flamme scoute et le livre d'or de la troupe",
+     "Un sifflet et le cahier de bord de la patrouille"
+    ]
+   }
+  },
+  {
+   "id": "t3-37",
+   "q": "Que représentent les deux bandes blanches du CP selon la session de Yeumbeul ?",
+   "a": "Sa **double mission** : **faire de ses garçons une patrouille**, et **faire de ses garçons des scouts**.",
+   "src": "Session le Role du chef de patrouille camp CP SP Yeumbeul.docx",
+   "qcm": {
+    "ok": "Faire de ses garçons une patrouille et des scouts",
+    "no": [
+     "La fidélité à Dieu et la loyauté à la patrie",
+     "Le CP et son second, unis comme deux amis",
+     "Deux années d'ancienneté dans la troupe"
+    ]
+   }
+  },
+  {
+   "id": "t3-38",
+   "q": "Selon Baden-Powell, quelle part de bon y a-t-il au moins dans chaque garçon ?",
+   "a": "**Au moins 5 %**. C'est au CP de le découvrir et de l'épanouir **jusqu'à 90 ou 95 %**.",
+   "src": "Session le Role du chef de patrouille camp CP SP Yeumbeul.docx",
+   "qcm": {
+    "ok": "Au moins 5 %, à développer jusqu'à 90 ou 95 %",
+    "no": [
+     "Au moins 10 %, à développer jusqu'à 100 %",
+     "Au moins 50 %, à développer jusqu'à 80 %",
+     "Au moins 1 %, à développer jusqu'à 50 %"
+    ]
+   }
+  },
+  {
+   "id": "t3-39",
+   "q": "Quelles sont les trois grandes idées d'une bonne direction que doit appliquer tout CP ?",
+   "a": "**Observer, Juger, Décider.** C'est le message « Ose être un chef ! ».",
+   "src": "Session le Role du chef de patrouille camp CP SP Yeumbeul.docx",
+   "qcm": {
+    "ok": "Observer, Juger, Décider",
+    "no": [
+     "Voir, Juger, Agir",
+     "Prévoir, Organiser, Commander",
+     "Écouter, Ordonner, Contrôler"
+    ]
+   }
+  },
+  {
+   "id": "t3-40",
+   "q": "Complétez la phrase de B-P : « Attendez beaucoup de vos CP et … »",
+   "a": "« … **9 sur 10** ils se révéleront à la hauteur de vos attentes. » Le meilleur progrès se produit dans les troupes où pouvoir et responsabilité sont réellement entre les mains des CP.",
+   "src": "manuel du CP.pdf",
+   "qcm": {
+    "ok": "9 sur 10 ils se révéleront à la hauteur",
+    "no": [
+     "8 sur 10 ils se révéleront à la hauteur",
+     "1 sur 2 se révélera à la hauteur",
+     "99 sur 100 se révéleront à la hauteur"
+    ]
+   }
+  },
+  {
+   "id": "t3-41",
+   "q": "Selon le projet éducatif, quel rôle d'intermédiaire le CP joue-t-il ?",
+   "a": "Il est le **représentant des jeunes auprès de la maîtrise** et le **représentant des adultes auprès des jeunes**. Le CP n'est pas une « courroie de transmission » des ordres de la maîtrise.",
+   "src": "proposition educative eclaireurs VF.pdf",
+   "qcm": {
+    "ok": "Représentant des jeunes auprès des adultes, et inversement",
+    "no": [
+     "Courroie de transmission des ordres de la maîtrise",
+     "Représentant de la troupe auprès du district",
+     "Adjoint du CT chargé de la discipline"
+    ]
+   }
+  },
+  {
+   "id": "t3-42",
+   "q": "Quelles attitudes la maîtrise doit-elle éviter envers les CP ?",
+   "a": "Trois attitudes : **intervenir directement dans une patrouille sans passer par le CP** ; **critiquer un CP devant sa patrouille** ; **abandonner le CP et sa patrouille à leur sort**.",
+   "src": "proposition educative eclaireurs VF.pdf",
+   "qcm": {
+    "ok": "Intervenir dans une patrouille sans passer par le CP",
+    "no": [
+     "Réunir régulièrement les CP en haute patrouille",
+     "Rencontrer chaque CP lors d'un contact individuel",
+     "Laisser la patrouille choisir son totem et sa devise"
+    ]
+   }
+  },
+  {
+   "id": "t3-43",
+   "q": "Qui attribue les postes d'action dans la patrouille ?",
+   "a": "Le **conseil de patrouille**. Les postes sont répartis selon les qualités, les aptitudes, les goûts et les besoins de la patrouille. Les patrouillards rendent compte au conseil de patrouille.",
+   "src": "Manuel du CT.pdf",
+   "note": "Le Manuel du CP ajoute que chacun change de rôle à la fin de chaque trimestre, seuls le CP et le SP ayant des rôles permanents. Le Manuel du CT parle pourtant de « fonctions permanentes ».",
+   "qcm": {
+    "ok": "Le conseil de patrouille",
+    "no": [
+     "Le chef de troupe",
+     "La cour d'honneur",
+     "Le conseil de troupe"
+    ]
+   }
+  },
+  {
+   "id": "t3-44",
+   "q": "Quel est le rôle du secrétaire de patrouille selon le Manuel du CT ?",
+   "a": "Il **garde le livre d'or et le cahier de bord**, fait les convocations, s'occupe du courrier et écrit dans le cahier de bord les **rapports** des sorties, explorations et camps.",
+   "src": "Manuel du CT.pdf",
+   "note": "Le document Cahier de Bord et Livre d'Or dit que le livre d'or est jalousement gardé par le CP.",
+   "qcm": {
+    "ok": "Il garde le livre d'or et le cahier de bord",
+    "no": [
+     "Il tient la caisse et le registre des comptes",
+     "Il gère le matériel et en fait l'inventaire",
+     "Il prépare les prières et les célébrations"
+    ]
+   }
+  },
+  {
+   "id": "t3-45",
+   "q": "Selon le Manuel du CT, de quoi l'intendant est-il responsable ?",
+   "a": "Du **matériel de la patrouille** : ameublement, matériel de camp, outillage, équipement. Il en tient l'**inventaire** et en assure l'entretien avant et après les camps.",
+   "src": "Manuel du CT.pdf",
+   "note": "Pour le Manuel du CP, l'intendant s'occupe du ravitaillement et des vivres, et c'est le « matérialiste » qui gère l'équipement.",
+   "qcm": {
+    "ok": "Du matériel de la patrouille et de son inventaire",
+    "no": [
+     "Des cotisations et du registre des comptes",
+     "Des cartes, boussoles et sorties d'orientation",
+     "Du cahier des chants, danses et jeux"
+    ]
+   }
+  },
+  {
+   "id": "t3-46",
+   "q": "Quelles sont les cinq parties du livre d'or ?",
+   "a": "1. Présentation de l'**animal totem**. 2. Présentation du **saint patron**. 3. Présentation de la **patrouille** (devise, loi, prière, règlements, hymne…). 4. **Fiche signalétique** des membres. 5. **Dédicaces**.",
+   "src": "Cahier De Bord et Livre D_Or.pdf",
+   "qcm": {
+    "ok": "Totem, saint patron, patrouille, fiche signalétique, dédicaces",
+    "no": [
+     "Patrouille, troupe, volet administratif, comptes rendus, photos",
+     "Totem, programme, assiduité, cotisations, dédicaces",
+     "Historique de B-P, loi scoute, uniforme, insignes, chants"
+    ]
+   }
+  },
+  {
+   "id": "t3-47",
+   "q": "Quelles sont les quatre parties du cahier de bord ?",
+   "a": "1. Présentation de la **patrouille** (comme dans le livre d'or). 2. Présentation de la **troupe** (maîtrise et haute patrouille). 3. **Volet administratif**. 4. **Comptes rendus** (camps, sorties, conseils de patrouille…).",
+   "src": "Cahier De Bord et Livre D_Or.pdf",
+   "qcm": {
+    "ok": "Patrouille, troupe, volet administratif, comptes rendus",
+    "no": [
+     "Totem, saint patron, fiche signalétique, dédicaces",
+     "Patrouille, programme, inventaire, chants",
+     "Troupe, carnet de preuves, budget, dédicaces"
+    ]
+   }
+  },
+  {
+   "id": "t3-48",
+   "q": "Que contient le volet administratif du cahier de bord ?",
+   "a": "L'**état nominatif**, le **programme de la patrouille** (en accord avec celui de la troupe), le **tableau d'assiduité** (présence-absence) et l'**état des cotisations**.",
+   "src": "Cahier De Bord et Livre D_Or.pdf, Guide Pratique pour Complément Sessions Cahier de Bord et Livre d’Or (1).pdf",
+   "qcm": {
+    "ok": "État nominatif, programme, assiduité, cotisations",
+    "no": [
+     "Fiche signalétique, dédicaces, autographes, photos",
+     "Loi, prière, hymne et règlement de patrouille",
+     "Inventaire, menus, trousse de secours, cartes"
+    ]
+   }
+  },
+  {
+   "id": "t3-49",
+   "q": "Selon le document Cahier de Bord et Livre d'Or, qui garde le livre d'or ?",
+   "a": "Le **CP**, qui le garde **jalousement** car il a « une valeur d'or ». C'est « l'**âme et l'histoire** de la patrouille ».",
+   "src": "Cahier De Bord et Livre D_Or.pdf",
+   "note": "Le Manuel du CT confie le livre d'or au secrétaire. Le Manuel du CP dit qu'il est gardé par le CP, mais placé sous la responsabilité du secrétaire ou de l'archiviste.",
+   "qcm": {
+    "ok": "Le CP, qui le garde jalousement",
+    "no": [
+     "Le CT, au local de la troupe",
+     "L'aumônier, à la paroisse",
+     "Le trésorier, avec la caisse de patrouille"
+    ]
+   }
+  },
+  {
+   "id": "t3-50",
+   "q": "Quelle erreur faut-il éviter dans la partie « Dédicaces » du livre d'or ?",
+   "a": "**Accumuler des signatures sans texte.** Une signature sans texte ne veut rien dire : il faut rédiger de vraies dédicaces. Les signatures des visiteurs peuvent aller dans une « chasse aux autographes », en partant de la fin du livre.",
+   "src": "Guide Pratique pour Complément Sessions Cahier de Bord et Livre d’Or (1).pdf",
+   "qcm": {
+    "ok": "Accumuler des signatures sans texte",
+    "no": [
+     "Rédiger des dédicaces pour d'anciens membres",
+     "Raconter les exploits de la patrouille",
+     "Laisser un visiteur écrire un petit mot"
+    ]
+   }
+  },
+  {
+   "id": "t3-51",
+   "q": "À qui sont dédiées la prière de patrouille et l'hymne de patrouille ?",
+   "a": "La **prière** est dédiée au **saint patron**. L'**hymne** est dédié à l'**animal totem**. L'erreur à éviter est d'inverser les deux.",
+   "src": "Guide Pratique pour Complément Sessions Cahier de Bord et Livre d’Or (1).pdf, manuel du CP.pdf",
+   "qcm": {
+    "ok": "Prière au saint patron, hymne à l'animal totem",
+    "no": [
+     "Prière à l'animal totem, hymne au saint patron",
+     "Prière et hymne, tous deux au saint patron",
+     "Prière à Baden-Powell, hymne à l'animal totem"
+    ]
+   }
+  },
+  {
+   "id": "t3-52",
+   "q": "Combien d'articles conseille-t-on au maximum pour la loi de patrouille, et pourquoi ?",
+   "a": "Il n'y a pas de limite fixée, mais on préfère **ne pas dépasser 5 articles**, car la loi scoute dit déjà comment le scout doit se comporter. La loi de patrouille renforce son caractère sans remplacer la loi scoute.",
+   "src": "Guide Pratique pour Complément Sessions Cahier de Bord et Livre d’Or (1).pdf",
+   "qcm": {
+    "ok": "5 articles au plus",
+    "no": [
+     "10 articles au plus",
+     "3 articles exactement",
+     "12 articles au moins"
+    ]
+   }
+  },
+  {
+   "id": "t3-53",
+   "q": "Que doit exprimer la devise de patrouille ?",
+   "a": "Une **résolution, un idéal, un objectif à atteindre**, et **non une étape déjà franchie**. On évite les devises humoristiques ou du genre « Vaincre ou mourir », et surtout pas de « sanglant » ou de « tueur ».",
+   "src": "manuel du CP.pdf",
+   "qcm": {
+    "ok": "Un objectif à atteindre, pas une étape franchie",
+    "no": [
+     "Une victoire déjà remportée par la patrouille",
+     "Une plaisanterie propre à la patrouille",
+     "Un défi du type « Vaincre ou mourir »"
+    ]
+   }
+  },
+  {
+   "id": "t3-54",
+   "q": "Qui porte le fanion de patrouille, et quelles règles le protègent ?",
+   "a": "**Seul le CP** le porte. Il peut le confier à son **second** en son absence. Le fanion n'est **jamais couché au sol** et **ne se hisse pas au mât**. Il est symbole de continuité.",
+   "src": "manuel du CP.pdf",
+   "qcm": {
+    "ok": "Le CP seul, ou son second en son absence",
+    "no": [
+     "Le plus jeune de la patrouille, à tour de rôle",
+     "Le secrétaire, gardien des traditions",
+     "Un assistant chef de troupe, en cérémonie"
+    ]
+   }
+  },
+  {
+   "id": "t3-55",
+   "q": "Quelles sont les dimensions du fanion de patrouille ?",
+   "a": "Une **ogive de 25 cm de haut et 40 cm de large**, sur une **hampe de 1,40 m**. L'animal totem y est représenté, la tête tournée vers la hampe.",
+   "src": "manuel du CP.pdf",
+   "qcm": {
+    "ok": "Ogive de 25 × 40 cm, hampe de 1,40 m",
+    "no": [
+     "Ogive de 40 × 60 cm, hampe de 2,10 m",
+     "Carré de 1 m, hampe de 2,10 m",
+     "Triangle de 80 cm, hampe de 1,80 m"
+    ]
+   }
+  },
+  {
+   "id": "t3-56",
+   "q": "Pourquoi l'équipe nationale de la branche verte a-t-elle réformé les noms des patrouilles ?",
+   "a": "Pour **coller aux réalités de la faune africaine** et **uniformiser** les troupes de tout le pays, en respectant les usages de la branche verte. Les fanions doivent se mettre rapidement aux normes nationales.",
+   "src": "Patrouilles Africaines.pdf",
+   "qcm": {
+    "ok": "Pour coller à la faune africaine et uniformiser les troupes",
+    "no": [
+     "Pour reprendre les noms des patrouilles de Brownsea",
+     "Pour donner à chaque région ses propres totems",
+     "Pour remplacer les totems par des noms de saints"
+    ]
+   }
+  },
+  {
+   "id": "t3-57",
+   "q": "Quelles sont les couleurs et le cri du jour de la patrouille Lion ?",
+   "a": "**Rouge et jaune** : le rouge pour l'animal, le jaune pour son milieu de vie (lion rouge sur fond jaune). Cri du jour : « **Lion toujours courageux** ». Cri de nuit : le **rugissement**.",
+   "src": "Patrouilles Africaines.pdf",
+   "qcm": {
+    "ok": "Rouge et jaune ; « Lion toujours courageux »",
+    "no": [
+     "Jaune et vert ; « Lion toujours rapide »",
+     "Noir et jaune ; « Lion toujours puissant »",
+     "Rouge et bleu ; « Lion toujours royal »"
+    ]
+   }
+  },
+  {
+   "id": "t3-58",
+   "q": "Quel est le cri du jour de la patrouille Requin ?",
+   "a": "« **Requin jusqu'au sang** ». Ses couleurs sont le **blanc et le bleu**, et son cri de nuit est le « brizz ».",
+   "src": "Patrouilles Africaines.pdf",
+   "note": "Ce cri va contre le Manuel du CP, qui demande d'éviter les devises de type « sanglant » ou « tueur ».",
+   "qcm": {
+    "ok": "« Requin jusqu'au sang »",
+    "no": [
+     "« Requin toujours féroce »",
+     "« Requin toujours sauveur »",
+     "« Requin toujours aux aguets »"
+    ]
+   }
+  },
+  {
+   "id": "t3-59",
+   "q": "À Brownsea en 1907, quelle couleur de nœud d'épaule distinguait chaque patrouille ?",
+   "a": "**Loups : bleu**, **taureaux : vert**, **courlis : jaune**, **corbeaux : rouge**. Ces nœuds en laine sont à l'origine des **flots de patrouille**.",
+   "src": "manuel du CP.pdf",
+   "qcm": {
+    "ok": "Loups bleu, taureaux vert, courlis jaune, corbeaux rouge",
+    "no": [
+     "Loups rouge, taureaux bleu, courlis vert, corbeaux jaune",
+     "Loups vert, taureaux jaune, courlis bleu, corbeaux rouge",
+     "Loups jaune, taureaux rouge, courlis bleu, corbeaux vert"
+    ]
+   }
+  },
+  {
+   "id": "t3-60",
+   "q": "Selon le Système de fonctionnement, à quel public s'adressent les sessions « Le rôle du CP et de son second » et « Tenue du cahier de bord et du livre d'or » ?",
+   "a": "À la **formation des CP/SP**. On y trouve aussi la prière des chefs, la gestion des cotisations de patrouille, l'organisation d'un camp de patrouille et le système de patrouille.",
+   "src": "Systeme de Fonctionnement.pdf",
+   "qcm": {
+    "ok": "À la formation des CP et SP",
+    "no": [
+     "Aux sessions pour les volontaires",
+     "Aux sessions pour les techniciens",
+     "Au tronc commun de toute la troupe"
+    ]
+   }
+  }
+ ]
+}

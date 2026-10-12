@@ -1,0 +1,60 @@
+{"theme": 3, "titre": "Troupe et progression", "intro": "Construite à partir des documents du dossier Xam Louy Troupe : manuels du CP et du CT, carnet de preuves, projet éducatif éclaireurs, sessions sur la progression, le cahier de bord et le livre d'or. Chaque section indique ses sources.",
+ "sections": [
+  {"h": "Les étapes de la progression", "items": [
+    "À l'entrée à la troupe, le garçon est **volontaire**. Il franchit ensuite trois étapes : **Engagé**, **Technicien**, **Animateur**. Il faut d'abord être engagé, puis technicien, enfin animateur.",
+    "**Volontaire** : étape de découverte qui ne doit pas dépasser **3 à 6 mois** (carnet), sous la responsabilité du **CP et du second**, supervisée par le CT.",
+    "**Promesse** : lettre de demande adressée à la maîtrise **sous couvert du CP**. Le CP défend le garçon en **cour d'honneur**. Viennent ensuite la **veillée de promesse** puis la cérémonie. Insigne : l'**insigne des SDS**.",
+    "**Engagé** : le garçon acquiert le **1er degré de compétence générale** (esprit scout, vie religieuse, sport, observation, hygiène, civisme…). Pas d'insigne chez les SDS pour cette étape.",
+    "**Technicien** : **au moins 3 degrés de compétence dans 2 séries de services** différentes. Badge : **tête de biche traversée d'une bande rouge**.",
+    "**Animateur** : brevets de compétence (acolyte, évangéliste, catéchiste-missionnaire, secouriste, campeur…). CH après consultation des parents, professeurs ou patron, **vote secret aux ¾**. Badge : tête de biche, **deux bandes rouges**."
+  ], "src": "La Progression Personnelle (1).pdf, Livret Carnet de Preuves.pdf, manuel du CP.pdf"},
+  {"h": "Le carnet de preuves et l'esprit de la progression", "items": [
+    "Le *Carnet de preuves* est l'outil de travail de la branche verte. **Faire ses preuves**, c'est montrer ce dont on est capable après un apprentissage : ce n'est pas une épreuve d'examen.",
+    "Le garçon **colorie le cercle** réservé à chaque technique dès qu'il la maîtrise. Il contrôle ainsi lui-même ses progrès.",
+    "Le volontaire suit l'exemple de **Nangmo**, enfant africain qui vécut seul **3 semaines** en forêt et revint **guerrier de la tribu**.",
+    "Évaluation **continue** : à chaque activité, à la maison, à l'école, partout. La finalité : faire du garçon un **bon routier et un bon citoyen**.",
+    "Cycle préparatoire à la promesse en **4 étapes** : décision du jeune (lettre), décision du groupe (CH), retraite spirituelle (veillée), geste final (cérémonie). La promesse **n'est pas un grade** : c'est le début de la vie scoute."
+  ], "src": "La Progression Personnelle (1).pdf, Livret Carnet de Preuves.pdf, Manuel du CT.pdf, proposition educative eclaireurs VF.pdf"},
+  {"h": "Structures et instances de la troupe", "items": [
+    "**Patrouille** : **6 à 8 jeunes de 13 à 17 ans**. Une troupe compte **2 à 4 patrouilles** : ce sont les patrouilles qui forment la troupe, et non la troupe qui est divisée.",
+    "**Maîtrise** : le CT, son ou ses assistants et l'aumônier. Elle veille à la bonne marche de la troupe ; ses chefs doivent donner l'exemple.",
+    "**Cour d'honneur** : **organe directeur** et **gardienne de la loi**, « loin d'être un tribunal ». Elle fixe les objectifs de l'année, admet à la promesse, décide de la progression et des sanctions. Le **CT la préside** avec un **droit de veto** ; délibérations **secrètes**.",
+    "**Conseil des chefs** (maîtrise + CP) : organise et coordonne la vie de la troupe. **Haute patrouille** (maîtrise + CP + SP) : forme les CP et SP, c'est « l'**université du CP** ».",
+    "**Conseil de patrouille** : présidé par le CP, « cœur de la patrouille », au moins **tous les 15 jours**. **Conseil de troupe** : toute la troupe, évalue les activités, environ **tous les deux mois**."
+  ], "src": "Structures et Instances à la Troupe.doc, Manuel du CT.pdf, manuel du CP.pdf, proposition educative eclaireurs VF.pdf"},
+  {"h": "Le chef de patrouille et son second", "items": [
+    "Le CP est le **premier scout** de sa patrouille et son exemple. Il est l'**intermédiaire** : représentant des jeunes auprès de la maîtrise et des adultes auprès des jeunes, pas une « courroie de transmission ».",
+    "Le **SP** aide le CP et le remplace en son absence. Il est choisi **par le CP avec l'accord de la maîtrise** (ou de la CH). Ce sont des **rôles de service, pas des grades**.",
+    "**Investiture du CP** : demande manuscrite au CT, décision de la CH. Le CP reçoit la **cordelière kaki** et le **bâton avec le fanion**, puis l'obédience de sa patrouille.",
+    "Les **deux bandes blanches** rappellent sa double mission : faire de ses garçons **une patrouille** et faire d'eux **des scouts**.",
+    "B-P : « Attendez beaucoup de vos CP et **9 sur 10** ils se révéleront à la hauteur. » Méthode de direction : **Observer, Juger, Décider**. Sagesse : « N'ordonne pas, entraîne ! »"
+  ], "src": "Session le Role du chef de patrouille camp CP SP Yeumbeul.docx, proposition educative eclaireurs VF.pdf, Manuel du CT.pdf, manuel du CP.pdf"},
+  {"h": "Postes d'action et mœurs de patrouille", "items": [
+    "Postes d'action, attribués par le **conseil de patrouille** : secrétaire, trésorier, intendant, bibliothécaire, maître de jeu, **cigalou** (boute-en-train), liturgiste, secouriste, topographe.",
+    "Le **totem** (animal), le **saint patron**, la **devise** (un objectif à atteindre, pas une étape franchie) et le **cri** donnent son identité à la patrouille.",
+    "La **prière** de patrouille s'adresse au **saint patron** ; l'**hymne** chante l'**animal totem**. La **loi de patrouille** : de préférence **5 articles au plus**.",
+    "Le **fanion** : ogive de **25 × 40 cm**, hampe de **1,40 m**. Seul le **CP** le porte (ou son second) ; il ne se hisse pas au mât et n'est jamais couché au sol.",
+    "Réforme nationale des **Patrouilles africaines** : totems de la faune africaine, avec couleurs (animal et milieu de vie), cri du jour et cri de nuit. Ex. : **Lion**, rouge et jaune, « Lion toujours courageux »."
+  ], "src": "Manuel du CT.pdf, manuel du CP.pdf, Guide Pratique pour Complément Sessions Cahier de Bord et Livre d’Or (1).pdf, Patrouilles Africaines.pdf"},
+  {"h": "Cahier de bord et livre d'or", "items": [
+    "Le **livre d'or** est « l'**âme et l'histoire** de la patrouille ». Il est jalousement gardé et sa rédaction se fait après coup, avec soin.",
+    "Livre d'or en **5 parties** : présentation de l'animal totem, présentation du saint patron, présentation de la patrouille, **fiche signalétique**, **dédicaces**.",
+    "Cahier de bord en **4 parties** : présentation de la patrouille, présentation de la troupe (maîtrise et haute patrouille), **volet administratif**, **comptes rendus**.",
+    "Volet administratif : **état nominatif**, programme de patrouille en accord avec celui de la troupe, **tableau d'assiduité**, **état des cotisations**.",
+    "La présentation de la patrouille doit être **identique** dans les deux documents. Dans les dédicaces, ne pas accumuler des **signatures sans texte**. On privilégie tradition et créativité plutôt que l'impression."
+  ], "src": "Cahier De Bord et Livre D_Or.pdf, Guide Pratique pour Complément Sessions Cahier de Bord et Livre d’Or (1).pdf"}
+ ],
+ "vigilance": [
+  "**Âge des patrouillards** : 13 à 17 ans (*Structures et Instances*, *Manuel du CT*, projet éducatif), contre 12 à 17 ans (*Manuel du CP*).",
+  "**Taille de la patrouille** : 6 à 8 jeunes (*Manuel du CT*, *Manuel du CP*, *Structures et Instances*), contre « sept ou huit » à un autre endroit du projet éducatif.",
+  "**Nombre de séries de services (technicien)** : sept (*La Progression Personnelle*), contre six (*Manuel du CP*). La version Word du carnet en liste six, la version PDF en contient davantage.",
+  "**Composition de la cour d'honneur** : CP et maîtrise (*Structures et Instances*, projet éducatif), contre CP, SP, éclaireurs animateurs et maîtrise (*Manuel du CT*).",
+  "**Fréquence de la cour d'honneur** : seulement dans des circonstances particulières (*Structures et Instances*, *Manuel du CT*), contre « se réunit régulièrement » (*Manuel du CP*).",
+  "**Conseil des chefs** : maîtrise + CP (*Structures et Instances*, *Manuel du CT*), contre maîtrise, CP, SP et aumônier (*Manuel du CP*), ou même composition que la CH (projet éducatif).",
+  "**Conseil de patrouille** : tous les membres (*Structures et Instances*), contre seulement ceux qui ont fait leur promesse (*Manuel du CP* ; le *Manuel du CT* dit les deux). Fréquence : au moins tous les 15 jours (manuels), contre au moins deux fois par trimestre (projet éducatif).",
+  "**Désignation du CP** : « nommé par ses frères de patrouille » (*Manuel du CP*), contre une demande manuscrite au CT puis une décision de la CH (*Manuel du CT*), ou une nomination par le chef d'unité après avis de la CH (projet éducatif).",
+  "**Garde du livre d'or** : le CP (*Cahier de Bord et Livre d'Or*), contre le secrétaire (*Manuel du CT* ; le *Manuel du CP* cite les deux).",
+  "**Rôle de l'intendant** : responsable du matériel (*Manuel du CT*), contre responsable du ravitaillement, le matériel revenant au « matérialiste » (*Manuel du CP*).",
+  "**Âge central de la branche** : vers 14 ans (*Manuel du CT*), contre vers 15 ans (projet éducatif).",
+  "**Patrouilles Africaines** : erreurs de copie probables (fanion du Dauphin décrit comme « un requin gris », fanion du Chacal comme « un léopard ou un guépard », cri de nuit de l'Éléphant = « bruit de pas du rhinocéros »). Le cri « Requin jusqu'au sang » contredit le *Manuel du CP*, qui proscrit les devises du type « sanglant »."
+ ]}

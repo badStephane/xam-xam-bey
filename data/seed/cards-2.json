@@ -1,0 +1,840 @@
+{
+ "theme": 2,
+ "cards": [
+  {
+   "id": "t2-01",
+   "q": "Comment l'*Aurore cérémonial* définit-il un cérémonial ?",
+   "a": "C'est **l'ensemble des signes qui crée un certain décorum** et qui permet à la troupe de **mesurer l'importance des instants vécus**. Il est souhaitable d'y faire participer les éclaireurs.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Un ensemble de signes créant un décorum pour marquer les moments importants",
+    "no": [
+     "Un règlement fixant les sanctions et les récompenses de la troupe",
+     "Le programme annuel des activités arrêté par la maîtrise de troupe",
+     "Le recueil officiel des chants à apprendre avant la promesse"
+    ]
+   }
+  },
+  {
+   "id": "t2-02",
+   "q": "Comment sont disposées les unités lors de la montée de la meute à la troupe ?",
+   "a": "La **troupe en rectangle**, la **meute en cercle** (cercle de parade), séparées par les deux maîtrises qui se tournent le dos, à **5 mètres** l'une de l'autre.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Troupe en rectangle, meute en cercle, maîtrises à 5 mètres",
+    "no": [
+     "Troupe en cercle, meute en rectangle, maîtrises à 5 mètres",
+     "Troupe et meute en carré, maîtrises à 10 mètres",
+     "Troupe en demi-cercle, meute en ligne, maîtrises à 3 mètres"
+    ]
+   }
+  },
+  {
+   "id": "t2-03",
+   "q": "Combien de fois un louveteau reçoit-il le Grand Hurlement en son honneur ?",
+   "a": "**Deux fois** : le jour où il **entre dans la meute**, et le jour où il la **quitte pour monter à la troupe** (adieu de toute la meute).",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Deux fois : à son entrée dans la meute et à sa montée à la troupe",
+    "no": [
+     "Deux fois : à sa promesse et à sa deuxième étoile",
+     "Une fois : le jour de sa montée à la troupe",
+     "Trois fois : à l'entrée, à chaque étoile et au départ"
+    ]
+   }
+  },
+  {
+   "id": "t2-04",
+   "q": "Quel chant le CT entonne-t-il après la remise de l'insigne de technicien ou d'animateur ?",
+   "a": "**Le chant de la promesse**, pour rappeler au récipiendaire l'engagement qu'il prend comme acteur du développement de sa patrouille et de la troupe.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Le chant de la promesse",
+    "no": [
+     "Le chant des adieux",
+     "Ingonyama",
+     "Notre-Dame des Éclaireurs"
+    ]
+   }
+  },
+  {
+   "id": "t2-05",
+   "q": "Comment l'*Aurore* définit-il la cour d'honneur (C.H.) ?",
+   "a": "Un **instrument pédagogique**, l'**instance suprême** du scoutisme, qui vise à **éduquer par la confiance** : on fait appel à la conscience, on évalue. Elle est **gardienne de la loi scoute** dans l'unité.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Une instance qui éduque par la confiance et garde la loi scoute",
+    "no": [
+     "Un tribunal qui sanctionne les fautes graves par l'exclusion",
+     "Un conseil qui fixe le calendrier des sorties de la troupe",
+     "Une commission qui gère la caisse et le matériel du camp"
+    ]
+   }
+  },
+  {
+   "id": "t2-06",
+   "q": "Qu'est-ce que la promesse scoute selon l'*Aurore* ?",
+   "a": "Ni un examen ni une distribution honorifique : c'est une **adhésion libre, volontaire et personnelle** du jeune à l'idéal scout, **demandée par le scout lui-même** lorsqu'il s'en estime digne.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Une adhésion libre, volontaire et personnelle à l'idéal scout",
+    "no": [
+     "Un examen qui clôt la formation de l'éclaireur",
+     "Une distinction honorifique décernée par le chef",
+     "Une obligation après un an de présence à la troupe"
+    ]
+   }
+  },
+  {
+   "id": "t2-07",
+   "q": "Quelles sont, dans l'ordre, les quatre phases de la promesse ?",
+   "a": "1) **Décision du garçon** (demande manuscrite) ; 2) **décision du groupe** en cour d'honneur ; 3) **veillée de promesse** ; 4) **engagement**.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Décision du garçon, cour d'honneur, veillée, engagement",
+    "no": [
+     "Cour d'honneur, épreuves, engagement, veillée",
+     "Demande, examen écrit, investiture, défilé",
+     "Veillée, décision du garçon, engagement, accueil"
+    ]
+   }
+  },
+  {
+   "id": "t2-08",
+   "q": "Quelle est la seule cérémonie scoute que l'on peut faire dans une église ?",
+   "a": "**La veillée de promesse.** Son cadre est un haut lieu : chœur de l'église, calvaire, oratoire ou site naturel magnifique où est fixé l'étendard.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "La veillée de promesse",
+    "no": [
+     "L'engagement (promesse)",
+     "L'investiture du chef de patrouille",
+     "La montée des couleurs"
+    ]
+   }
+  },
+  {
+   "id": "t2-09",
+   "q": "Par quel chant, et autour de quoi, débute la veillée de promesse ?",
+   "a": "Par le chant **Notre-Dame des Éclaireurs**, **autour d'un feu**. Le feu est **le symbole de l'unité** et **la lumière qui éclaire**.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Notre-Dame des Éclaireurs, autour d'un feu",
+    "no": [
+     "Chevaliers saluons les couleurs, au pied du mât",
+     "Ingonyama, autour du kraal",
+     "Le chant de la promesse, devant l'autel"
+    ]
+   }
+  },
+  {
+   "id": "t2-10",
+   "q": "Pendant la veillée, qui dit « Mon Dieu, nous vous offrons la promesse de X… » ?",
+   "a": "**Le chef de patrouille**, le **fanion dans la main droite**, la main gauche posée sur l'épaule du garçon confié à sa patrouille.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Le chef de patrouille, fanion en main droite",
+    "no": [
+     "Le second, les mains tendues vers le ciel",
+     "L'aumônier, debout devant l'autel",
+     "Le chef de troupe, près du feu"
+    ]
+   }
+  },
+  {
+   "id": "t2-11",
+   "q": "Comment la troupe est-elle disposée pour l'engagement (promesse) ?",
+   "a": "En grande tenue, **en rectangle occupant trois côtés**, **le quatrième formé par les parents et l'assistance**. Un CP placé devant le mât tient l'étendard.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Rectangle sur trois côtés, le quatrième pour les parents",
+    "no": [
+     "Cercle de parade fermé autour du mât",
+     "Demi-cercle face à l'autel de la paroisse",
+     "Carré complet, les parents derrière la maîtrise"
+    ]
+   }
+  },
+  {
+   "id": "t2-12",
+   "q": "Pourquoi l'engagement ne se tient-il pas dans une église ou un lieu fermé ?",
+   "a": "Parce que **le rassemblement, élément primordial**, ne pourrait y être respecté. Tous les événements importants de la troupe passent obligatoirement par un rassemblement.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Le rassemblement, élément primordial, n'y serait pas respecté",
+    "no": [
+     "L'étendard ne doit jamais entrer dans une église",
+     "Les parents ne peuvent pas assister à la messe",
+     "Le chant national n'y est pas autorisé"
+    ]
+   }
+  },
+  {
+   "id": "t2-13",
+   "q": "Selon le dialogue de la promesse, quelles sont les trois vertus principales des scouts ?",
+   "a": "**Franchise, Dévouement et Pureté.** (À la question « Quels avantages matériels en attends-tu ? », l'aspirant répond : « Aucun ».)",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Franchise, Dévouement et Pureté",
+    "no": [
+     "Loyauté, Courage et Service",
+     "Franchise, Fidélité et Charité",
+     "Honneur, Dévouement et Discipline"
+    ]
+   }
+  },
+  {
+   "id": "t2-14",
+   "q": "Selon la formule de promesse des scouts du Sénégal, que s'engage-t-on à servir de toutes ses forces ?",
+   "a": "« Devant tous, avec la grâce de Dieu, je m'engage sur mon honneur, à servir de toutes mes forces **Dieu, l'Église et ma patrie**, à aider mon prochain à tout moment, à observer la loi scoute. »",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Dieu, l'Église et la patrie",
+    "no": [
+     "Dieu, le Roi et la patrie",
+     "Dieu, la famille et le Sénégal",
+     "Dieu, l'Afrique et la patrie"
+    ]
+   }
+  },
+  {
+   "id": "t2-15",
+   "q": "Quel geste fait le récipiendaire en prononçant sa promesse ?",
+   "a": "Il fait le **salut scout de la main droite** et pose la **main gauche sur la hampe de l'étendard**, incliné horizontalement devant lui. La troupe salue.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Salut de la main droite, main gauche sur la hampe de l'étendard",
+    "no": [
+     "Main droite sur la Bible, main gauche au salut",
+     "Salut de la main gauche, main droite sur le fanion",
+     "Les deux mains posées sur la hampe du drapeau"
+    ]
+   }
+  },
+  {
+   "id": "t2-16",
+   "q": "Que dit le nouveau scout en prêtant obédience à son chef de patrouille ?",
+   "a": "Main gauche dans la main gauche du CP, qui la couvre de sa droite : « Je te promets **de t'obéir comme au chef, de t'aider comme un frère aîné et d'être loyal à la patrouille** ».",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "note": "Dans l'investiture du CP, l'Aurore écrit « t'aimer comme un frère aîné » ; le Cérémonial Sénégal et l'Aurore (promesse) disent « t'aider ».",
+   "qcm": {
+    "ok": "T'obéir comme au chef, t'aider comme un frère aîné, être loyal",
+    "no": [
+     "Te suivre partout, te défendre, garder nos secrets",
+     "T'obéir sans discuter, te servir, porter ton fanion",
+     "T'écouter comme un père, t'aider, servir la troupe"
+    ]
+   }
+  },
+  {
+   "id": "t2-17",
+   "q": "Combien de temps dure au maximum l'allocution qui suit la promesse ?",
+   "a": "Elle doit être très courte : **quatre minutes maximum** selon le *Cérémonial Sénégal*, **cinq minutes maximum** selon l'*Aurore*.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "note": "Cérémonial Sénégal : 4 minutes ; Aurore cérémonial : 5 minutes.",
+   "qcm": {
+    "ok": "Quatre à cinq minutes au maximum, selon la source",
+    "no": [
+     "Quinze minutes au maximum",
+     "Une demi-heure environ",
+     "Aucune limite n'est fixée"
+    ]
+   }
+  },
+  {
+   "id": "t2-18",
+   "q": "Quels chants terminent la cérémonie de promesse ?",
+   "a": "Le chef entonne **le chant de la promesse**, puis **le chant national des S.D.S.** La troupe s'éloigne ensuite, étendard en tête, en chantant.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Le chant de la promesse, puis le chant national des S.D.S.",
+    "no": [
+     "L'hymne national, puis Ingonyama",
+     "Chevaliers saluons les couleurs, puis le chant des adieux",
+     "Notre-Dame des Éclaireurs, puis l'hymne national"
+    ]
+   }
+  },
+  {
+   "id": "t2-19",
+   "q": "Par qui l'investiture d'un chef doit-elle être faite ?",
+   "a": "Un chef n'exerce officiellement ses fonctions qu'après son investiture, **obligatoirement faite par le commissaire de district (C.D.) ou en sa présence**.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Par le commissaire de district, ou en sa présence",
+    "no": [
+     "Par le chef de groupe, ou en sa présence",
+     "Par le commissaire de région uniquement",
+     "Par l'aumônier de groupe, ou en sa présence"
+    ]
+   }
+  },
+  {
+   "id": "t2-20",
+   "q": "Qui décide de l'investiture d'un chef de patrouille ?",
+   "a": "Le CP fait une **demande manuscrite** au chef de troupe, qui réunit un conseil de maîtrise puis convoque l'intéressé : **c'est la cour d'honneur qui décide**.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "La cour d'honneur, après demande manuscrite du CP",
+    "no": [
+     "Le chef de troupe seul, sur proposition des parents",
+     "Le commissaire de district, après un stage de CP",
+     "L'aumônier, après un entretien personnel"
+    ]
+   }
+  },
+  {
+   "id": "t2-21",
+   "q": "Que reçoit le nouveau chef de patrouille lors de son investiture ?",
+   "a": "**La cordelière kaki** et **son bâton portant le fanion** de sa nouvelle patrouille. Les deux bandes blanches sont cousues d'avance à leur place.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "La cordelière kaki et le bâton portant le fanion",
+    "no": [
+     "La cordelière blanche et le sifflet de patrouille",
+     "Le foulard gris et la bague à deux torons",
+     "La barrette de patrouille et l'étendard"
+    ]
+   }
+  },
+  {
+   "id": "t2-22",
+   "q": "Lors de l'ouverture d'un camp, que remet le CT au servant pour allumer le kraal ?",
+   "a": "**Trois brins d'allumette.** L'étendard est accroché par deux branches en « Y » à **3 m du kraal** ; on chante *Ingonyama* puis *Du fagot jaillit la flamme*.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Trois brins d'allumette",
+    "no": [
+     "Un seul brin d'allumette",
+     "Une torche allumée au feu de veillée",
+     "Une bougie bénie par l'aumônier"
+    ]
+   }
+  },
+  {
+   "id": "t2-23",
+   "q": "Que signifie le geste des campeurs qui mettent chacun leur brindille dans le kraal ?",
+   "a": "Que **tous, autant qu'ils sont, acceptent la loi du camp**. Le kraal doit ensuite **rester allumé durant tout le camp** et être respecté.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Que tous acceptent la loi du camp",
+    "no": [
+     "Que chacun a déjà fait sa promesse",
+     "Que chaque patrouille a fini son installation",
+     "Que le camp est placé sous la garde du CT"
+    ]
+   }
+  },
+  {
+   "id": "t2-24",
+   "q": "Que manifeste le cérémonial des couleurs selon l'*Aurore* ?",
+   "a": "La **fidélité de la troupe aux principes du scoutisme** symbolisés par les pavillons : **la fraternité scoute** et **le service de la Patrie**. Il doit se dérouler dans un climat calme et solennel.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "La fidélité à la fraternité scoute et au service de la Patrie",
+    "no": [
+     "La fidélité au chef de troupe et à la paroisse",
+     "La fierté d'être la meilleure troupe du district",
+     "L'obéissance aux autorités civiles et militaires"
+    ]
+   }
+  },
+  {
+   "id": "t2-25",
+   "q": "Quand les couleurs sont-elles envoyées (hissées) ?",
+   "a": "**À l'ouverture du camp** et **chaque matin au premier rassemblement** de la journée. La cérémonie doit être **brève mais bien préparée**.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "À l'ouverture du camp et chaque matin au premier rassemblement",
+    "no": [
+     "Chaque soir à la veillée et le jour des promesses",
+     "Uniquement à l'ouverture et à la fermeture du camp",
+     "Chaque jour à midi, avant le repas de la troupe"
+    ]
+   }
+  },
+  {
+   "id": "t2-26",
+   "q": "Combien de temps avant la cérémonie les servants vont-ils chercher le pavillon au kraal ?",
+   "a": "**Un quart d'heure avant** les couleurs. Ils vérifient le libre jeu de la drisse et fixent le pavillon, cabillot en haut.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "note": "Nombre de servants : un servant et son aide (Cérémonial Sénégal) ; le CP de la patrouille d'honneur et trois patrouillards (Aurore) ; deux servants par mât (Montée des couleurs).",
+   "qcm": {
+    "ok": "Un quart d'heure avant",
+    "no": [
+     "Deux minutes avant",
+     "Une heure avant",
+     "La veille au soir"
+    ]
+   }
+  },
+  {
+   "id": "t2-27",
+   "q": "Avec quels nœuds fixe-t-on les pavillons à la drisse selon l'*Aurore* ?",
+   "a": "**En haut, un nœud de chaise autour d'un cabillot** ; **en bas, un nœud de tisserand** unissant la ganse à la drisse.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Nœud de chaise en haut, nœud de tisserand en bas",
+    "no": [
+     "Nœud plat en haut, nœud de cabestan en bas",
+     "Nœud de tisserand en haut, nœud de chaise en bas",
+     "Demi-clés en haut, nœud de carrick en bas"
+    ]
+   }
+  },
+  {
+   "id": "t2-28",
+   "q": "Quelle est la suite des commandements pour la montée des couleurs selon l'*Aurore* ?",
+   "a": "CT : **« Attention pour les couleurs ! »** — servants : **« Parés pour les couleurs »** — CT : **« Envoyez ! »** puis, quand les pavillons se déplient, **« Scouts, saluez ! »**.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Attention pour les couleurs ! – Parés ! – Envoyez ! – Scouts, saluez !",
+    "no": [
+     "Garde à vous ! – Prêts ! – Hissez ! – Saluez !",
+     "Toujours prêts ! – Parés ! – Amenez ! – Fixe !",
+     "Attention ! – Montez ! – Chantez ! – Repos !"
+    ]
+   }
+  },
+  {
+   "id": "t2-29",
+   "q": "Pendant la montée des couleurs, qui fait le salut scout selon l'*Aurore* ?",
+   "a": "**Ceux qui ont prononcé leur promesse** font le salut scout ; **les autres restent au prêt**. Tous suivent des yeux la montée des pavillons.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "note": "Le texte « Montée ou levée des couleurs » dit seulement que « les scouts saluent avec la maîtrise », sans distinguer les promis.",
+   "qcm": {
+    "ok": "Seuls ceux qui ont prononcé leur promesse",
+    "no": [
+     "Seuls les chefs et les CP",
+     "Tous les scouts, promis ou non",
+     "Seuls les servants au pied du mât"
+    ]
+   }
+  },
+  {
+   "id": "t2-30",
+   "q": "Que chante-t-on lorsque les couleurs sont à bloc ?",
+   "a": "**L'hymne national.** Selon le *Cérémonial Sénégal*, on le chante quand les couleurs sont à bloc, puis le chef commande « Prêt » et les servants fixent la drisse ; selon l'*Aurore*, la drisse est attachée puis le CT chante l'hymne.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "note": "Ordre hymne / fixation de la drisse inversé entre le Cérémonial Sénégal et l'Aurore.",
+   "qcm": {
+    "ok": "L'hymne national",
+    "no": [
+     "Le chant de la promesse",
+     "Ingonyama",
+     "Le chant des adieux"
+    ]
+   }
+  },
+  {
+   "id": "t2-31",
+   "q": "Quel cri termine la montée des couleurs au Sénégal ?",
+   "a": "Le chef lance **« Pour le Sénégal »**, les scouts répondent **« Dieu nous garde »**.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "note": "Le texte « Montée ou levée des couleurs » (non spécifique au Sénégal) donne « Pour son règne ! » – « Dieu nous garde ! ».",
+   "qcm": {
+    "ok": "« Pour le Sénégal » – « Dieu nous garde »",
+    "no": [
+     "« Pour la patrie » – « Toujours prêts »",
+     "« Pour le Sénégal » – « Nous servirons »",
+     "« Pour l'Afrique » – « Dieu nous garde »"
+    ]
+   }
+  },
+  {
+   "id": "t2-32",
+   "q": "À la descente des couleurs, que fait un scout occupé ailleurs dans le camp ?",
+   "a": "Quelle que soit son activité, il se met **au prêt (« Toujours prêt ») là où il se trouve**, **salue en direction du mât même s'il ne le voit pas**, et ne bouge ni ne parle jusqu'à la fin.",
+   "src": "Aurore Ceremonial Verte.pdf, CEREMONIAL+SENEGAL+revise (1) (1).pdf, Montée ou levée des couleurs.docx",
+   "qcm": {
+    "ok": "Il se met au prêt sur place et salue vers le mât",
+    "no": [
+     "Il rejoint le mât au pas de course pour saluer",
+     "Il poursuit son activité sans s'arrêter",
+     "Il rejoint sa patrouille au kraal et attend"
+    ]
+   }
+  },
+  {
+   "id": "t2-33",
+   "q": "Quand descend-on les couleurs, et qui s'en charge ?",
+   "a": "**Le soir, au coucher du soleil.** La **patrouille d'honneur** (quatre scouts selon l'*Aurore*) ou l'équipe de service. Le texte *Montée des couleurs* ajoute : aussi lorsqu'il pleut.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf, Montée ou levée des couleurs.docx",
+   "note": "Signaux de corne différents : Cérémonial Sénégal = coup long + coups brefs au début, coup long à la fin ; Montée des couleurs = coup long au début, second coup bref à la fin ; Aurore = coup long au début, second coup à la fin, puis parle d'un « coup de trompe long » final.",
+   "qcm": {
+    "ok": "Au coucher du soleil, par la patrouille d'honneur",
+    "no": [
+     "À midi, par le chef de troupe",
+     "Après la veillée, par les assistants",
+     "Au réveil, par le premier CP"
+    ]
+   }
+  },
+  {
+   "id": "t2-34",
+   "q": "Pour la rentrée des couleurs, commande-t-on « Amenez » ?",
+   "a": "Non. On commande **« Envoyez »**, comme pour la levée. **« Amenez »** se dit à la suite d'une **défaite**.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Non : « Envoyez », comme pour la levée",
+    "no": [
+     "Oui : « Amenez », comme dans la marine",
+     "Non : « Descendez », au signal du CP",
+     "Non : « Rentrez les couleurs », dit l'aumônier"
+    ]
+   }
+  },
+  {
+   "id": "t2-35",
+   "q": "Qui peut manœuvrer les drisses lors des couleurs ?",
+   "a": "**Seuls les scouts ayant prononcé la promesse.** Se voir confier les couleurs est un **privilège**.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Seuls les scouts ayant prononcé leur promesse",
+    "no": [
+     "Tous les scouts, à tour de rôle",
+     "Seuls les chefs de patrouille",
+     "Seuls les assistants de troupe"
+    ]
+   }
+  },
+  {
+   "id": "t2-36",
+   "q": "Comment dit-on d'un pavillon plié ? Et d'un pavillon déplié flottant au vent ?",
+   "a": "Plié : **ferlé**. Déplié et flottant au vent : **déferlé et battant**.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "Ferlé ; déferlé et battant",
+    "no": [
+     "Déferlé ; ferlé et battant",
+     "En berne ; à bloc et battant",
+     "Amené ; envoyé et flottant"
+    ]
+   }
+  },
+  {
+   "id": "t2-37",
+   "q": "Que signifient « à bloc » et « en berne » ?",
+   "a": "**À bloc** : complètement en haut du mât (position normale). **En berne** : à mi-mât (le *Cérémonial* dit « hisser jusqu'à mi-drisse »), **en signe de deuil**.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "À bloc : tout en haut ; en berne : à mi-mât, en signe de deuil",
+    "no": [
+     "À bloc : à mi-mât ; en berne : tout en haut, en signe de fête",
+     "À bloc : tout en haut ; en berne : plié au pied du mât",
+     "À bloc : roulé sur la hampe ; en berne : à mi-mât, pour la pluie"
+    ]
+   }
+  },
+  {
+   "id": "t2-38",
+   "q": "Comment plie-t-on les couleurs et l'étendard au Sénégal ?",
+   "a": "**En rectangle.** Le pliage en triangle (pays anglophones, remise des couleurs à la famille d'un soldat mort) **n'est pas de mise au Sénégal**. L'étendard est plié en rectangle, **insigne bien visible dessus**. Le pavillon est rapporté au kraal **ferlé, partie verte en dehors**.",
+   "src": "Aurore Ceremonial Verte.pdf, Montée ou levée des couleurs.docx",
+   "note": "Le texte « Montée ou levée des couleurs » présente deux techniques (rectangle et triangle) sans exclure le triangle.",
+   "qcm": {
+    "ok": "En rectangle",
+    "no": [
+     "En triangle",
+     "Roulé autour de la hampe",
+     "En carré, insigne caché"
+    ]
+   }
+  },
+  {
+   "id": "t2-39",
+   "q": "Que signifie le « petit drapeau » ajouté au mât du Palais présidentiel ?",
+   "a": "**La présence du chef de l'État** dans la résidence ou sur le territoire national.",
+   "src": "Aurore Ceremonial Verte.pdf",
+   "qcm": {
+    "ok": "La présence du chef de l'État",
+    "no": [
+     "Un deuil national en cours",
+     "La visite d'un chef d'État étranger",
+     "Un jour de fête nationale"
+    ]
+   }
+  },
+  {
+   "id": "t2-40",
+   "q": "Selon le texte « Montée ou levée des couleurs », que représente le mât dans le camp ?",
+   "a": "Il n'est pas là pour dominer : c'est **le point de ralliement, le cœur du camp**, le point central où l'on se rassemble, proche du lieu de veillée et du coin des chefs.",
+   "src": "Montée ou levée des couleurs.docx",
+   "qcm": {
+    "ok": "Le point de ralliement, le cœur du camp",
+    "no": [
+     "Le signe de la supériorité de la troupe",
+     "La limite entre les coins de patrouille",
+     "Le poste de garde de la patrouille de service"
+    ]
+   }
+  },
+  {
+   "id": "t2-41",
+   "q": "Quelles sont les dimensions et l'allure du drapeau sénégalais des Scouts du Sénégal ?",
+   "a": "Un **carré de 90 cm** de côté, trois bandes verticales **vert, jaune, rouge**, étoile verte à cinq branches, **frange or de 6 cm** sur trois côtés, hampe surmontée d'un **lys stylisé**, inscription « Scouts du Sénégal » sur la bande verte.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Un carré de 90 cm de côté, frangé d'or, hampe à lys stylisé",
+    "no": [
+     "Un rectangle de 1 m sur 1,50 m, sans frange, hampe à étoile",
+     "Un carré de 60 cm de côté, frangé de vert, hampe à lys stylisé",
+     "Un rectangle de 90 cm sur 60 cm, frangé d'or, hampe à lance"
+    ]
+   }
+  },
+  {
+   "id": "t2-42",
+   "q": "Qui porte le drapeau sénégalais et qui l'escorte ?",
+   "a": "Un **chef en gants blancs**, toujours escorté de **5 garçons également en gants blancs**. La hampe forme un angle de **45°** avec la verticale.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Un chef ganté, escorté de 5 garçons gantés",
+    "no": [
+     "Un CP ganté, escorté de 2 éclaireurs",
+     "Un assistant, escorté de 3 routiers",
+     "Le premier CP, escorté de toute sa patrouille"
+    ]
+   }
+  },
+  {
+   "id": "t2-43",
+   "q": "Dans un rassemblement, où se place le drapeau sénégalais ?",
+   "a": "**Immédiatement à droite du chef** qui commande le rassemblement. Sa présence est obligatoire dans les cérémonies officielles où les SDS sont en corps constitué.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Immédiatement à droite du chef qui commande",
+    "no": [
+     "Immédiatement à gauche du chef qui commande",
+     "Derrière l'étendard de la troupe",
+     "Au centre du rectangle, face au mât"
+    ]
+   }
+  },
+  {
+   "id": "t2-44",
+   "q": "Quelles sont les caractéristiques de la hampe de l'étendard de troupe ?",
+   "a": "Étendard en étamine de laine verte de 1 m, fixé par **7 ganses** à une **hampe de 2,10 m** terminée par un **lys en métal découpé et argenté**, avec deux rubans aux couleurs nationales (1 m × 6 cm).",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Hampe de 2,10 m, 7 ganses, lys argenté",
+    "no": [
+     "Hampe de 1,40 m, 5 ganses, lys doré",
+     "Hampe de 1,50 m, 7 ganses, tête de loup",
+     "Hampe de 2,50 m, 9 ganses, étoile verte"
+    ]
+   }
+  },
+  {
+   "id": "t2-45",
+   "q": "Qui porte l'étendard de troupe ?",
+   "a": "**Un assistant de troupe**, **encadré par 2 éclaireurs**. Le porte-drapeau et son escorte ont des **gants blancs**.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Un assistant de troupe, encadré par 2 éclaireurs",
+    "no": [
+     "Le chef de troupe, encadré par 5 scouts",
+     "Un CP seul, en gants blancs",
+     "L'aumônier, encadré par 2 routiers"
+    ]
+   }
+  },
+  {
+   "id": "t2-46",
+   "q": "Au camp, où se place l'étendard quand les couleurs sont hissées ?",
+   "a": "L'étendard **n'est jamais hissé au mât**. Il est placé **au pied du mât** s'il n'y a pas de flamme scoute ; si la flamme est hissée, il est placé **dans l'enceinte du kraal**.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Au pied du mât, ou dans le kraal si la flamme est hissée",
+    "no": [
+     "Hissé au mât, sous le pavillon national",
+     "Planté devant la tente du chef de troupe",
+     "Hissé au mât à la place de la flamme scoute"
+    ]
+   }
+  },
+  {
+   "id": "t2-47",
+   "q": "Comment la flamme scoute est-elle hissée par rapport au pavillon ?",
+   "a": "Sur une **branche distincte**, **après ou en même temps que le pavillon**, et rentrée **avant ou en même temps** que lui. Elle est mise en berne quand l'étendard est cravaté de crêpe.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Sur une branche distincte, après ou avec le pavillon",
+    "no": [
+     "Sur la même drisse, juste avant le pavillon",
+     "Seule, le pavillon restant au kraal",
+     "Toujours au-dessus du pavillon national"
+    ]
+   }
+  },
+  {
+   "id": "t2-48",
+   "q": "Quelles règles protègent le fanion de patrouille ?",
+   "a": "Il n'est porté **que par le CP**, ou en son absence par le second ; il n'est **jamais couché sur le sol** ; il **ne se hisse pas au mât**. À la messe au camp, il peut être planté autour de l'autel.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Porté par le CP ou le second, jamais au sol, jamais hissé",
+    "no": [
+     "Porté par tout scout promis, hissé chaque matin",
+     "Porté par le CT, couché au sol pendant la prière",
+     "Porté par le second seul, hissé sous la flamme"
+    ]
+   }
+  },
+  {
+   "id": "t2-49",
+   "q": "Quelle hauteur minimale a le mât de meute, et que porte-t-il à son sommet ?",
+   "a": "Au moins **1,50 m** ; il porte à son sommet **une tête de loup ou un loup entier**, en métal, en bois ou sculpté. Une **flamme jaune** s'y ajoute quand tous les louveteaux concernés ont leur deuxième étoile.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "1,50 m minimum, surmonté d'une tête de loup",
+    "no": [
+     "1 m minimum, surmonté d'une fleur de lys",
+     "2,10 m minimum, surmonté d'une tête de loup",
+     "1,50 m minimum, surmonté d'une étoile argentée"
+    ]
+   }
+  },
+  {
+   "id": "t2-50",
+   "q": "Quelles couleurs de rubans le louveteau attache-t-il au mât de meute selon le brevet gagné ?",
+   "a": "Religion : **blanc** ; intelligence : **bleu** ; habileté manuelle : **jaune** ; service du prochain : **rouge** ; aptitudes physiques : **vert**.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Religion blanc, intelligence bleu, service rouge, physique vert",
+    "no": [
+     "Religion bleu, intelligence blanc, service vert, physique rouge",
+     "Religion jaune, intelligence vert, service rouge, physique bleu",
+     "Religion blanc, intelligence jaune, service vert, physique rouge"
+    ]
+   }
+  },
+  {
+   "id": "t2-51",
+   "q": "Quels sont les emblèmes propres de l'Association des Scouts du Sénégal ?",
+   "a": "À côté des emblèmes nationaux (drapeau et pavillon), les **emblèmes propres** : **mât de meute, étendard de troupe, fanions de communauté, fanions de patrouille, flamme scoute**.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Mât de meute, étendard, fanions de communauté et de patrouille, flamme",
+    "no": [
+     "Drapeau national, pavillon, étendard et mât de pavillon",
+     "Foulard, cordelière, bâton, insigne de promesse et flots",
+     "Kraal, totem, fanion de district, croix et Bible"
+    ]
+   }
+  },
+  {
+   "id": "t2-52",
+   "q": "À quoi ressemble l'insigne de promesse des Scouts du Sénégal et où se porte-t-il ?",
+   "a": "Le même pour tous : **fleur de lys jaune sur baobab**, porté sur la **poche gauche** de la chemise à partir du jour de la promesse.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Fleur de lys jaune sur baobab, poche gauche",
+    "no": [
+     "Fleur de lys verte sur baobab, poche droite",
+     "Fleur de lys jaune sur antilope, poche gauche",
+     "Trèfle jaune sur carte d'Afrique, poche gauche"
+    ]
+   }
+  },
+  {
+   "id": "t2-53",
+   "q": "Comment fait-on le signe scout, et quelle main serre-t-on entre scouts ?",
+   "a": "Main droite, **pouce sur l'ongle du petit doigt, les trois autres doigts tendus**. Les scouts se serrent **la main gauche**. Un novice ne fait pas le signe : il donne la main droite. Ne pas tendre la main gauche aux non-scouts.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Pouce sur l'ongle du petit doigt, trois doigts tendus ; main gauche",
+    "no": [
+     "Pouce sur l'ongle de l'annulaire, deux doigts tendus ; main gauche",
+     "Pouce sur l'ongle du petit doigt, trois doigts tendus ; main droite",
+     "Index et majeur tendus, pouce replié ; main droite"
+    ]
+   }
+  },
+  {
+   "id": "t2-54",
+   "q": "Quand fait-on le salut brandi ?",
+   "a": "**Uniquement pendant le refrain du chant de la promesse** et **pour la voûte d'honneur** : bras droit tendu à **45°** en avant, la main faisant le salut.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Au refrain du chant de la promesse et pour la voûte d'honneur",
+    "no": [
+     "À la montée des couleurs et pendant l'hymne national",
+     "À la rencontre d'un convoi funèbre et au défilé",
+     "Au Grand Hurlement et lors des remises de brevets"
+    ]
+   }
+  },
+  {
+   "id": "t2-55",
+   "q": "Comment s'exécute l'acclamation des Scouts du Sénégal ?",
+   "a": "Dans les grandes circonstances ou en l'honneur d'un chef ou visiteur de marque. Le chef crie **« SUNU GAL »** en brandissant le poing, les scouts répondent **« TA KANAM »** ; **trois fois**, sur le rythme de Hip ! Hip ! Hourrah !",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf, Aurore Ceremonial Verte.pdf",
+   "note": "Orthographe variable : « SUNU GAL TA KANAM » et « CIA-KA-NAM » (Cérémonial Sénégal), « SUNU GAAL CA KANAM » (Aurore).",
+   "qcm": {
+    "ok": "Le chef crie « Sunu gal », les scouts répondent « Ta kanam », trois fois",
+    "no": [
+     "Le chef crie « Ta kanam », les scouts répondent « Sunu gal », une fois",
+     "Le chef crie « Scouts toujours », les scouts répondent « Prêts », trois fois",
+     "Le chef crie « Sunu gal », les scouts répondent « Dieu nous garde », deux fois"
+    ]
+   }
+  },
+  {
+   "id": "t2-56",
+   "q": "Quel signe de deuil porte-t-on sur l'uniforme, et qui fixe la durée à la mort d'un garçon de l'unité ?",
+   "a": "Un **losange noir sur la manche gauche**. À la mort d'un garçon de l'unité, la durée du deuil est décidée par **la cour d'honneur**. Les emblèmes propres sont cravatés de crêpe noir.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Losange noir, manche gauche ; durée fixée par la cour d'honneur",
+    "no": [
+     "Brassard noir, manche droite ; durée fixée par l'aumônier",
+     "Foulard noir, autour du cou ; durée fixée par le district",
+     "Ruban noir, poche gauche ; durée fixée par le chef de groupe"
+    ]
+   }
+  },
+  {
+   "id": "t2-57",
+   "q": "Où se place l'étendard scout lors d'une messe dans une église ?",
+   "a": "L'étendard de l'échelon le plus élevé prend place **dans le chœur, du côté de l'Épître**. Il est tenu **à l'horizontale** pendant l'« homo factus est » et la consécration.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Dans le chœur, côté de l'Épître",
+    "no": [
+     "Dans le chœur, côté de l'Évangile",
+     "À l'entrée de l'église, près des fonts",
+     "Au fond de la nef, derrière l'assemblée"
+    ]
+   }
+  },
+  {
+   "id": "t2-58",
+   "q": "Quelles règles s'appliquent au mât de pavillon ?",
+   "a": "De préférence **lisse**, il ne porte **aucun emblème, marque ou pavillon de service**. Les pavillons étrangers sont hissés sur des **mâts distincts, à la même hauteur**. Le pavillon n'est **pas béni**.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Mât lisse sans emblème ; pavillons étrangers sur mâts distincts",
+    "no": [
+     "Mât décoré du totem ; pavillons étrangers sur le même mât",
+     "Mât lisse sans emblème ; pavillons étrangers plus bas",
+     "Mât surmonté d'un lys ; pavillons étrangers interdits"
+    ]
+   }
+  },
+  {
+   "id": "t2-59",
+   "q": "Comment se déroule la cérémonie des couleurs chez les louveteaux ?",
+   "a": "La cheftaine appelle **« Meute, meute, meute… »** ; les louveteaux se rassemblent **en demi-cercle autour du mât**. Elle commande **« De notre »**, ils répondent **« Mieux »**. La suite est comme chez les éclaireurs.",
+   "src": "CEREMONIAL+SENEGAL+revise (1) (1).pdf",
+   "qcm": {
+    "ok": "Appel « Meute ! », demi-cercle autour du mât, « De notre – Mieux »",
+    "no": [
+     "Appel au sifflet, rectangle face au mât, « Scouts toujours – Prêts »",
+     "Appel « Meute ! », cercle de parade, « Akéla – De notre mieux »",
+     "Appel « Troupe ! », demi-cercle autour du kraal, « De notre – Mieux »"
+    ]
+   }
+  }
+ ]
+}

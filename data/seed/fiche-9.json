@@ -1,0 +1,79 @@
+{
+ "theme": 9,
+ "titre": "OMMS et spiritualité",
+ "intro": "Fiche construite à partir du *Better World Framework*, de la session sur les programmes de l'OMMS et des récaps du District (ODD, initiatives), puis des documents CICS : programme d'éducation spirituelle des branches, présentation « Devoir envers autrui », présentation de la CICS, programme de dialogue interreligieux et fiches sur les saints patrons.",
+ "sections": [
+  {
+   "h": "L'OMMS : mission, vision, priorités",
+   "items": [
+    "**Mission** (35e Conférence mondiale, **Durban 1999**) : contribuer à l'éducation des jeunes, en partant de la Promesse et de la Loi, pour un **monde meilleur**. Marque : **« Créer un monde meilleur »**.",
+    "**Vision 2023** (40e Conférence, **Ljubljana 2014**) : **100 millions de jeunes** citoyens actifs.",
+    "**6 priorités stratégiques** (Ljubljana 2014) : engagement des jeunes, méthodes éducatives, diversité et inclusion, **impact social**, communication et relations extérieures, gouvernance.",
+    "OMMS : organisation indépendante, non lucrative, non partisane ; **plus de 50 millions de membres, 160 pays et territoires**. Instance gouvernante : **Conférence mondiale tous les 3 ans** ; exécutif : **Comité mondial**.",
+    "**Théorie de l'alignement** : les OSN ajustent plans et programmes à la stratégie de l'OMMS, elle-même alignée sur l'ONU, l'UNESCO, l'UNICEF."
+   ],
+   "src": "BETTER WORLD FRAMWORK.pdf, SESSION LES PROGRAMMES DE L_OMMS vue globale.pptx"
+  },
+  {
+   "h": "Programmes du Bureau mondial et ODD",
+   "items": [
+    "Historique : **2004** Brevet Scouts du Monde ; **2005** Programme Environnement ; **2011** Messagers de la Paix ; **2016** Cadre Monde Meilleur ; **2018** Mobilisation pour les ODD ; **2020** Tribu de la Terre ; **2024** Leaders de la vie et Alliés pour la santé.",
+    "**17 ODD** adoptés en **2015** (Agenda 2030). Repères : ODD 4 éducation de qualité, ODD 6 eau, ODD 13 climat, ODD 16 paix et justice, ODD 17 partenariats.",
+    "**Scouts for SDGs : 4 initiatives, 10 défis.** Messagers de la Paix (Dialogue pour la paix, Dialogue interreligieux, Patrimonito) ; Tribus de la Terre (Champions de la Nature, Plastic Tide Turners, Go Solar) ; Life Leaders (Impact Innovators, EQ in action) ; Alliés de la santé (Mind Builders, Nutrition).",
+    "Badge : au moins **5 activités** + questions de réflexion + **projet de service communautaire**, histoire partagée sur **sdgs.scout.org**, **badge numérique** sous une semaine environ.",
+    "**Messagers de la Paix** : 3 éléments (**programme, réseau, fonds de soutien**) et 4 objectifs (culture de la paix, culture du dialogue, soutien aux ODD, réseau mondial).",
+    "**Programme Environnement** : 5 buts (eau et air purs, habitats pour les espèces natives, substances dangereuses, pratiques écologiques, préparation aux catastrophes)."
+   ],
+   "src": "SESSION LES PROGRAMMES DE L_OMMS vue globale.pptx, Récap 17 ODDs.pdf, Récap initiatives et défis.PDF, BETTER WORLD FRAMWORK.pdf"
+  },
+  {
+   "h": "Le Brevet Scouts du Monde (SDM)",
+   "items": [
+    "Citoyenneté mondiale autour de **Paix, Environnement, Développement** ; pour les **15-26 ans**, scouts ou non.",
+    "3 éléments : **Découverte SDM** (au moins **21 h** : Explorer puis Répondre), **Service Volontaire SDM** (au moins **80 h**, environ deux semaines), **Réseau SDM**.",
+    "Né des priorités « Participation des jeunes » et « Adolescents » (**Thessalonique 2002**)."
+   ],
+   "src": "BETTER WORLD FRAMWORK.pdf"
+  },
+  {
+   "h": "Principes du scoutisme et devoir envers autrui",
+   "items": [
+    "**3 principes** : Devoir envers **Dieu** (spirituel), envers **autrui** (social), envers **soi-même** (personnel).",
+    "Devoir envers autrui : **participer au développement de la société dans le respect de la dignité de l'homme et de l'intégrité de la nature** ; **loyauté envers son pays** et **amitié mondiale**.",
+    "B-P (High Leigh, **1926**) : la religion « **n'y entre pas du tout. Elle est déjà là** ». Résolution **14/24 (1924)** : le scoutisme veut **renforcer** les croyances de chacun.",
+    "Méthode scoute : **8 éléments** depuis la 41e Conférence de **Bakou (août 2017)**, avec l'**engagement dans la communauté**.",
+    "Père Sevin : « Ton prochain […] **c'est tous les hommes** »."
+   ],
+   "src": "Présentation DEVOIR ENVERS AUTRUI Symposium Libreville Déc 2023.pdf, Education spirituelle des branchesV21_09_22.pdf, Paroissiens POURQUOI ADHERER AU SCOUTISME.pdf"
+  },
+  {
+   "h": "Éducation spirituelle par branche (CICS-Afrique)",
+   "items": [
+    "Programme rédigé par **Ernest Clément Mendy**, validé au **1er Symposium CICS-Afrique, Dakar, août 2022**. **4 compétences pédagogiques de base** : cheminer, connaître (et comprendre les autres religions), vivre et célébrer sa foi, témoigner par le service. **10 compétences de vie courante**.",
+    "**Louveteaux (7-12 ans)** : rites, récits, prière ; 20-30 min de retour au calme avant la prière, **30 min maximum**. Objectif : vivre sa religion et s'intégrer dans un contexte religieux.",
+    "**Éclaireurs** : religion active, **BA** (« faire des chrétiens en fait »), **une minute de silence par jour** ; objectif : initiatives et choix éclairés. Thème **Ubuntu** (« Je suis, parce que nous sommes ») et **teranga** sénégalaise.",
+    "**Routiers (18-26 ans)** : deux piliers, **mentorat** (parrain routier « premier de cordée », Père spirituel) et **Heure Route** (seule règle : **le silence**) ; **bilan au moins une fois par an**.",
+    "Saints patrons : **François d'Assise** (louveteaux), **Claire d'Assise** (louvettes), **Georges** (éclaireurs, fêté le **23 avril**)."
+   ],
+   "src": "Education spirituelle des branchesV21_09_22.pdf, Section sur les Saint Patrons.docx"
+  },
+  {
+   "h": "La CICS et le dialogue interreligieux",
+   "items": [
+    "**CICS** fondée en **1962**, siège à **Rome**, **statut consultatif** auprès de l'OMMS ; relation avec le **Dicastère pour les Laïcs, la Famille et la Vie**. **20 organisations membres** en Afrique.",
+    "**Père Jacques Sevin** (jésuite, 1882-1951, vénérable en 2012) : Scouts de France le **25 juillet 1920**, secrétaire de l'**OISC** ; croix potencée (universalité du salut) ; prière scoute attribuée à **saint Ignace de Loyola**.",
+    "Fleur de lys (B-P, vers 1909) : s'orienter ; **Franchise, Dévouement, Pureté**. Aumônier : modèle des **pèlerins d'Emmaüs**.",
+    "**Dialogue interreligieux** (Peter Kabo) : BDI de l'OMMS destiné aux aînés, élargi par la CICS à toutes les branches. Aînés : **maturation spirituelle, exploration de l'invisible, vivre-ensemble**.",
+    "Sénégal : 4 confréries (**Qadiriyya, Tijaniyya, Mourides, Layènes**) ; Tijaniyya propagée par **El Hadj Omar Tall**."
+   ],
+   "src": "Quest ce que la CICS PDF.pdf, Présentation DEVOIR ENVERS AUTRUI Symposium Libreville Déc 2023.pdf, Paroissiens POURQUOI ADHERER AU SCOUTISME.pdf, Programme Dialogue Interreligieux CICS.pdf, Confréries du Sénégal (1).docx"
+  }
+ ],
+ "vigilance": [
+  "**Effectifs mondiaux** : la session OMMS indique plus de 50 millions de membres dans 160 pays, contre +57 millions et +200 organisations scoutes nationales dans le dépliant « Paroissiens ».",
+  "**Âge de la branche Route** : 18-22 ans dans le *Better World Framework*, contre 18-26 ans dans le programme d'éducation spirituelle.",
+  "**Premier Jamboree mondial (1920)** : Richmond Park, du 31 juillet au 8 août, dans la présentation de la CICS, contre Olympia Hall, en août, dans le programme de dialogue interreligieux.",
+  "**Le Père Sevin et la CICS** : la présentation de Libreville le dit « co-fondateur de la CICS », mais la CICS est fondée en 1962 et Sevin meurt en 1951. Il a cofondé l'OISC en 1920.",
+  "**Saint Georges** : « patron des scouts » dans le programme d'éducation spirituelle, « patron des éclaireurs » dans la fiche sur les saints patrons."
+ ]
+}

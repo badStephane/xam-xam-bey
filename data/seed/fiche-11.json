@@ -1,0 +1,50 @@
+{"theme": 11, "titre": "Annales du Rallye", "intro": "Fiche construite à partir des questionnaires et des corrigés du Rallye : Mbour 2015, Médinakel 2017, Kaolack 2018 (national), Dakar 2022 et Rallye DAK23. Seules les réponses présentes dans les corrigés sont reprises.",
+ "sections": [
+  {"h": "Connaissance du mouvement", "items": [
+   "**Saint Georges**, patron des éclaireurs, fêté le **23 avril**. La Pensée scoute célèbre la **naissance de B-P** (22 février 1857).",
+   "Repères : **1907** Brownsea, **1908** *Scouting for Boys*, **1909** rallye de Crystal Palace, **1914** louvetisme, **1916** *Livre du louveteau*, **1918** route, **1922** *La route du succès*.",
+   "Plus haute distinction : le **Loup de bronze** ; premier Sénégalais distingué : **Albert Ndiaye**. Morse inventé par **Samuel Morse en 1832**.",
+   "Région de Dakar : **5 districts** (Plateau, Grand Dakar I et II, Niayes, Magola). OMMS : **172 pays** (corrigé 2022). Scoutisme africain : **13 mars**.",
+   "Méthode scoute : **8 éléments** depuis 2017, dont l'**engagement communautaire**. Principes : devoir envers **Dieu**, envers **autrui**, envers **soi-même**. Devise « Toujours prêt » : de **Be Prepared**."],
+   "src": "Connaissance du mvt rallye dak23.pdf, Questions Réponses Rallye 2017.pdf, Questions Réponses Rallye 2022.pdf, Questions-Reponses Rallye National Branche Verte Kaolack 2018.pdf"},
+  {"h": "Vie de patrouille et rôle du CP", "items": [
+   "**Cour d'honneur** : organe directeur de la troupe (objectifs de l'année, admission à la promesse, sanction des progressions).",
+   "**Fanion** : emblème de la pat, **40 cm x 25 cm**, tresse 2 cm ; il est planté à terre lors de l'**investiture du CP**. Symboles de la branche verte : étendard, rassemblement, fanion, manoir.",
+   "**Livre d'or** : totem, saint patron, prière, hymne, loi, devise, cri, langage secret, liste des membres. **Cahier de bord** : comptes rendus, mémoire de la pat.",
+   "Promesse en **4 phases** : décision du jeune, décision du groupe (cour d'honneur), veillée de promesse, engagement. Nomination du CP : choix des jeunes, lettre (facultative), cour d'honneur, investiture.",
+   "Premier signe de fraternité scoute : l'**uniforme**. Kraal : chœur d'**Engonyama** (« Il est un lion… il est un hippopotame »)."],
+   "src": "CP RALLYE DAK23.pdf, Questions Réponses Rallye 2017.pdf, Questions Réponses Rallye 2023.pdf"},
+  {"h": "Signalisation, orientation, topographie", "items": [
+   "**Déclinaison** : écart entre Nord magnétique et Nord géographique. Montre : ombre d'une brindille sur l'aiguille des heures, nord sur la **bissectrice** avec l'axe 12h-6h.",
+   "Constellations : queue de la **grande ourse** et tête de la **petite ourse** vers le nord ; **Cassiopée** et le **dragon** au nord ; pointe basse de la **croix du sud** vers le sud.",
+   "Lune : seulement en **croissant**, jamais pleine. Lettres **B, Q** bonnes ; **P, D** mauvaises (prendre le sens opposé).",
+   "Boussoles : d'**orientation** (carte), de **visée** (objectif), **compas** (direction continue). **Courbe de niveau** : points de même altitude. **Rose des vents** : 16 directions.",
+   "Codages : dents de scie, clé de 100, clé de 10, sémaphore. Signalisation : **verticale, horizontale, lumineuse**."],
+   "src": "Questions Réponses Rallye 2017.pdf, Questions Réponses Rallye 2022.pdf, TOPO RALLYE DAK23.pdf, Questions Réponses Rallye 2023.pdf"},
+  {"h": "Matelotage", "items": [
+   "**10 nœuds de l'aspirant** : ganse, demi-clé, simple, tour mort, ganse à tête d'alouette, plat, pêcheur, cabestan, tisserand, chaise.",
+   "Familles : **arrêt** (simple, huit), **jonction** (plat), **coulant**. Sortir d'un puits : **chaise**. Raccourcir : **jambe de chien**. Cordes inégales : **vache** (selon les corrigés).",
+   "Crochet : **gueule de raie** ; rondin : **nœud de bois** ; clôture : **cabestan** ; effilochage : **simple** ou **capucin**.",
+   "Brêlages : **carré** (2 perches perpendiculaires), **en long** (parallèles), **triple** (3 perches), **tête de bigue** (trépied), diagonal et étoile (angle quelconque).",
+   "Vocabulaire : **toron**, **décommettre**, **frapper**, **élinguer**, **étaler en biture**, **glène**."],
+   "src": "Questions Réponses Rallye 2017.pdf, Questions Réponses Rallye 2022.pdf, matelotage rallye dak23.pdf"},
+  {"h": "Secourisme et sécurité", "items": [
+   "**PAS** : Protéger, Alerter, Secourir. Baliser **100 à 150 m le jour**, **200 à 300 m la nuit**. Numéros : pompiers **18**, police **17**, SAMU **1515**, gendarmerie 800 00 20 20.",
+   "Hémorragie externe : compression locale, pansement compressif, point de compression, **garrot en dernier**. Interne : **position du choqué**, diète, couvrir, évacuer.",
+   "Examen : saignement, conscience, respiration, circulation, squelette. Absence de respiration : **LVA + VA**. Fréquence cardiaque adulte : **60 à 80/min**.",
+   "Brûlures : 1er degré (épiderme), 2e (cloques, ne pas percer), 3e (protocole **EEE**). Fracture fermée : protocole **RIRE** (Refroidissement, Immobilisation, Repos, Élévation).",
+   "Feux : classes **A** solides, **B** hydrocarbures, **C** gaz, **D** métaux, E électrique, F huiles. Extincteur : goupille, percuter, test, **base des flammes**."],
+   "src": "Questions Réponses Rallye 2017.pdf, secourisme rallye dak23.pdf, Questions Réponses Rallye 2022.pdf"},
+  {"h": "Religion et civisme", "items": [
+   "Évangélistes : **Matthieu** l'homme, **Marc** le lion, **Luc** le taureau, **Jean** l'aigle. Verset le plus court : **Jean 11, 35**.",
+   "Islam : premier muezzin **Bilal** ; Tamkharit = **Achoura**. Piliers : prière, jeûne, aumône, pèlerinage, profession de foi.",
+   "Sacrements : baptême, eucharistie, confirmation, réconciliation, mariage, ordre, onction des malades. Couleurs liturgiques : **blanc, vert, violet, rouge**.",
+   "Sénégal : devise **Un peuple, un but, une foi** ; sceaux : **lion** (présidence) et **baobab** (administration)."],
+   "src": "Questions Réponses Rallye 2023.pdf, Questions Réponses Rallye 2022.pdf, QUESTIONS REPONSES RALLYE MBOUR 2015.pdf, Questions Réponses Rallye 2017.pdf"}
+ ],
+ "vigilance": [
+  "**Parties du carnet de preuves** : le corrigé DAK23 en donne 4 (volontaire, engagé, technicien, animateur) ; le corrigé 2017 annonce 4 parties mais n'en cite que 3 (engagé, technicien, animateur).",
+  "**5e pilier de l'islam** : « croire en Dieu » dans le corrigé 2015, « les deux témoignages » dans le corrigé 2017.",
+  "**Noms des responsables** : ils changent selon l'année (Général Serge Daniel Badji en 2017, Antoine Ghislain Kaly en 2023). Vérifier les titulaires actuels avant le Rallye.",
+  "**Brêlages diagonal et en étoile** : le corrigé DAK23 leur donne la même utilité ; seule la disposition des perches diffère."
+ ]}

@@ -77,11 +77,11 @@
    "a": "Le **siège de Mafeking** (guerre des Boers, 1899-1900). C'est là que B-P découvre l'enthousiasme et l'utilité des jeunes (les « cadets de Mafeking »).",
    "src": "Bases du scoutisme.pdf",
    "qcm": {
-    "ok": "Le siège de Mafeking (1899-1900), où il découvre l'utilité des jeunes",
+    "ok": "Le siège de Mafeking (1899-1900)",
     "no": [
-     "La bataille de Waterloo",
-     "Le camp de Brownsea (1907)",
-     "La guerre de Crimée (1854)"
+     "La bataille d'Omdurman (1898)",
+     "La guerre de Crimée (1854-1856)",
+     "La bataille de Waterloo (1815)"
     ]
    }
   },
@@ -91,7 +91,7 @@
    "a": "**M'hala Panzi** (Natal) : l'homme qui se couche pour tuer. **Kantakye** (Ashantis) : l'homme au grand chapeau. **Impeesa** (Matabélés) : le loup qui ne dort jamais.",
    "src": "fiches-BP.pdf, Quiz-BP.pdf",
    "qcm": {
-    "ok": "M'hala Panzi, Kantakye et Impeesa (le loup qui ne dort jamais)",
+    "ok": "M'hala Panzi, Kantakye et Impeesa",
     "no": [
      "Impeesa, Akela et Baloo",
      "Kantakye, Bagheera et Kaa",
@@ -333,9 +333,9 @@
    "qcm": {
     "ok": "1918 ou 1919 selon les sources ; La route du succès",
     "no": [
-     "1925 ; Scouting for Boys",
-     "1910 ; le Livre du louveteau",
-     "1918 ; Aids to Scouting"
+     "1925 selon les sources ; Scouting for Boys",
+     "1910 ou 1912 selon les sources ; le Livre du louveteau",
+     "1918 ou 1919 selon les sources ; Aids to Scouting"
     ]
    }
   },
@@ -486,11 +486,11 @@
    "a": "Il n'est pas en soi un but défini par B-P. Le but du scoutisme n'est pas de former de futurs prêtres, mais de bons citoyens.",
    "src": "Bases du scoutisme.pdf",
    "qcm": {
-    "ok": "Ce n'est pas un but défini par B-P : former de bons citoyens, pas des prêtres",
+    "ok": "Pas un but défini par B-P : former des citoyens, pas des prêtres",
     "no": [
-     "C'est le premier but fixé par B-P",
-     "Il vise à former de futurs prêtres",
-     "Il est réservé aux routiers"
+     "Le premier but fixé par B-P : former d'abord des croyants",
+     "Un but réservé aux routiers, qui s'engagent dans leur Église",
+     "Le but principal : préparer des vocations de prêtres"
     ]
    }
   },
@@ -558,9 +558,9 @@
    "qcm": {
     "ok": "Le sens des autres, la compétence, l'observation suivie du réflexe",
     "no": [
-     "La force, la vitesse, l'endurance",
-     "L'obéissance, la ponctualité, la propreté",
-     "Le courage, la richesse, la ruse"
+     "La force physique, la vitesse et l'endurance à la marche",
+     "L'obéissance aux chefs, la ponctualité et la propreté",
+     "Le courage au combat, l'habileté manuelle et la ruse"
     ]
    }
   },
@@ -614,9 +614,9 @@
    "qcm": {
     "ok": "Main droite, trois doigts du milieu levés, pouce sur l'auriculaire",
     "no": [
-     "Main gauche, deux doigts levés",
-     "Main droite, quatre doigts levés, pouce replié",
-     "Main droite à plat sur le cœur"
+     "Main gauche, deux doigts levés, pouce replié sur la paume",
+     "Main droite, quatre doigts levés, pouce replié sur la paume",
+     "Main droite à plat sur le cœur, doigts serrés vers le haut"
     ]
    }
   },
@@ -626,11 +626,11 @@
    "a": "Elle est du côté du cœur, et un chef ashanti l'a tendue à B-P : les plus braves serrent la main gauche, en abandonnant leur bouclier.",
    "src": "Bases du scoutisme.pdf, fiches-BP.pdf",
    "qcm": {
-    "ok": "Côté du cœur ; les braves la tendent en posant leur bouclier (chef ashanti)",
+    "ok": "Côté du cœur ; les braves la tendent en posant leur bouclier",
     "no": [
-     "Pour garder la main droite libre pour saluer",
-     "Par coutume des officiers anglais",
-     "Pour se distinguer des guides"
+     "Pour garder la main droite libre de saluer en même temps",
+     "Par coutume des officiers anglais de l'armée des Indes",
+     "Pour se distinguer des guides, qui serrent la main droite"
     ]
    }
   },
@@ -667,7 +667,7 @@
    "q": "Quelle est la taille d'une patrouille ?",
    "a": "Historiquement **huit** (début du mouvement, Bases du scoutisme). Aujourd'hui **cinq à sept** (LE SCOUTISME).",
    "src": "Bases du scoutisme.pdf, LE SCOUTISME.docx",
-   "note": "Contradiction entre sources : à confirmer avec le Manuel du CP en décembre.",
+   "note": "Les sources divergent : huit (Bases du scoutisme, débuts du mouvement), cinq à sept (LE SCOUTISME), six à huit (Manuel du CP).",
    "qcm": {
     "ok": "Huit à l'origine, cinq à sept aujourd'hui",
     "no": [
@@ -683,11 +683,11 @@
    "a": "L'attitude qu'on doit avoir, balisée par la loi scoute : vivre scoutement partout et faire passer le bonheur des autres au moins autant que le sien.",
    "src": "la devise, l'esprit et les éléments fondamentaux du scoutismes.docx",
    "qcm": {
-    "ok": "Vivre scoutement partout, en faisant passer le bonheur des autres au moins autant que le sien",
+    "ok": "Vivre scoutement partout, le bonheur des autres autant que le sien",
     "no": [
-     "Porter l'uniforme en toute occasion",
-     "Obéir sans discuter à son chef",
-     "Gagner les concours entre patrouilles"
+     "Porter l'uniforme en toute occasion, même hors des activités",
+     "Obéir sans discuter à son chef, en camp comme en ville",
+     "Gagner les concours entre patrouilles pour l'honneur de la troupe"
     ]
    }
   },

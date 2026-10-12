@@ -1,0 +1,851 @@
+{
+ "theme": 5,
+ "cards": [
+  {
+   "id": "t5-01",
+   "q": "Quel texte définit les collectivités éducatives, cité en ouverture du cours sur la responsabilité ?",
+   "a": "La **loi n° 96-07 du 22 mars 1996** portant transfert des compétences aux régions et aux communautés locales : « un regroupement d'enfants, d'adolescents, d'adultes à l'occasion des vacances et des temps de loisirs… ».",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Loi n° 96-07 du 22 mars 1996",
+    "no": [
+     "Loi n° 77-64 du 26 mai 1977",
+     "Loi n° 96-07 du 22 mars 1986",
+     "Loi n° 98-07 du 12 mars 1998"
+    ]
+   }
+  },
+  {
+   "id": "t5-02",
+   "q": "Quels sont les trois droits du chef scout pour mener à bien sa mission ?",
+   "a": "Une **information sur le Projet Pédagogique**, une **assurance de protection** de sa personne et de ses biens, et des **moyens suffisants** pour réaliser une activité.",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Information sur le projet pédagogique, assurance, moyens suffisants",
+    "no": [
+     "Rémunération, congés, assurance maladie",
+     "Autorité sur les parents, budget libre, assurance",
+     "Choix du lieu de camp, matériel neuf, indemnités"
+    ]
+   }
+  },
+  {
+   "id": "t5-03",
+   "q": "Quels sont les devoirs du chef scout selon le cours ?",
+   "a": "Réaliser le **projet pédagogique** dans le respect des orientations fixées ; **éduquer et former** les jeunes pour qu'ils deviennent des citoyens utiles ; veiller à l'**hygiène et à la sécurité physique, morale et matérielle** des enfants **24 h sur 24**.",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Projet pédagogique, éducation, hygiène et sécurité 24 h/24",
+    "no": [
+     "Projet pédagogique, éducation, sécurité pendant les activités seulement",
+     "Encadrement des jeux, cuisine, transport des jeunes",
+     "Rapport aux parents, sécurité matérielle, collecte des cotisations"
+    ]
+   }
+  },
+  {
+   "id": "t5-04",
+   "q": "Dans quels trois cas peut-on être déclaré civilement responsable d'un dommage ?",
+   "a": "Quand on a **personnellement causé** le dommage, quand le **jeune sous notre contrôle** l'a causé, ou quand la **chose ou l'animal sous notre garde** en a été l'instrument. L'auteur doit **réparer par des dommages-intérêts**.",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Son propre fait, le fait du jeune contrôlé, la chose ou l'animal gardé",
+    "no": [
+     "Son propre fait seulement, s'il y a eu intention de nuire",
+     "Le fait d'un passant, d'un voisin ou d'un parent",
+     "Uniquement en cas de condamnation pénale préalable"
+    ]
+   }
+  },
+  {
+   "id": "t5-05",
+   "q": "Quelle est la différence entre responsabilité civile et responsabilité pénale ?",
+   "a": "La responsabilité **civile** oblige l'auteur à **réparer** le dommage par des **dommages-intérêts**. La responsabilité **pénale** tend à la **sanction du coupable** d'un fait expressément prévu et puni par la loi.",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Civile : réparer par dommages-intérêts ; pénale : sanctionner une infraction",
+    "no": [
+     "Civile : sanctionner une infraction ; pénale : réparer le dommage",
+     "Civile : concerne les adultes ; pénale : concerne les mineurs",
+     "Civile : faute grave ; pénale : faute légère"
+    ]
+   }
+  },
+  {
+   "id": "t5-06",
+   "q": "Sur quel précepte latin repose le fondement classique de la responsabilité civile ?",
+   "a": "« **Neminem laedere** » : ne pas nuire à autrui. Dès qu'on nuit à autrui, on commet une **faute** qui oblige à réparation.",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Neminem laedere : ne pas nuire à autrui",
+    "no": [
+     "Culpa levissima : la faute la plus légère",
+     "Nul crime sans loi : principe de légalité",
+     "Force majeure : l'événement insurmontable"
+    ]
+   }
+  },
+  {
+   "id": "t5-07",
+   "q": "Quelles sont les trois conditions de la responsabilité civile, et quel article les fonde ?",
+   "a": "La **faute**, le **préjudice** (dommage) et le **lien de causalité**. Article **118 du COCC** : « Est responsable celui qui, par sa faute, cause un dommage à autrui. »",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Faute, préjudice, lien de causalité (article 118 du COCC)",
+    "no": [
+     "Faute, intention, condamnation (article 4 du Code pénal)",
+     "Dommage, témoin, plainte (article 129 du COCC)",
+     "Faute, préjudice, assurance (article 143 du COCC)"
+    ]
+   }
+  },
+  {
+   "id": "t5-08",
+   "q": "Comment le cours définit-il la faute, et une faute très légère suffit-elle ?",
+   "a": "La faute est un **manquement à une obligation préexistante** (article 119). Son importance n'a **aucune incidence** : même la faute la plus vénielle, la **culpa levissima**, engage la responsabilité.",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Manquement à une obligation préexistante ; même la plus légère suffit",
+    "no": [
+     "Acte volontaire de nuire ; seule la faute grave compte",
+     "Infraction punie par la loi ; il faut une condamnation",
+     "Négligence répétée ; une seule faute ne suffit pas"
+    ]
+   }
+  },
+  {
+   "id": "t5-09",
+   "q": "Quels caractères doit avoir le dommage pour engager la responsabilité ?",
+   "a": "Il peut être **matériel ou moral**, actuel ou futur, mais doit toujours être **certain et direct** (article 125). Direct : il découle de la faute sans qu'aucun fait postérieur ait concouru à sa réalisation.",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Matériel ou moral, et toujours certain et direct",
+    "no": [
+     "Uniquement matériel, et chiffré par un expert",
+     "Matériel ou moral, mais toujours immédiat",
+     "Uniquement corporel, et constaté par un médecin"
+    ]
+   }
+  },
+  {
+   "id": "t5-10",
+   "q": "Dans quel cas n'y a-t-il pas de responsabilité civile malgré le dommage ?",
+   "a": "Quand le fait dommageable est la conséquence d'une **force majeure** ou d'un **cas fortuit** : un événement **extérieur, insurmontable et impossible à prévoir** (article 129).",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "En cas de force majeure ou de cas fortuit",
+    "no": [
+     "Quand la victime est mineure",
+     "Quand le chef était en camp fixe",
+     "Quand le dommage est seulement moral"
+    ]
+   }
+  },
+  {
+   "id": "t5-11",
+   "q": "Qui répond du dommage causé par un animal ou une chose ?",
+   "a": "**Toute personne qui en a la maîtrise** (article 137) : le propriétaire qui l'utilise lui-même ou par un préposé. La maîtrise est transférée s'il l'a confié à autrui ou si un tiers l'utilise sans sa volonté (article 138).",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "La personne qui en a la maîtrise",
+    "no": [
+     "Toujours le propriétaire, quoi qu'il arrive",
+     "La victime, si elle s'en est approchée",
+     "La collectivité locale du lieu de l'accident"
+    ]
+   }
+  },
+  {
+   "id": "t5-12",
+   "q": "Que prévoit le cours sur la responsabilité des commettants (patrons) et de leurs préposés ?",
+   "a": "Les commettants répondent des dommages causés par une personne **soumise à leur autorité** dans l'exercice de ses fonctions (article 146). Commettant et préposé sont **solidairement responsables**, et le civilement responsable peut se retourner contre le préposé : l'**action récursoire** (article 149).",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Ils sont solidairement responsables ; recours possible par action récursoire",
+    "no": [
+     "Seul le préposé est responsable ; le commettant est exonéré",
+     "Seul le commettant est responsable ; aucun recours possible",
+     "Ils partagent la faute à parts égales ; pas de solidarité"
+    ]
+   }
+  },
+  {
+   "id": "t5-13",
+   "q": "Qu'est-ce qu'une infraction, et quel principe l'article 4 du Code pénal consacre-t-il ?",
+   "a": "Une infraction est **toute action ou omission humaine prévue et punie par la loi pénale**. L'article 4 consacre le **principe de légalité** (exprimé par **Montesquieu puis Beccaria**) : on ne peut punir que de peines prononcées par la loi avant les faits.",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Action ou omission punie par la loi ; principe de légalité",
+    "no": [
+     "Toute faute causant un dommage ; principe de réparation",
+     "Toute désobéissance au chef ; principe d'autorité",
+     "Tout manquement moral ; principe de prudence"
+    ]
+   }
+  },
+  {
+   "id": "t5-14",
+   "q": "Quels sont les trois types d'infraction et les peines qui les distinguent ?",
+   "a": "La **contravention** (peine de police), le **délit** (peine de police correctionnelle) et le **crime** (peine afflictive ou infamante).",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Contravention (police), délit (correctionnelle), crime (afflictive ou infamante)",
+    "no": [
+     "Contravention (correctionnelle), délit (police), crime (amende)",
+     "Faute, délit, crime : tous punis de prison",
+     "Contravention (amende), faute (réparation), crime (police)"
+    ]
+   }
+  },
+  {
+   "id": "t5-15",
+   "q": "Quelle est la seule peine infamante, selon l'article 8 du Code pénal cité ?",
+   "a": "La **dégradation civique**.",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "La dégradation civique",
+    "no": [
+     "La peine de mort",
+     "L'emprisonnement à perpétuité",
+     "L'amende correctionnelle"
+    ]
+   }
+  },
+  {
+   "id": "t5-16",
+   "q": "Le tapage nocturne : quel type d'infraction, et quelles peines ?",
+   "a": "Une **contravention** : amende de **200 F à 70 000 F** et emprisonnement d'**un jour à un mois** (article 8 du Code des contraventions).",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Contravention : 200 à 70 000 F et 1 jour à 1 mois",
+    "no": [
+     "Délit : 20 000 à 250 000 F et 3 mois à 1 an",
+     "Contravention : 2 000 à 7 000 F sans prison",
+     "Délit : 200 à 70 000 F et 1 à 6 mois"
+    ]
+   }
+  },
+  {
+   "id": "t5-17",
+   "q": "L'abandon de famille : quel type d'infraction, et quelles peines ?",
+   "a": "Un **délit** : emprisonnement de **3 mois à 1 an** et amende de **20 000 F à 250 000 F** (article 350 du Code pénal).",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Délit : 3 mois à 1 an et 20 000 à 250 000 F",
+    "no": [
+     "Contravention : 1 jour à 1 mois et 200 à 70 000 F",
+     "Crime : 5 à 10 ans de prison",
+     "Délit : 1 à 3 ans et 50 000 à 500 000 F"
+    ]
+   }
+  },
+  {
+   "id": "t5-18",
+   "q": "Quels exemples de responsabilité en collectivité éducative le cours donne-t-il pour l'intendant et le secouriste ?",
+   "a": "L'**intendant** peut être civilement responsable d'une **intoxication alimentaire** en colonie ; le **secouriste**, d'une **infirmité** causée par une **injection maladroite**.",
+   "src": "RESPONSABILITE CIVILE ET PENALE.pdf",
+   "qcm": {
+    "ok": "Intendant : intoxication alimentaire ; secouriste : injection maladroite",
+    "no": [
+     "Intendant : vol d'argent ; secouriste : tapage nocturne",
+     "Intendant : coups et blessures ; secouriste : abandon de famille",
+     "Intendant : incendie de tente ; secouriste : noyade"
+    ]
+   }
+  },
+  {
+   "id": "t5-19",
+   "q": "Que signifie « être secouriste » selon le fascicule de la Croix-Rouge sénégalaise ?",
+   "a": "Savoir **porter secours efficacement** et **éviter l'aggravation** de l'état d'un accidenté. C'est un rôle **primordial, limité et temporaire** : son action s'arrête quand le spécialiste intervient.",
+   "src": "Fascicule de premiers secours.pdf, Secourisme.pdf",
+   "qcm": {
+    "ok": "Un rôle primordial, limité et temporaire",
+    "no": [
+     "Un rôle médical, complet et durable",
+     "Un rôle secondaire, libre et permanent",
+     "Un rôle de soin, de diagnostic et de traitement"
+    ]
+   }
+  },
+  {
+   "id": "t5-20",
+   "q": "Que signifie le sigle PAS, et quelles sont les trois étapes de l'action du secouriste ?",
+   "a": "**Protéger, Alerter, Secourir** : les trois temps du secourisme.",
+   "src": "Session Secourisme.docx, Secourisme Alexis 12e.pdf",
+   "qcm": {
+    "ok": "Protéger, Alerter, Secourir",
+    "no": [
+     "Prévenir, Appeler, Soigner",
+     "Porter, Allonger, Surveiller",
+     "Protéger, Analyser, Stabiliser"
+    ]
+   }
+  },
+  {
+   "id": "t5-21",
+   "q": "Quand peut-on déplacer une victime en urgence (dégagement d'urgence) ?",
+   "a": "En principe **jamais**. Le dégagement d'urgence est une **manœuvre exceptionnelle**, réservée à un danger **vital, réel, immédiat et non contrôlable** (véhicule qui prend feu, route à grande circulation, pièce enfumée, éboulement…). On tire la victime par les **poignets** ou les **chevilles**.",
+   "src": "Formation aux Premiers Secours.pdf, Fascicule de premiers secours.pdf, Session Secourisme.docx",
+   "qcm": {
+    "ok": "Seulement face à un danger vital, réel, immédiat et non contrôlable",
+    "no": [
+     "Dès qu'elle se plaint d'avoir froid au sol",
+     "Toujours, pour l'installer plus confortablement",
+     "Seulement après l'accord de la famille"
+    ]
+   }
+  },
+  {
+   "id": "t5-22",
+   "q": "Quels numéros d'urgence le document des Scouts du Sénégal (Groupe XIIe Dakar) indique-t-il ?",
+   "a": "En ville : **Sapeurs-pompiers 18**, **SAMU 1515**, **Police 17**. En campagne : sapeurs-pompiers ou SAMU, et **Gendarmerie 800 00 20 20**.",
+   "src": "Session Secourisme.docx, Secourisme Alexis 12e.pdf",
+   "note": "Formation aux Premiers Secours.pdf est un guide français : il donne le 15 (SAMU), le 18, le 17 et le 112, valables en France. Pour le Sénégal, s'en tenir aux numéros du document scout.",
+   "qcm": {
+    "ok": "Pompiers 18, SAMU 1515, Police 17, Gendarmerie 800 00 20 20",
+    "no": [
+     "Pompiers 15, SAMU 18, Police 17, Gendarmerie 112",
+     "Pompiers 18, SAMU 15, Police 112, Gendarmerie 17",
+     "Pompiers 17, SAMU 1515, Police 18, Gendarmerie 800 00 18 18"
+    ]
+   }
+  },
+  {
+   "id": "t5-23",
+   "q": "Quelles informations doit contenir le message d'alerte ?",
+   "a": "Son **nom et numéro de téléphone**, la **localisation très précise**, la **nature du problème**, les **risques** éventuels, le **nombre de victimes** et leur état apparent, les **premières mesures prises**. Ne **pas raccrocher** sans y être autorisé.",
+   "src": "Session Secourisme.docx, Formation aux Premiers Secours.pdf",
+   "qcm": {
+    "ok": "Identité, lieu précis, nature, risques, nombre et état des victimes, gestes faits",
+    "no": [
+     "Nom de la victime, son âge, son groupe sanguin et son adresse",
+     "Le nom du chef, la date du camp et le nombre de tentes",
+     "L'heure, la météo et l'itinéraire pour venir"
+    ]
+   }
+  },
+  {
+   "id": "t5-24",
+   "q": "À quelle distance faut-il baliser un accident de la route ?",
+   "a": "Le guide national indique **150 à 200 m** de part et d'autre de l'accident. Les autres documents varient (voir la note).",
+   "src": "Formation aux Premiers Secours.pdf, Secourisme.pdf, Secourisme Alexis 12e.pdf, Session Secourisme.docx",
+   "note": "Chiffres différents selon les sources : 150 à 200 m (Formation aux Premiers Secours) ; 150 m le jour et 200 m la nuit (Secourisme.pdf) ; 100 à 150 m le jour et 200 m la nuit (Secourisme Alexis 12e) ; « 200 m ou 30 m » (Session Secourisme).",
+   "qcm": {
+    "ok": "150 à 200 m de part et d'autre de l'accident",
+    "no": [
+     "10 à 20 m derrière le véhicule seulement",
+     "500 m à 1 km en amont",
+     "50 m de part et d'autre"
+    ]
+   }
+  },
+  {
+   "id": "t5-25",
+   "q": "À quels signes reconnaît-on une victime qui s'étouffe (obstruction totale) ?",
+   "a": "Brutalement, elle **porte la main à sa gorge**, **ne peut plus parler**, garde la **bouche ouverte**, fait des efforts pour respirer **sans que l'air passe** et **ne peut plus tousser**.",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "qcm": {
+    "ok": "Main à la gorge, ne parle plus, ne tousse plus, l'air ne passe pas",
+    "no": [
+     "Toux forte, sifflement et visage rouge",
+     "Perte de connaissance immédiate et convulsions",
+     "Douleur à la poitrine et sueurs froides"
+    ]
+   }
+  },
+  {
+   "id": "t5-26",
+   "q": "Quelle est la conduite à tenir face à un adulte conscient qui s'étouffe ?",
+   "a": "Le laisser dans sa position, donner **5 claques dans le dos** entre les omoplates ; si inefficace, **5 compressions abdominales (méthode de Heimlich)** ; alterner jusqu'à la désobstruction ou la perte de connaissance, puis demander un avis médical.",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "qcm": {
+    "ok": "5 claques dans le dos, puis 5 compressions abdominales (Heimlich)",
+    "no": [
+     "5 compressions abdominales, puis 5 claques dans le dos",
+     "2 insufflations, puis 15 compressions thoraciques",
+     "Le faire boire, puis l'allonger en PLS"
+    ]
+   }
+  },
+  {
+   "id": "t5-27",
+   "q": "Chez le nourrisson qui s'étouffe, que remplace-t-on les compressions abdominales par, et pourquoi ?",
+   "a": "Par **5 compressions thoraciques** avec **2 doigts** sur le sternum, après 5 claques dans le dos. Les compressions abdominales ne sont pas recommandées car elles peuvent **léser les organes de l'abdomen**.",
+   "src": "Formation aux Premiers Secours.pdf",
+   "qcm": {
+    "ok": "5 compressions thoraciques à 2 doigts (risque pour l'abdomen)",
+    "no": [
+     "5 compressions abdominales avec le poing (plus efficaces)",
+     "10 claques sur la poitrine (thorax trop rigide)",
+     "Des insufflations seules (claques interdites)"
+    ]
+   }
+  },
+  {
+   "id": "t5-28",
+   "q": "Que faire si l'obstruction des voies aériennes n'est que partielle (la victime tousse) ?",
+   "a": "**Ne jamais** pratiquer les claques ni les compressions : elles risquent de provoquer une obstruction totale. **Laisser la victime dans la position où elle se sent le mieux** (souvent assise) et **demander un avis médical**.",
+   "src": "Formation aux Premiers Secours.pdf",
+   "qcm": {
+    "ok": "Ne pas faire de claques ni de Heimlich ; installer et appeler",
+    "no": [
+     "Faire immédiatement 5 compressions abdominales",
+     "Faire 5 claques puis la coucher sur le dos",
+     "Lui donner à boire pour faire passer l'objet"
+    ]
+   }
+  },
+  {
+   "id": "t5-29",
+   "q": "Comment reconnaît-on un saignement abondant (hémorragie) ?",
+   "a": "Un saignement qui **imbibe un mouchoir** de toile ou de papier **en quelques secondes** et qui **ne s'arrête pas spontanément**.",
+   "src": "Formation aux Premiers Secours.pdf",
+   "qcm": {
+    "ok": "Il imbibe un mouchoir en quelques secondes et ne s'arrête pas",
+    "no": [
+     "Il imbibe un mouchoir en une heure et s'arrête seul",
+     "Il apparaît seulement après une chute sur la tête",
+     "Il s'accompagne toujours de perte de connaissance"
+    ]
+   }
+  },
+  {
+   "id": "t5-30",
+   "q": "Dans quel ordre utilise-t-on les gestes pour arrêter une hémorragie externe ?",
+   "a": "1) **Compression directe** de l'endroit qui saigne ; 2) si impossible ou inefficace, **point de compression** (compression à distance) ; 3) en dernière limite, **garrot**. Puis allonger la victime et alerter.",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "qcm": {
+    "ok": "Compression directe, point de compression, puis garrot",
+    "no": [
+     "Garrot, point de compression, puis compression directe",
+     "Point de compression, garrot, puis compression directe",
+     "Garrot immédiat, puis pansement compressif"
+    ]
+   }
+  },
+  {
+   "id": "t5-31",
+   "q": "Où se font les points de compression selon le guide national et la session scoute ?",
+   "a": "**Au pli de l'aine** (avec le poing, bras tendu) pour le membre inférieur ; **sur la face interne du bras** (avec le pouce) pour le membre supérieur ; **à la base du cou** (avec le pouce) pour une plaie du cou.",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "note": "Le Fascicule de premiers secours (Croix-Rouge) place le point du membre supérieur « derrière la clavicule ». Secourisme Alexis 12e ajoute la face interne de la cuisse et le dessous de la clavicule pour une plaie du cou.",
+   "qcm": {
+    "ok": "Pli de l'aine, face interne du bras, base du cou",
+    "no": [
+     "Genou, poignet, nuque",
+     "Cheville, coude, mâchoire",
+     "Pli de l'aine, poignet, derrière l'oreille"
+    ]
+   }
+  },
+  {
+   "id": "t5-32",
+   "q": "Quelles règles s'appliquent à la pose d'un garrot ?",
+   "a": "Lien **large** (cravate, foulard), **jamais** ficelle ni fil de fer ; garrot **toujours visible** ; **heure de pose** notée sur la victime ; **ne jamais le desserrer** ; **seul un médecin** peut l'enlever.",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx, Fascicule de premiers secours.pdf",
+   "qcm": {
+    "ok": "Lien large, visible, heure notée, jamais desserré",
+    "no": [
+     "Ficelle fine, couverte, desserrée toutes les 10 minutes",
+     "Lien élastique, caché, retiré à l'arrivée au camp",
+     "Lien large, couvert, desserré par le secouriste"
+    ]
+   }
+  },
+  {
+   "id": "t5-33",
+   "q": "Comment arrêter un saignement de nez ?",
+   "a": "Laisser la victime **assise, tête penchée en avant** (ne pas l'allonger, pour qu'elle n'avale pas son sang) et **comprimer la narine qui saigne pendant 10 minutes**. Si ça ne s'arrête pas ou recommence, avis médical.",
+   "src": "Formation aux Premiers Secours.pdf, Fascicule de premiers secours.pdf, Session Secourisme.docx",
+   "qcm": {
+    "ok": "Assise, tête en avant, narine comprimée 10 minutes",
+    "no": [
+     "Allongée sur le dos, tête en arrière, 10 minutes",
+     "Debout, tête en arrière, 2 minutes",
+     "Assise, tête en arrière, 30 minutes"
+    ]
+   }
+  },
+  {
+   "id": "t5-34",
+   "q": "À quoi reconnaît-on une hémorragie interne, et que ne faut-il jamais donner ?",
+   "a": "Le blessé est **pâle**, a **froid**, peut perdre conscience ; le **pouls est faible et très rapide**. Allonger, jambes surélevées s'il est conscient (PLS s'il est inconscient), évacuer d'urgence. **Jamais de stimulant** : ni café, ni alcool, car cela accentue l'hémorragie.",
+   "src": "Fascicule de premiers secours.pdf",
+   "qcm": {
+    "ok": "Pâleur, froid, pouls faible et rapide ; jamais café ni alcool",
+    "no": [
+     "Rougeur, chaleur, pouls lent ; donner du café",
+     "Fièvre, toux, pouls normal ; donner de l'eau sucrée",
+     "Pâleur, froid, pouls lent ; donner de l'alcool"
+    ]
+   }
+  },
+  {
+   "id": "t5-35",
+   "q": "Combien de temps au plus faut-il pour apprécier la respiration d'une victime inconsciente ?",
+   "a": "**10 secondes au plus**, en regardant le ventre et la poitrine se soulever, en écoutant et en sentant le souffle avec la joue.",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "qcm": {
+    "ok": "10 secondes au plus",
+    "no": [
+     "30 secondes au moins",
+     "1 minute entière",
+     "3 secondes au plus"
+    ]
+   }
+  },
+  {
+   "id": "t5-36",
+   "q": "Que faire d'une victime inconsciente qui respire ?",
+   "a": "Libérer les voies aériennes (bascule de la tête en arrière, menton élevé), puis la mettre en **position latérale de sécurité (PLS)**, alerter et **surveiller sa respiration toutes les minutes**.",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "qcm": {
+    "ok": "La mettre en PLS et surveiller la respiration",
+    "no": [
+     "Commencer le massage cardiaque",
+     "La laisser sur le dos, jambes surélevées",
+     "L'asseoir et lui donner à boire"
+    ]
+   }
+  },
+  {
+   "id": "t5-37",
+   "q": "Sur quel côté installe-t-on une femme enceinte en PLS ?",
+   "a": "Sur le **côté gauche**, pour éviter une détresse par compression de vaisseaux sanguins de l'abdomen.",
+   "src": "Formation aux Premiers Secours.pdf",
+   "qcm": {
+    "ok": "Sur le côté gauche",
+    "no": [
+     "Sur le côté droit",
+     "Sur le dos, jambes fléchies",
+     "Sur le ventre"
+    ]
+   }
+  },
+  {
+   "id": "t5-38",
+   "q": "Quel rythme de RCP (compressions/insufflations) donne le guide national pour un adulte et pour un enfant ?",
+   "a": "Adulte : **15 compressions pour 2 insufflations**. Enfant et nourrisson : **5 compressions pour 1 insufflation**. Fréquence : **100 compressions par minute**.",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "note": "Formaion Secourisme DRPCK.pdf donne 30 compressions pour 2 insufflations chez l'adulte et chez l'enfant (15/2 chez le nourrisson). Le Fascicule de la Croix-Rouge donne 15/2 pour un secouriste seul et 5/1 à deux secouristes.",
+   "qcm": {
+    "ok": "Adulte 15/2, enfant 5/1, à 100 par minute",
+    "no": [
+     "Adulte 5/1, enfant 15/2, à 60 par minute",
+     "Adulte 10/1, enfant 3/1, à 120 par minute",
+     "Adulte 15/2, enfant 15/2, à 80 par minute"
+    ]
+   }
+  },
+  {
+   "id": "t5-39",
+   "q": "Combien d'insufflations initiales avant de commencer la RCP ?",
+   "a": "Le guide national et la session scoute : **2 insufflations** efficaces. Les autres documents diffèrent (voir la note).",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "note": "Le Fascicule de premiers secours (Croix-Rouge) indique 4 insufflations ; Formaion Secourisme DRPCK.pdf indique 10 ventilations initiales chez l'adulte et 5 chez le nourrisson.",
+   "qcm": {
+    "ok": "2 insufflations",
+    "no": [
+     "4 insufflations",
+     "10 insufflations",
+     "Aucune, compressions d'emblée"
+    ]
+   }
+  },
+  {
+   "id": "t5-40",
+   "q": "De combien enfonce-t-on le sternum lors des compressions thoraciques ?",
+   "a": "Adulte : **4 à 5 cm** (deux mains) ; enfant de 1 à 8 ans : **3 à 4 cm** (une main) ; nourrisson : **2 à 3 cm** (deux doigts).",
+   "src": "Formation aux Premiers Secours.pdf",
+   "qcm": {
+    "ok": "Adulte 4–5 cm, enfant 3–4 cm, nourrisson 2–3 cm",
+    "no": [
+     "Adulte 2–3 cm, enfant 1–2 cm, nourrisson 1 cm",
+     "Adulte 6–8 cm, enfant 5–6 cm, nourrisson 4 cm",
+     "Adulte 4–5 cm, enfant 4–5 cm, nourrisson 3–4 cm"
+    ]
+   }
+  },
+  {
+   "id": "t5-41",
+   "q": "Seul face à une victime qui ne respire plus, quand alerte-t-on : tout de suite ou après une minute de RCP ?",
+   "a": "**Adulte** : alerter **immédiatement** (l'arrêt du cœur est la première cause). **Enfant de moins de 8 ans, noyé ou intoxiqué** : faire **1 minute de RCP** avant d'aller alerter (c'est l'arrêt respiratoire qui cause l'arrêt cardiaque).",
+   "src": "Formation aux Premiers Secours.pdf",
+   "qcm": {
+    "ok": "Adulte : tout de suite ; enfant, noyé, intoxiqué : après 1 minute de RCP",
+    "no": [
+     "Adulte : après 1 minute ; enfant : tout de suite",
+     "Toujours après 5 minutes de RCP",
+     "Toujours tout de suite, quel que soit l'âge"
+    ]
+   }
+  },
+  {
+   "id": "t5-42",
+   "q": "Quelles questions poser à une victime consciente qui fait un malaise ?",
+   "a": "Depuis **combien de temps** dure ce malaise ? Est-ce **la première fois** ? Prenez-vous des **médicaments** ? Avez-vous été gravement malade ou **hospitalisé** ? Puis demander un avis médical sans tarder.",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "qcm": {
+    "ok": "Durée, première fois, médicaments, hospitalisation",
+    "no": [
+     "Nom des parents, adresse, groupe, unité",
+     "Dernier repas, heure du coucher, sport pratiqué",
+     "Âge, poids, taille, groupe sanguin"
+    ]
+   }
+  },
+  {
+   "id": "t5-43",
+   "q": "Dans quels cas ne faut-il pas donner à boire à un blessé ?",
+   "a": "Perte de connaissance ou trouble de la conscience, état de choc, blessures crâniocérébrales, troubles de la déglutition, nausées et vomissements, **blessures abdominales ou du thorax**, blessures qui nécessitent probablement une **opération**.",
+   "src": "08_secourisme.pdf",
+   "qcm": {
+    "ok": "Inconscience, choc, plaie du ventre ou du thorax",
+    "no": [
+     "Fièvre légère, toux sèche, mal de gorge",
+     "Entorse, coup de soleil, piqûre d'insecte",
+     "Saignement de nez, ampoule au pied, fatigue"
+    ]
+   }
+  },
+  {
+   "id": "t5-44",
+   "q": "Combien de temps et avec quelle eau refroidir une brûlure récente selon le guide national ?",
+   "a": "Avec de l'eau à **10 à 25 °C**, **ruisselant sans pression**, pendant **5 minutes** (pas plus pour une brûlure grave, pour ne pas refroidir la victime).",
+   "src": "Formation aux Premiers Secours.pdf",
+   "note": "premiers_secours_cusstr.pdf conseille 15 à 20 minutes d'eau froide (au moins 10 minutes pour une brûlure simple ou grave) : durée nettement plus longue que les 5 minutes du guide national.",
+   "qcm": {
+    "ok": "Eau à 10–25 °C, sans pression, 5 minutes",
+    "no": [
+     "Eau glacée, au jet, 30 secondes",
+     "Eau tiède, en bain, 1 heure",
+     "Eau à 10–25 °C, au jet fort, 1 minute"
+    ]
+   }
+  },
+  {
+   "id": "t5-45",
+   "q": "Comment distinguer une brûlure simple d'une brûlure grave ?",
+   "a": "Grave : **cloque plus grande que la moitié de la paume** de la main de la victime, peau noirâtre, ou localisation au **visage, mains, orifices, articulations** ; rougeur étendue chez l'enfant. Simple : rougeur chez l'adulte ou cloque **inférieure à la moitié de la paume**.",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "qcm": {
+    "ok": "Cloque plus grande que la moitié de la paume de la victime = grave",
+    "no": [
+     "Cloque plus grande qu'une pièce de monnaie = grave",
+     "Toute brûlure avec rougeur = grave",
+     "Toute cloque, quelle que soit la taille = simple"
+    ]
+   }
+  },
+  {
+   "id": "t5-46",
+   "q": "Que faire si les vêtements d'une personne prennent feu ?",
+   "a": "**L'empêcher de courir**, la **rouler** ou la faire se rouler par terre, et **étouffer les flammes** avec un vêtement ou une couverture.",
+   "src": "Formation aux Premiers Secours.pdf, Fascicule de premiers secours.pdf",
+   "qcm": {
+    "ok": "L'empêcher de courir, la rouler au sol, étouffer les flammes",
+    "no": [
+     "La faire courir vers un point d'eau",
+     "Lui retirer d'abord tous ses vêtements",
+     "Lui verser de l'huile pour calmer la douleur"
+    ]
+   }
+  },
+  {
+   "id": "t5-47",
+   "q": "Comment soigner une plaie simple, et quand faut-il penser au tétanos ?",
+   "a": "Se **laver les mains**, **nettoyer la plaie à l'eau et au savon**, protéger par un pansement. Demander si la victime est **vaccinée contre le tétanos** : si non, ou si la vaccination date de **plus de 10 ans**, consulter un médecin.",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "qcm": {
+    "ok": "Laver, nettoyer, protéger ; consulter si vaccin absent ou de plus de 10 ans",
+    "no": [
+     "Laver, recoudre, bander ; consulter si vaccin de plus de 2 ans",
+     "Mettre de la poudre, couvrir ; tétanos sans importance",
+     "Laisser à l'air ; consulter si vaccin de plus de 20 ans"
+    ]
+   }
+  },
+  {
+   "id": "t5-48",
+   "q": "Quelle position d'attente pour une plaie du thorax ? Et de l'abdomen ?",
+   "a": "Thorax : **position demi-assise** (respiration plus facile). Abdomen : **à plat dos, cuisses fléchies**, jambes horizontales (relâche les muscles du ventre).",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "qcm": {
+    "ok": "Thorax demi-assis ; abdomen à plat dos, cuisses fléchies",
+    "no": [
+     "Thorax à plat dos ; abdomen demi-assis",
+     "Thorax en PLS ; abdomen sur le ventre",
+     "Thorax debout ; abdomen jambes surélevées"
+    ]
+   }
+  },
+  {
+   "id": "t5-49",
+   "q": "Un couteau est planté dans la plaie : faut-il le retirer ?",
+   "a": "**Jamais** : son retrait ou sa mobilisation peut **aggraver la lésion et le saignement**. On ne fait pas de compression directe ; on passe au point de compression si besoin.",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "qcm": {
+    "ok": "Non, jamais : cela aggraverait la lésion et le saignement",
+    "no": [
+     "Oui, tout de suite, pour pouvoir comprimer",
+     "Oui, mais seulement s'il est petit",
+     "Oui, après avoir posé un garrot"
+    ]
+   }
+  },
+  {
+   "id": "t5-50",
+   "q": "Quelle conduite tenir devant une victime qui se plaint du dos, de la nuque ou de la tête après une chute ?",
+   "a": "**Ne jamais la mobiliser**, lui demander de ne faire aucun mouvement, faire alerter, **maintenir la tête avec les deux mains** de chaque côté (sauveteur à genoux derrière), surveiller et lui parler. Danger : lésion de la **moelle épinière** et paralysie.",
+   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx, Fascicule de premiers secours.pdf",
+   "qcm": {
+    "ok": "Ne pas la bouger et lui maintenir la tête à deux mains",
+    "no": [
+     "L'asseoir et lui masser la nuque",
+     "La relever pour vérifier qu'elle marche",
+     "La mettre aussitôt en PLS sans alerter"
+    ]
+   }
+  },
+  {
+   "id": "t5-51",
+   "q": "Que faut-il vérifier dans la pharmacie avant chaque camp, et que noter pendant le camp ?",
+   "a": "Avant : les **dates de péremption**, la quantité de médicaments et pansements, l'état du matériel. Pendant : une **liste des médicaments distribués** (nom, date, heure). Et vérifier contre-indications et allergies : **ne jamais jouer au médecin**.",
+   "src": "08_secourisme.pdf",
+   "qcm": {
+    "ok": "Dates de péremption avant ; liste des médicaments distribués pendant",
+    "no": [
+     "La couleur des boîtes avant ; rien à noter pendant",
+     "Le prix des médicaments avant ; les repas pendant",
+     "Les ordonnances des parents avant ; la météo pendant"
+    ]
+   }
+  },
+  {
+   "id": "t5-52",
+   "q": "Quels sont les trois éléments du triangle du feu ?",
+   "a": "Un **combustible** (solide, liquide ou gazeux), un **comburant** (le plus souvent l'oxygène de l'air) et une **élévation de température** (chaleur, flamme, étincelle…).",
+   "src": "Fascicule de premiers secours.pdf",
+   "qcm": {
+    "ok": "Combustible, comburant, élévation de température",
+    "no": [
+     "Bois sec, vent fort, flamme d'allumette",
+     "Combustible, eau, dégagement de fumée",
+     "Oxygène, azote, élévation de pression"
+    ]
+   }
+  },
+  {
+   "id": "t5-53",
+   "q": "Quels sont les cinq critères d'un lieu de camp idéal ?",
+   "a": "**Bonne accessibilité** (route pour le matériel et l'**ambulance**), lieu **« campable »**, ressources en **eau et en bois**, bon **approvisionnement**, lieu **sécurisé** (dangers repérés, numéros des hôpitaux et médecins proches, abri en cas de tempête).",
+   "src": "formation lieu de camp.pdf",
+   "qcm": {
+    "ok": "Accès, terrain campable, eau et bois, ravitaillement, sécurité",
+    "no": [
+     "Vue, ombre, plage, musique, wifi",
+     "Accès, piscine, terrain de foot, boutique, parking",
+     "Isolement total, pas de route, pas de voisins, pas de magasin, pas de réseau"
+    ]
+   }
+  },
+  {
+   "id": "t5-54",
+   "q": "Quel éclairage utiliser dans une tente, et pourquoi ?",
+   "a": "Une **lanterne à pile** : tout autre éclairage est trop risqué. Si un fanal se brise et se déverse dans une tente, la toile est embrasée **en moins de 5 secondes**.",
+   "src": "CAMPISME.docx",
+   "qcm": {
+    "ok": "Une lanterne à pile : un fanal renversé embrase la toile en 5 s",
+    "no": [
+     "Une bougie : elle chauffe la tente en 5 minutes",
+     "Un fanal à gaz : il éclaire mieux sur 5 mètres",
+     "Une torche à paraffine : elle tient 5 heures"
+    ]
+   }
+  },
+  {
+   "id": "t5-55",
+   "q": "Quelles règles de sécurité pour le feu de cuisson (table à feu, feu polynésien) ?",
+   "a": "**Ne jamais laisser le feu sans surveillance** ; l'éteindre après chaque usage. En sol de **résineux ou de tourbe**, le feu peut **couver sous terre** et ressurgir ailleurs (risque d'incendie de forêt).",
+   "src": "CAMPISME.docx",
+   "qcm": {
+    "ok": "Jamais sans surveillance ; attention au feu qui couve sous terre",
+    "no": [
+     "Le laisser couver la nuit pour gagner du temps",
+     "Le recouvrir de feuilles sèches en partant",
+     "L'installer de préférence sur tourbe ou aiguilles"
+    ]
+   }
+  },
+  {
+   "id": "t5-56",
+   "q": "Quelles sont les règles pour allumer et garder un feu en sécurité (fiche « Dis gentil chef ») ?",
+   "a": "Espace **dégagé, délimité** (trou ou pierres), plat, **non couvert de branches** ; ne **jamais l'abandonner sans l'éteindre totalement** ; ne pas laisser les jeunes jouer avec ; avoir **toujours de l'eau à proximité**.",
+   "src": "11_allumer_un_feu.pdf",
+   "qcm": {
+    "ok": "Espace dégagé et délimité, jamais abandonné, eau à proximité",
+    "no": [
+     "Sous les arbres, à l'abri du vent, sans eau",
+     "Sur l'herbe sèche, entouré de bois vert",
+     "Près des tentes pour se chauffer la nuit"
+    ]
+   }
+  },
+  {
+   "id": "t5-57",
+   "q": "Quels bois sont bons pour la cuisine, selon le moyen mnémotechnique « CHEF » ?",
+   "a": "**Chêne/Charme, Hêtre, Érable, Frêne** (bois durs : braises, chaleur prolongée). Les résineux (pin…) servent surtout à l'**allumage**.",
+   "src": "12_specificites_combustible.pdf",
+   "qcm": {
+    "ok": "Chêne/Charme, Hêtre, Érable, Frêne",
+    "no": [
+     "Cèdre, Hêtre, Épicéa, Figuier",
+     "Châtaignier, Houx, Épicéa, Frêne",
+     "Cyprès, Hêtre, Eucalyptus, Filao"
+    ]
+   }
+  },
+  {
+   "id": "t5-58",
+   "q": "Quand et comment installer les feuillées (toilettes) au camp ?",
+   "a": "Emplacement choisi lors de la **visite du lieu** ; c'est la **première installation, le premier jour**. À l'écart mais facile d'accès ; tranchée d'environ **30 cm de large et 45 cm de profondeur** ; désinfection quotidienne.",
+   "src": "CAMPISME.docx",
+   "qcm": {
+    "ok": "Première installation, premier jour ; tranchée 30 cm × 45 cm",
+    "no": [
+     "Dernière installation, dernier jour ; trou 1 m × 1 m",
+     "Deuxième jour ; tranchée 10 cm × 15 cm",
+     "Au choix des jeunes ; pas de tranchée"
+    ]
+   }
+  },
+  {
+   "id": "t5-59",
+   "q": "Où ne faut-il pas dresser une tente ?",
+   "a": "Dans une **dépression** (inondation), dans le **lit à sec d'un torrent** ou tout près d'un cours d'eau (orages, montée des eaux), dans une ombre épaisse **sous certains arbres** (chute de branches). Et toujours **à bonne distance du feu**.",
+   "src": "asjdossier_technique_v3-1msds_20180319.pdf",
+   "qcm": {
+    "ok": "Dans un creux, un lit de torrent, sous les arbres, près du feu",
+    "no": [
+     "Sur sol sablonneux ou couvert d'aiguilles",
+     "Sur un terrain plat et dégagé",
+     "À distance du feu et des cours d'eau"
+    ]
+   }
+  },
+  {
+   "id": "t5-60",
+   "q": "Quelles règles pour le trou à détritus et le trou à eaux grasses ?",
+   "a": "Ni trop près ni trop loin (moins loin que les feuillées) ; **50 cm de diamètre**, profond ; bien **délimité** et couvert contre les animaux ; **produits biodégradables** pour les eaux grasses ; **reboucher** à la fin du camp.",
+   "src": "CAMPISME.docx",
+   "qcm": {
+    "ok": "50 cm de diamètre, délimités, couverts, rebouchés en fin de camp",
+    "no": [
+     "2 m de diamètre, ouverts, laissés en l'état",
+     "20 cm de diamètre, près des tentes, jamais rebouchés",
+     "Creusés dans le cours d'eau pour évacuer vite"
+    ]
+   }
+  }
+ ]
+}
