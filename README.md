@@ -1,6 +1,6 @@
 # Xam Xam Bëy
 
-Plateforme de ressources et de révision scoute (Scouts du Sénégal).
+Plateforme de ressources et de révision scoute (District Grand Dakar).
 
 - **Bibliothèque** : 171 ressources classées en 12 thèmes mensuels (octobre 2026 à septembre 2027), avec recherche et filtres.
 - **Révision** (responsables) : plan annuel, fiches, cartes à répétition espacée, mini-examens, progression.
