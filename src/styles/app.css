@@ -282,3 +282,4 @@ kbd{font:500 11px/1 var(--f-mono);padding:5px 7px;border:1px solid currentColor}
 #app .opt.dim:disabled{opacity:.55}
 .verdict{padding:10px 12px;font:700 12px/1.2 var(--f-mono);letter-spacing:.06em;color:var(--paper)}
 .verdict.ok{background:var(--green)}.verdict.ko{background:var(--stamp)}
+.gap-row{display:grid;grid-template-columns:62px minmax(0,1fr) 52px auto;align-items:center;gap:10px;min-height:40px}

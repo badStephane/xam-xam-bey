@@ -7,6 +7,7 @@ import { gradeOf, withChoices } from './lib/qcm'
 import { answerCard, isLogged, mkSession } from './lib/session'
 import { allCards } from './lib/srs'
 import { loadPref, savePref } from './lib/storage'
+import type { Scope } from './lib/practice'
 import type { Card, Grade, QuizMode, Session, TypeFilter } from './lib/types'
 import { useRevision, type Revision } from './hooks/useRevision'
 import { useIsMobile, useOnline } from './hooks/useViewport'
@@ -20,7 +21,9 @@ export interface Ui {
   month: number | null
   sel: number | null
   fiche: number
+  /** Zone d'entraînement : 1 à 12, ou 0 pour toutes les zones. */
   practice: number
+  scope: Scope
   mode: QuizMode
   askName: string
   askCount: number
@@ -72,7 +75,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [ui, setUi] = useState<Ui>(() => ({
     screen: PARAMS.screen || (location.hash === '#revision' ? 'revision' : 'bibliotheque'),
     dark: initialDark(), q: PARAMS.q, type: 'all', ess: false, month: null, sel: PARAMS.sel,
-    fiche: cur, practice: cur, mode: PARAMS.mode, askName: '', askCount: ASK_COUNTS[0],
+    fiche: cur, practice: cur, scope: 'all', mode: PARAMS.mode, askName: '', askCount: ASK_COUNTS[0],
     session: null, checks: {}, hideAns: false, shared: false, seen: loadPref<number[]>('seen', []),
   }))
   const rev = useRevision(PARAMS.demo)

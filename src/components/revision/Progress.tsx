@@ -1,6 +1,7 @@
 import { useApp } from '../../AppContext'
-import { ACQUIRED_LV, CHART_DAYS, LEVEL_LABELS, ZONES } from '../../lib/constants'
+import { ACQUIRED_LV, ASK_COUNTS, CHART_DAYS, LEVEL_LABELS, ZONES } from '../../lib/constants'
 import { dayDate, p2, shortDate, zoneColor } from '../../lib/format'
+import { ALL_ZONES, selectCards, zoneReport } from '../../lib/practice'
 import { allCards, bestStreak, levelBuckets, seenCurve, streak, xpLevel, zoneStats } from '../../lib/srs'
 import { Segments } from '../Segments'
 
@@ -51,6 +52,43 @@ function ExamsBox() {
   )
 }
 
+const GAP_SESSION_SIZE = ASK_COUNTS[ASK_COUNTS.length - 1]
+const pct = (r: number | null) => (r === null ? '–' : `${Math.round(r * 100)} %`)
+const rateColor = (r: number | null) => (r === null ? 'var(--hud2)' : r >= 0.8 ? 'var(--acc)' : r >= 0.6 ? 'var(--amber)' : 'var(--err)')
+
+/** Où sont mes lacunes : réussite et cartes faibles par zone, avec un raccourci pour les retravailler. */
+function GapsBox() {
+  const { rev, startSession } = useApp()
+  const cards = allCards(rev.content)
+  const all = zoneReport(cards, rev.prog, ALL_ZONES)
+  const rows = ZONES.map((_, i) => zoneReport(cards, rev.prog, i + 1)).filter(r => r.cards > 0)
+  const revise = (zone: number) => startSession('self', 'gaps', `Lacunes · ${zone === ALL_ZONES ? 'Toutes les zones' : `Zone ${p2(zone)}`}`,
+    selectCards(cards, rev.prog, zone, 'gaps', GAP_SESSION_SIZE))
+  return (
+    <section className="box" aria-labelledby="t-gaps">
+      <div className="row" style={{ justifyContent: 'space-between' }}>
+        <h2 id="t-gaps" className="h-sec">MES LACUNES</h2>
+        <span className="lbl">RÉUSSITE GLOBALE <b style={{ color: rateColor(all.rate) }}>{pct(all.rate)}</b></span>
+      </div>
+      <p className="muted" style={{ margin: 0, fontSize: 14 }}>Une lacune est une carte ratée récemment, ou réussie moins de 6 fois sur 10.</p>
+      {all.gaps > 0 && <button className="go" style={{ minHeight: 56 }} onClick={() => revise(ALL_ZONES)}><b>RÉVISER MES {all.gaps} LACUNES</b><span>TOUTES ZONES · {Math.min(all.gaps, GAP_SESSION_SIZE)} QUESTIONS AU PLUS</span></button>}
+      {!all.seen && <p className="muted" style={{ margin: 0, fontSize: 14 }}>Répondez à quelques cartes : vos lacunes apparaîtront ici, zone par zone.</p>}
+      <ul className="col g8" style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+        {rows.map(r => (
+          <li key={r.zone} className="gap-row">
+            <span className="row mono" style={{ gap: 6, fontWeight: 700, fontSize: 10.5, flexWrap: 'nowrap' }}><span aria-hidden="true" style={{ width: 8, height: 8, transform: 'rotate(45deg)', background: zoneColor(r.zone) }} />{p2(r.zone)} {ZONES[r.zone - 1][0].toUpperCase()}</span>
+            <span className="mono muted" style={{ fontSize: 11 }}>{r.seen}/{r.cards} VUES</span>
+            <b className="mono" style={{ fontSize: 13, color: rateColor(r.rate) }}>{pct(r.rate)}</b>
+            {r.gaps > 0
+              ? <button className="btn-mono" style={{ minHeight: 40 }} onClick={() => revise(r.zone)} aria-label={`Réviser les ${r.gaps} lacunes de la zone ${r.zone}`}>{r.gaps} LACUNE{r.gaps > 1 ? 'S' : ''} →</button>
+              : <span className="mono muted" style={{ fontSize: 11, textAlign: 'right' }}>{r.seen ? 'AUCUNE' : '—'}</span>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
 export function Progress() {
   const { rev, today } = useApp()
   const cards = allCards(rev.content)
@@ -71,6 +109,7 @@ export function Progress() {
         <div className="kpi"><b style={{ color: 'var(--acc)' }}>{acq}</b><span>CARTES ACQUISES</span></div>
         <div className="kpi"><b>{lvl.xp}</b><span>XP TOTAL</span></div>
       </div>
+      <GapsBox />
       <div className="duo">
         <section className="box" style={{ gap: 10 }} aria-labelledby="t-acq">
           <h2 id="t-acq" className="h-sec">CARTES ACQUISES PAR ZONE</h2>
