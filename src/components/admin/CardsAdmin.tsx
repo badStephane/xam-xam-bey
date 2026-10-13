@@ -1,10 +1,27 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useApp } from '../../AppContext'
 import { ZONES } from '../../lib/constants'
 import { adminError, deleteCard, listCards, saveCard, setCardStatus } from '../../lib/adminApi'
 import { createRequestCounter, runLatest } from '../../lib/adminFlow'
-import { editorFromRow, isEditorDirty, newEditor, type EditorState } from '../../lib/cardEditor'
-import { checkCard, type CardDraft } from '../../lib/cardRules'
+import { editorFromRow, isEditorDirty, newEditor, publishError, type EditorState } from '../../lib/cardEditor'
+import { checkCard, readQcm, type CardDraft } from '../../lib/cardRules'
+import { TemplateLink } from './TemplateLink'
+
+/** Import Excel chargé à la demande : ni sa logique ni la bibliothèque .xlsx n'entrent dans le bundle initial. */
+const CardsImport = lazy(() => import('./CardsImport').catch((err: unknown) => {
+  console.error('[xxb] Chargement de l’import impossible', err)
+  return { default: ImportUnavailable }
+}))
+
+function ImportUnavailable({ onClose }: { onClose(): void }) {
+  return (
+    <section className="sheet r10 train" aria-labelledby="imp-h">
+      <h2 id="imp-h">Importer des questions</h2>
+      <p role="alert" style={{ margin: 0, color: 'var(--stamp)', fontWeight: 700 }}>L’import n’a pas pu être chargé. Vérifiez la connexion puis rechargez la page.</p>
+      <div className="row"><button className="ink-line" onClick={onClose}>Fermer</button></div>
+    </section>
+  )
+}
 import { DISCARD_QUESTION, markUnsavedDraft } from '../../lib/draftGuard'
 import { p2, zoneColor } from '../../lib/format'
 import type { CardRow, CardStatus } from '../../lib/types'
@@ -26,10 +43,11 @@ function CardEditor({ initial, onSaved, onCancel, onDirtyChange }: { initial: Ed
     setSt(s => ({ ...s, documentId: id, src: d ? d.fileName : s.src }))
   }
   const save = async (status: CardStatus) => {
-    if (check.errors.length) { setMsg({ error: true, text: check.errors[0] }); return }
+    const qcm = readQcm(st.draft.ok, st.draft.no)
+    if (check.errors.length || !qcm.ok) { setMsg({ error: true, text: check.errors[0] ?? 'QCM incomplet.' }); return }
     setBusy(true)
     try {
-      await saveCard(st.id, { zone, documentId: st.documentId, src: st.src, q: st.draft.q, a: st.draft.a, note: st.draft.note, qcm: { ok: st.draft.ok, no: st.draft.no }, status })
+      await saveCard(st.id, { zone, documentId: st.documentId, src: st.src, q: st.draft.q, a: st.draft.a, note: st.draft.note, qcm: qcm.qcm, status })
       onSaved()
     } catch (err) {
       setMsg({ error: true, text: errorText(err) })
@@ -50,9 +68,10 @@ function CardEditor({ initial, onSaved, onCancel, onDirtyChange }: { initial: Ed
       <div className="col g6"><label htmlFor="ed-src" className="f-lbl">SOURCE AFFICHÉE</label><input id="ed-src" className="field" value={st.src} onChange={e => setSt({ ...st, src: e.target.value })} placeholder="Nom du ou des documents" /></div>
       <div className="col g6"><label htmlFor="ed-q" className="f-lbl">QUESTION</label><textarea id="ed-q" className="field" rows={2} value={st.draft.q} onChange={e => set({ q: e.target.value })} /></div>
       <div className="col g6"><label htmlFor="ed-a" className="f-lbl">RÉPONSE COMPLÈTE · **GRAS** POUR L’ESSENTIEL</label><textarea id="ed-a" className="field" rows={3} value={st.draft.a} onChange={e => set({ a: e.target.value })} /></div>
+      <p id="ed-qcm-help" className="muted" style={{ margin: 0, fontSize: 14 }}>QCM facultatif. Sans QCM, l’application propose les réponses d’autres questions de la zone. Avec QCM : une bonne réponse courte et 1 à 3 mauvaises.</p>
       <div className="col g6"><label htmlFor="ed-ok" className="f-lbl" style={{ color: 'var(--green)' }}>✓ BONNE RÉPONSE COURTE (QCM)</label><input id="ed-ok" className="field" value={st.draft.ok} onChange={e => set({ ok: e.target.value })} /></div>
       {st.draft.no.map((w, i) => (
-        <div key={i} className="col g6"><label htmlFor={`ed-no-${i}`} className="f-lbl" style={{ color: 'var(--stamp)' }}>✕ MAUVAISE RÉPONSE {i + 1} · PLAUSIBLE, CLAIREMENT FAUSSE</label>
+        <div key={i} className="col g6"><label htmlFor={`ed-no-${i}`} className="f-lbl" style={{ color: 'var(--stamp)' }}>✕ MAUVAISE RÉPONSE {i + 1}{i > 0 ? ' · FACULTATIVE' : ''} · PLAUSIBLE, CLAIREMENT FAUSSE</label>
           <input id={`ed-no-${i}`} className="field" value={w} onChange={e => set({ no: st.draft.no.map((x, k) => (k === i ? e.target.value : x)) })} /></div>
       ))}
       <div className="col g6"><label htmlFor="ed-note" className="f-lbl">VIGILANCE · FACULTATIF (SOURCES EN DÉSACCORD)</label><textarea id="ed-note" className="field" rows={2} value={st.draft.note} onChange={e => set({ note: e.target.value })} /></div>
@@ -87,7 +106,11 @@ function CardItem({ r, docTitle, onEdit, onChanged }: { r: CardRow; docTitle: st
       {err && <p role="alert" style={{ margin: 0, fontSize: 13, color: 'var(--stamp)' }}>{err}</p>}
       <div className="row">
         <button className="ink-line" onClick={onEdit}>Modifier</button>
-        <button className="ink-line" onClick={() => void act(() => setCardStatus(r.id, draft ? 'published' : 'draft'))}>{draft ? 'Publier' : 'Repasser en brouillon'}</button>
+        <button className="ink-line" onClick={() => {
+          const blocked = draft ? publishError(r) : null
+          if (blocked) { setErr(blocked); return }
+          void act(() => setCardStatus(r.id, draft ? 'published' : 'draft'))
+        }}>{draft ? 'Publier' : 'Repasser en brouillon'}</button>
         {!confirmDel
           ? <button className="ink-line" style={{ color: 'var(--stamp)', borderColor: 'var(--stamp)' }} onClick={() => setConfirmDel(true)}>Supprimer</button>
           : <><button className="ink-btn" style={{ background: 'var(--stamp)' }} onClick={() => void act(() => deleteCard(r.id))}>Confirmer</button><button className="ink-line" onClick={() => setConfirmDel(false)}>Garder</button></>}
@@ -155,6 +178,8 @@ export function CardsAdmin() {
   const [editor, setEditor] = useState<EditorState | null>(null)
   const [dirty, setDirty] = useState(false)
   const [pending, setPending] = useState<{ run(): void } | null>(null)
+  const [importOpen, setImportOpen] = useState(false)
+  const [imported, setImported] = useState<string | null>(null)
   useUnsavedDraft(editor !== null && dirty)
 
   const closeEditor = useCallback(() => { setEditor(null); setDirty(false); setPending(null) }, [])
@@ -169,6 +194,8 @@ export function CardsAdmin() {
   const shown = rows.filter(r => (docFilter === 'all' || r.document_id === docFilter) && (statusFilter === 'all' || r.status === statusFilter))
   const drafts = rows.filter(r => r.status === 'draft').length
   const zoneDocs = docs.filter(d => d.th === zone)
+  const openImport = () => { setImported(null); setImportOpen(true) }
+  const finishImport = (message: string) => { setImportOpen(false); setImported(message); void refresh() }
   const newCard = () => setEditor(newEditor(zone, docFilter === 'all' ? null : docFilter, docFilter === 'all' ? '' : docs.find(d => d.id === docFilter)?.fileName || ''))
 
   return (
@@ -183,12 +210,23 @@ export function CardsAdmin() {
       {pending && <DiscardConfirm onKeep={() => setPending(null)} onDiscard={() => pending.run()} />}
       {editor
         ? <CardEditor key={editor.id || 'new'} initial={editor} onDirtyChange={setDirty} onCancel={() => requestLeave(closeEditor)} onSaved={() => { closeEditor(); void refresh() }} />
-        : (
+        : importOpen
+          ? (
+            <Suspense fallback={<p className="mono" role="status" style={{ color: 'var(--acc)' }}>CHARGEMENT DE L’IMPORT…</p>}>
+              <CardsImport onClose={() => { setImportOpen(false); void refresh() }} onImported={finishImport} />
+            </Suspense>
+          )
+          : (
           <section className="box" aria-labelledby="cards-h">
             <div className="row" style={{ justifyContent: 'space-between' }}>
               <h2 id="cards-h" className="h-sec">ZONE {p2(zone)} · {rows.length} QUESTIONS{drafts ? ` · ${drafts} BROUILLON${drafts > 1 ? 'S' : ''}` : ''}</h2>
-              <button className="btn acc" onClick={newCard}>+ NOUVELLE QUESTION</button>
+              <div className="row">
+                <button className="btn acc" onClick={newCard}>+ NOUVELLE QUESTION</button>
+                <button className="btn" onClick={openImport}>Importer un fichier Excel</button>
+                <TemplateLink className="btn" />
+              </div>
             </div>
+            {imported && <p role="status" style={{ margin: 0, color: 'var(--green)', fontWeight: 700 }}>{imported}</p>}
             <div className="row">
               <select className="field" aria-label="Filtrer par document" style={{ maxWidth: 420, background: 'var(--field)', color: 'var(--hud)', borderColor: 'var(--line)' }}
                 value={docFilter} onChange={e => setDocFilter(e.target.value === 'all' ? 'all' : Number(e.target.value))}>

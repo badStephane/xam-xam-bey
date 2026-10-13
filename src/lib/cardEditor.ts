@@ -1,4 +1,4 @@
-import { WRONG_COUNT, type CardDraft } from './cardRules'
+import { readStoredQcm, WRONG_COUNT, type CardDraft } from './cardRules'
 import type { CardRow, CardStatus } from './types'
 
 /** État de l'éditeur de question. `zone` vient de la ligne éditée (FE-4), jamais de la zone sélectionnée à l'écran. */
@@ -29,4 +29,11 @@ const sameDraft = (a: CardDraft, b: CardDraft): boolean =>
 /** Vrai si la saisie diffère de l'état d'ouverture : il faut confirmer avant de l'abandonner (UX-5). */
 export function isEditorDirty(initial: EditorState, current: EditorState): boolean {
   return initial.documentId !== current.documentId || initial.src !== current.src || !sameDraft(initial.draft, current.draft)
+}
+
+/** Raison qui interdit de publier une ligne depuis la liste (même règle QCM que l'éditeur et l'import), ou null. */
+export function publishError(r: Pick<CardRow, 'q' | 'a' | 'qcm'>): string | null {
+  if (!r.q.trim() || !r.a.trim()) return 'Publication impossible : question ou réponse vide. Corrigez-la avec « Modifier ».'
+  const read = readStoredQcm(r.qcm)
+  return read.ok ? null : `Publication impossible. ${read.error} Corrigez-la avec « Modifier ».`
 }

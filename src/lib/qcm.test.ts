@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { mkSession } from './session'
-import { buildChoices, gradeOf, seeded, shortAnswer, withChoices } from './qcm'
+import { SELF_CHECK, buildChoices, gradeOf, isSelfCheck, seeded, shortAnswer, withChoices } from './qcm'
 import { validCards } from './srs'
 import type { Card } from './types'
 
@@ -23,8 +23,33 @@ describe('buildChoices', () => {
     expect(ch.options[ch.correct]).toBe('En 1958')
     expect(ch.options).not.toContain('Autre zone')
   })
-  test('zone sans autres cartes : la bonne réponse seule', () => {
-    expect(buildChoices(pool[4], pool, seeded(3))).toEqual({ options: ['Autre zone'], correct: 0 })
+  test('IM-6 : zone sans autres cartes, leurres pris dans les autres zones', () => {
+    const ch = buildChoices(pool[4], pool, seeded(3))
+    expect(ch.options).toHaveLength(4)
+    expect(ch.options[ch.correct]).toBe('Autre zone')
+  })
+  test('IM-6 : moins de 3 leurres dans la zone, complétés par les autres zones, zone d’abord', () => {
+    const small = [card('m', 'Un.', 3), card('n', 'Deux.', 3), card('o', 'Trois.', 4), card('p', 'Quatre.', 5), card('q', 'Cinq.', 6)]
+    const ch = buildChoices(small[0], small, seeded(4))
+    expect(ch.options).toHaveLength(4)
+    expect(ch.options).toContain('Deux')
+    expect(new Set(ch.options).size).toBe(4)
+  })
+  test('IM-6 : aucun leurre nulle part, auto-évaluation (jamais une seule proposition)', () => {
+    const lone = card('z', 'Seule.', 7)
+    expect(buildChoices(lone, [lone], seeded(5))).toEqual(SELF_CHECK)
+    expect(buildChoices(lone, [lone, card('y', 'seule', 2)], seeded(5))).toEqual(SELF_CHECK)
+    expect(isSelfCheck(SELF_CHECK)).toBe(true)
+  })
+  test('QCM rédigé dont tous les leurres sont des doublons de la bonne (donnée ancienne) : repli', () => {
+    const bad = card('w', 'Paris.', 1, { ok: 'Paris', no: ['paris'] })
+    const ch = buildChoices(bad, [bad, ...pool], seeded(6))
+    expect(ch.options.length).toBeGreaterThan(1)
+    expect(ch.options[ch.correct]).toBe('Paris')
+  })
+  test('QCM rédigé à un seul leurre : gardé tel quel (deux propositions)', () => {
+    const two = card('v', 'Oui.', 1, { ok: 'Oui', no: ['Non'] })
+    expect(buildChoices(two, [two, ...pool], seeded(7)).options.sort()).toEqual(['Non', 'Oui'])
   })
 })
 

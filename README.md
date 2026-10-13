@@ -46,6 +46,9 @@ npm run e2e
   - `progress` : une ligne par personne, `{ cards: { id: [niveau, échéance, vues, réussites, premier jour] }, sessions, xp }`.
   - `admins` : e-mails des administrateurs ; `is_admin()` sert aux règles d’accès. Seuls les admins écrivent dans `documents`, `cards` et le bucket.
 - **Espace Admin** (onglet visible des seuls admins) : envoyer un PDF dans une zone, le modifier ou le retirer ; écrire les questions d’un document (QCM contrôlé à la saisie), en brouillon puis publiées.
+- **Importer des questions depuis Excel** (Admin > Questions) : « Télécharger le modèle » (feuille « Questions » vide sous les en-têtes, exemple dans la feuille « Exemple », jamais importée), remplir une ligne par question (Zone de 1 à 12, Question et Réponse obligatoires ; Bonne proposition et au moins une Mauvaise pour un QCM ; Source et Note facultatives).
+  Enregistrer en .xlsx (2 Mo et 1 000 lignes au plus, première feuille seulement), puis « Importer un fichier Excel » : l’aperçu liste les lignes valides par zone et chaque ligne en erreur avec sa raison ; rien n’est écrit avant « Importer N questions ».
+  Les questions arrivent en brouillon à la fin de leur zone, les doublons (fichier ou base) sont ignorés ; relire puis publier depuis la liste. Modèle régénérable : `python3 scripts/make_import_xlsx.py`.
 - **Ajouter un admin** (éditeur SQL) : `insert into public.admins (email) values ('prenom@exemple.sn');`
 - **Mise en place initiale** : appliquer la migration `*_library.sql`, puis envoyer les PDF d’origine : `SUPABASE_SERVICE_ROLE_KEY=… node scripts/upload_documents.mjs` (clé à ne jamais enregistrer dans un fichier).
 - **Publier du contenu en masse** : déposer `fiche-N.json` / `cards-N.json` dans `data/seed/`, lancer `python3 scripts/content_sql.py`, puis `supabase db push`.
