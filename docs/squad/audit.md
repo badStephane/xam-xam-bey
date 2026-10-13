@@ -40,6 +40,8 @@ En revanche, la promesse de la révision (garder sa progression) n'est pas tenue
 | 24 | MOYENNE | Bordure des champs à 1,7:1 ; écran « réservé aux admins » affiché pendant la vérification | UX-8, UX-9, FE-14 | Token `--field-bd` à 3:1 ou plus ; état « vérification… » |
 | 25 | MOYENNE | `progress` sans borne de taille alors que l'inscription est ouverte (remplissage des 500 Mo) | BE-6 | `check (pg_column_size(cards) <= 262144)` |
 
+Point 1 : résolu le 2026-10-13 par SMTP Gmail (voir 06-ops §A).
+
 Mineurs : voir les annexes de chaque revue (BE-A1 à A10, FE-16 à 25, UX annexe, OPS-12 à 22, QA-7 à 15). À noter : `?demo=1` et `?frame=1` coupent l'enregistrement en production (FE-17) ; cotes renumérotées après un retrait (QA-10) ; QCM de repli à une seule proposition (QA-8).
 
 ## Plan de correction proposé

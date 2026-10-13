@@ -6,23 +6,28 @@ Pour un bénévole, sans aide. Cocher chaque case au fur et à mesure. Aucun sec
 
 Vocabulaire : **URL de prod** = adresse publique du site (ex. `https://xam-xam-bey.pages.dev`). **Réf. projet** = identifiant Supabase visible dans l'URL du tableau de bord (`supabase.com/dashboard/project/<réf>`).
 
-## A. Brancher Brevo comme SMTP (bloquant avant l'ouverture)
+## A. Envoi des e-mails : SMTP Gmail de l'association (fait le 2026-10-13)
 
-Sans cela, Supabase n'envoie qu'environ 2 e-mails par heure : presque personne ne reçoit le lien de connexion.
+Sans SMTP externe, Supabase n'envoie qu'environ 2 e-mails par heure. Décision du 2026-10-13 : pas de nom de domaine (budget nul), donc pas de Brevo ; les liens magiques partent du compte Gmail réservé `xamxambey.revision@gmail.com`. Le mot de passe d'application est un secret : il ne s'écrit nulle part ailleurs que dans le champ Password de Supabase.
 
-- [ ] A1. Créer un compte gratuit sur brevo.com avec l'adresse e-mail de l'association (offre gratuite : 300 e-mails/jour).
-- [ ] A2. Brevo > **Senders, Domains & Dedicated IPs** > Senders > **Add a sender** : nom « Xam Xam Bëy », adresse de l'association. Cliquer le lien de vérification reçu.
-- [ ] A3. Brevo > menu du compte > **SMTP & API** > onglet **SMTP** > **Generate a new SMTP key**, nom « supabase ». Copier la clé (affichée une seule fois) et noter, sur la même page, le **Login** (forme `xxxx@smtp-brevo.com`).
-- [ ] A4. Supabase > projet > **Authentication** > **Emails** > **SMTP Settings** > activer **Enable custom SMTP**, puis remplir :
-  - Sender email : l'adresse vérifiée en A2 ; Sender name : `Xam Xam Bëy`
-  - Host : `smtp-relay.brevo.com` ; Port : `587`
-  - Username : le Login de A3 ; Password : la clé SMTP de A3. **Save**.
-- [ ] A5. Supabase > **Authentication** > **Rate Limits** > « Rate limit for sending emails » : passer à **100** par heure. **Save**.
-- [ ] A6. Test avec **3 adresses extérieures à l'équipe** (une Gmail, une Yahoo ou Outlook, une autre) : sur l'URL de prod, onglet Révision, demander le lien.
-  - [ ] Les 3 reçoivent l'e-mail en moins de 2 minutes (regarder aussi les **Spams**).
-  - [ ] Le lien ouvert sur un téléphone Android connecte bien la personne.
-  - [ ] Si un e-mail manque : Brevo > **Transactional** > **Logs** (refusé ? bloqué ?) et Supabase > **Authentication** > **Logs**.
-- [ ] A7. Noter la date du test dans le journal (bas de page).
+- [x] A1. Compte Gmail réservé, **validation en deux étapes active** (indispensable aux mots de passe d'application). Accès : 2 admins, téléphone de récupération de l'association.
+- [x] A2. Compte Google > **Sécurité** > **Mots de passe des applications** : mot de passe nommé « supabase » (affiché une seule fois, collé directement en A3).
+- [x] A3. Supabase > **Authentication** > **Emails** > **SMTP Settings**, custom SMTP activé : Host `smtp.gmail.com`, Port `587` ; Username et Sender email = `xamxambey.revision@gmail.com` (doivent être identiques) ; Sender name `Xam Xam Bëy` ; Password = mot de passe d'application de A2.
+- [x] A4. **Authentication** > **Rate Limits** > e-mails : **30 par heure** (plafond Gmail ≈ 500 envois par jour).
+- [x] A5. **URL Configuration** : Site URL `https://xam-xam-bey.pages.dev`, Redirect URLs `https://xam-xam-bey.pages.dev/**` ; anciennes URL Netlify retirées.
+- [x] A6. Test du 2026-10-13 : 3 adresses extérieures à l'équipe, **3 e-mails reçus**. À refaire après tout changement de A2 à A5 (regarder aussi les Spams, ouvrir le lien sur un Android).
+
+**Rotation** (fuite supposée, départ d'un bénévole qui y avait accès, ou une fois par an) :
+- [ ] Compte Google > Mots de passe des applications > **révoquer** « supabase », en créer un nouveau du même nom, le coller dans Supabase (A3) > **Save**, refaire le test A6 avec une adresse.
+- [ ] Départ d'un bénévole : changer aussi le mot de passe du compte Google (cela révoque tous les mots de passe d'application : recréer celui de A2 juste après) et retirer son téléphone de la validation en deux étapes.
+
+**Diagnostic** (Supabase > **Authentication** > **Logs**, filtrer sur les erreurs d'envoi) :
+- `535` (« Username and Password not accepted ») : mot de passe d'application révoqué ou faux, ou validation en deux étapes désactivée. Vérifier A1, puis rotation.
+- `550 5.4.5` / « Daily sending limit exceeded », ou e-mails qui n'arrivent plus sans erreur Supabase : plafond Gmail atteint, **Gmail bloque l'envoi jusqu'à 24 h**. Rien à faire côté Supabase ; prévenir les responsables (connexion possible le lendemain), ne pas relever A4.
+- `rate limit` côté Supabase : la limite de A4 est atteinte (plus de 30 demandes dans l'heure), attendre l'heure suivante.
+- Alerte de sécurité dans la boîte du compte (« connexion bloquée ») : la lire depuis un poste admin, confirmer l'activité.
+
+**Plan de sortie** : si les besoins dépassent 500 e-mails par jour (ou blocages Gmail répétés), acheter un nom de domaine (~10 $/an) et passer à Brevo (300/jour gratuit, domaine authentifié), avec un nouveau test A6.
 
 ## B. Choisir une cible unique et basculer
 
@@ -33,7 +38,7 @@ Recommandation : **Cloudflare Pages reliée à GitHub**. Chaque push sur `main` 
 - [ ] B3. Réglages de build : Framework preset **None** ; Build command **`npm run check`** (types, tests puis build : un test cassé fait échouer le déploiement) ; Build output directory **`dist`**.
 - [ ] B4. **Variables de build** (Settings > Variables and Secrets, environnement Production **et** Preview) : `VITE_SUPABASE_URL` = `https://<réf>.supabase.co`, `VITE_SUPABASE_ANON_KEY` = clé anon (Supabase > Project Settings > API Keys). Ajouter `NODE_VERSION` = `22`.
 - [ ] B5. Lancer le déploiement. Vérifier sur l'URL obtenue : la bibliothèque s'affiche, **3 PDF** s'ouvrent, un lien magique arrive et connecte.
-- [ ] B6. Supabase > **Authentication** > **URL Configuration** : Site URL = URL de prod ; Redirect URLs = `<URL de prod>/**`, `https://*.xam-xam-bey.pages.dev/**` (aperçus) et `http://localhost:5173`. Supprimer l'ancienne adresse Netlify **après** B5.
+- [x] B6. Supabase > **Authentication** > **URL Configuration** : fait le 2026-10-13 (voir A5), Netlify retiré. Si besoin, ajouter `https://*.xam-xam-bey.pages.dev/**` (aperçus) et `http://localhost:5173` : la connexion n'y fonctionne pas sans eux.
 - [ ] B7. Mettre à jour le secret GitHub `SITE_URL` (section F) et la sonde UptimeRobot (section G).
 - [ ] B8. Retirer les autres cibles, une fois B5 et B6 verts depuis 48 h :
   - [ ] Netlify : Site configuration > **Delete this site** (ou au moins couper les builds) ; supprimer `netlify.toml` et `.netlify/` du dépôt.
@@ -107,8 +112,8 @@ Escalade : mainteneur technique, puis propriétaire de l'organisation Supabase /
 
 **E2. Plus personne ne reçoit le lien de connexion**
 1. [ ] Tester soi-même avec une adresse extérieure (et regarder les Spams).
-2. [ ] Supabase > **Authentication** > **Logs** : erreur `rate limit` ? Relever la limite (A5). Erreur SMTP ? Passer à 3.
-3. [ ] Brevo > **Transactional** > **Logs** et **Statistics** : quota de 300/jour atteint ? Compte suspendu ? Clé SMTP révoquée ? Régénérer une clé (A3) et la recoller (A4).
+2. [ ] Supabase > **Authentication** > **Logs** : appliquer le **Diagnostic** de la section A (`535` = rotation du mot de passe d'application ; `550 5.4.5` ou rien = plafond Gmail, blocage jusqu'à 24 h ; `rate limit` = attendre l'heure suivante).
+3. [ ] Se connecter au compte Gmail de l'association : alerte de sécurité ? dossier **Envoyés** (les liens partent-ils) ? messages « Delivery Status Notification » (adresse refusée) ?
 4. [ ] Le lien arrive mais renvoie vers une mauvaise adresse ou une erreur : vérifier **URL Configuration** (B6).
 5. [ ] Le lien s'ouvre dans un autre navigateur que celui de la demande (Android) : conseiller de copier le lien dans Chrome. Contournement connu, correctif côté front prévu.
 6. [ ] Prévenir les responsables, donner une heure de retour estimée.
@@ -135,7 +140,7 @@ GitHub > dépôt > **Settings** > **Secrets and variables** > **Actions** > **Ne
 
 Reprend la checklist de `07-qa.md` §6. Une personne, un ordinateur avec Docker Desktop et la CLI Supabase, depuis la racine du dépôt à jour (`git pull`, `git status` vide). **Ne pas sauter d'étape. Si une étape échoue : s'arrêter, appliquer la consigne « Si échec », ne pas continuer.**
 
-- [ ] H0. Prérequis : CI verte sur le dernier commit de `main` (GitHub > Actions > ci, jobs `app` et `db`). Décision L1-2 (borne `sessions`) prise et notée.
+- [ ] H0. Prérequis : CI verte sur le dernier commit de `main` (GitHub > Actions > ci, jobs `app` et `db`). SMTP Gmail en place et testé (section A, fait le 2026-10-13).
   Si échec : ne rien pousser en base ; signaler au Back le job rouge.
 - [ ] H1. **Sauvegarde d'abord** : faire la section D (D1 à D7) complète, puis le dump de sécurité C3 :
   `supabase db dump --db-url "$DB_URL" --data-only --use-copy -s public -f avant-$(date +%F).sql`
@@ -150,7 +155,7 @@ Reprend la checklist de `07-qa.md` §6. Une personne, un ordinateur avec Docker 
   Si échec (d'autres fichiers proposés) : NE PAS pousser ; revenir à H3 (sinon le contenu de révision est réécrit et les cartes et documents supprimés par l'admin reviennent).
 - [ ] H5. Contrôle des bornes, Supabase > **SQL Editor** (lecture seule), tous les nombres doivent valoir **0** :
   `select count(*) filter (where xp > 10000000) as xp_trop, count(*) filter (where pg_column_size(cards) > 262144) as cartes_trop, count(*) filter (where pg_column_size(sessions) > 65536) as seances_trop from public.progress;`
-  (`seances_trop` ne compte que si la borne `sessions` de L1-2 a été ajoutée.)
+  (`seances_trop` vérifie la contrainte `progress_sessions_size` ajoutée par la migration : une ligne au-delà ferait échouer H6.)
   Si échec (un nombre > 0) : ne pas pousser ; transmettre au Back le résultat de `select user_id, xp, pg_column_size(cards), pg_column_size(sessions) from public.progress order by 3 desc limit 5;` pour décider (correction de la ligne ou borne relevée).
 - [ ] H6. `supabase db push` (confirmer par `y`), puis `supabase migration list` : `20261013090000` présent en Local **et** Remote.
   Si échec : la migration est dans une transaction, rien n'est appliqué à moitié. Copier le message d'erreur au Back ; le site actuel continue de fonctionner (aucun front n'a été déployé).
@@ -171,4 +176,5 @@ Retrait de la migration (dernier recours, jamais en éditant l'ancien fichier) :
 
 | Date | Exercice / incident | Durée | Remarque |
 |---|---|---|---|
+| 2026-10-13 | Mise en place SMTP Gmail, test 3 adresses extérieures | | 3 e-mails reçus (section A) |
 | | | | |
