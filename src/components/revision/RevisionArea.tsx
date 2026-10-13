@@ -20,7 +20,9 @@ export function RevisionArea({ children }: { children: ReactNode }) {
     <>
       {rev.saveErr && (
         <div className="warn-inline" role="alert">
-          <span>Votre dernière progression n’a pas pu être enregistrée. Nouvel essai automatique dans quelques secondes.</span>
+          <span>{rev.saveErr === 'rejected'
+            ? 'Votre progression n’a pas pu être enregistrée en ligne. Elle reste gardée sur cet appareil.'
+            : 'Votre dernière progression n’a pas pu être enregistrée. Nouvel essai automatique dans quelques secondes.'}</span>
           <button className="btn-mono" onClick={rev.retrySave}>RÉESSAYER</button>
         </div>
       )}

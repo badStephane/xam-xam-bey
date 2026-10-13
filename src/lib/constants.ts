@@ -35,7 +35,8 @@ export const GROUP_CAP_MOBILE = 3
 export const GROUP_CAP_DESKTOP = 4
 export const CHART_DAYS = 12
 export const SAVE_DELAY = 1200
-export const KEPT_SESSIONS = 60
+/** Séances gardées dans la progression (contrat save_progress : 200 au plus). */
+export const KEPT_SESSIONS = 200
 export const DAY_NAMES = ['DIMANCHE', 'LUNDI', 'MARDI', 'MERCREDI', 'JEUDI', 'VENDREDI', 'SAMEDI']
 export const MONTH_NAMES = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
 export const GRADE_SELF: ReadonlyArray<readonly [string, string]> = [['✕ RATÉ', '[1] REVIENT'], ['~ HÉSITANT', `[2] +${XP_HES} XP`], ['✓ SU', `[3] +${XP_SU} XP`]]

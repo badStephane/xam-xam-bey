@@ -1,8 +1,9 @@
 /// <reference types="vitest" />
 import { cpSync, createReadStream, existsSync, rmSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { defineConfig, type Plugin } from 'vite'
+import { defineConfig, loadEnv, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
+import { assertBuildEnv } from './src/lib/buildEnv'
 
 const OUT_DIR = resolve(__dirname, 'dist')
 const DOCS_DIR = resolve(__dirname, 'site', 'f')
@@ -42,23 +43,27 @@ function siteDocs(): Plugin {
   }
 }
 
-export default defineConfig({
-  base: './',
-  publicDir: 'public',
-  plugins: [react(), siteDocs()],
-  build: {
-    outDir: OUT_DIR,
-    emptyOutDir: false,
-    rollupOptions: {
-      input: {
-        index: resolve(__dirname, 'index.html'),
-        planches: resolve(__dirname, 'planches.html'),
+export default defineConfig(({ mode }) => {
+  // Build de production sans Supabase : échec explicite plutôt qu'un site aux PDF introuvables (contrat §4).
+  assertBuildEnv(mode, loadEnv(mode, __dirname, 'VITE_'))
+  return {
+    base: './',
+    publicDir: 'public',
+    plugins: [react(), siteDocs()],
+    build: {
+      outDir: OUT_DIR,
+      emptyOutDir: false,
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, 'index.html'),
+          planches: resolve(__dirname, 'planches.html'),
+        },
       },
     },
-  },
-  test: {
-    environment: 'node',
-    include: ['src/**/*.test.ts'],
-    coverage: { include: ['src/lib/**/*.ts'], exclude: ['src/lib/**/*.test.ts', 'src/lib/types.ts', 'src/lib/docs.ts', 'src/lib/storage.ts', 'src/lib/share.ts', 'src/lib/params.ts'] },
-  },
+    test: {
+      environment: 'node',
+      include: ['src/**/*.test.ts'],
+      coverage: { include: ['src/lib/**/*.ts'], exclude: ['src/lib/**/*.test.ts', 'src/lib/types.ts', 'src/lib/docs.ts', 'src/lib/storage.ts', 'src/lib/share.ts', 'src/lib/params.ts'] },
+    },
+  }
 })

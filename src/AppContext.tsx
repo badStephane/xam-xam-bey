@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { ASK_COUNTS } from './lib/constants'
 import { demoProgress, demoSession } from './lib/demo'
 import { currentZone, dayNum } from './lib/format'
@@ -11,6 +11,7 @@ import { loadPref, savePref } from './lib/storage'
 import type { Scope } from './lib/practice'
 import type { Card, Doc, Grade, QuizMode, Session, TypeFilter } from './lib/types'
 import { useCatalog, type CatalogStatus } from './hooks/useCatalog'
+import { useNow } from './hooks/useNow'
 import { useRevision, type Revision } from './hooks/useRevision'
 import { useIsMobile, useOnline } from './hooks/useViewport'
 
@@ -78,7 +79,8 @@ function initialDark(): boolean {
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const now = useMemo(() => new Date(), [])
+  // Jour recalculé au passage de minuit et au retour au premier plan (QA-1).
+  const now = useNow()
   const today = dayNum(now)
   const cur = currentZone(now)
   const [ui, setUi] = useState<Ui>(() => ({
