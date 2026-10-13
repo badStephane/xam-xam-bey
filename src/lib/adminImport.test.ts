@@ -8,13 +8,14 @@ const state = vi.hoisted(() => ({
   ranges: [] as Array<[number, number]>,
   zones: [] as unknown[],
   inserted: [] as unknown[],
+  reads: [] as Array<[string, string]>,
 }))
 
 vi.mock('./supabase', () => {
-  const chain = () => {
+  const chain = (table: string) => {
     let page = 0
     const c: Record<string, unknown> = {}
-    c.select = () => c
+    c.select = (cols: string) => { state.reads.push([table, cols]); return c }
     c.order = () => c
     c.in = (_: string, z: unknown[]) => { state.zones.push(z); return c }
     c.range = (from: number, to: number) => { state.ranges.push([from, to]); page = from / 1000; return Promise.resolve(state.pages[page]) }
@@ -24,11 +25,11 @@ vi.mock('./supabase', () => {
     }
     return c
   }
-  return { supabase: { from: () => chain() } }
+  return { supabase: { from: (table: string) => chain(table) } }
 })
 vi.mock('./pdf', () => ({ openPdf: vi.fn() }))
 
-const { UNCERTAIN_IMPORT, UncertainWriteError, insertImportedCards, listCardsForImport } = await import('./adminApi')
+const { UNCERTAIN_IMPORT, UncertainWriteError, insertImportedCards, listCardsForImport, listDocumentsForImport } = await import('./adminApi')
 
 const card = (i: number) => ({ id: `t1-${String(i).padStart(6, '0')}`, zone: 1, q: `Q${i}`, position: i })
 const insert = (n: number): CardInsert[] => Array.from({ length: n }, (_, i) => ({ ...card(i), a: 'A', src: '', note: '', qcm: null, status: 'draft', document_id: null }))
@@ -39,6 +40,7 @@ beforeEach(() => {
   state.ranges = []
   state.zones = []
   state.inserted = []
+  state.reads = []
 })
 
 describe('listCardsForImport', () => {
@@ -59,6 +61,20 @@ describe('listCardsForImport', () => {
   test('erreur de lecture : message lisible', async () => {
     state.pages = [{ data: null, error: { message: 'permission denied for table cards', code: '42501' } }]
     await expect(listCardsForImport([1])).rejects.toThrow(/pas administrateur/)
+  })
+})
+
+describe('listDocumentsForImport (E4)', () => {
+  test('lit id, zone, titre et nom de fichier des documents des zones citées', async () => {
+    const doc = { id: 7, zone: 3, title: 'Méthode', file_name: 'methode.pdf' }
+    state.pages = [{ data: [doc], error: null }]
+    await expect(listDocumentsForImport([3])).resolves.toEqual([doc])
+    expect(state.reads).toEqual([['documents', 'id, zone, title, file_name']])
+    expect(state.zones[0]).toEqual([3])
+  })
+  test('aucune zone : aucune requête', async () => {
+    await expect(listDocumentsForImport([])).resolves.toEqual([])
+    expect(state.reads).toEqual([])
   })
 })
 

@@ -305,3 +305,139 @@ Note poste : `supabase start` bloqué sur le trousseau ; `supabase/.temp/project
 Vérifications : `npm run typecheck` OK ; `npx vitest run` 31 fichiers, 325 tests verts (5 ignorés, déjà présents avant) ; build avec variables factices OK, `index.html` ne précharge que `index` et `client` ; `npm audit --omit=dev` 0 vulnérabilité ; `npm run e2e` 19/19 (specs QA comprises), 0 ligne de test restante en base.
 Bundle (gzip) : `index` initial 105,43 kB (contre 104,88 : bloc d'auto-évaluation, garde de publication) ; chargés à la demande : `CardsImport` 4,95, read-excel-file 14,15, fflate 12,33.
 QA (constats remplacés) : dans `qaImport.test.ts`, le constat « Paris / paris » et le repli d'une carte seule décrivent maintenant le comportement corrigé. Dans `qa-import-scout.spec.ts`, le constat IM-6 (1 proposition) devient « 4 propositions ».
+
+## Lot 3 > SRE
+
+Livré : `scripts/upload_documents.mjs`, `scripts/deploy-pages.sh`, `.github/workflows/sonde.yml`, `.github/workflows/ci.yml` (commentaire seul), `README.md`, `docs/squad/06-ops.md` (H5, E1 étape 3, sections J, K, L, M). `package.json` inchangé.
+
+- **Audit 21** : le script lit `SUPABASE_SECRET_KEY` (préparée par `read -rs`), refuse de démarrer si elle manque (message avec la commande à taper), refuse une clé `sb_publishable_…` ou de format inconnu, refuse l'ancienne variable `SUPABASE_SERVICE_ROLE_KEY` seule, accepte une clé JWT historique avec un avertissement. La clé n'est jamais affichée. Une exception réseau par fichier ne coupe plus tout l'envoi. 06-ops J : clé `sb_secret_…` créée pour un envoi puis supprimée, rotation en urgence, contrôle de l'historique du shell.
+- **Audit 20** : la sonde fait un `HEAD` quotidien sur un PDF (200 exigé, avertissement sans `max-age`). La consommation n'est pas lisible avec la clé anon ; la Management API demande un jeton `sbp_…` qui ouvre tout le compte, donc refusé. Relevé manuel chaque lundi pendant 8 semaines (06-ops K1, seuils 3,5 et 4,5 Go en projection). Repli K3 retenu : PDF dans le build Pages (~1 jour) ; R2 écarté (pas de domaine, `r2.dev` déconseillé en production, Worker d'envoi à écrire).
+- **OPS-17** : `WRANGLER_VERSION="4.150.0"` dans `deploy-pages.sh` (dist-tag `latest` sur npm le 2026-10-13, publiée le jour même), appel `npx --yes "wrangler@$WRANGLER_VERSION"`. Pas en devDependency : seul ce script s'en sert, et `npm ci` en CI téléchargerait wrangler et workerd à chaque exécution ; le lockfile, partagé avec les fronts en parallèle, reste intact.
+- **CLI Supabase en CI** : gardée en **2.109.1**. Notes 2.110 à 2.120 relues : `start`, `db test` et `db reset` passent sur le moteur TypeScript, défaut `auto_expose_new_tables` changé (2.116) alors que `04_lot2_test.sql` vérifie les privilèges par défaut, Mailpit isolé par pile (2.119) alors que l'E2E lit Mailpit. Montée à faire dans une PR dédiée, postes compris, après `supabase test db` et `npm run e2e` verts en local (interdit dans ce lot : pas de `supabase start`).
+- **Vérifications faites** :
+  - `upload_documents.mjs` : `node --check` passe. 4 refus testés (variable absente, ancienne variable, clé publishable, format inconnu), tous en code 1. Cas nominal lancé contre `https://ci.invalid` : 170 échecs « fetch failed », code 1, clé absente de la sortie. Aucun appel à Supabase.
+  - `deploy-pages.sh` : `sh -n` passe. Dépôt jetable avec `npm` et `npx` remplacés par des leurres : appelle `npx --yes wrangler@4.150.0 pages deploy dist --project-name xam-xam-bey --branch main`. `npx --yes wrangler@4.150.0 --version` répond 4.150.0.
+  - Sonde : YAML parsé (Ruby Psych), `bash -n` passe sur la nouvelle étape, encodage `@uri` vérifié.
+  - Requêtes de 06-ops L : exécutées sur un Postgres 16 jetable, sans erreur, et les lignes attendues sortent.
+- **Non exécutés** : la sonde sur GitHub (preuve = `Run workflow` vert après fusion) ; la requête L en production (action utilisateur) ; aucun déploiement.
+- **Dépend de Front B** : 06-ops M cite sa procédure de désinscription du service worker (« Lot 3 > Front B ») ; `sw.js` doit être servi en `no-cache` (`public/_headers`).
+
+## Lot 3 > Front admin
+
+Hypothèses : H1, la colonne Source désigne **un** document (titre ou nom de fichier exact après normalisation) ; « Bases du scoutisme, p. 12 » ou deux documents cités ne relient rien. H2, l'extension retirée est `.pdf`, et aussi `.docx`/`.doc` (le document 4 de la base porte un nom en `.docx`). H3, aucune migration.
+
+Livré : `src/lib/cardImportDocs.ts` (nouveau), `src/lib/xlsxUnzip.ts` (nouveau), `src/components/admin/ImportDocLinks.tsx` (nouveau), `cardImport.ts`, `cardImportFlow.ts`, `xlsxRead.ts`, `adminApi.ts`, `CardsImport.tsx`. Tests : `cardImportDocs.test.ts` (18), `xlsxUnzip.test.ts` (7), `adminImport.test.ts` (+2), `cardImport.test.ts` (attendu mis à jour : champ `doc`), E2E `e2e/import-docs.spec.ts` et `e2e/import-im10.spec.ts`.
+
+| Point | Comportement | Preuve |
+|---|---|---|
+| E4 | Clé de correspondance : sans accents, minuscules, extension retirée, `_`, `-` et apostrophes valent une espace, espaces réduits. Comparée au titre **et** au nom de fichier des documents **de la zone de la ligne** (`listDocumentsForImport`, lu en parallèle des questions existantes). Un seul document : `document_id` rempli. Aucun : null, sans erreur. Plusieurs : null, et l'aperçu le dit (note + détail par ligne). La colonne Source affichée n'est pas modifiée. Les documents sont relus juste avant l'écriture : un lien qui change (document supprimé, renommé) renvoie un nouvel aperçu, rien n'est inséré. | Vitest 18 tests ; E2E : titre en casse et `.PDF`, nom `.docx` avec `'` au lieu de `_`, 2 homonymes, autre zone, sans source ; `document_id` vérifié en base (1, 4, null ×3) ; la liste admin affiche le document relié |
+| Aperçu | Bloc « DOCUMENTS RELIÉS · n SUR m » : résumé (reliées, sans correspondance, ambiguës, sans source), puis « Détail par ligne » : « Ligne 4 · zone 01 : reliée à « … » » ou la raison du non-lien. Ouvert jusqu'à 50 lignes, replié au-delà (`<details>`, cible de 44 px). Placé sous le bouton « Importer » pour qu'il reste à portée. | E2E à 360 px, pas de débordement |
+| IM-10 | Décompression **par flux** (`Unzip` + `UnzipInflate` de fflate, synchrones, aucun Worker, CSP inchangée). L'archive est poussée par morceaux de 8 Kio ; chaque octet produit est compté et la lecture s'arrête dès que la borne est dépassée (au plus ~8 Mo produits en plus). Toutes les 50 ms de travail, la main est rendue au navigateur. Message : « Classeur trop volumineux une fois décompressé (plus de 8 Mo)… ». Le contrôle IM-8 (taille annoncée) reste en première barrière. | Vitest : zip menteur (répertoire central et en-tête local à 2 000 octets, feuille de 64 Mo) refusé `tooBig` en moins d'1 s ; octets produits bornés ; pause appelée ; archives tronquée et corrompue `invalid`. E2E sous CPU ralenti 4× : refus affiché, **tâche la plus longue 128 ms**, 0 Worker, champ réactivé. Avant correctif (même menteur, code de `main`) : « Fichier illisible », lecture complète |
+| Borne | `MAX_UNZIPPED_BYTES` passe de 20 à **8 Mo**. Raison : l'analyse XML de read-excel-file reste synchrone ; une feuille **honnête** de 18 Mo prenait 1,2 s sur un poste de bureau. 900 questions réalistes (réponses de 60 mots, QCM) font 1 Mo : la marge reste de 8×. | Mesure Node (script jetable, non versionné) |
+
+Vérifications (2026-10-13) : `npm run typecheck` OK ; `npx vitest run` 39 fichiers, 429 verts (5 ignorés, déjà présents avant) ; build avec variables factices OK (`CardsImport` 16,01 / 6,50 kB gzip, chargé à la demande ; `index` 108,77 kB gzip, travail des autres rôles compris) ; `npm audit --omit=dev` 0 vulnérabilité ; E2E d'import sur la pile locale 553xx : 14/14 (`import-docs`, `import-im10`, `import-excel`, `qa-import`, `qa-import-csp`, `qa-import-scout`). Couverture : cardImportDocs 100 %, xlsxUnzip 100 % lignes, cardImport 100 %, cardImportFlow 100 %.
+
+Hors périmètre : côté scouts, la carte n'affiche que le texte « SOURCE · … » ; aucun lien vers le PDF n'existe aujourd'hui (le type `Card` ne porte pas `document_id`). Besoin transmis à Front A (`useRevision.ts`, `revision/**`).
+
+## Lot 3 > Front A
+
+Hypothèses : la confirmation UX-14 vaut aussi pour « TERMINER » en interrogation (texte adapté) ; Fiches n'affiche aucune carte, donc le lien vers le document (E4) est posé dans la séance et dans le bilan (« À retravailler »), pas dans Fiches (question ouverte à l'orchestrateur).
+
+### Fichiers
+- `src/lib/session.ts` : `scoreCurrent` (note à la correction), `advance` (« Suivant » ne note rien), `isScored` (invariant : `hist.length === i + 1` si la carte affichée est notée) ; `answerCard` les compose.
+- `src/lib/sessionStore.ts` (nouveau) : séance en `sessionStorage`, clé `xxb.session.v1.<user_id>`, validée à la lecture (compte, jour, cartes encore publiées, position, notes, propositions), effacée si invalide ou terminée.
+- `src/lib/screenTitle.ts`, `src/hooks/useScreenA11y.ts` (nouveaux) : titre du document et focus sur le `h1` de l'écran à chaque changement (pas au premier affichage, jamais pendant une saisie).
+- `src/AppContext.tsx` : `validate` note tout de suite (E1) ; séance gardée dans le même geste que la note ; reprise au chargement si l'adresse est `#session` (E2) ; `quitSession` / `cancelQuit` / `confirmQuit` (UX-14) ; `openCardDoc` et RETOUR du document vers la séance ou le bilan.
+- `src/components/revision/Session.tsx` : confirmation en ligne « Quitter ? Vos réponses déjà données sont gardées. [CONTINUER] [QUITTER] » (aria-live, focus sur CONTINUER, retour du focus sur QUITTER) ; aide clavier réduite à « ÉCHAP : QUITTER » en auto-évaluation (IM-11).
+- `src/components/revision/CardDocLink.tsx` (nouveau), `Fin.tsx` : lien « Ouvrir le document » ; la reprise des cartes à retravailler passe par `startSession` (propositions attribuées : avant, une reprise en « Je réponds » n'affichait aucune proposition).
+- `src/lib/srs.ts`, `src/lib/types.ts` (accord de l'orchestrateur) : `Card.doc` lu depuis `document_id`, valeur nulle ou invalide ignorée.
+- `src/hooks/useRevision.ts` : `userId` exposé (propriétaire des écritures).
+- `src/styles/app.css` : jeton `--field-bd` (sombre `#5E7A6D` : 3,95:1 sur le fond, 4,08:1 sur le champ ; clair `#7A7262` : 3,90:1 et 4,49:1), appliqué au champ de recherche (audit 24, UX-8).
+- E2E : `e2e/session-resume.spec.ts` (nouveau) ; `e2e/midnight-back.spec.ts` : un clic de confirmation ajouté après QUITTER.
+
+### Règles tenues
+- Une position de la file = une note, posée à la correction (QCM validé) ou à l'auto-notation (« Je savais » / « Je ne savais pas ») ; ni retour, ni rechargement, ni « Suivant » ne la rejouent. D2 et D3 inchangées (`applyGrade` intact).
+- Retour Android en séance : inchangé (fin de séance comme QUITTER, sans confirmation). Une seule confirmation, jamais deux.
+- Séance d'un compte jamais relue ni écrite pour un autre ; planches et démo : rien n'est gardé.
+
+### Commandes et résultats (2026-10-13, pile locale 553xx)
+- `npm run typecheck` : 0 erreur.
+- `npx vitest run` : 438 réussis, 1 échec hors Front A (`xlsxUnzip.test.ts`, IM-10, travail en cours du Front admin).
+- Build (variables factices) : OK, bundle initial 109,31 Ko gzip (tous rôles confondus, plafond 110).
+- `npx playwright test e2e/session-resume.spec.ts e2e/midnight-back.spec.ts --repeat-each=2` : 11 réussis sur 12 ; l'échec isolé est « Le réseau ne répond pas » à l'envoi du lien (pile locale), vert au passage suivant (3 sur 3).
+
+### Hors périmètre
+- Planches : la démo « phase réponse » (`demo.ts`) garde l'ancienne forme (carte corrigée non notée) ; sans effet, rien n'y est enregistré.
+- Le lien vers le document n'apparaît que si le document est dans le catalogue chargé.
+
+## Lot 3 > Front B
+
+Hypothèses : H1, le bucket public de production répond avec `Access-Control-Allow-Origin: *` comme la pile locale (vérifié en local seulement ; aucun appel distant permis). H2 (tranchée par le PM le 2026-10-13) : l'ouverture sur téléphone reste celle choisie par l'utilisateur (lecteur du téléphone, commit 40da947). En ligne : lecteur du téléphone. Hors ligne (navigateur hors ligne, ou base injoignable constatée) et PDF gardé : aperçu du site (pdf.js) lu depuis le cache. Hors ligne et PDF absent : message, aucun lien. Règle pure dans `src/lib/openMode.ts`. H3, aucune migration.
+
+### Fichiers
+- `src/sw/rules.ts` (logique pure : aiguillage, éviction, manifeste, version), `src/sw/sw.ts` (worker écrit à la main, ~170 lignes), `src/sw/buildSw.ts` (plugin Vite : manifeste et `dist/sw.js` compilé par esbuild, déjà livré avec Vite, aucune dépendance ajoutée), `src/sw/register.ts`, `src/hooks/useOfflineDocs.ts` ; tests `src/sw/rules.test.ts`, `src/sw/buildSw.test.ts`.
+- `vite.config.ts` : plugin ajouté ; `siteDocs` écrit dans le dossier de sortie effectif (`--outDir`), plus jamais dans `dist/` d'office.
+- `src/components/library/` : `Library.tsx`, `DocCard.tsx` (mémoïsée, sans contexte), `PdfViewer.tsx`, `LazyPdfViewer.tsx` (nouveau), `Apercu.tsx` et `PreviewPanel.tsx` (liens Télécharger et Plein écran masqués hors réseau), `library.css` (nouveau, hors `app.css`) ; `src/lib/openMode.ts` et son test (nouveaux).
+- `src/lib/pdf.ts` (`loadPdf` annulable tout de suite ; `openPdf` garde sa forme pour l'admin), `src/lib/catalog.ts` (`filterDocs`), `src/main.tsx`, `index.html`, `planches.html`, `src/styles/fonts.css`, `src/assets/fonts/*.woff2`, `public/fonts/OFL-*.txt`, `public/_headers`.
+- E2E : `e2e/offline.spec.ts` (5 tests, build de production servi par `vite preview` dans `node_modules/.cache/`, jamais `dist/`).
+
+### Points livrés
+| Point | Comportement | Preuve |
+|---|---|---|
+| E3 coquille | Préchargée à l'installation : `index.html`, script principal, styles, polices (7 fichiers, manifeste lu dans le `index.html` construit). Pages : réseau d'abord, `index.html` gardé si coupé ou plus lent que 3,5 s. Inscription après `load`, en production seulement (jamais en dev, donc jamais dans les autres E2E), jamais dans les cadres des planches. | E2E : rechargement hors réseau servi par le worker (`fromServiceWorker`) |
+| E3 PDF | Bucket `documents` uniquement, requête `cors` (réponse lisible, taille connue ; une réponse opaque n'est jamais gardée). Cache d'abord. Plafond 150 Mo, plus anciens évincés, fichier plus gros que le plafond jamais gardé. Requêtes partielles, `?download=`, REST, Auth, Realtime, fonctions : jamais interceptés. Service worker actif : pdf.js télécharge le fichier en une requête (`disableRange`) pour qu'il puisse être gardé. Repère « HORS LIGNE » sur les fiches gardées. Le premier PDF gardé fait aussi garder le lecteur (pdf.js), que la page n'a jamais chargé si tout a été ouvert dans le lecteur du téléphone. | Vitest (aiguillage, éviction) ; E2E ordinateur : PDF ouvert, réseau coupé, rechargé, PDF relu depuis le worker |
+| E3 téléphone | En ligne, « Ouvrir ↗ » ouvre le lecteur du téléphone comme avant et, en parallèle, la page demande au worker de garder le PDF (message `xxb-keep-pdf`, accepté pour le seul bucket public, dans le plafond de 150 Mo). **Choix du double téléchargement** : le lecteur du téléphone télécharge hors du site, le worker ne peut pas réutiliser ce fichier ; garder le PDF demande donc un second téléchargement. Il est évité si le PDF est déjà gardé, si l'économie de données est active (`saveData`) ou en 2G (`effectiveType`) ; en 3G et au-delà, il est accepté, seul moyen de tenir E3 sans changer le lecteur choisi. Sur les navigateurs sans ces indications (hors Chrome), il a toujours lieu. | Vitest (`openMode`, `shouldKeepOnOpen`, `keepRequestUrl`) ; E2E téléphone : ouvert en ligne dans le lecteur du téléphone (aucun aperçu intégré), réseau coupé, rechargé, rouvert : aperçu du site servi par le worker ; pièce jamais ouverte : message, aucun lien |
+| E3 lien magique | Toute page dont l'adresse porte un paramètre hors de ceux de l'application (`code`, `token_hash`, `error`…) passe au réseau sans être touchée. | Vitest ; E2E : `/?screen=revision&code=…` hors réseau échoue (non servi par le worker) |
+| E3 mise à jour | Nouvelle version active dès l'installation (`skipWaiting`, `clients.claim`), coquilles précédentes purgées ; fichiers hachés inchangés repris sans téléchargement ; fichiers disparus du build purgés ; si l'appareil garde des PDF, le lecteur (pdf.js) est préchargé à chaque version. `sw.js` en `no-cache` et `updateViaCache: 'none'`. | E2E : nouveau build servi à chaud, une seule coquille, PDF toujours lisible hors réseau |
+| E3 bandeau | Worker actif : « Le réseau est coupé. Les documents déjà ouverts sur cet appareil restent lisibles : ils portent la mention HORS LIGNE. » Sans worker : ancien texte honnête. Pièce jamais ouverte, hors réseau : « Hors réseau : pas encore ouvert sur cet appareil » à la place du bouton. | E2E |
+| E5 | Chakra Petch (600, 700) et JetBrains Mono (variable 400 à 800), woff2 latin, `font-display: swap`, police des titres préchargée. Bricolage Grotesque et Instrument Sans retombent sur `system-ui` (piles de `app.css` inchangées). Source : npm `@fontsource/chakra-petch` et `@fontsource-variable/jetbrains-mono` 5.3.0, licence OFL 1.1. **Poids total : 60,3 Ko** (9,9 + 10,0 + 40,4). CSP : Google Fonts retiré de `style-src`, `font-src 'self' data:`. | E2E sous la CSP de production : 0 violation, 0 requête Google Fonts, `document.fonts.check` vrai pour les 2 familles |
+| Audit 22 | Tâche pdf.js annulable dès l'appel (`destroy()` au démontage et au changement de document, même pendant le chargement de pdf.js). Page hors de la marge de 800 px : rendu annulé, canvas à 0 × 0 et retiré, `page.cleanup()`. Plafond d'échelle 1,5 si `navigator.deviceMemory <= 2`. Vignette sans worker : `disableAutoFetch` et `disableStream` (FE-7). | Mesure, PDF de 60 pages, 390 px, DPR 2, défilement complet : **avant 60 canvas, 146,1 Mo ; après 6 au plus, 14,6 Mo** (4 et 9,7 Mo à l'arrêt) |
+| Audit 23 | `useDeferredValue` sur la recherche (la frappe s'affiche tout de suite, résultats estompés pendant le recalcul) ; filtres, comptes et statistiques mémoïsés ; requête normalisée une fois et non 170 (`filterDocs`) ; `DocCard` mémoïsée avec des fonctions stables. | Vitest (`filterDocs` = `matchDoc`) |
+
+### Bundle initial (gzip, build avec variables factices)
+- `main` seul (65ed46e) : `index` 105,44 Ko. Front B seul, appliqué à `main` (avant la décision sur le téléphone) : 106,03 Ko (+0,59), lecteur PDF sorti du bundle initial (`PdfViewer` 1,54 Ko, à la demande). **Chiffre final, arbre complet du lot (tous rôles) : 108,90 Ko** (plafond 110). CSS `index` 6,32 Ko. `sw.js` 2,4 Ko, chargé après `load`.
+
+### Procédure de secours : désinscrire le service worker
+1. Construire et déployer un worker de secours : `VITE_SW=off npm run build`, puis le déploiement habituel (06-ops). Le `sw.js` produit purge les caches `xxb-*`, se désinscrit et recharge les onglets ouverts ; la page, de son côté, désinscrit tout worker et purge les mêmes caches. Vérifié en E2E.
+2. Laisser ce build en ligne au moins 7 jours (le temps que les téléphones repassent sur le site), puis redéployer normalement pour réactiver le hors ligne.
+3. Sur un appareil précis, sans attendre : Chrome Android, menu ⋮ > Paramètres > Paramètres des sites > Tous les sites > le site > Effacer et réinitialiser. Ordinateur : DevTools > Application > Service workers > Unregister, puis Storage > Clear site data.
+4. Retour arrière du code : revenir au commit précédent ne suffit pas (un worker installé reste actif) ; toujours passer par l'étape 1.
+
+### Commandes et résultats (2026-10-13, pile locale 553xx)
+- `npm run typecheck` : 0 erreur. `npx vitest run` : 40 fichiers, 450 réussis (5 ignorés, déjà présents avant).
+- Build avec `VITE_SUPABASE_URL=https://ci.invalid VITE_SUPABASE_ANON_KEY=ci-anon-key` : OK, `sw.js` généré (coquille de 7 fichiers).
+- `npx playwright test e2e/offline.spec.ts` : 5/5. `npx playwright test` complet (port 5173 vérifié libre) : 29/30, l'échec (`import-excel.spec.ts`, connexion : « Aujourd'hui » en plus de 5 s, serveur de dev sans worker) est vert au passage suivant (`import-excel` et `qa-import` : 9/9). Même attente déjà vue sur `qa-import` au premier passage.
+
+### Hors périmètre et risques
+- Données de révision, connexion et admin : en ligne seulement (décision E3). Le catalogue hors ligne reste la copie `localStorage` du lot 1.
+- Un onglet resté ouvert sur l'ancienne version qui charge un écran à la demande après un déploiement peut échouer (fichier supprimé par Cloudflare) : risque antérieur au worker ; le lecteur PDF affiche alors un repli au lieu de la page d'erreur.
+- Une fois, à la mesure de l'audit 22, un aperçu est resté sur « Chargement » au tout premier lancement d'un serveur `vite preview` ; non reproduit en 11 essais. À surveiller en recette.
+- Navigateurs sans service worker (très anciens) : site inchangé, ancien bandeau.
+
+### Corrections après QA lot 3 (12-qa-lot3.md, décisions PM du 2026-10-13)
+
+Hypothèses : H1, la production n'expose pas l'ETag aux requêtes `cors` (la pile locale ne le fait pas : pas d'`Access-Control-Expose-Headers`) ; `Last-Modified` et `Content-Length` restent lisibles (en-têtes autorisés par défaut). H2, le CDN de Supabase peut servir l'ancien PDF quelque temps après un remplacement au même chemin : la revalidation ne voit alors le changement qu'à l'expiration du CDN. L3-2 accepté par le PM, non traité.
+
+| ID | Correctif | Preuve |
+|---|---|---|
+| L3-1 | `xlsxUnzip.test.ts` : plus aucune mesure à l'horloge murale. Zip menteur ramené à `2 × MAX_UNZIPPED_BYTES` (16 Mo). L'arrêt dès la borne reste prouvé par le test « octets produits » (compte des octets décompressés, borne + au plus une tranche) ; la non-congélation, par l'E2E IM-10 sous CPU / 4 | 4 passages isolés pendant 2 suites complètes lancées en parallèle : 4 sur 4 verts |
+| L3-5 | `App.tsx`, `useKeyboard` : confirmation « Quitter ? » ouverte, seul Échap agit (il la referme) ; Tab et les boutons gardent leur effet natif ; touches 1 à 4, Entrée et Espace ignorées | `qa-lot3-session.spec.ts` : `test.fail` retiré, test vert, complété (Échap referme, puis la touche 1 choisit bien une proposition) |
+| L3-3 | `rules.ts`, `isKeepableFile` : un fichier du site n'est gardé que si la réponse est ok, de même origine (`basic`) et de type cohérent avec l'extension (js et mjs : javascript, css, woff2, html). Une réponse `text/html` n'est jamais gardée sous un autre nom. Appliqué à `asset()` (réponse servie, pas gardée) et à `keep()` (installation refusée : l'ancienne version reste) | Vitest (5 tests) ; E2E `offline.spec.ts` : vite preview répond comme Pages (index.html en 200 pour `assets/disparu-….js`), rien gardé, le lecteur PDF l'est |
+| L3-4 | `rules.ts` : `utm_*`, `fbclid`, `gclid` admis avec les paramètres de l'application pour servir une page hors ligne. Une seule autre clé (`code`, `token_hash`, `error`, `access_token`, `type`…) envoie toujours au réseau, même mêlée à des paramètres de suivi | Vitest (3 tests) ; E2E : hors réseau, `/?utm_source=…&fbclid=…` servi par le worker, `/?utm_source=…&code=…` part au réseau |
+| L3-6 | PDF déjà gardé, ouvert en ligne (aperçu via pdf.js, ou « Ouvrir ↗ » sur téléphone qui envoie `xxb-keep-pdf` même si le PDF est gardé) : copie gardée servie tout de suite, puis requête **HEAD** en arrière-plan ; s'il a changé (ETag si lisible des deux côtés, sinon Last-Modified, sinon taille), nouveau téléchargement qui remplace l'entrée. Une revalidation à la fois par fichier. Jamais hors ligne, en 2G ni avec `saveData` (`isCostlyNetwork`, même règle côté page et worker). Plafond tenu : l'entrée remplacée n'est pas comptée deux fois (`evictionsFor`) ; un nouveau fichier plus gros que le plafond laisse l'ancien en place | Vitest (`pdfValidators`, `pdfChanged`, `evictionsFor`, `isCostlyNetwork`, `shouldKeepOnOpen`) ; E2E : PDF remplacé au même chemin, rafraîchi par l'aperçu puis par le message du téléphone, une seule entrée |
+
+Choix de la HEAD plutôt qu'une requête GET conditionnelle (`If-None-Match`) : cet en-tête n'est pas autorisé par défaut en CORS et déclenche une pré-vérification (OPTIONS) que la production n'a pas été vérifiée à accepter ; la HEAD n'en déclenche pas, coûte quelques centaines d'octets, et le GET complet n'a lieu que si le fichier a changé.
+
+**Consigne d'exploitation (à reporter dans 06-ops par l'orchestrateur) : un PDF corrigé devrait porter un nouveau nom de fichier.** La revalidation rattrape un remplacement au même chemin, mais seulement à la prochaine ouverture en ligne hors 2G et après expiration du cache du CDN (H2) ; un nouveau nom est pris tout de suite par tous les appareils.
+
+Fichiers : `src/App.tsx`, `src/sw/rules.ts`, `src/sw/sw.ts`, `src/lib/openMode.ts` (`isCostlyNetwork`, `shouldKeepOnOpen` sans le paramètre `kept`), `src/components/library/Library.tsx` ; tests `src/lib/xlsxUnzip.test.ts`, `src/sw/rules.test.ts`, `src/lib/openMode.test.ts`, `e2e/offline.spec.ts` (2 tests), `e2e/qa-lot3-session.spec.ts`.
+
+Commandes et résultats (2026-10-13, pile locale 553xx, machine chargée : load average de 50 à 59 pendant les E2E) :
+- `npm run typecheck` : code 0. `npx vitest run`, 3 passages : 40 fichiers, 464 réussis (5 ignorés, déjà présents avant).
+- Build avec `VITE_SUPABASE_URL=https://ci.invalid VITE_SUPABASE_ANON_KEY=ci-anon-key` : OK, **`index` 108,89 Ko gzip** (plafond 110), `sw.js` 3,0 Ko gzip (2,4 avant).
+- `npx playwright test e2e/offline.spec.ts --repeat-each=3` : 21/21, deux fois (la seconde avec une trace de débogage sur le test « secours », retirée depuis).
+- `npm run e2e` complet, 3 passages : 41/42, 40/42, 41/42. Échecs tous différents, tous vus sous charge : connexion (« Aujourd'hui » en plus de 5 s, déjà noté au lot 3 Front B) sur `qa-import` et `qa-lot3-session`, verts au passage suivant (12/12) ; et une fois `offline.spec.ts` « secours » (voir risque ci-dessous). `qa-lot3-*`, `session-resume`, `import-*` et les nouveaux tests L3-3, L3-4, L3-6 : verts aux 3 passages. IM-10 : tâche la plus longue 101 à 153 ms (CPU / 4).
+
+Risque nouveau (non corrigé, hors des 5 constats) : le test « secours : un build VITE_SW=off… » a échoué 2 fois sur 9 exécutions, toujours dans une suite complète sous forte charge : 0 worker mais 1 cache `xxb-*` restant. Lecture : l'ancien worker peut finir d'écrire un fichier dans `xxb-rt-v1` après les deux purges (page et worker de secours), et `client.navigate()` du worker de secours échoue sur un onglet qu'il ne contrôle pas, donc la purge du rechargement n'a pas lieu. Sans effet pour l'utilisateur (plus aucun worker pour servir ce cache), mais le test peut rougir en CI. Correctif proposé : dans `register.ts` (`unregisterAll`), refaire la purge quelques secondes après la désinscription.
+
+Suite (décision de l'orchestrateur : revalidation par HEAD validée ; purge différée demandée) : `register.ts`, `unregisterAll` purge les caches `xxb-*` tout de suite, puis de nouveau à 3 s et 10 s (`LATE_PURGE_DELAYS_MS`). Idempotent ; seuls les caches au préfixe `xxb-` sont visés, le localStorage (`xxb.progress.*`) n'est jamais touché. Code absent du build normal (branche `VITE_SW=off` seulement) : `index` toujours 108,89 Ko gzip. Test `src/sw/register.test.ts` (3 tests : cache recréé entre deux purges, double appel sans erreur, localStorage intact). Vérifié : test « secours » `--repeat-each=5` 5/5, `offline.spec.ts` 7/7, typecheck code 0, vitest 41 fichiers, 467 réussis (5 ignorés), build avec variables factices OK.

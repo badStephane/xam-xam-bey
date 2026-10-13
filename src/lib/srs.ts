@@ -6,13 +6,18 @@ export const EMPTY_PROGRESS: Progress = { cards: {}, sessions: [], xp: 0 }
 
 export const xpFor = (g: Grade): number => (g === 2 ? XP_SU : g === 1 ? XP_HES : 0)
 
+/** Identifiant de document valide (entier strictement positif), sinon null : une valeur nulle ou invalide est ignorée. */
+export const validDocId = (v: unknown): number | null => (typeof v === 'number' && Number.isInteger(v) && v > 0 ? v : null)
+
 export function validCards(list: unknown, th: number): Card[] {
   if (!Array.isArray(list)) return []
-  return (list as RawCard[])
+  return (list as Array<RawCard & { document_id?: unknown }>)
     .filter(c => c && typeof c.id === 'string' && typeof c.q === 'string' && typeof c.a === 'string')
     .map(c => {
       const qcm = validQcm(c.qcm)
-      return { id: c.id as string, q: c.q as string, a: c.a as string, src: c.src || '', note: c.note || '', th, ...(qcm ? { qcm } : {}) }
+      // Ligne de la table cards (document_id) ou carte déjà convertie (doc).
+      const doc = validDocId(c.document_id ?? c.doc)
+      return { id: c.id as string, q: c.q as string, a: c.a as string, src: c.src || '', note: c.note || '', th, ...(qcm ? { qcm } : {}), ...(doc ? { doc } : {}) }
     })
 }
 

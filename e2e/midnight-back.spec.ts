@@ -22,6 +22,8 @@ async function answerOneCardThenQuit(page: Page): Promise<void> {
   await page.getByRole('button', { name: /^Valider/ }).click()
   await page.getByRole('button', { name: /CARTE SUIVANTE|VOIR LE BILAN/ }).click()
   await page.getByRole('button', { name: '✕ QUITTER' }).click()
+  // Confirmation en ligne (UX-14, lot 3).
+  await page.getByRole('button', { name: 'QUITTER', exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Aujourd’hui' })).toBeVisible()
 }
 

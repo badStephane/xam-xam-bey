@@ -28,6 +28,8 @@ function useKeyboard() {
       const s = ui.session
       if (ui.screen !== 'session' || !s || s.done) return
       if (e.key === 'Escape') { quitSession(); return }
+      // L3-5 : confirmation « Quitter ? » ouverte, aucun raccourci de carte. Tab et les boutons gardent leur effet natif.
+      if (ui.quitAsk) return
       if (s.mode === 'ask') {
         if (/^[123]$/.test(e.key)) { e.preventDefault(); answer((Number(e.key) - 1) as Grade) }
         return
@@ -38,7 +40,7 @@ function useKeyboard() {
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [ui.screen, ui.session, go, answer, pick, validate, next, quitSession])
+  }, [ui.screen, ui.session, ui.quitAsk, go, answer, pick, validate, next, quitSession])
 }
 
 function Screen() {

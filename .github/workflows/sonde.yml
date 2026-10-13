@@ -1,4 +1,4 @@
-# Sonde quotidienne : vérifie que le site et la base répondent.
+# Sonde quotidienne : vérifie que le site, la base et le stockage des PDF répondent.
 # La requête vers l'API REST de Supabase maintient AUSSI le projet actif : un projet gratuit
 # est mis en pause après 7 jours sans activité (vacances scolaires notamment).
 # En cas d'échec, GitHub envoie un e-mail à la dernière personne qui a modifié le cron ci-dessous :
@@ -46,3 +46,22 @@ jobs:
           echo "base : HTTP $code"
           [ "$code" = "200" ] || { echo "::error::Supabase répond $code (projet en pause, quota ou panne : runbook 06-ops.md E1)"; exit 1; }
           grep -q '"id"' rep.json || { echo "::error::table documents vide ou illisible"; exit 1; }
+      # Audit 20 (egress). Une requête HEAD : quelques octets, sans effet sur le quota. Elle vérifie que les PDF sont servis
+      # et qu'ils portent l'en-tête de cache de 7 jours qui fait passer les relectures par le cache CDN de Supabase.
+      # La consommation d'egress elle-même ne se lit pas avec la clé anon : relevé manuel hebdomadaire (06-ops.md, section K).
+      - name: un PDF répond et se met en cache
+        run: |
+          code=$(curl -sS -o doc.json -w '%{http_code}' --retry 3 --retry-delay 20 --max-time 30 \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/documents?select=storage_path&storage_path=not.is.null&order=id&limit=1")
+          [ "$code" = "200" ] || { echo "::error::lecture de documents : HTTP $code"; exit 1; }
+          path=$(jq -r '.[0].storage_path // empty' doc.json)
+          [ -n "$path" ] || { echo "::error::aucun document avec un fichier"; exit 1; }
+          enc=$(jq -rn --arg p "$path" '$p | @uri')
+          code=$(curl -sS -I -o entetes.txt -w '%{http_code}' --retry 3 --retry-delay 20 --max-time 30 \
+            "$SUPABASE_URL/storage/v1/object/public/documents/$enc")
+          echo "PDF $path : HTTP $code"
+          [ "$code" = "200" ] || { echo "::error::le stockage répond $code pour $path (pause, quota d'egress dépassé ou fichier retiré : runbook 06-ops.md E1)"; exit 1; }
+          cache=$(grep -i '^cache-control:' entetes.txt | tr -d '\r' || true)
+          echo "${cache:-cache-control absent}"
+          echo "$cache" | grep -qi 'max-age=[1-9]' || echo "::warning::PDF sans cache long : chaque lecture compte en egress non mis en cache (06-ops.md, section K)"

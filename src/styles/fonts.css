@@ -1,0 +1,33 @@
+/*
+ * Polices hébergées sur le site (lot 3, E5) : 2 familles, woff2, sous-ensemble latin, font-display: swap.
+ * Source : paquets npm @fontsource/chakra-petch 5.3.0 et @fontsource-variable/jetbrains-mono 5.3.0 (fichiers recopiés tels quels).
+ * Licence : SIL Open Font License 1.1 (textes dans public/fonts/).
+ * Bricolage Grotesque (--f-doc) et Instrument Sans (--f-body) ne sont plus chargées : leurs piles dans app.css
+ * retombent sur system-ui, la police du téléphone, déjà présente et sans téléchargement.
+ */
+@font-face {
+  font-family: 'Chakra Petch';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(../assets/fonts/chakra-petch-latin-700-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* Graisse 600 : onglets de la navigation ; la graisse 500 (inutilisée pour --f-hud) n'est pas livrée. */
+@font-face {
+  font-family: 'Chakra Petch';
+  font-style: normal;
+  font-weight: 500 600;
+  font-display: swap;
+  src: url(../assets/fonts/chakra-petch-latin-600-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* Police variable : un seul fichier couvre les graisses 400 à 800 utilisées (étiquettes, cotes, champ de recherche). */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url(../assets/fonts/jetbrains-mono-latin-wght-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}

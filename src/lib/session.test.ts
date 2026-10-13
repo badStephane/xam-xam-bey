@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import { answerCard, combo, gradeCounts, isLogged, missedCards, mkSession, REDO, replayCount, suggestedGrade } from './session'
-import type { Card } from './types'
+import { advance, answerCard, combo, gradeCounts, isLogged, isScored, missedCards, mkSession, REDO, replayCount, scoreCurrent, suggestedGrade } from './session'
+import type { Card, Session } from './types'
 
 const cards: Card[] = ['a', 'b', 'c'].map(id => ({ id, q: 'q ' + id, a: 'a', src: '', note: '', th: 1 }))
 
@@ -59,5 +59,69 @@ describe('reprise des cartes à retravailler', () => {
     expect(isLogged(r.session)).toBe(true)
     expect(isLogged(mkSession('self', 'daily', '', cards))).toBe(false)
     expect(isLogged({ ...mkSession('ask', 'ask', '', cards), res: { a: 2 } })).toBe(false)
+  })
+})
+
+describe('E1 : une réponse compte dès que la correction s’affiche', () => {
+  const ch = { options: ['x', 'y'], correct: 0 }
+  const qcm = () => ({ ...mkSession('self', 'daily', '', cards), queue: cards.map(c => ({ c, second: false, ch })) })
+
+  test('la note est posée à la correction, sans changer de carte', () => {
+    const r = scoreCurrent({ ...qcm(), rev: true, picked: 0 }, 2)!
+    expect(r.graded).toEqual({ card: cards[0], grade: 2 })
+    expect(r.session.i).toBe(0)
+    expect(r.session.res).toEqual({ a: 2 })
+    expect(r.session.xp).toBe(10)
+    expect(isScored(r.session)).toBe(true)
+  })
+
+  test('une carte notée ne peut pas être notée une deuxième fois', () => {
+    const r = scoreCurrent({ ...qcm(), rev: true }, 0)!
+    expect(scoreCurrent(r.session, 2)).toBeNull()
+    expect(r.session.queue).toHaveLength(4)
+  })
+
+  test('« Suivant » change de carte sans rien noter', () => {
+    const scored = scoreCurrent({ ...qcm(), rev: true, picked: 1 }, 0)!.session
+    const moved = advance(scored)!
+    expect(moved.session.i).toBe(1)
+    expect(moved.session.rev).toBe(false)
+    expect(moved.session.picked).toBeNull()
+    expect(moved.session.res).toEqual(scored.res)
+    expect(moved.session.xp).toBe(scored.xp)
+    expect(moved.finished).toBe(false)
+  })
+
+  test('« Suivant » refuse une carte pas encore notée', () => {
+    expect(advance({ ...qcm(), rev: true })).toBeNull()
+  })
+
+  test('answerCard sur une carte déjà notée avance sans renoter (auto-évaluation, interrogation)', () => {
+    const scored = scoreCurrent({ ...qcm(), rev: true }, 2)!.session
+    const r = answerCard(scored, 0)!
+    expect(r.graded).toBeNull()
+    expect(r.session.res).toEqual({ a: 2 })
+    expect(r.session.hist).toEqual([2])
+    expect(r.session.i).toBe(1)
+  })
+
+  test('auto-évaluation : la réponse révélée puis notée compte une fois et avance', () => {
+    const self = { ...mkSession('self', 'daily', '', cards), queue: cards.map(c => ({ c, second: false, ch: { options: [], correct: -1 } })), rev: true }
+    const r = answerCard(self, 2)!
+    expect(r.graded).toEqual({ card: cards[0], grade: 2 })
+    expect(r.session.i).toBe(1)
+    expect(isScored(r.session)).toBe(false)
+  })
+
+  test('dernière carte : le bilan vient au passage, pas à la correction', () => {
+    let s: Session = { ...qcm(), queue: [{ c: cards[0], second: false, ch }] }
+    s = scoreCurrent({ ...s, rev: true }, 2)!.session
+    expect(advance(s)!.finished).toBe(true)
+  })
+
+  test('interrogation : rien n’est noté dans la progression', () => {
+    const r = scoreCurrent(mkSession('ask', 'ask', '', cards, 'Awa'), 1)!
+    expect(r.graded).toBeNull()
+    expect(r.session.res).toEqual({ a: 1 })
   })
 })

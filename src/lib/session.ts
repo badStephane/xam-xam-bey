@@ -13,27 +13,55 @@ export function mkSession(mode: QuizMode, kind: string, label: string, cards: re
   }
 }
 
-export interface AnswerResult {
+/**
+ * Réponse comptée (E1) : `hist` reçoit une note par position de la file, au moment où la correction s'affiche.
+ * Position courante notée : hist.length === i + 1 ; pas encore notée : hist.length === i.
+ */
+export const isScored = (s: Session): boolean => s.hist.length > s.i
+
+export interface ScoreResult {
   session: Session
-  /** Carte à noter dans la progression (première réponse en mode « Je réponds »). */
+  /** Carte à noter dans la progression (première réponse en mode « Je réponds », hors reprise). */
   graded: { card: Card; grade: Grade } | null
-  finished: boolean
 }
 
-/** Enregistre une réponse. Une carte ratée revient une fois en fin de file (deuxième chance). */
-export function answerCard(s: Session, g: Grade): AnswerResult | null {
-  if (s.done || !s.rev || s.i >= s.queue.length) return null
-  const card = s.queue[s.i].c
+/**
+ * Compte la réponse de la carte affichée, sans changer de carte (E1). Une carte ratée revient une fois en fin de file
+ * (deuxième chance). Renvoie null si la carte n'est pas retournée ou déjà notée : jamais deux notes pour une position.
+ */
+export function scoreCurrent(s: Session, g: Grade): ScoreResult | null {
+  if (s.done || !s.rev || s.i >= s.queue.length || isScored(s)) return null
+  const item = s.queue[s.i]
+  const card = item.c
   const first = !(card.id in s.res)
   // Les cartes « à retravailler » ont déjà été notées aujourd'hui : on s'entraîne sans renoter.
   const self = s.mode === 'self' && s.kind !== REDO
-  const queue = first && self && g === 0 ? [...s.queue, { c: card, second: true, ch: s.queue[s.i].ch }] : s.queue
-  const next: Session = {
-    ...s, queue, i: s.i + 1, rev: s.mode === 'ask', hist: [...s.hist, g], picked: null,
+  const queue = first && self && g === 0 ? [...s.queue, { c: card, second: true, ch: item.ch }] : s.queue
+  const session: Session = {
+    ...s, queue, hist: [...s.hist, g],
     res: first ? { ...s.res, [card.id]: g } : s.res,
     xp: s.xp + (first && self ? xpFor(g) : 0),
   }
-  return { session: next, graded: first && self ? { card, grade: g } : null, finished: next.i >= queue.length }
+  return { session, graded: first && self ? { card, grade: g } : null }
+}
+
+/** Passe à la carte suivante, une fois la carte affichée notée. « Suivant » ne note rien (E1). */
+export function advance(s: Session): { session: Session; finished: boolean } | null {
+  if (s.done || s.i >= s.queue.length || !isScored(s)) return null
+  const session: Session = { ...s, i: s.i + 1, rev: s.mode === 'ask', picked: null }
+  return { session, finished: session.i >= session.queue.length }
+}
+
+export interface AnswerResult extends ScoreResult {
+  finished: boolean
+}
+
+/** Note la carte affichée si ce n'est pas déjà fait, puis passe à la suivante (interrogation, auto-évaluation). */
+export function answerCard(s: Session, g: Grade): AnswerResult | null {
+  const scored = isScored(s) ? { session: s, graded: null } : scoreCurrent(s, g)
+  const moved = scored && advance(scored.session)
+  if (!scored || !moved) return null
+  return { session: moved.session, graded: scored.graded, finished: moved.finished }
 }
 
 export function gradeCounts(res: Record<string, Grade>): [number, number, number] {

@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { assertBuildEnv } from './src/lib/buildEnv'
+import { serviceWorker } from './src/sw/buildSw'
 
 const OUT_DIR = resolve(__dirname, 'dist')
 const DOCS_DIR = resolve(__dirname, 'site', 'f')
@@ -13,8 +14,11 @@ const PDFJS_ASSETS = ['standard_fonts', 'cmaps']
 
 /** Les PDF vivent dans site/f (hors bundle) : servis tels quels en dev, conservés au build. */
 function siteDocs(): Plugin {
+  // Dossier de sortie effectif (--outDir de l'E2E hors ligne) : jamais dist/ par défaut si un autre est demandé.
+  let outDir = OUT_DIR
   return {
     name: 'xxb-site-docs',
+    configResolved(c) { outDir = resolve(c.root, c.build.outDir) },
     configureServer(server) {
       server.middlewares.use('/f', (req, res, next) => {
         const name = decodeURIComponent((req.url || '').split('?')[0]).replace(/^\/+/, '')
@@ -35,21 +39,22 @@ function siteDocs(): Plugin {
       })
     },
     buildStart() {
-      rmSync(resolve(OUT_DIR, 'assets'), { recursive: true, force: true })
+      rmSync(resolve(outDir, 'assets'), { recursive: true, force: true })
     },
     writeBundle() {
-      PDFJS_ASSETS.forEach(dir => cpSync(resolve(PDFJS_DIR, dir), resolve(OUT_DIR, 'pdfjs', dir), { recursive: true }))
+      PDFJS_ASSETS.forEach(dir => cpSync(resolve(PDFJS_DIR, dir), resolve(outDir, 'pdfjs', dir), { recursive: true }))
     },
   }
 }
 
 export default defineConfig(({ mode }) => {
   // Build de production sans Supabase : échec explicite plutôt qu'un site aux PDF introuvables (contrat §4).
-  assertBuildEnv(mode, loadEnv(mode, __dirname, 'VITE_'))
+  const env = loadEnv(mode, __dirname, 'VITE_')
+  assertBuildEnv(mode, env)
   return {
     base: './',
     publicDir: 'public',
-    plugins: [react(), siteDocs()],
+    plugins: [react(), siteDocs(), serviceWorker(env)],
     build: {
       outDir: OUT_DIR,
       emptyOutDir: false,

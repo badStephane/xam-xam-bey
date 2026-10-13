@@ -1,11 +1,11 @@
 import { useApp } from '../../AppContext'
 import { docFormat } from './PreviewPanel'
 import { share } from '../../lib/share'
-import { PdfViewer } from './PdfViewer'
+import { LazyPdfViewer } from './LazyPdfViewer'
 
 /** Aperçu plein écran (mobile). */
 export function Apercu() {
-  const { ui, go, patch, docById } = useApp()
+  const { ui, go, patch, docById, offline } = useApp()
   const d = docById(ui.sel)
   if (!d) return null
   const url = new URL(d.download, location.href).href
@@ -20,9 +20,10 @@ export function Apercu() {
           <h1 style={{ margin: 0, font: '800 26px/1.1 var(--f-doc)' }}>{d.title}</h1>
           <span className="mono muted" style={{ fontSize: 11, lineHeight: 1.4 }}>{docFormat(d).toUpperCase()} · {d.folder.toUpperCase()}</span>
         </div>
-        <div className="viewer"><PdfViewer file={d.file} title={d.title} /></div>
+        <div className="viewer"><LazyPdfViewer file={d.file} title={d.title} /></div>
         <div className="two">
-          <a className="btn tall" style={{ display: 'grid', placeItems: 'center', textDecoration: 'none', color: 'var(--hud)' }} href={d.download} download>TÉLÉCHARGER</a>
+          {/* Hors réseau, le lien de téléchargement serait mort (E3) : seul l'aperçu, lu depuis l'appareil, reste. */}
+          {!offline && <a className="btn tall" style={{ display: 'grid', placeItems: 'center', textDecoration: 'none', color: 'var(--hud)' }} href={d.download} download>TÉLÉCHARGER</a>}
           <button className="btn tall acc" onClick={() => share({ title: d.title, url }, url, () => patch({ shared: true }))}>{ui.shared ? 'LIEN COPIÉ ✓' : 'PARTAGER'}</button>
         </div>
       </div>

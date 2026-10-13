@@ -1,6 +1,6 @@
 /* Direction 4B « fiches sur carte » : la carte (fond, en-tête, chiffres) suit le mode sombre ou clair, les fiches restent crème. */
-[data-xt=dark]{--bg:#0D1512;--topo:rgba(200,241,105,.075);--hud:#E4EDE6;--hud2:#93A79E;--line:#2C4238;--field:#0A110E;--acc:#C8F169;--on-acc:#0D1512;--amber:#F3AE45;--err:#FF8B78;--acc-soft:rgba(200,241,105,.08);--amber-soft:rgba(243,174,69,.1);--err-soft:rgba(255,122,102,.1);--card:#F6F1E4;--card-bd:transparent;--stack:#C9C2B2;--hole:#0D1512;--seg:#22332C;color-scheme:dark}
-[data-xt=light]{--bg:#EEE8DA;--topo:rgba(29,90,63,.15);--hud:#151515;--hud2:#4F4B44;--line:#B9AF9B;--field:#FBF8F0;--acc:#1D5A3F;--on-acc:#FBF8F0;--amber:#8A5007;--err:#B32D17;--acc-soft:rgba(29,90,63,.08);--amber-soft:rgba(138,80,7,.08);--err-soft:rgba(179,45,23,.07);--card:#FBF8F0;--card-bd:#151515;--stack:#E0D8C6;--hole:#EEE8DA;--seg:#D8D0BF;color-scheme:light}
+[data-xt=dark]{--bg:#0D1512;--topo:rgba(200,241,105,.075);--hud:#E4EDE6;--hud2:#93A79E;--line:#2C4238;--field:#0A110E;--field-bd:#5E7A6D;--acc:#C8F169;--on-acc:#0D1512;--amber:#F3AE45;--err:#FF8B78;--acc-soft:rgba(200,241,105,.08);--amber-soft:rgba(243,174,69,.1);--err-soft:rgba(255,122,102,.1);--card:#F6F1E4;--card-bd:transparent;--stack:#C9C2B2;--hole:#0D1512;--seg:#22332C;color-scheme:dark}
+[data-xt=light]{--bg:#EEE8DA;--topo:rgba(29,90,63,.15);--hud:#151515;--hud2:#4F4B44;--line:#B9AF9B;--field:#FBF8F0;--field-bd:#7A7262;--acc:#1D5A3F;--on-acc:#FBF8F0;--amber:#8A5007;--err:#B32D17;--acc-soft:rgba(29,90,63,.08);--amber-soft:rgba(138,80,7,.08);--err-soft:rgba(179,45,23,.07);--card:#FBF8F0;--card-bd:#151515;--stack:#E0D8C6;--hole:#EEE8DA;--seg:#D8D0BF;color-scheme:light}
 [data-xt]{--ink:#151515;--ink2:#4F4B44;--paper:#FBF8F0;--green:#1D5A3F;--stamp:#C8341C;--ochre:#8A5007;
   --f-hud:'Chakra Petch',system-ui,sans-serif;--f-doc:'Bricolage Grotesque',system-ui,sans-serif;--f-body:'Instrument Sans',system-ui,sans-serif;--f-mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
 html,body{margin:0;min-height:100%}
@@ -119,7 +119,7 @@ main{max-width:1100px;margin:0 auto;padding:16px 16px 56px}
 .zone-card h2{margin:0;font:800 28px/1.05 var(--f-doc)}
 .search{position:relative;display:flex;align-items:center}
 .search svg{position:absolute;left:14px;pointer-events:none}
-.search input{width:100%;min-height:54px;padding:0 50px 0 46px;border:1.5px solid var(--line);border-radius:0;background:var(--field);color:var(--hud);font:500 16px/1 var(--f-mono);transition:border-color 160ms;-webkit-appearance:none;appearance:none}
+.search input{width:100%;min-height:54px;padding:0 50px 0 46px;border:1.5px solid var(--field-bd);border-radius:0;background:var(--field);color:var(--hud);font:500 16px/1 var(--f-mono);transition:border-color 160ms;-webkit-appearance:none;appearance:none}
 .search input:focus{border-color:var(--acc);outline:none}
 .search input::-webkit-search-cancel-button{display:none}
 .search .clear{position:absolute;right:5px;width:44px;height:44px;border:none;background:transparent;color:var(--hud2);font:700 16px/1 var(--f-mono)}

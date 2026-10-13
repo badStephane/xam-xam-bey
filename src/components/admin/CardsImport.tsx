@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState, type ChangeEvent } from 'react'
-import { UncertainWriteError, insertImportedCards, listCardsForImport } from '../../lib/adminApi'
+import { UncertainWriteError, insertImportedCards, listCardsForImport, listDocumentsForImport } from '../../lib/adminApi'
 import { createRequestCounter, runLatest } from '../../lib/adminFlow'
 import { MAX_IMPORT_ROWS, type ImportAnalysis } from '../../lib/cardImport'
 import { commitImport, previewImport, type ImportDeps, type ImportPreview } from '../../lib/cardImportFlow'
 import { p2, plural } from '../../lib/format'
 import { readFirstSheet } from '../../lib/xlsxRead'
+import { ImportDocLinks } from './ImportDocLinks'
 import { TemplateLink } from './TemplateLink'
 
-const DEPS: ImportDeps = { readSheet: readFirstSheet, listExisting: listCardsForImport, insert: insertImportedCards }
+const DEPS: ImportDeps = { readSheet: readFirstSheet, listExisting: listCardsForImport, listDocuments: listDocumentsForImport, insert: insertImportedCards }
 const errorText = (e: unknown): string => (e instanceof Error ? e.message : 'L’import n’a pas abouti. Réessayez.')
 
 /** IM-4 : « aucune question importée » seulement quand la base a refusé ; sinon le résultat est incertain. */
@@ -70,6 +71,7 @@ function PreviewPanel({ phase, onConfirm, onCancel }: PreviewProps) {
         {n > 0 && <button className="ink-btn big" disabled={phase.saving} onClick={onConfirm}>{phase.saving ? 'Import en cours…' : `Importer ${plural(n, 'question', 'questions')}`}</button>}
         <button className="ink-line big" disabled={phase.saving} onClick={onCancel}>Annuler</button>
       </div>
+      <ImportDocLinks cards={analysis.cards} />
       <ErrorList analysis={analysis} />
     </div>
   )

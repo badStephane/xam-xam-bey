@@ -1,0 +1,8 @@
+/* Styles propres à la bibliothèque (lot 3, Front B), hors app.css. */
+/* Repère « gardé sur cet appareil » : vert sur fiche crème, 7,2:1. */
+.tag-off{font:700 10px/1 var(--f-mono);padding:2px 4px;border:1px solid var(--green);color:var(--green)}
+/* Résultats en cours de recalcul pendant la saisie (useDeferredValue) : estompés, sans bloquer la frappe. */
+.lib-stale{opacity:.6;transition:opacity 120ms 120ms}
+@media (prefers-reduced-motion:reduce){.lib-stale{transition:none}}
+/* Pièce non gardée, réseau coupé : texte à la place du bouton, jamais un lien mort. Encre secondaire sur crème, 7:1. */
+.doc-off{max-width:170px;font:700 10px/1.35 var(--f-mono);color:var(--ink2);text-align:right}
