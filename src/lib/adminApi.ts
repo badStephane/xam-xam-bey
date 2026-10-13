@@ -39,6 +39,19 @@ async function countPages(file: File): Promise<number | null> {
   }
 }
 
+/**
+ * Retire un fichier du bucket. Storage renvoie `data: []` sans erreur quand la RLS bloque la suppression :
+ * seul « exactement un objet supprimé » vaut succès (contrat lot 1 §3).
+ */
+async function removeOneFile(path: string): Promise<boolean> {
+  const rm = await client().storage.from(BUCKET).remove([path])
+  if (rm.error || rm.data?.length !== 1) {
+    console.error('[xxb] Fichier non supprimé du bucket :', path, rm.error ?? `${rm.data?.length ?? 0} objet(s) supprimé(s)`)
+    return false
+  }
+  return true
+}
+
 export interface DocumentMeta { title: string; zone: number; folder: string; essential: boolean }
 
 /** Envoie un PDF puis l'enregistre au catalogue ; si l'enregistrement échoue, le fichier envoyé est retiré. */
@@ -56,8 +69,8 @@ export async function uploadDocument(file: File, meta: DocumentMeta): Promise<Do
     size: file.size, pages, essential: meta.essential, scan: false,
   }).select(DOCUMENT_COLUMNS).single()
   if (error) {
-    const cleanup = await db.storage.from(BUCKET).remove([path])
-    if (cleanup.error) console.error('[xxb] Fichier orphelin à supprimer à la main :', path, cleanup.error)
+    const removed = await removeOneFile(path)
+    if (!removed) throw new Error(`${adminError(error)} Le fichier envoyé (${path}) n’a pas pu être retiré : signalez-le à un responsable technique.`)
     throw new Error(adminError(error))
   }
   return data as DocumentRow
@@ -73,8 +86,8 @@ export async function deleteDocument(id: number, storagePath: string): Promise<v
   const db = client()
   const { error } = await db.from('documents').delete().eq('id', id)
   if (error) throw new Error(adminError(error))
-  const rm = await db.storage.from(BUCKET).remove([storagePath])
-  if (rm.error) console.error('[xxb] Fichier à supprimer à la main :', storagePath, rm.error)
+  const removed = await removeOneFile(storagePath)
+  if (!removed) throw new Error(`Le document est retiré du catalogue, mais son fichier (${storagePath}) reste en ligne. Réessayez ou signalez-le à un responsable technique.`)
 }
 
 const CARD_COLUMNS = 'id, zone, document_id, position, q, a, src, note, qcm, status'

@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { KEPT_SESSIONS, SAVE_DELAY } from '../lib/constants'
+import { SAVE_DELAY } from '../lib/constants'
 import { PARAMS } from '../lib/params'
-import { applyGrade, cardsByZone, EMPTY_PROGRESS, readProgress, validCards } from '../lib/srs'
+import { mergeProgress, parseStoredProgress } from '../lib/progressMerge'
+import { canClearLocal, clearLocalProgress, fromSaveResult, isAccountSwitch, readLocalProgress, reconcileOnLoad, saveArgs, saveErrorKind, writeLocalProgress, type SaveErrorKind } from '../lib/progressSync'
+import { applyGrade, cardsByZone, EMPTY_PROGRESS, validCards } from '../lib/srs'
 import { isValidEmail, magicLinkRedirect, supabase } from '../lib/supabase'
 import type { CardRow, Fiche, Grade, Plan, Progress, RevisionContent, RevStatus, SessionLog } from '../lib/types'
 
@@ -50,7 +52,8 @@ export interface Revision {
   status: RevStatus
   content: RevisionContent
   prog: Progress
-  saveErr: boolean
+  /** null si tout est enregistré ; 'retry' : nouvel essai automatique ; 'rejected' : refus définitif du serveur. */
+  saveErr: SaveErrorKind | null
   email: string | null
   signIn: SignInState
   init(): void
@@ -63,83 +66,131 @@ export interface Revision {
   setDemoProgress(p: Progress): void
 }
 
-/** Contenu de révision et progression personnelle (Supabase), enregistrée avec un léger délai. */
+/** Planches et aperçus : aucune écriture, ni serveur ni locale. */
+const canWrite = (): boolean => !PARAMS.frame && !PARAMS.demo
+
+function localStore(): Storage | null {
+  try { return window.localStorage } catch { return null }
+}
+
+/** Contenu de révision et progression personnelle (Supabase), enregistrée avec un léger délai et copiée en local. */
 export function useRevision(demo: boolean): Revision {
   const [status, setStatus] = useState<RevStatus>('idle')
   const [content, setContent] = useState<RevisionContent>(EMPTY_CONTENT)
   const [prog, setProg] = useState<Progress>(EMPTY_PROGRESS)
-  const [saveErr, setSaveErr] = useState(false)
+  const [saveErr, setSaveErr] = useState<SaveErrorKind | null>(null)
   const [email, setEmail] = useState<string | null>(null)
   const [signIn, setSignIn] = useState<SignInState>({ step: 'idle' })
   const statusRef = useRef<RevStatus>('idle')
   const progRef = useRef<Progress>(EMPTY_PROGRESS)
   /** Identifiant de la personne dont la progression a été lue avec succès : condition pour écrire. */
   const ownerRef = useRef<string | null>(null)
+  /** Jeton de chargement : un chargement dépassé (autre loadFor, déconnexion) n'installe rien. */
+  const loadSeq = useRef(0)
+  const loadingFor = useRef<string | null>(null)
   const save = useRef({ dirty: false, saving: false, again: false, timer: 0 as ReturnType<typeof setTimeout> | 0 })
 
+  /** Abandonne l'enregistrement en attente (changement de compte, déconnexion). Même objet : un appel en vol y remet `saving` à faux. */
+  const dropPendingSave = useCallback(() => {
+    if (save.current.timer) clearTimeout(save.current.timer)
+    Object.assign(save.current, { dirty: false, again: false, timer: 0 })
+  }, [])
+
   const setStat = useCallback((s: RevStatus) => { statusRef.current = s; setStatus(s) }, [])
+
+  /** Installe une progression en mémoire et dans la copie locale de son propriétaire. */
+  const adopt = useCallback((p: Progress) => {
+    progRef.current = p
+    setProg(p)
+    if (ownerRef.current && canWrite()) writeLocalProgress(localStore(), ownerRef.current, p)
+  }, [])
 
   const flush = useCallback(async (): Promise<void> => {
     const sv = save.current
     const owner = ownerRef.current
-    if (!supabase || !owner || !sv.dirty || PARAMS.frame || PARAMS.demo) return
+    if (!supabase || !owner || !sv.dirty || !canWrite()) return
     if (sv.saving) { sv.again = true; return }
     sv.saving = true
     sv.dirty = false
     if (sv.timer) clearTimeout(sv.timer)
-    const p = progRef.current
-    const { error } = await supabase.from('progress').upsert({
-      user_id: owner, cards: p.cards, sessions: p.sessions.slice(-KEPT_SESSIONS), xp: p.xp, updated_at: new Date().toISOString(),
-    })
+    const { data, error } = await supabase.rpc('save_progress', saveArgs(progRef.current))
     sv.saving = false
+    if (ownerRef.current !== owner) return
     if (error) {
       console.error('[xxb] Enregistrement de la progression impossible', error)
+      const kind = saveErrorKind(error)
       sv.dirty = true
-      setSaveErr(true)
-      sv.timer = setTimeout(() => void flush(), RETRY_DELAY)
+      setSaveErr(kind)
+      // Refus définitif (22023, 23514) : pas de boucle ; la copie locale garde tout, RÉESSAYER reste possible.
+      if (kind === 'retry') sv.timer = setTimeout(() => void flush(), RETRY_DELAY)
     } else {
-      setSaveErr(false)
+      setSaveErr(null)
+      const saved = fromSaveResult(data)
+      // État fusionné du serveur, refusionné avec ce qui a été noté pendant l'appel.
+      if (saved) adopt(mergeProgress(saved, progRef.current))
     }
     if (sv.again) { sv.again = false; void flush() }
-  }, [])
+  }, [adopt])
 
-  const commit = useCallback((next: Progress, immediate = false) => {
-    progRef.current = next
-    setProg(next)
+  const schedule = useCallback((immediate: boolean) => {
     save.current.dirty = true
     if (save.current.timer) clearTimeout(save.current.timer)
     if (immediate) void flush()
     else save.current.timer = setTimeout(() => void flush(), SAVE_DELAY)
   }, [flush])
 
+  const commit = useCallback((next: Progress, immediate = false) => {
+    adopt(next)
+    schedule(immediate)
+  }, [adopt, schedule])
+
+  /** Fusionne la ligne serveur, la copie locale et l'état en mémoire ; renvoie au serveur ce qu'il n'a pas. */
+  const install = useCallback((userId: string, row: unknown) => {
+    const server = row ? parseStoredProgress(row) : EMPTY_PROGRESS
+    const local = canWrite() ? readLocalProgress(localStore(), userId) : EMPTY_PROGRESS
+    const current = ownerRef.current === userId ? progRef.current : EMPTY_PROGRESS
+    const { prog: merged, dirty } = reconcileOnLoad(server, mergeProgress(local, current))
+    ownerRef.current = userId
+    adopt(merged)
+    if (dirty) schedule(false)
+  }, [adopt, schedule])
+
   /** Charge la progression puis le contenu. Si la lecture échoue, aucune écriture n'est autorisée. */
   const loadFor = useCallback(async (userId: string) => {
-    if (!supabase) return
+    if (!supabase || loadingFor.current === userId) return
+    const seq = ++loadSeq.current
+    const isCurrent = (): boolean => seq === loadSeq.current
+    loadingFor.current = userId
     setStat('loading')
     try {
       const { data, error } = await supabase.from('progress').select('cards, sessions, xp').eq('user_id', userId).maybeSingle()
       if (error) throw error
-      const p = data ? readProgress(data) : EMPTY_PROGRESS
-      progRef.current = p
-      setProg(p)
-      ownerRef.current = userId
+      if (!isCurrent()) return
+      install(userId, data)
       const c = await loadContent()
+      if (!isCurrent()) return
       setContent(c)
       setStat(c.plan ? 'ready' : 'empty')
     } catch (err) {
+      if (!isCurrent()) return
       console.error('[xxb] Révision indisponible', err)
       setStat('unavailable')
+    } finally {
+      if (isCurrent()) loadingFor.current = null
     }
-  }, [setStat])
+  }, [install, setStat])
 
   const resetUser = useCallback(() => {
+    loadSeq.current += 1
+    loadingFor.current = null
     ownerRef.current = null
+    dropPendingSave()
     progRef.current = EMPTY_PROGRESS
     setProg(EMPTY_PROGRESS)
     setContent(EMPTY_CONTENT)
     setEmail(null)
     setStat('signedout')
-  }, [setStat])
+  }, [dropPendingSave, setStat])
 
   const init = useCallback(() => {
     if (statusRef.current !== 'idle') return
@@ -165,6 +216,11 @@ export function useRevision(demo: boolean): Revision {
       if (event === 'SIGNED_OUT') { resetUser(); return }
       const user = session?.user
       if (event === 'SIGNED_IN' && user && ownerRef.current !== user.id) {
+        if (isAccountSwitch(ownerRef.current, user.id)) {
+          // Plus aucune écriture au nom de l'ancien compte avec le jeton du nouveau ; ses notes restent dans sa copie locale.
+          ownerRef.current = null
+          dropPendingSave()
+        }
         setEmail(user.email || null)
         setSignIn({ step: 'idle' })
         // Différé : on ne rappelle pas Supabase depuis le rappel d'authentification lui-même.
@@ -172,7 +228,7 @@ export function useRevision(demo: boolean): Revision {
       }
     })
     return () => data.subscription.unsubscribe()
-  }, [demo, loadFor, resetUser])
+  }, [demo, dropPendingSave, loadFor, resetUser])
 
   useEffect(() => {
     const onHide = () => void flush()
@@ -205,14 +261,19 @@ export function useRevision(demo: boolean): Revision {
     },
     signOut: () => {
       if (!supabase) return
-      void flush().then(() => supabase!.auth.signOut()).then(({ error }) => {
+      const owner = ownerRef.current
+      void flush().then(() => {
+        // Copie locale effacée seulement si le serveur a tout reçu (téléphone partagé) ; gardée sinon.
+        if (owner && canWrite() && canClearLocal(save.current)) clearLocalProgress(localStore(), owner)
+        return supabase!.auth.signOut()
+      }).then(({ error }) => {
         if (error) console.error('[xxb] Déconnexion impossible', error)
         resetUser()
       })
     },
     grade: (cardId, g, today) => commit(applyGrade(progRef.current, cardId, g, today)),
     logSession: log => commit({ ...progRef.current, sessions: [...progRef.current.sessions, log] }, true),
-    retrySave: () => { setSaveErr(false); save.current.dirty = true; void flush() },
+    retrySave: () => { setSaveErr(null); save.current.dirty = true; void flush() },
     setDemoProgress: p => { progRef.current = p; setProg(p) },
   }
 }

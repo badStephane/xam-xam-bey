@@ -1,0 +1,69 @@
+# CI : bloque chaque push et chaque pull request sur main si les types, les tests, le build,
+# le contenu de révision ou les tests de base (RLS) échouent. Ne déploie rien :
+# le déploiement reste assuré par l'intégration Git de Cloudflare Pages (voir docs/squad/06-ops.md).
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - name: build (valeurs factices, aucun secret)
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: https://ci.invalid
+          VITE_SUPABASE_ANON_KEY: ci-anon-key
+      - name: dist complet
+        run: test -f dist/index.html && test -f dist/_headers
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: contenu de révision (data/seed)
+        run: python3 scripts/check_content.py
+
+  db:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.109.1
+      - name: base locale (services utiles aux tests seulement)
+        run: supabase start -x analytics,edge-runtime,functions,imgproxy,inbucket,meta,realtime,studio,vector
+      - name: tests pgTAP (RLS, fonctions)
+        run: supabase test db
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - name: test de parité save_progress / mergeProgress (base locale, psql du runner)
+        run: psql --version && npx vitest run src/lib/progressParity.test.ts
+        env:
+          # base locale jetable de `supabase start` (port [db] de supabase/config.toml), pas un secret
+          XXB_PARITY_DB_URL: postgresql://postgres:postgres@127.0.0.1:55322/postgres
+      - name: arrêt
+        if: always()
+        run: supabase stop --no-backup

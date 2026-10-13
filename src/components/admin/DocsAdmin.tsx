@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useApp } from '../../AppContext'
 import { ZONES } from '../../lib/constants'
 import { adminError, deleteDocument, updateDocument, uploadDocument, type DocumentMeta } from '../../lib/adminApi'
+import { runThenReload } from '../../lib/adminFlow'
 import { checkUpload } from '../../lib/cardRules'
 import { mo, p2, plural, zoneColor } from '../../lib/format'
 import type { Doc } from '../../lib/types'
@@ -75,7 +76,8 @@ function UploadForm() {
   )
 }
 
-function DocRow({ d }: { d: Doc }) {
+/** `onRemoved` : le message de retrait s'affiche au-dessus de la liste, la ligne disparaissant au rechargement. */
+function DocRow({ d, onRemoved }: { d: Doc; onRemoved(s: Status): void }) {
   const { reloadCatalog } = useApp()
   const [edit, setEdit] = useState<DocumentMeta | null>(null)
   const [confirmDel, setConfirmDel] = useState(false)
@@ -92,6 +94,15 @@ function DocRow({ d }: { d: Doc }) {
       setStatus({ kind: 'error', text: err instanceof Error ? err.message : adminError(err) })
       return false
     }
+  }
+  /** Retrait : le catalogue est rechargé même si le fichier n'a pas pu être supprimé après la ligne. */
+  const remove = async (): Promise<void> => {
+    setStatus({ kind: 'busy', text: 'Suppression…' })
+    onRemoved({ kind: 'idle' })
+    const error = await runThenReload(() => deleteDocument(d.id, d.storagePath), reloadCatalog, err => (err instanceof Error ? err.message : adminError(err)))
+    setStatus({ kind: 'idle' })
+    setConfirmDel(false)
+    onRemoved(error ? { kind: 'error', text: `« ${d.title} » : ${error}` } : { kind: 'ok', text: `« ${d.title} » est supprimé.` })
   }
   if (edit) {
     return (
@@ -120,7 +131,7 @@ function DocRow({ d }: { d: Doc }) {
         {!confirmDel
           ? <button className="ink-line" style={{ color: 'var(--stamp)', borderColor: 'var(--stamp)' }} onClick={() => setConfirmDel(true)}>Supprimer</button>
           : <>
-            <button className="ink-btn" style={{ background: 'var(--stamp)' }} onClick={() => run(() => deleteDocument(d.id, d.storagePath), 'Document supprimé.')}>Confirmer la suppression</button>
+            <button className="ink-btn" style={{ background: 'var(--stamp)' }} disabled={status.kind === 'busy'} onClick={() => void remove()}>Confirmer la suppression</button>
             <button className="ink-line" onClick={() => setConfirmDel(false)}>Garder</button>
           </>}
       </div>
@@ -131,6 +142,7 @@ function DocRow({ d }: { d: Doc }) {
 export function DocsAdmin() {
   const { docs, cur } = useApp()
   const [zone, setZone] = useState(cur)
+  const [removal, setRemoval] = useState<Status>({ kind: 'idle' })
   const list = docs.filter(d => d.th === zone)
   return (
     <div className="col g16">
@@ -140,6 +152,7 @@ export function DocsAdmin() {
           <h2 id="docs-h" className="h-sec">DOCUMENTS EN LIGNE · {docs.length}</h2>
           <span className="lbl">LE NUMÉRO DE COTE SUIT L’ORDRE D’AJOUT DANS LA ZONE</span>
         </div>
+        <StatusLine status={removal} />
         <div className="chips" role="group" aria-label="Zone">
           {ZONES.map(([abbr], i) => (
             <button key={i} className="chip" aria-pressed={zone === i + 1} onClick={() => setZone(i + 1)}>
@@ -147,7 +160,7 @@ export function DocsAdmin() {
             </button>
           ))}
         </div>
-        {list.length ? <ul className="grid-docs" style={{ listStyle: 'none', margin: 0, padding: 0 }}>{list.map(d => <DocRow key={d.id} d={d} />)}</ul> : <p className="muted" style={{ margin: 0 }}>Aucun document dans cette zone.</p>}
+        {list.length ? <ul className="grid-docs" style={{ listStyle: 'none', margin: 0, padding: 0 }}>{list.map(d => <DocRow key={d.id} d={d} onRemoved={setRemoval} />)}</ul> : <p className="muted" style={{ margin: 0 }}>Aucun document dans cette zone.</p>}
       </section>
     </div>
   )

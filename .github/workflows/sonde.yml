@@ -1,0 +1,48 @@
+# Sonde quotidienne : vérifie que le site et la base répondent.
+# La requête vers l'API REST de Supabase maintient AUSSI le projet actif : un projet gratuit
+# est mis en pause après 7 jours sans activité (vacances scolaires notamment).
+# En cas d'échec, GitHub envoie un e-mail à la dernière personne qui a modifié le cron ci-dessous :
+# ce doit être le mainteneur technique.
+# Secrets à créer (Settings > Secrets and variables > Actions) : SITE_URL, SUPABASE_URL, SUPABASE_ANON_KEY.
+name: sonde
+
+on:
+  schedule:
+    - cron: "17 6 * * *" # 06:17 UTC chaque jour (minute décalée : les créneaux pleins sont souvent retardés)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sonde
+  cancel-in-progress: false
+
+jobs:
+  sonde:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SITE_URL: ${{ secrets.SITE_URL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+    steps:
+      - name: secrets présents
+        run: |
+          for v in SITE_URL SUPABASE_URL SUPABASE_ANON_KEY; do
+            if [ -z "${!v}" ]; then echo "::error::secret $v manquant (voir docs/squad/06-ops.md, section F)"; exit 1; fi
+          done
+      - name: le site répond (200 et page de l'application)
+        run: |
+          code=$(curl -sS -o page.html -w '%{http_code}' --retry 3 --retry-delay 20 --max-time 30 "$SITE_URL/")
+          echo "site : HTTP $code"
+          [ "$code" = "200" ] || { echo "::error::le site répond $code"; exit 1; }
+          grep -q 'id="root"' page.html || { echo "::error::page reçue sans l'application"; exit 1; }
+      - name: la base répond (et reste active)
+        run: |
+          code=$(curl -sS -o rep.json -w '%{http_code}' --retry 3 --retry-delay 20 --max-time 30 \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/documents?select=id&limit=1")
+          echo "base : HTTP $code"
+          [ "$code" = "200" ] || { echo "::error::Supabase répond $code (projet en pause, quota ou panne : runbook 06-ops.md E1)"; exit 1; }
+          grep -q '"id"' rep.json || { echo "::error::table documents vide ou illisible"; exit 1; }
