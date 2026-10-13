@@ -35,14 +35,27 @@ function mergeCards(a: Progress['cards'], b: Progress['cards']): Progress['cards
   )
 }
 
-const cmpText = (x: string, y: string): number => (x < y ? -1 : x > y ? 1 : 0)
+/**
+ * Compare deux textes dans l'ordre de leurs octets UTF-8, comme `collate "C"` en SQL (L1-13).
+ * L'ordre des octets UTF-8 est celui des points de code : on compare `codePointAt`, pas les unités UTF-16
+ * (sinon un emoji, paire D800-DFFF, passerait avant U+E000 à U+FFFF).
+ */
+export function compareUtf8(x: string, y: string): number {
+  for (let i = 0; i < x.length && i < y.length;) {
+    const a = x.codePointAt(i) as number
+    const b = y.codePointAt(i) as number
+    if (a !== b) return a < b ? -1 : 1
+    i += a > 0xffff ? 2 : 1
+  }
+  return Math.sign(x.length - y.length)
+}
 
 /**
- * Ordre canonique commun avec le SQL (décision PM, L1-1) : d, n, ok en nombres, puis k, l en comparaison
- * simple (unités de code, pas localeCompare). Le JSON à clés triées départage les séances à champs en plus.
+ * Ordre canonique commun avec le SQL (décision PM, L1-1) : d, n, ok en nombres, puis k, l en octets UTF-8
+ * (`collate "C"`). Le JSON à clés triées départage les séances à champs en plus.
  */
 function compareSessions([ka, a]: readonly [string, SessionLog], [kb, b]: readonly [string, SessionLog]): number {
-  return a.d - b.d || a.n - b.n || a.ok - b.ok || cmpText(a.k, b.k) || cmpText(a.l, b.l) || cmpText(ka, kb)
+  return a.d - b.d || a.n - b.n || a.ok - b.ok || compareUtf8(a.k, b.k) || compareUtf8(a.l, b.l) || compareUtf8(ka, kb)
 }
 
 function mergeSessions(a: readonly SessionLog[], b: readonly SessionLog[]): SessionLog[] {

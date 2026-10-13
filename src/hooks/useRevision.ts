@@ -4,6 +4,7 @@ import { PARAMS } from '../lib/params'
 import { mergeProgress, parseStoredProgress } from '../lib/progressMerge'
 import { canClearLocal, clearLocalProgress, fromSaveResult, isAccountSwitch, readLocalProgress, reconcileOnLoad, saveArgs, saveErrorKind, writeLocalProgress, type SaveErrorKind } from '../lib/progressSync'
 import { applyGrade, cardsByZone, EMPTY_PROGRESS, validCards } from '../lib/srs'
+import { codeErrorMessage, isValidCode, sendErrorMessage } from '../lib/signin'
 import { isValidEmail, magicLinkRedirect, supabase } from '../lib/supabase'
 import type { CardRow, Fiche, Grade, Plan, Progress, RevisionContent, RevStatus, SessionLog } from '../lib/types'
 
@@ -46,7 +47,20 @@ async function loadContent(): Promise<RevisionContent> {
   return { ...base, cards: cardsByZone((cards.data || []) as CardRow[]) }
 }
 
-export type SignInState = { step: 'idle' | 'sending' | 'sent' | 'error'; message?: string }
+/**
+ * Connexion par lien magique ou code à 6 chiffres (D4).
+ * - idle / sending / error : formulaire d'adresse (`message` : erreur du formulaire) ;
+ * - sent : lien envoyé à `email` à `sentAt` ; `code` suit la saisie du code, `notice` le dernier renvoi.
+ */
+export interface SignInState {
+  step: 'idle' | 'sending' | 'sent' | 'error'
+  message?: string
+  email?: string
+  sentAt?: number
+  resending?: boolean
+  notice?: { kind: 'ok' | 'error'; text: string }
+  code?: { status: 'verifying' | 'error'; message?: string }
+}
 
 export interface Revision {
   status: RevStatus
@@ -59,11 +73,30 @@ export interface Revision {
   init(): void
   retry(): void
   requestLink(email: string): void
+  /** Renvoie le lien (et le code) à la même adresse, depuis l'écran « Lien envoyé ». */
+  resendLink(): void
+  /** Vérifie le code à 6 chiffres reçu dans l'e-mail. */
+  verifyCode(code: string): void
+  /** Retour au formulaire d'adresse (« Modifier l'adresse »). */
+  changeEmail(): void
   signOut(): void
   grade(cardId: string, g: Grade, today: number): void
   logSession(log: SessionLog): void
   retrySave(): void
   setDemoProgress(p: Progress): void
+}
+
+/** Envoie le lien magique (et le code) ; renvoie l'erreur, ou null. */
+async function sendLink(email: string): Promise<unknown> {
+  if (!supabase) return new Error('Supabase non configuré')
+  try {
+    const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: magicLinkRedirect(), shouldCreateUser: true } })
+    if (error) console.error('[xxb] Envoi du lien impossible', error)
+    return error
+  } catch (err) {
+    console.error('[xxb] Envoi du lien impossible', err)
+    return err
+  }
 }
 
 /** Planches et aperçus : aucune écriture, ni serveur ni locale. */
@@ -241,24 +274,46 @@ export function useRevision(demo: boolean): Revision {
   return {
     status, content, prog, saveErr, email, signIn, init,
     retry: () => {
-      if (statusRef.current === 'loading') return
+      // Aussi depuis le chargement (FE-5) : le chargement en cours est abandonné par son jeton, puis relancé.
+      loadSeq.current += 1
+      loadingFor.current = null
       void flush().then(() => { ownerRef.current = null; statusRef.current = 'idle'; init() })
     },
     requestLink: address => {
       if (!supabase) return
       if (!isValidEmail(address)) { setSignIn({ step: 'error', message: 'Adresse e-mail invalide.' }); return }
-      setSignIn({ step: 'sending' })
-      supabase.auth.signInWithOtp({ email: address.trim(), options: { emailRedirectTo: magicLinkRedirect(), shouldCreateUser: true } })
-        .then(({ error }) => {
-          if (error) {
-            console.error('[xxb] Envoi du lien impossible', error)
-            const tooMany = error.status === 429 || /rate limit/i.test(error.message)
-            setSignIn({ step: 'error', message: tooMany ? 'Trop de demandes. Réessayez dans quelques minutes.' : 'Le lien n’a pas pu être envoyé. Réessayez.' })
-          } else {
-            setSignIn({ step: 'sent', message: address.trim() })
-          }
-        })
+      const email = address.trim()
+      setSignIn({ step: 'sending', email })
+      void sendLink(email).then(error => {
+        setSignIn(error ? { step: 'error', email, message: sendErrorMessage(error) } : { step: 'sent', email, sentAt: Date.now() })
+      })
     },
+    resendLink: () => {
+      const email = signIn.email
+      if (!supabase || signIn.step !== 'sent' || !email || signIn.resending) return
+      setSignIn(s => ({ ...s, resending: true, notice: undefined }))
+      void sendLink(email).then(error => {
+        setSignIn(s => (s.step !== 'sent' || s.email !== email ? s : error
+          ? { ...s, resending: false, notice: { kind: 'error', text: sendErrorMessage(error) } }
+          : { ...s, resending: false, sentAt: Date.now(), code: undefined, notice: { kind: 'ok', text: `Nouveau lien envoyé à ${email}.` } }))
+      })
+    },
+    verifyCode: raw => {
+      const email = signIn.email
+      if (!supabase || signIn.step !== 'sent' || !email || signIn.code?.status === 'verifying') return
+      if (!isValidCode(raw)) { setSignIn(s => ({ ...s, code: { status: 'error', message: 'Le code compte 6 chiffres.' } })); return }
+      setSignIn(s => ({ ...s, code: { status: 'verifying' } }))
+      // Succès : l'événement SIGNED_IN charge la progression et remet la connexion à zéro.
+      supabase.auth.verifyOtp({ email, token: raw, type: 'email' }).then(({ error }) => {
+        if (!error) return
+        console.error('[xxb] Code refusé', error)
+        setSignIn(s => (s.email === email ? { ...s, code: { status: 'error', message: codeErrorMessage(error) } } : s))
+      }, (err: unknown) => {
+        console.error('[xxb] Vérification du code impossible', err)
+        setSignIn(s => (s.email === email ? { ...s, code: { status: 'error', message: codeErrorMessage(err) } } : s))
+      })
+    },
+    changeEmail: () => setSignIn(s => ({ step: 'idle', email: s.email })),
     signOut: () => {
       if (!supabase) return
       const owner = ownerRef.current

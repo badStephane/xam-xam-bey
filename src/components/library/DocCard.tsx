@@ -4,10 +4,10 @@ import { mo } from '../../lib/format'
 import type { Doc } from '../../lib/types'
 
 export function DocCard({ d }: { d: Doc }) {
-  const { ui, mobile, offline, openDoc, markSeen } = useApp()
+  const { ui, mobile, openDoc, markSeen } = useApp()
   const seen = ui.seen.includes(d.id)
-  const avail = !(offline && !seen)
-  const cls = ['sheet', 'punch', 'doc', ui.sel === d.id && !mobile ? 'sel' : '', avail ? '' : 'off'].filter(Boolean).join(' ')
+  // Hors réseau, « consultée » ne veut pas dire « gardée » (FE-6, D5) : aucune pièce n'est grisée selon cet indicateur.
+  const cls = ['sheet', 'punch', 'doc', ui.sel === d.id && !mobile ? 'sel' : ''].filter(Boolean).join(' ')
   return (
     <div className={cls}>
       <div className="doc-top">
@@ -21,12 +21,10 @@ export function DocCard({ d }: { d: Doc }) {
       <span className="d-title">{d.title}</span>
       <div className="doc-bot">
         <span className="d-meta"><b style={{ color: TYPE_COLOR[d.ty] }}>{d.ty}</b> · {d.pages ? `${d.pages} P. · ` : ''}{mo(d.size)} MO · {d.folder.toUpperCase()}</span>
-        {avail && mobile
+        {mobile
           // Sur téléphone, le lecteur PDF natif (nouvel onglet) est plus confortable qu'un lecteur intégré.
           ? <a className="ink-btn" href={d.file} target="_blank" rel="noopener" onClick={() => markSeen(d.id)} aria-label={`Ouvrir ${d.title} dans un nouvel onglet`}>Ouvrir ↗</a>
-          : avail
-          ? <button className="ink-btn" onClick={() => openDoc(d.id)} aria-label={`Ouvrir ${d.title}`}>Ouvrir</button>
-          : <span className="f-lbl" style={{ flex: 'none', color: 'var(--ink2)' }}>HORS RÉSEAU</span>}
+          : <button className="ink-btn" onClick={() => openDoc(d.id)} aria-label={`Ouvrir ${d.title}`}>Ouvrir</button>}
       </div>
     </div>
   )

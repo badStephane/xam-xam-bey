@@ -63,7 +63,7 @@ export default defineConfig(({ mode }) => {
     test: {
       environment: 'node',
       include: ['src/**/*.test.ts'],
-      coverage: { include: ['src/lib/**/*.ts'], exclude: ['src/lib/**/*.test.ts', 'src/lib/types.ts', 'src/lib/docs.ts', 'src/lib/storage.ts', 'src/lib/share.ts', 'src/lib/params.ts'] },
+      coverage: { include: ['src/lib/**/*.ts', 'src/hooks/**/*.ts'], exclude: ['src/lib/**/*.test.ts', 'src/hooks/**/*.test.ts', 'src/lib/types.ts', 'src/lib/docs.ts', 'src/lib/storage.ts', 'src/lib/share.ts', 'src/lib/params.ts'] },
     },
   }
 })

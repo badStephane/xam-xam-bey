@@ -7,16 +7,14 @@ export const ALL_ZONES = 0
 export type Scope = 'all' | 'gaps' | 'new'
 export const SCOPES: ReadonlyArray<readonly [Scope, string]> = [['all', 'TOUT'], ['gaps', 'MES LACUNES'], ['new', 'JAMAIS VUES']]
 
-/** Taux de réussite en dessous duquel une carte déjà vue reste une lacune. */
-export const GAP_RATE = 0.6
-/** Une carte ratée ou hésitante récemment (niveau 0 ou 1) est une lacune. */
+/** Niveau au-delà duquel une carte n'est plus une lacune, même si elle a déjà été ratée (D3). */
 export const GAP_MAX_LEVEL = 1
 
 const rate = (p: CardProgress): number => (p[2] ? p[3] / p[2] : 0)
 
-/** Une lacune : carte déjà vue, ratée récemment ou réussie moins de 60 % du temps. */
+/** Une lacune (D3) : au moins une réponse non réussie (vues > réussites) et un niveau encore bas. */
 export function isGap(p: CardProgress | undefined): boolean {
-  return !!p && p[2] > 0 && (p[0] <= GAP_MAX_LEVEL || rate(p) < GAP_RATE)
+  return !!p && p[2] > p[3] && p[0] <= GAP_MAX_LEVEL
 }
 
 /** Lacunes triées de la plus faible à la moins faible (niveau, puis taux de réussite). */

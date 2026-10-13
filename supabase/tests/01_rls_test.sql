@@ -2,7 +2,7 @@
 -- Lancer : supabase test db (base locale). Tout est annulé en fin de fichier.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(29);
+select plan(30);
 
 -- Fixtures : A et B (utilisateurs), C (admin confirmé), D (admin à l'e-mail non confirmé).
 insert into auth.users (id, email, email_confirmed_at, aud, role) values
@@ -41,7 +41,8 @@ select is(public.is_admin(), false, 'anon : is_admin() = false');
 select tests.login('00000000-0000-0000-0000-00000000000a');
 select results_eq('select user_id from public.progress', $$values ('00000000-0000-0000-0000-00000000000a'::uuid)$$, 'A ne lit que sa progression');
 select throws_ok($$insert into public.progress (user_id) values ('00000000-0000-0000-0000-00000000000b')$$, '42501', null, 'A ne crée pas la ligne de B');
-update public.progress set xp = 99 where user_id = '00000000-0000-0000-0000-00000000000b';
+-- Lot 2 (D6) : l'écriture directe est refusée par les droits (42501), plus seulement filtrée par la RLS.
+select throws_ok($$update public.progress set xp = 99 where user_id = '00000000-0000-0000-0000-00000000000b'$$, '42501', null, 'A ne met pas à jour progress en direct');
 select is((select count(*) from public.cards where status = 'draft'), 0::bigint, 'A ne voit pas les brouillons');
 select throws_ok($$insert into public.documents (zone, title, file_name, storage_path, size) values (1, 't', 't.pdf', 'a.pdf', 1)$$,
   '42501', null, 'A n''écrit pas documents');

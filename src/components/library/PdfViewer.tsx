@@ -77,8 +77,9 @@ export function PdfViewer({ file, title, maxPages }: { file: string; title: stri
   if (state.status === 'loading') return <div className="pdf-msg" role="status">Chargement de l’aperçu…</div>
   if (state.status === 'error') {
     return (
-      <div className="pdf-msg" role="alert">
-        L’aperçu n’a pas pu se charger. <a href={file} target="_blank" rel="noopener">Ouvrir le document</a> ou le télécharger.
+      <div className="pdf-msg col g10" role="alert" style={{ alignItems: 'center' }}>
+        <span>L’aperçu n’a pas pu se charger. Le document reste lisible dans le lecteur du téléphone ou de l’ordinateur.</span>
+        <a className="pdf-open" href={file} target="_blank" rel="noopener">Ouvrir le PDF ↗</a>
       </div>
     )
   }

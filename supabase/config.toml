@@ -156,11 +156,14 @@ max_indexes = 5
 enabled = true
 # The base URL of your website. Used as an allow-list for redirects and for constructing URLs used
 # in emails.
-site_url = "http://127.0.0.1:5173"
+# Xam Xam Bey (point 19) : aligné sur la production. Rappel : config.toml ne s'applique qu'à la pile locale,
+# la production se règle dans le tableau de bord (liste dans docs/squad/05-build.md, Lot 2 > Back).
+site_url = "https://xam-xam-bey.pages.dev"
 # The public URL that Auth serves on. Defaults to the API external URL with `/auth/v1` appended.
 # external_url = ""
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
-additional_redirect_urls = ["http://localhost:5173"]
+# Pas de joker de domaine (BE-7) : seulement la production et le serveur Vite local.
+additional_redirect_urls = ["https://xam-xam-bey.pages.dev/**", "http://localhost:5173/**"]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 (1 week).
 jwt_expiry = 3600
 # JWT issuer URL. If not set, defaults to auth.external_url.
@@ -218,6 +221,9 @@ web3 = 30
 
 [auth.email]
 # Allow/disallow new user signups via email to your project.
+# Xam Xam Bey : reste true, la connexion par code crée le compte (shouldCreateUser). La CLI 2.109 n'a pas de clé
+# pour désactiver seulement le mot de passe ('auth.email' has invalid keys: enable_password) : la protection
+# contre un signUp par mot de passe sur l'e-mail d'un admin est la confirmation d'e-mail ci-dessous (BE-7).
 enable_signup = true
 # If enabled, a user will be required to confirm any email change on both the old, and new email
 # addresses. If disabled, only the new email is required to confirm.
@@ -230,6 +236,7 @@ secure_password_change = true
 # Controls the minimum amount of time that must pass before sending another signup confirmation or password reset email.
 max_frequency = "1s"
 # Number of characters used in the email OTP.
+# Xam Xam Bey (D4) : code à 6 chiffres saisi dans l'application, en plus du lien.
 otp_length = 6
 # Number of seconds before the email OTP expires (defaults to 1 hour).
 otp_expiry = 3600
@@ -248,6 +255,16 @@ otp_expiry = 3600
 # [auth.email.template.invite]
 # subject = "You have been invited"
 # content_path = "./supabase/templates/invite.html"
+
+# Xam Xam Bey (QA lot 2, E2E de la connexion par code) : pile locale seulement. Mêmes textes que les modèles
+# de production (05-build.md, Lot 2 > Front A ; 06-ops.md A7), avec {{ .Token }}. La production se règle au tableau de bord.
+[auth.email.template.magic_link]
+subject = "Votre connexion à Xam Xam Bëy : code {{ .Token }}"
+content_path = "./supabase/templates/magic_link.html"
+
+[auth.email.template.confirmation]
+subject = "Bienvenue sur Xam Xam Bëy : code {{ .Token }}"
+content_path = "./supabase/templates/confirmation.html"
 
 # Uncomment to customize notification email template
 # [auth.email.notification.password_changed]

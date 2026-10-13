@@ -5,6 +5,12 @@
 - Transfert des cartes de revision_content (cards-N) vers la table cards, liées à leur document source.
 
 Usage : python3 scripts/library_sql.py  →  supabase/migrations/<horodatage>_library.sql
+
+La base fait foi pour les documents et les cartes (ADR-1, docs/squad/decisions.md) : la reprise des documents et
+le transfert des cartes utilisent `on conflict (id) do nothing`, jamais `do update`, pour ne pas écraser ce que
+l'admin a modifié. Seules la configuration du bucket (taille, types MIME) et une correction ponctuelle de source
+(cartes encore sans document) sont réécrites. Ne pas relancer ce script :
+sa migration est déjà appliquée ; une évolution passe par une nouvelle migration écrite à la main.
 """
 import datetime
 import json

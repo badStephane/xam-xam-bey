@@ -11,8 +11,8 @@
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm test && npm run build",
-    "deploy:cloudflare": "npm run build && npx wrangler@4 deploy",
-    "deploy:pages": "npm run build && npx wrangler@4 pages deploy dist --project-name xam-xam-bey --branch main"
+    "deploy:pages": "sh scripts/deploy-pages.sh",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.3",
@@ -21,11 +21,13 @@
     "react-dom": "18.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "1.64.0",
     "@types/node": "22.10.2",
     "@types/react": "18.3.18",
     "@types/react-dom": "18.3.5",
     "@vitejs/plugin-react": "4.3.4",
     "@vitest/coverage-v8": "2.1.8",
+    "happy-dom": "21.0.1",
     "typescript": "5.7.2",
     "vite": "5.4.11",
     "vitest": "2.1.8"

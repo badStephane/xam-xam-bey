@@ -10,7 +10,7 @@ body{background:#0D1512}
 #topo{position:absolute;left:0;top:0;width:100%;height:1400px;pointer-events:none}
 #topo path{fill:none;stroke:var(--topo);stroke-width:1.1}
 #view{position:relative}
-#app :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+#app :focus-visible{outline:2px solid var(--focus,var(--amber));outline-offset:2px}
 #app button,#app input,#app select{font-family:inherit}
 #app button{cursor:pointer}
 #app button:disabled{cursor:not-allowed;opacity:.5}
@@ -46,6 +46,13 @@ body{background:#0D1512}
 .diamond{flex:none;display:inline-block;width:11px;height:11px;transform:rotate(45deg);border:1.5px solid var(--hud)}
 
 /* Fiches crème */
+/* UX-6, UX-7 : sur le crème, anneau de focus encre (16,2:1 et 17,2:1) et liens verts soulignés (7,2:1 et 7,65:1) ; sur bandeau encre, anneau papier (17,2:1). */
+.sheet,.qcard,.gate-card,.month.cur{--focus:var(--ink)}
+.panel-h{--focus:var(--paper)}
+/* Sans :is() : Chrome anciens des Android d'entrée de gamme. */
+#app .sheet a:not(.ink-btn):not(.ink-line),#app .qcard a:not(.ink-btn):not(.ink-line),#app .gate-card a:not(.ink-btn):not(.ink-line),#app .month.cur a:not(.ink-btn):not(.ink-line){color:var(--green);text-decoration:underline;text-underline-offset:3px}
+#app .sheet a:not(.ink-btn):not(.ink-line):hover,#app .qcard a:not(.ink-btn):not(.ink-line):hover,#app .gate-card a:not(.ink-btn):not(.ink-line):hover,#app .month.cur a:not(.ink-btn):not(.ink-line):hover{color:var(--ink)}
+.pdf-open{min-height:44px;padding:0 14px;display:inline-grid;place-items:center;border:1.5px solid currentColor;font:700 13px/1 var(--f-body);text-decoration:underline;text-underline-offset:3px}
 .sheet{position:relative;background:var(--card);color:var(--ink);border:1.5px solid var(--card-bd);border-radius:8px}
 .sheet.r10{border-radius:10px}
 .punch{padding:12px 12px 12px 30px}
@@ -85,6 +92,8 @@ body{background:#0D1512}
 .tab[aria-current=page]{border-bottom-color:var(--acc);color:var(--hud)}
 .tag-resp{font:500 9px/1 var(--f-mono);padding:3px 4px;border:1px solid var(--amber);color:var(--amber)}
 main{max-width:1100px;margin:0 auto;padding:16px 16px 56px}
+.account{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:12px 14px;border:1px solid var(--line);background:var(--field)}
+.account-mail{font:700 15px/1.35 var(--f-mono);overflow-wrap:anywhere}
 .foot{max-width:1100px;margin:0 auto;padding:0 16px 32px;font:400 11px/1.5 var(--f-mono);color:var(--hud2)}
 
 /* Bibliothèque */
@@ -122,7 +131,6 @@ main{max-width:1100px;margin:0 auto;padding:16px 16px 56px}
 @container (max-width:400px){.grid-docs{grid-template-columns:1fr}}
 .doc{display:flex;flex-direction:column;gap:6px;transition:border-color 160ms}
 .doc.sel{border-color:var(--stamp)}
-.doc.off{opacity:.55}
 .doc-top,.doc-bot{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .doc-bot .d-meta{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .empty{border:1.5px dashed var(--line);padding:28px 18px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
@@ -269,7 +277,7 @@ kbd{font:500 11px/1 var(--f-mono);padding:5px 7px;border:1px solid currentColor}
   .fiche{border:none;max-width:none}
 }
 .qcard h1:focus,.answer:focus{outline:none}
-.qcard h1:focus-visible,.answer:focus-visible{outline:2px solid var(--amber);outline-offset:4px}
+.qcard h1:focus-visible,.answer:focus-visible{outline:2px solid var(--focus,var(--amber));outline-offset:4px}
 
 /* QCM */
 .qcm{display:flex;flex-direction:column;gap:8px}
@@ -305,7 +313,7 @@ textarea.field{padding:10px;font:inherit;font-size:16px;line-height:1.45;resize:
   .lbl,.f-lbl,.d-meta,.stats dt,.kpi span,.tag-ess,.tag-scan,.stop .k,.stop .k small,.who,.cote,.go span,.rate span{font-size:11px}
   .tag-resp{font-size:10px}
   .stamp,.verso,.xp-row{font-size:11px}
-  .brand-name{font-size:17px;letter-spacing:.04em;white-space:nowrap}
+  .brand-name{font-size:17px;letter-spacing:.04em;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
   .brand{gap:8px}
   .days span{font-size:10px;line-height:16px;height:18px}
   .stats dd{font-size:20px}

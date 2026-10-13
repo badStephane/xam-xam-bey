@@ -11,15 +11,39 @@ describe('applyGrade', () => {
     expect(p.cards.t1).toEqual([1, T + 1, 1, 1, T])
     expect(p.xp).toBe(10)
   })
-  test('su successifs suivent les intervalles J+3, J+7 et plafonnent au niveau 5', () => {
+  test('su successifs, chacun à l’échéance, suivent les intervalles et plafonnent au niveau 5', () => {
     let p: Progress = EMPTY_PROGRESS
-    for (let i = 0; i < 7; i++) p = applyGrade(p, 't1', 2, T)
+    const dues: number[] = []
+    for (let i = 0; i < 7; i++) {
+      const day = p.cards.t1?.[1] ?? T
+      p = applyGrade(p, 't1', 2, day)
+      dues.push(p.cards.t1[1] - day)
+    }
+    expect(dues).toEqual([1, 3, 7, 21, 60, 60, 60])
     expect(p.cards.t1[0]).toBe(5)
-    expect(p.cards.t1[1]).toBe(T + 60)
   })
   test('raté remet au niveau 0 et revient le lendemain', () => {
-    const p = applyGrade(applyGrade(applyGrade(EMPTY_PROGRESS, 't1', 2, T), 't1', 2, T), 't1', 0, T)
-    expect(p.cards.t1.slice(0, 2)).toEqual([0, T + 1])
+    const p = applyGrade(applyGrade(applyGrade(EMPTY_PROGRESS, 't1', 2, T), 't1', 2, T + 1), 't1', 0, T + 1)
+    expect(p.cards.t1.slice(0, 2)).toEqual([0, T + 2])
+  })
+  test('D2 : 5 « Su » le même jour ne donnent qu’un seul niveau (QA-3)', () => {
+    let p: Progress = EMPTY_PROGRESS
+    for (let i = 0; i < 5; i++) p = applyGrade(p, 't1', 2, T)
+    expect(p.cards.t1).toEqual([1, T + 1, 5, 5, T])
+    expect(p.xp).toBe(50)
+  })
+  test('D2 : hors calendrier, vues, réussites et XP comptent ; niveau et échéance ne bougent pas', () => {
+    const start: Progress = { cards: { t1: [3, T + 5, 4, 3, T - 20] }, sessions: [], xp: 100 }
+    expect(applyGrade(start, 't1', 2, T)).toEqual({ ...start, cards: { t1: [3, T + 5, 5, 4, T - 20] }, xp: 110 })
+    expect(applyGrade(start, 't1', 1, T)).toEqual({ ...start, cards: { t1: [3, T + 5, 5, 3, T - 20] }, xp: 105 })
+  })
+  test('D2 : « Raté » remet toujours à zéro, même hors calendrier', () => {
+    const start: Progress = { cards: { t1: [4, T + 15, 6, 6, T - 30] }, sessions: [], xp: 0 }
+    expect(applyGrade(start, 't1', 0, T).cards.t1).toEqual([0, T + 1, 7, 6, T - 30])
+  })
+  test('D2 : une carte due (échéance passée) monte d’un niveau', () => {
+    const start: Progress = { cards: { t1: [2, T - 2, 3, 3, T - 10] }, sessions: [], xp: 0 }
+    expect(applyGrade(start, 't1', 2, T).cards.t1).toEqual([3, T + 7, 4, 4, T - 10])
   })
   test('hésitant garde le niveau (minimum 1) et rapporte 5 XP', () => {
     const p = applyGrade(EMPTY_PROGRESS, 't1', 1, T)
@@ -39,6 +63,15 @@ describe('readProgress', () => {
   })
   test('garde l’XP enregistrée', () => {
     expect(readProgress({ xp: 640 }).xp).toBe(640)
+  })
+  test('QA-9 : une entrée de carte corrompue est ignorée, les autres sont gardées', () => {
+    const p = readProgress({ cards: { ok: [1, T, 1, 1, T], bad: [3, T, null, null, T], short: [1, 2], txt: 'x' } as never, xp: 10 })
+    expect(p.cards).toEqual({ ok: [1, T, 1, 1, T] })
+    expect(applyGrade(p, 'bad', 2, T).cards.bad).toEqual([1, T + 1, 1, 1, T])
+  })
+  test('QA-9 : séances invalides ignorées, contenu non objet donne une progression vide', () => {
+    expect(readProgress({ sessions: [{ d: 1, n: 5, ok: 3, k: 'daily', l: '' }, null, { d: 'x' }] as never }).sessions).toHaveLength(1)
+    expect(readProgress(null as never)).toEqual(EMPTY_PROGRESS)
   })
 })
 

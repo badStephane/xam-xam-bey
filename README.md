@@ -18,6 +18,14 @@ npm run test:coverage
 npm run build        # vérifie les types puis écrit dist/ (application seule, sans les PDF)
 ```
 
+**Tests de bout en bout** (Playwright, hors `npm run check` ; lancés par la CI dans le job `db`, rapport en artefact 7 jours en cas d'échec) : connexion par code lu dans Mailpit, passage à minuit (`page.clock`), bouton retour. Ils lancent `vite` sur `localhost:5173` branché sur la pile Supabase **locale** (55321, Mailpit 55324) ; toute requête vers `*.supabase.co` fait échouer le test.
+
+```bash
+npx playwright install chromium   # une fois par poste (Linux : --with-deps chromium)
+supabase start                    # pile locale du projet (modèles d'e-mail avec code : supabase/templates/)
+npm run e2e
+```
+
 ## Structure
 
 - `index.html`, `planches.html` : points d’entrée Vite.
@@ -42,7 +50,7 @@ npm run build        # vérifie les types puis écrit dist/ (application seule, 
 - **Mise en place initiale** : appliquer la migration `*_library.sql`, puis envoyer les PDF d’origine : `SUPABASE_SERVICE_ROLE_KEY=… node scripts/upload_documents.mjs` (clé à ne jamais enregistrer dans un fichier).
 - **Publier du contenu en masse** : déposer `fiche-N.json` / `cards-N.json` dans `data/seed/`, lancer `python3 scripts/content_sql.py`, puis `supabase db push`.
 - **QCM** : chaque carte peut porter `"qcm": { "ok": "bonne réponse courte", "no": ["3 mauvaises réponses plausibles"] }`. Sans ce champ, l’application prend comme propositions les réponses d’autres cartes de la même zone.
-- **Réglages du tableau de bord** (Authentication → URL Configuration) : *Site URL* = l’adresse Netlify ; *Redirect URLs* = cette adresse et `http://localhost:5173`. Le service e-mail intégré de Supabase est limité à quelques envois par heure : configurer un SMTP (Authentication → Emails) avant d’ouvrir aux responsables.
+- **Réglages du tableau de bord** : URL de connexion, SMTP Gmail et modèle d’e-mail (code à 6 chiffres) sont décrits pas à pas dans `docs/squad/06-ops.md` (sections A et B).
 
 ```bash
 supabase link --project-ref <ref>
@@ -51,15 +59,16 @@ supabase db push
 
 ## Hébergement
 
-Le site publié est le dossier `dist/` (application seule, environ 5 Mo) ; les PDF sont servis par Supabase. Les en-têtes de sécurité (CSP limitée au projet Supabase et à Google Fonts) sont dans `public/_headers`, lu par Cloudflare Pages comme par Netlify. Les variables `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` doivent être définies au moment du build.
+Production : **Cloudflare Pages**, projet `xam-xam-bey`, en envoi direct (Direct Upload), adresse **https://xam-xam-bey.pages.dev**. Aucune autre cible (ni Netlify, ni Worker).
 
-**Cloudflare** (offre gratuite sans crédits). Le nouveau parcours crée un projet *Workers* : `wrangler.jsonc` lui indique de publier `dist/` tel quel (pas de configuration automatique de Vite). Réglages du projet relié à GitHub : build command `npm run build`, deploy command `npx wrangler deploy`, variables de **build** `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY`. Autres possibilités :
-- *Projet Pages relié à GitHub* : Workers & Pages → Create → Pages → Connect to Git → dépôt `xam-xam-bey`, branche `main`. Build command `npm run build`, output directory `dist`, variables d’environnement `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY`. Chaque push sur `main` redéploie le site.
-- *Envoi direct* : `npm run deploy:cloudflare` (connexion Cloudflare demandée au premier lancement), ou glisser le dossier `dist/` dans Workers & Pages → Create → Pages → Upload assets.
+```bash
+git switch main && git pull   # main propre et à jour, CI verte
+npm run deploy:pages          # contrôles git, puis npm run check (types, tests, build) et envoi de dist/
+```
 
-**Netlify** : `netlify.toml` construit et publie `dist/`.
+`scripts/deploy-pages.sh` refuse de partir hors de `main`, avec des modifications non commitées, si `main` diffère de `origin/main` ou sans `.env.local` (les variables `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` sont lues au build). La connexion Cloudflare est demandée au premier lancement. Retour arrière, migrations et mise en production : `docs/squad/06-ops.md`.
 
-Après un changement d’adresse, l’ajouter dans Supabase : Authentication → URL Configuration (Site URL et Redirect URLs, par exemple `https://xam-xam-bey.pages.dev/**`).
+Le site publié est le dossier `dist/` (application seule, environ 5 Mo) ; les PDF sont servis par Supabase. Les en-têtes de sécurité (CSP limitée au projet Supabase et à Google Fonts) sont dans `public/_headers`, copié dans `dist/`.
 
 ## Planches
 

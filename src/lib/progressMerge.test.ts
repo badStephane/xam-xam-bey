@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { MAX_XP, mergeProgress, parseStoredProgress, progressEquals } from './progressMerge'
+import { compareUtf8, MAX_XP, mergeProgress, parseStoredProgress, progressEquals } from './progressMerge'
 import { KEPT_SESSIONS } from './constants'
 import type { CardProgress, Progress, SessionLog } from './types'
 
@@ -128,5 +128,25 @@ describe('progressEquals', () => {
     expect(progressEquals(a, { ...a, cards: {} })).toBe(false)
     expect(progressEquals(a, { ...a, cards: { x: [1, T, 2, 1, T] } })).toBe(false)
     expect(progressEquals(a, { ...a, sessions: [] })).toBe(false)
+  })
+})
+
+describe('L1-13 : ordre des libellés en octets UTF-8 (comme collate "C")', () => {
+  const EMOJI = '\u{1F600}' // F0 9F 98 80 en UTF-8, paire de substitution D83D DE00 en UTF-16
+  const FULLWIDTH = '\uFF01' // EF BC 81 en UTF-8
+  test('un emoji (hors BMP) se range après U+FF01, comme en SQL', () => {
+    expect(compareUtf8(EMOJI, FULLWIDTH)).toBeGreaterThan(0)
+    expect(compareUtf8(FULLWIDTH, EMOJI)).toBeLessThan(0)
+  })
+  test('cas simples : égalité, préfixe, ASCII avant accents, majuscules avant minuscules', () => {
+    expect(compareUtf8('daily', 'daily')).toBe(0)
+    expect(compareUtf8('da', 'daily')).toBeLessThan(0)
+    expect(compareUtf8('Zone', 'daily')).toBeLessThan(0)
+    expect(compareUtf8('éval', 'zone')).toBeGreaterThan(0)
+  })
+  test('mergeProgress range les séances du même rang par k puis l en octets UTF-8', () => {
+    const a = prog({}, [s(T, 5, 3, EMOJI), s(T, 5, 3, 'x', EMOJI)])
+    const b = prog({}, [s(T, 5, 3, FULLWIDTH), s(T, 5, 3, 'x', FULLWIDTH)])
+    expect(mergeProgress(a, b).sessions.map(x => [x.k, x.l])).toEqual([['x', FULLWIDTH], ['x', EMOJI], [FULLWIDTH, 'Jour'], [EMOJI, 'Jour']])
   })
 })

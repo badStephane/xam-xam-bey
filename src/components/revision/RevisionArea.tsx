@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useApp } from '../../AppContext'
-import { EmptyGate, SignInGate, UnavailableGate } from './Gate'
+import { EmptyGate, LoadingGate, SignInGate, UnavailableGate } from './Gate'
 
 /** Affiche l'écran de révision demandé, ou l'état d'accès (chargement, connexion, indisponible, vide). */
 export function RevisionArea({ children }: { children: ReactNode }) {
@@ -10,7 +10,7 @@ export function RevisionArea({ children }: { children: ReactNode }) {
   switch (rev.status) {
     case 'idle':
     case 'loading':
-      return <p className="mono" role="status" style={{ color: 'var(--acc)', animation: 'xxbPulse 1.2s ease-in-out infinite' }}>CHARGEMENT DE L’ESPACE DE RÉVISION…</p>
+      return <LoadingGate />
     case 'signedout': return <SignInGate />
     case 'unavailable': return <UnavailableGate />
     case 'empty': return <EmptyGate />

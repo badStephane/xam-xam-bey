@@ -1,9 +1,0 @@
-[build]
-  command = "npm run build"
-  publish = "dist"
-
-[build.environment]
-  NODE_VERSION = "22"
-
-# VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY se règlent dans Netlify : Site configuration → Environment variables.
-# Les en-têtes de sécurité sont dans public/_headers (communs à Netlify et Cloudflare Pages).
