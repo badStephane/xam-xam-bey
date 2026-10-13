@@ -1,4 +1,6 @@
 import { norm } from './format'
+import { validQcm } from './srs'
+import type { Qcm } from './types'
 
 /** Mêmes règles que scripts/check_content.py, appliquées pendant la saisie dans l'espace Admin. */
 export const MAX_OK_LENGTH = 110
@@ -16,26 +18,58 @@ export interface CardDraft {
 
 export interface CardCheck { errors: string[]; warnings: string[] }
 
+export const QCM_ERRORS = {
+  noWrong: 'QCM incomplet : ajoutez au moins une mauvaise proposition, ou videz la bonne pour une question sans QCM.',
+  noOk: 'QCM incomplet : ajoutez la bonne proposition, ou videz les mauvaises pour une question sans QCM.',
+  tooMany: `QCM : ${WRONG_COUNT} mauvaises propositions au plus.`,
+  duplicate: 'QCM : deux propositions sont identiques (ou une mauvaise est égale à la bonne), sans compter casse ni accents.',
+} as const
+
+export type QcmRead = { ok: true; qcm: Qcm | null } | { ok: false; error: string }
+
+/**
+ * Règle unique du QCM (éditeur, import Excel, publication depuis la liste) : aucun QCM (l'application en compose un),
+ * ou une bonne proposition et 1 à 3 mauvaises, toutes distinctes sans compter casse ni accents (`norm`).
+ * Le QCM rendu passe aussi validQcm, la règle de lecture côté scouts.
+ */
+export function readQcm(ok: string, wrong: readonly string[]): QcmRead {
+  const good = ok.trim()
+  const filled = wrong.map(x => x.trim()).filter(Boolean)
+  if (!good && !filled.length) return { ok: true, qcm: null }
+  if (!good) return { ok: false, error: QCM_ERRORS.noOk }
+  if (!filled.length) return { ok: false, error: QCM_ERRORS.noWrong }
+  if (filled.length > WRONG_COUNT) return { ok: false, error: QCM_ERRORS.tooMany }
+  const keys = [good, ...filled].map(norm)
+  if (new Set(keys).size !== keys.length) return { ok: false, error: QCM_ERRORS.duplicate }
+  const qcm = validQcm({ ok: good, no: filled })
+  return qcm ? { ok: true, qcm } : { ok: false, error: QCM_ERRORS.duplicate }
+}
+
+/** Lecture tolérante d'un QCM stocké (jsonb) avant de lui appliquer readQcm. */
+export function readStoredQcm(raw: unknown): QcmRead {
+  if (raw === null || raw === undefined) return { ok: true, qcm: null }
+  const { ok, no } = (typeof raw === 'object' ? raw : {}) as { ok?: unknown; no?: unknown }
+  const wrong = Array.isArray(no) ? no.map(x => (typeof x === 'string' ? x : '')) : []
+  return readQcm(typeof ok === 'string' ? ok : '', wrong)
+}
+
 /** Vérifie une question avant enregistrement : erreurs bloquantes et avertissements de qualité. */
 export function checkCard(c: CardDraft): CardCheck {
-  const errors: string[] = []
+  const errors = [c.q.trim() ? null : 'La question est vide.', c.a.trim() ? null : 'La réponse complète est vide.'].filter((x): x is string => x !== null)
+  const read = readQcm(c.ok, c.no)
+  if (!read.ok) return { errors: [...errors, read.error], warnings: [] }
+  return { errors, warnings: read.qcm ? qcmWarnings(read.qcm.ok, read.qcm.no) : [] }
+}
+
+function qcmWarnings(ok: string, no: readonly string[]): string[] {
   const warnings: string[] = []
-  if (!c.q.trim()) errors.push('La question est vide.')
-  if (!c.a.trim()) errors.push('La réponse complète est vide.')
-  const ok = c.ok.trim()
-  const no = c.no.map(x => x.trim())
-  if (!ok) errors.push('La bonne réponse courte du QCM est vide.')
-  if (no.length !== WRONG_COUNT || no.some(x => !x)) errors.push(`Il faut ${WRONG_COUNT} mauvaises réponses.`)
-  const keys = [ok, ...no].filter(Boolean).map(norm)
-  if (new Set(keys).size !== keys.length) errors.push('Deux propositions sont identiques (ou une mauvaise réponse est égale à la bonne).')
   if (ok.length > MAX_OK_LENGTH) warnings.push(`Bonne réponse longue (${ok.length} caractères) : visez moins de 90.`)
-  const filled = no.filter(Boolean)
-  const avg = filled.length ? filled.reduce((a, x) => a + x.length, 0) / filled.length : 0
-  if (avg && ok.length > LONG_RATIO * avg && ok.length - avg > LONG_GAP) {
+  const avg = no.reduce((a, x) => a + x.length, 0) / no.length
+  if (ok.length > LONG_RATIO * avg && ok.length - avg > LONG_GAP) {
     warnings.push('La bonne réponse est nettement plus longue que les mauvaises : elle se devine. Équilibrez les longueurs.')
   }
   if ([ok, ...no].some(x => x.includes('*'))) warnings.push('Pas de mise en forme (**) dans les propositions du QCM.')
-  return { errors, warnings }
+  return warnings
 }
 
 /** Identifiant d'une nouvelle carte : t<zone>-<6 caractères>, conforme à la contrainte de la table cards. */

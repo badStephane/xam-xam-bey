@@ -246,3 +246,62 @@ Authentication, libellés à confirmer dans l'interface :
 1. URL Configuration : Site URL `https://xam-xam-bey.pages.dev` ; Redirect URLs `https://xam-xam-bey.pages.dev/**` (et `http://localhost:5173/**` seulement pour tester en local contre la prod). Aucun joker de domaine.
 2. Sign In / Providers > Email : Confirm email **activé** ; Secure email change **activé** ; Email OTP length **6** ; OTP expiry 3600 s.
 3. Pas de réglage « mot de passe seul » : laisser Confirm email activé, c'est lui qui protège `is_admin()`.
+
+## Import Excel des questions (admin)
+
+**Hypothèses.** H1 (validée PM) : une ligne sans aucune colonne QCM est valide (`qcm = null`) ; l'application tire alors les propositions des autres cartes de la zone (comportement existant). H2 : une ligne en erreur liste toutes ses raisons, séparées par une espace. H3 : la clé de doublon ignore aussi la différence entre apostrophes `’` et `'` ; les accents comptent. H4 : la première ligne non vide de la feuille porte les en-têtes ; les colonnes inconnues sont ignorées.
+
+**Parcours.** Questions > « Importer un fichier Excel » (ou « Télécharger le modèle »). Choix du .xlsx > aperçu (rien n'est écrit) : lignes valides et en erreur par zone, chaque ligne en erreur avec son numéro Excel et sa raison > « Importer N questions » ou « Annuler ». Succès : « N questions importées en brouillon dans les zones … » (`role="status"`) et rechargement de la liste. Échec : `role="alert"` + « Aucune question n'a été importée », l'aperçu reste et l'on peut réessayer.
+
+**Choix.**
+- Bibliothèque : `read-excel-file` 9.3.12 (épinglée), entrée `universal` (fflate + saxen, sans DOM) : même code en navigateur et sous Vitest. Maintenue (publication du 7 oct. 2026), `npm audit --omit=dev` : 0 vulnérabilité. Le paquet `xlsx` 0.18 est écarté (vulnérable, plus publié sur npm).
+- Chargement à la demande sur deux niveaux : `CardsImport` en `React.lazy` (échec réseau : message dans le panneau, pas l'ErrorBoundary racine), puis `import('read-excel-file/universal')` au choix du premier fichier (`xlsxRead.ts`).
+- Identifiants : générés côté client par `newCardId(zone)`, comme l'éditeur (la table n'a pas de défaut sur `id`) ; unicité vérifiée contre le lot et les cartes lues.
+- Écriture : un seul `insert(...).select('id')` (tout ou rien en base), succès seulement si la base confirme exactement N lignes (`touchedRows` + contrôle du compte).
+- Juste avant d'écrire, la base est relue : doublons et fin de zone à jour. Si les lignes retenues ont changé (autre admin), rien n'est inséré et l'aperçu est remplacé avec un avertissement.
+- Lecture des questions existantes paginée par 1 000 (`max_rows` de `config.toml`), seulement pour les zones citées par le fichier.
+- QCM (décision PM) : une seule règle, `readQcm` dans `cardRules.ts`, partagée par `checkCard` (éditeur) et l'import, et appuyée sur `validQcm` de `srs.ts` (exporté). Accepté : aucun QCM, ou une bonne proposition et 1 à 3 mauvaises. Refusé, avec un message précis : bonne sans mauvaise, mauvaises sans bonne, mauvaises toutes égales à la bonne, plus de 3 mauvaises. L'éditeur affiche « QCM facultatif » ; `saveCard` enregistre `qcm = null` sans QCM et retire les mauvaises vides.
+- Modèle : fichier statique `public/modele-questions.xlsx`, produit par `scripts/make_import_xlsx.py` (zipfile + XML, sans dépendance, sortie déterministe). Plus simple que d'ajouter une bibliothèque d'écriture au navigateur pour un fichier qui ne change pas. Le même script produit les fixtures Vitest et E2E.
+
+**Fichiers.** `src/lib/cardImport.ts` (logique pure), `src/lib/cardImportFlow.ts` (aperçu, validation finale, dépendances injectées), `src/lib/xlsxRead.ts` (import dynamique), `src/lib/adminApi.ts` (`listCardsForImport`, `insertImportedCards`), `src/lib/srs.ts` (export de `validQcm`), `src/components/admin/CardsImport.tsx`, `TemplateLink.tsx`, `CardsAdmin.tsx` (boutons, lazy, message de fin), `scripts/make_import_xlsx.py`, `public/modele-questions.xlsx`, fixtures `src/lib/__fixtures__/import-sample.xlsx` et `e2e/fixtures/import-e2e.xlsx`.
+
+**Preuves.**
+| Vérification | Résultat |
+|---|---|
+| `npm run typecheck` | OK |
+| `npx vitest run` | 30 fichiers, 291 tests verts (5 ignorés, préexistants) ; import : `cardImport` 39, `cardImportFlow` 7, `adminImport` 8, `xlsxRead` 4 (vrai .xlsx, fichier texte, zip abîmé) ; règle QCM : `cardRules` (`readQcm` et `checkCard` assoupli) |
+| Couverture | `cardImport.ts` 100 % lignes ; `xlsxRead.ts` 87,5 % (seul l'échec de chargement du chunk n'est pas couvert) |
+| Build (variables factices) | OK ; `index.html` ne précharge que `index` et `client` |
+| `npm audit --omit=dev` | 0 vulnérabilité |
+| E2E Playwright, pile locale 553xx, viewport 360 px | `e2e/import-excel.spec.ts` 3/3 ; suite complète 11/11 |
+
+Bundle (build de production, kB, brut / gzip) :
+| Chunk | Avant | Après |
+|---|---|---|
+| `index` (initial) | 367,21 / 103,74 | 370,44 / 104,88 (+1,1 gzip : boutons, lien, accès base, règle QCM partagée) |
+| `client` (initial) | 142,38 / 45,69 | inchangé |
+| `CardsImport` (à l'ouverture de l'import) | n/a | 10,26 / 4,35 |
+| `read-excel-file` (au choix d'un fichier) | n/a | 61,39 / 17,72 |
+
+L'E2E vérifie : aucune requête `read-excel-file` avant le choix d'un fichier ; aperçu (3 valides, 2 en erreur : doublon ligne 4, zone « 0 » ligne 5) et focus sur son titre ; rien en base avant confirmation ; insertion en `draft` à `max + 1`, `max + 2` par zone, QCM présent seulement sur la ligne qui en a un ; liste rechargée ; l'éditeur réenregistre une question importée sans QCM (`qcm` reste `null`) ; second import du même fichier : « Aucune question à importer », doublons avec la base signalés ; `.csv`, `.xls` et zip abîmé : message clair ; POST refusé (403 RLS simulé) : alerte, aucun succès affiché, 0 ligne en base ; pas de débordement horizontal à 360 px. Données de test marquées `[E2E import]`, supprimées avant chaque test et à la fin. Droits admin posés par `docker exec supabase_db_xam-xam-bey psql` (pile du projet seulement, aucune clé).
+Note poste : `supabase start` bloqué sur le trousseau ; `supabase/.temp/project-ref` écarté le temps du démarrage puis restauré (contenu identique vérifié par `cmp`) ; `supabase stop` en fin de session.
+
+**Hors périmètre / limites.** Lot 3 (décision PM) : pas de lien automatique vers un document source à l'import ; `document_id` reste `null` et la colonne Source reste du texte libre. Le lien se fait à la main dans l'éditeur. Pas de contrôle de longueur des propositions à l'import (les avertissements de qualité restent dans l'éditeur). Pas de vérification axe automatisée (non installée) ; rôles, labels, focus et alertes vérifiés par l'E2E.
+
+### Correctifs après la recette QA (docs/squad/10-qa-import.md)
+
+| ID | Correctif | Preuve |
+|---|---|---|
+| IM-5 | CSP **inchangée**. `xlsxRead.ts` décompresse en synchrone (`unzipSync` de fflate, aucun Worker), puis repasse à read-excel-file une archive « stockée » (niveau 0), que fflate lit toujours sans Worker. Délai global de 30 s (`withTimeout`), avec un message clair. fflate 0.8.3 est déclaré en dépendance directe (la même version que celle de read-excel-file, dédupliquée). | `qa-import-csp` vert sans `test.fail()` ; Vitest : gros classeur de 900 lignes lu, délai |
+| IM-1 | Le contrôle des doublons `norm` est dans `readQcm`, qui reste la règle unique de l'éditeur, de l'import et de la publication. « Publier » dans la liste appelle `publishError`, qui refuse un QCM stocké non conforme et affiche la raison. | 3 `test.fails` IM-1 passés en `test` ; E2E « Publier » refusé, la carte reste en brouillon |
+| IM-6 | `buildChoices` : le QCM rédigé est gardé s'il lui reste au moins un leurre distinct. Sinon les leurres viennent de la zone, puis des autres zones s'il en manque. S'il n'y a aucun leurre, `SELF_CHECK` : la Session affiche « Voir la réponse », puis « Je savais » ou « Je ne savais pas ». Jamais de QCM à une seule proposition. | `qcm.test.ts` (+5 tests) ; E2E scout : 4 propositions en zone 12 |
+| IM-3 | Une ligne vide dans les colonnes reconnues est ignorée : elle ne compte ni en erreur ni dans la limite. | `test.fails` IM-3 passé en `test` ; test des 1 000 lignes avec 5 lignes « inconnues » |
+| IM-4 | `insertImportedCards` lève `UncertainWriteError` sur une réponse perdue, une erreur sans code, ou un nombre de lignes confirmé incohérent. Message affiché : « Résultat incertain : rechargez la liste pour vérifier avant de réimporter. » « Aucune question n'a été importée » ne s'affiche que sur un refus codé de la base. Fermer le panneau recharge la liste. | Vitest (2 tests) ; E2E POST interrompu |
+| IM-7 | Modèle à deux feuilles : « Questions » ne contient que les en-têtes et c'est la seule lue ; « Exemple » n'est jamais importée. | Vitest : première feuille sans ligne, exemple valide |
+| IM-8 | Avant toute décompression, les tailles du répertoire central sont additionnées (parties XML, 20 Mo au plus). Au-delà : message clair. | Vitest `declaredXmlSize`, refus `tooBig` |
+| IM-9 | `<cellStyles>` (Normal) ajouté par le générateur ; le message des colonnes manquantes cite la première feuille. | Modèle régénéré, sortie déterministe |
+| IM-2 | **Accepté (PM)** : moins de 5 admins, risque faible. Deux imports simultanés du même fichier peuvent créer un doublon et une position ex aequo. Le `test.fails` QA reste en place. | n/a |
+
+Vérifications : `npm run typecheck` OK ; `npx vitest run` 31 fichiers, 325 tests verts (5 ignorés, déjà présents avant) ; build avec variables factices OK, `index.html` ne précharge que `index` et `client` ; `npm audit --omit=dev` 0 vulnérabilité ; `npm run e2e` 19/19 (specs QA comprises), 0 ligne de test restante en base.
+Bundle (gzip) : `index` initial 105,43 kB (contre 104,88 : bloc d'auto-évaluation, garde de publication) ; chargés à la demande : `CardsImport` 4,95, read-excel-file 14,15, fflate 12,33.
+QA (constats remplacés) : dans `qaImport.test.ts`, le constat « Paris / paris » et le repli d'une carte seule décrivent maintenant le comportement corrigé. Dans `qa-import-scout.spec.ts`, le constat IM-6 (1 proposition) devient « 4 propositions ».

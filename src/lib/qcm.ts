@@ -12,20 +12,31 @@ export function shortAnswer(a: string): string {
 
 const answerOf = (c: Card): string => c.qcm?.ok || shortAnswer(c.a)
 
+/** Leurres distincts de la bonne réponse et entre eux (sans accents ni casse), au plus QCM_SIZE - 1. */
+function distinctWrong(ok: string, candidates: readonly string[]): string[] {
+  return candidates.reduce<{ seen: ReadonlySet<string>; out: string[] }>((acc, w) => {
+    const k = norm(w)
+    if (!w.trim() || acc.seen.has(k) || acc.out.length >= QCM_SIZE - 1) return acc
+    return { seen: new Set([...acc.seen, k]), out: [...acc.out, w] }
+  }, { seen: new Set([norm(ok)]), out: [] }).out
+}
+
+/** Propositions vides : aucun leurre disponible, la carte se révise en auto-évaluation (IM-6). */
+export const SELF_CHECK: Choices = { options: [], correct: -1 }
+export const isSelfCheck = (ch: Choices): boolean => ch.options.length < 2
+
 /**
- * Propositions d'une carte : le QCM rédigé s'il existe, sinon les réponses d'autres cartes de la même zone.
- * La bonne réponse est toujours présente ; les doublons (sans accents ni casse) sont écartés.
+ * Propositions d'une carte : le QCM rédigé s'il en reste au moins un leurre distinct, sinon les réponses d'autres cartes
+ * de la même zone, complétées par celles d'autres zones s'il en manque (IM-6). Jamais de QCM à une seule proposition :
+ * sans aucun leurre, la carte passe en auto-évaluation (SELF_CHECK).
  */
 export function buildChoices(card: Card, pool: readonly Card[], rand: () => number = Math.random): Choices {
   const ok = answerOf(card)
-  const candidates = card.qcm ? card.qcm.no : shuffle(pool.filter(c => c.id !== card.id && c.th === card.th).map(answerOf), rand)
-  const seen = new Set([norm(ok)])
-  const wrong = candidates.filter(w => {
-    const k = norm(w)
-    if (seen.has(k)) return false
-    seen.add(k)
-    return true
-  }).slice(0, QCM_SIZE - 1)
+  const written = card.qcm ? distinctWrong(ok, card.qcm.no) : []
+  const answers = (sameZone: boolean) => shuffle(pool.filter(c => c.id !== card.id && (c.th === card.th) === sameZone).map(answerOf), rand)
+  const fromZone = written.length ? written : distinctWrong(ok, answers(true))
+  const wrong = written.length || fromZone.length >= QCM_SIZE - 1 ? fromZone : distinctWrong(ok, [...fromZone, ...answers(false)])
+  if (!wrong.length) return SELF_CHECK
   const options = shuffle([ok, ...wrong], rand)
   return { options, correct: options.indexOf(ok) }
 }

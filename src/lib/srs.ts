@@ -16,7 +16,8 @@ export function validCards(list: unknown, th: number): Card[] {
     })
 }
 
-function validQcm(q: unknown): Qcm | null {
+/** Un QCM n'est retenu qu'avec une bonne proposition et au moins une mauvaise non vide, différente de la bonne. */
+export function validQcm(q: unknown): Qcm | null {
   if (!q || typeof q !== 'object') return null
   const { ok, no } = q as { ok?: unknown; no?: unknown }
   if (typeof ok !== 'string' || !ok.trim() || !Array.isArray(no)) return null

@@ -3,6 +3,7 @@ import { useApp } from '../../AppContext'
 import { GRADE_ASK, MAX_LV, XP_SU, ZONES } from '../../lib/constants'
 import { keyPoints, p2 } from '../../lib/format'
 import { combo, gradeCounts, replayCount, suggestedGrade } from '../../lib/session'
+import { isSelfCheck } from '../../lib/qcm'
 import { cardLevel } from '../../lib/srs'
 import type { Card, Choices, Grade } from '../../lib/types'
 import { Md } from '../Md'
@@ -78,6 +79,37 @@ function QcmBlock({ c, ch }: { c: Card; ch: Choices }) {
   )
 }
 
+/**
+ * Auto-évaluation (IM-6) : aucune mauvaise proposition disponible, donc pas de QCM à une seule réponse.
+ * On répond de tête, on découvre la réponse, puis on se note honnêtement.
+ */
+function SelfCheckBlock({ c }: { c: Card }) {
+  const { ui, reveal, answer } = useApp()
+  const s = ui.session!
+  const knewRef = useRef<HTMLButtonElement>(null)
+  useEffect(() => { if (s.rev) knewRef.current?.focus({ preventScroll: true }) }, [s.rev])
+  if (!s.rev) {
+    return (
+      <>
+        <p style={{ margin: 0, fontSize: 15, color: 'var(--ink2)' }}>Pas de propositions pour cette question : répondez de tête, puis vérifiez.</p>
+        <button className="flip" onClick={reveal}>Voir la réponse</button>
+      </>
+    )
+  }
+  return (
+    <>
+      <div className="verso"><i />RÉPONSE<i /></div>
+      <p className="answer" tabIndex={-1}><Md text={c.a} /></p>
+      {c.note && <Vigilance note={c.note} size={14.5} />}
+      {c.src && <span className="src">SOURCE · {c.src}</span>}
+      <div className="row" role="group" aria-label="Notez-vous">
+        <button ref={knewRef} className="ink-btn big" onClick={() => answer(2)}>✓ Je savais</button>
+        <button className="ink-line big" onClick={() => answer(0)}>✕ Je ne savais pas</button>
+      </div>
+    </>
+  )
+}
+
 export function Session() {
   const { ui, rev, mobile, answer, next, quitSession } = useApp()
   const s = ui.session
@@ -85,7 +117,9 @@ export function Session() {
   const questionRef = useRef<HTMLHeadingElement>(null)
   const nextRef = useRef<HTMLButtonElement>(null)
   const index = s?.i
-  const revealedSelf = !!s && s.rev && s.mode !== 'ask'
+  const current = s ? s.queue[Math.min(s.i, s.queue.length - 1)] : undefined
+  const selfCheck = !!current?.ch && isSelfCheck(current.ch)
+  const revealedSelf = !!s && s.rev && s.mode !== 'ask' && !selfCheck
   useEffect(() => { if (index !== undefined) questionRef.current?.focus({ preventScroll: true }) }, [index])
   useEffect(() => { if (revealedSelf) nextRef.current?.focus({ preventScroll: true }) }, [revealedSelf])
   if (!s) return null
@@ -127,7 +161,7 @@ export function Session() {
             </div>
             <h1 ref={questionRef} tabIndex={-1}>{c.q}</h1>
             {ask && <Examiner c={c} kps={kps} checked={checked} />}
-            {!ask && it.ch && <QcmBlock c={c} ch={it.ch} />}
+            {!ask && it.ch && (selfCheck ? <SelfCheckBlock c={c} /> : <QcmBlock c={c} ch={it.ch} />)}
           </div>
         </article>
       </div>
@@ -139,7 +173,7 @@ export function Session() {
           ))}
         </div>
       )}
-      {!ask && s.rev && <button ref={nextRef} className="go" style={{ minHeight: 64 }} onClick={next}><b>{s.i + 1 < s.queue.length ? 'CARTE SUIVANTE →' : 'VOIR LE BILAN →'}</b></button>}
+      {!ask && s.rev && !selfCheck && <button ref={nextRef} className="go" style={{ minHeight: 64 }} onClick={next}><b>{s.i + 1 < s.queue.length ? 'CARTE SUIVANTE →' : 'VOIR LE BILAN →'}</b></button>}
       {!mobile && <p className="kbd-hint">{ask ? '1 FAUX · 2 PARTIEL · 3 JUSTE · ÉCHAP : TERMINER' : '1 À 4 : CHOISIR · ENTRÉE : VALIDER PUIS CONTINUER · ÉCHAP : QUITTER'}</p>}
     </div>
   )

@@ -1,3 +1,4 @@
+import type { CardInsert, ExistingCard } from './cardImport'
 import { checkUpload, newCardId, storagePathFor } from './cardRules'
 import { openPdf } from './pdf'
 import { supabase } from './supabase'
@@ -110,14 +111,15 @@ export async function listCards(zone: number): Promise<CardRow[]> {
   return (data || []) as CardRow[]
 }
 
-export interface CardInput { zone: number; documentId: number | null; src: string; q: string; a: string; note: string; qcm: Qcm; status: CardStatus }
+/** `qcm` : null pour une question sans QCM (l'application compose alors les propositions). */
+export interface CardInput { zone: number; documentId: number | null; src: string; q: string; a: string; note: string; qcm: Qcm | null; status: CardStatus }
 
 /** Crée (id absent) ou met à jour une question ; une nouvelle question va en fin de zone. */
 export async function saveCard(id: string | null, input: CardInput): Promise<CardRow> {
   const db = client()
   const fields = {
     zone: input.zone, document_id: input.documentId, src: input.src.trim(), q: input.q.trim(), a: input.a.trim(), note: input.note.trim(),
-    qcm: { ok: input.qcm.ok.trim(), no: input.qcm.no.map(x => x.trim()) }, status: input.status,
+    qcm: input.qcm ? { ok: input.qcm.ok.trim(), no: input.qcm.no.map(x => x.trim()).filter(Boolean) } : null, status: input.status,
   }
   if (id) {
     const [row] = touchedRows(await db.from('cards').update(fields).eq('id', id).select(CARD_COLUMNS))
@@ -137,4 +139,48 @@ export async function setCardStatus(id: string, status: CardStatus): Promise<voi
 
 export async function deleteCard(id: string): Promise<void> {
   touchedRows(await client().from('cards').delete().eq('id', id).select('id'))
+}
+
+/** Plafond de lignes par réponse de l'API (max_rows de supabase/config.toml) : on pagine au-delà. */
+const API_PAGE = 1000
+
+/** Questions existantes (tous statuts) des zones citées par un import : doublons, fin de zone, identifiants pris. */
+export async function listCardsForImport(zones: readonly number[]): Promise<ExistingCard[]> {
+  if (!zones.length) return []
+  const fetchPage = async (from: number, acc: ExistingCard[]): Promise<ExistingCard[]> => {
+    const { data, error } = await client().from('cards').select('id, zone, q, position').in('zone', [...zones]).order('id').range(from, from + API_PAGE - 1)
+    if (error) throw new Error(adminError(error))
+    const rows = [...acc, ...((data || []) as ExistingCard[])]
+    return (data?.length ?? 0) < API_PAGE ? rows : fetchPage(from + API_PAGE, rows)
+  }
+  return fetchPage(0, [])
+}
+
+export const UNCERTAIN_IMPORT = 'Résultat incertain : rechargez la liste pour vérifier avant de réimporter.'
+
+/** L'écriture a pu aboutir sans que la réponse arrive (réseau, délai, compte incohérent) : ne jamais annoncer « rien importé » (IM-4). */
+export class UncertainWriteError extends Error {}
+
+/**
+ * Insère les questions importées en une seule requête (tout ou rien côté base).
+ * Succès seulement si la base confirme exactement autant de lignes créées que demandé.
+ * Refus certain : la base a répondu avec un code (SQL ou PostgREST), l'instruction est annulée.
+ * Sinon (pas de réponse exploitable) : résultat incertain.
+ */
+export async function insertImportedCards(rows: readonly CardInsert[]): Promise<number> {
+  if (!rows.length) throw new Error('Aucune question à importer.')
+  const res = await client().from('cards').insert([...rows]).select('id').then(r => r, (err: unknown) => {
+    console.error('[xxb] Import : réponse perdue', err)
+    throw new UncertainWriteError(UNCERTAIN_IMPORT)
+  })
+  if (res.error) {
+    if (!res.error.code) {
+      console.error('[xxb] Import : erreur sans code (réseau ou délai)', res.error)
+      throw new UncertainWriteError(UNCERTAIN_IMPORT)
+    }
+    throw new Error(adminError(res.error))
+  }
+  const created = res.data?.length ?? 0
+  if (created !== rows.length) throw new UncertainWriteError(`La base a confirmé ${created} question(s) sur ${rows.length}. ${UNCERTAIN_IMPORT}`)
+  return created
 }
