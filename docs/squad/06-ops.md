@@ -192,4 +192,5 @@ Même discipline que H (une personne, Docker Desktop, CLI Supabase, consigne « 
 |---|---|---|---|
 | 2026-10-13 | Mise en place SMTP Gmail, test 3 adresses extérieures | | 3 e-mails reçus (section A) |
 | 2026-10-13 | Mise en production lot 1 (H1 à H10) | | Sauvegarde faite ; historique réparé pour 20261012191639 (appliquée à la main) ; migration 20261013090000 poussée ; front déployé par deploy:pages ; H8, H9, H10 OK. Mot de passe de la base changé (exposé en conversation). |
+| 2026-10-13 | Mise en production lot 2 (I1 à I8) | | Sauvegarde ; PG 17.11 ; migration 20261014090000 poussée et vérifiée ; front déployé par deploy:pages ; connexion par code OK après correction du modèle Magic Link (et longueur du code) ; I8 OK. Mot de passe de la base changé deux fois (exposé en conversation). |
 | | | | |
