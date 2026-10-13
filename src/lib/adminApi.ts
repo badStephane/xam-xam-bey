@@ -12,13 +12,27 @@ function client() {
   return supabase
 }
 
+/** Message quand la base n'a touché aucune ligne : RLS (compte retiré des admins) ou élément déjà supprimé (BE-5). */
+export const NOTHING_CHANGED = 'Action refusée ou élément introuvable : rien n’a été modifié. Rechargez la page ; si cela persiste, vérifiez que votre compte est toujours administrateur.'
+
 /** Message lisible pour une erreur Supabase (droits refusés, contrainte, réseau). */
 export function adminError(err: unknown): string {
   const e = err as { message?: string; code?: string; statusCode?: string }
   if (e?.code === '42501' || /row-level security|permission denied|Unauthorized/i.test(e?.message || '')) return 'Action refusée : votre compte n’est pas administrateur.'
   if (e?.code === '23505') return 'Cet élément existe déjà.'
   if (e?.code === '23514') return 'Une valeur ne respecte pas les règles (longueur, format ou zone).'
+  if (e?.code === 'PGRST116') return NOTHING_CHANGED
   return e?.message || 'Erreur inconnue. Vérifiez la connexion et réessayez.'
+}
+
+/**
+ * Une mise à jour ou suppression filtrée par la RLS renvoie 0 ligne sans erreur (QA-5) :
+ * on exige au moins une ligne touchée, sinon on lève une erreur visible.
+ */
+function touchedRows<T>(res: { data: T[] | null; error: unknown }): T[] {
+  if (res.error) throw new Error(adminError(res.error))
+  if (!res.data?.length) throw new Error(NOTHING_CHANGED)
+  return res.data
 }
 
 export async function checkIsAdmin(): Promise<boolean> {
@@ -77,15 +91,13 @@ export async function uploadDocument(file: File, meta: DocumentMeta): Promise<Do
 }
 
 export async function updateDocument(id: number, meta: DocumentMeta): Promise<void> {
-  const { error } = await client().from('documents').update({ title: meta.title.trim(), zone: meta.zone, folder: meta.folder.trim(), essential: meta.essential }).eq('id', id)
-  if (error) throw new Error(adminError(error))
+  touchedRows(await client().from('documents').update({ title: meta.title.trim(), zone: meta.zone, folder: meta.folder.trim(), essential: meta.essential }).eq('id', id).select('id'))
 }
 
 /** Retire un document du catalogue puis son fichier ; ses questions restent, sans document lié. */
 export async function deleteDocument(id: number, storagePath: string): Promise<void> {
   const db = client()
-  const { error } = await db.from('documents').delete().eq('id', id)
-  if (error) throw new Error(adminError(error))
+  touchedRows(await db.from('documents').delete().eq('id', id).select('id'))
   const removed = await removeOneFile(storagePath)
   if (!removed) throw new Error(`Le document est retiré du catalogue, mais son fichier (${storagePath}) reste en ligne. Réessayez ou signalez-le à un responsable technique.`)
 }
@@ -108,9 +120,8 @@ export async function saveCard(id: string | null, input: CardInput): Promise<Car
     qcm: { ok: input.qcm.ok.trim(), no: input.qcm.no.map(x => x.trim()) }, status: input.status,
   }
   if (id) {
-    const { data, error } = await db.from('cards').update(fields).eq('id', id).select(CARD_COLUMNS).single()
-    if (error) throw new Error(adminError(error))
-    return data as CardRow
+    const [row] = touchedRows(await db.from('cards').update(fields).eq('id', id).select(CARD_COLUMNS))
+    return row as CardRow
   }
   const last = await db.from('cards').select('position').eq('zone', input.zone).order('position', { ascending: false }).limit(1)
   if (last.error) throw new Error(adminError(last.error))
@@ -121,11 +132,9 @@ export async function saveCard(id: string | null, input: CardInput): Promise<Car
 }
 
 export async function setCardStatus(id: string, status: CardStatus): Promise<void> {
-  const { error } = await client().from('cards').update({ status }).eq('id', id)
-  if (error) throw new Error(adminError(error))
+  touchedRows(await client().from('cards').update({ status }).eq('id', id).select('id'))
 }
 
 export async function deleteCard(id: string): Promise<void> {
-  const { error } = await client().from('cards').delete().eq('id', id)
-  if (error) throw new Error(adminError(error))
+  touchedRows(await client().from('cards').delete().eq('id', id).select('id'))
 }

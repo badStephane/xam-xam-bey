@@ -105,3 +105,144 @@ Audit visé : points 2, 5, 18, 25. Revues : BE-1, BE-2, BE-6, BE-7 (partiel), BE
 - **L1-5** : `isAccountSwitch(owner, userId)` est testée. Sur `SIGNED_IN` d'un autre compte, le propriétaire courant est vidé et l'enregistrement en attente abandonné (`dropPendingSave`, déjà utilisé par `resetUser`) avant `loadFor`. Les notes de l'ancien compte restent dans sa copie locale.
 - Vérifications : typecheck OK ; `npm test` : 18 fichiers verts, 1 ignoré (parité SQL) ; 137 tests verts, 6 ignorés ; `progressMerge` et `progressSync` à 100 % en lignes et en branches ; build avec les valeurs factices vert.
 - Reporté au lot 2 (accepté par le PM) : tests du hook avec happy-dom, E2E.
+
+## Lot 2 > SRE
+
+Livré : `.github/workflows/ci.yml`, `.github/workflows/sonde.yml`, `scripts/deploy-pages.sh` (nouveau), `package.json` (scripts), `README.md`, `docs/squad/06-ops.md`. Supprimés : `netlify.toml`, `.netlify/state.json`, `wrangler.jsonc`.
+
+- **Actions** (versions lues le 2026-10-13 par `gh api repos/<owner>/<repo>/releases/latest`, `runs.using` lu dans `action.yml` au tag) :
+  | Action | Avant | Après | Release | Runtime |
+  |---|---|---|---|---|
+  | actions/checkout | v4 | v7 | v7.0.1 | node24 |
+  | actions/setup-node | v4 | v7 | v7.1.0 | node24 |
+  | actions/setup-python | v5 | v7 | v7.0.0 | node24 |
+  | supabase/setup-cli | v1 | v3 | v3.0.1 | composite (Node du job, sinon setup-node 24 interne) |
+  Notes des majeures relues : rien d'utilisé par nos workflows n'est retiré (`node-version-file`, `cache: npm`, `python-version`, `version`).
+- **setup-cli v3** installe la CLI depuis npm avec le Node déjà présent : dans le job `db`, `setup-node` passe donc avant `setup-cli`. CLI gardée en **2.109.1** (version des postes ; `npm view supabase@2.109.1` la trouve). La 2.120.0 existe : à monter en même temps que les postes, hors lot.
+- **Runners** : `runs-on: ubuntu-24.04` sur les 3 jobs (`app`, `db`, `sonde`), plus de bascule silencieuse vers Ubuntu 26 le 2026-10-19.
+- **Cible unique** : `wrangler.jsonc` **supprimé** plutôt que converti. Le projet Pages est en envoi direct, statique, sans Functions ni bindings : `pages deploy dist --project-name` porte déjà tout, et `compatibility_date` ne sert qu'aux Functions. Un fichier Pages deviendrait aussi la source de vérité des réglages du projet, ce qui fait une chose de plus à maintenir. Script `deploy:cloudflare` (Workers) retiré.
+- **Garde-fou** : `deploy:pages` = `sh scripts/deploy-pages.sh`. Il refuse de partir hors de `main`, avec des modifications non commitées (fichiers suivis ou non ignorés), si `main` diffère de `origin/main` ou si `.env.local` est absent. Ensuite il lance `npm run check` puis `wrangler@4 pages deploy`. Le dépôt propre fait disparaître l'avertissement « uncommitted changes ».
+- **06-ops** : H1 mise à jour (cible choisie) ; §B réécrite (envoi direct, pourquoi on ne relie pas Git, comment migrer) ; C1 retour arrière Pages seul ; A4 à 20/h ; A5 redirections optionnelles (localhost, aperçus) ; A7 modèle d'e-mail `{{ .Token }}` (Magic Link **et** Confirm signup), avec un emplacement pour le texte de Front A ; §I mise en production du lot 2 (I0 à I9). 194 lignes.
+- **Vérifications faites** :
+  - YAML des 2 workflows parsé (Ruby Psych) : jobs, `runs-on` et `uses` relus. actionlint est absent.
+  - `package.json` reste du JSON valide. `sh -n` passe sur le script.
+  - Garde-fou testé dans un dépôt jetable (remote nu local, `npm` et `npx` remplacés par des leurres) : refus avec code 1 pour autre branche, fichier non suivi, fichier modifié, commit non poussé et `.env.local` absent ; le cas nominal appelle `npm run check` puis `npx wrangler@4 pages deploy dist --project-name xam-xam-bey --branch main`.
+- **Non exécutés** : les workflows sur GitHub (preuve attendue = CI verte de la PR, sans avertissement Node 20) ; aucun déploiement ; aucun réglage Supabase (A4, A7 et I sont des actions utilisateur).
+- **Tour 2 (après QA)** : E2E Playwright ajouté au job `db` (nommé « db + e2e », 20 min) plutôt qu'à un job à part : une seule `supabase start` et un seul `npm ci` par exécution (dépôt privé, minutes gratuites facturées par job). `inbucket` (Mailpit) n'est plus exclu ; `npx playwright install --with-deps chromium` ; `npm run e2e -- --reporter=list,html` ; en échec, `actions/upload-artifact@v7` (v7.0.2, node24) envoie `playwright-report/` et `test-results/`, 7 jours. Vérifié : YAML parsé (Ruby Psych), `--reporter=list,html` accepté (`--list`, 8 tests), modèles locaux identiques au texte ci-dessous (`diff`), pile locale en marche chargée avec ces modèles (sujets et `OTP_LENGTH=6` lus dans le conteneur auth). `supabase/config.toml` et `supabase/templates/*.html` doivent être commités ensemble. 06-ops A7 : faisable avant le lot 2, I0 n'en dépend plus.
+
+## Lot 2 > Front B
+
+Hypothèse : D2 vaut aussi pour « Hésitant » (hors calendrier, niveau et échéance ne bougent pas). D2 ne parle que de « Su », mais sans cette règle un « Hésitant » hors échéance repousserait l'échéance (jusqu'à +60 j).
+
+Fichiers : `src/lib/{srs,practice,progressMerge,adminApi,adminFlow}.ts`, nouveaux `src/lib/cardEditor.ts` et `src/lib/draftGuard.ts`, `src/components/admin/CardsAdmin.tsx`, `src/components/revision/Session.tsx`, tests associés, `src/lib/progressParity.test.ts`.
+
+Méthode : tests écrits d'abord, puis lancés sur l'ancien code : **19 échecs** (QA-3, QA-4, QA-9, L1-13, BE-5, FE-4). Ils passent tous après correction.
+
+| Point | Correction | Preuve |
+|---|---|---|
+| 17 / D2 | `applyGrade` : carte nouvelle ou due (`échéance ≤ aujourd'hui`) : règle habituelle. Sinon : vues, réussites et XP comptent, niveau et échéance ne bougent pas. « Raté » remet toujours au niveau 0, J+1. Signature inchangée, donc `AppContext` et `useRevision` restent tels quels. | `srs.test.ts` : « 5 Su le même jour ne donnent qu'un seul niveau » (`[1, T+1, 5, 5, T]`, 50 XP) ; hors calendrier ; Raté hors calendrier ; carte due ; enchaînement à chaque échéance J+1, 3, 7, 21, 60. |
+| D3 | `isGap = vues > réussites && niveau ≤ GAP_MAX_LEVEL`. `GAP_RATE` est retiré (il ne sert plus). Le taux sert seulement au tri. | `practice.test.ts` : « une carte réussie du premier coup n'est pas une lacune » (`[1,_,1,1,_]`) ; niveau 3 à 40 % : pas une lacune. |
+| QA-9 | `readProgress` délègue à `parseStoredProgress` (progressMerge), sans dupliquer la validation. | `srs.test.ts` : « entrée corrompue ignorée » (`[3,T,null,null,T]` disparaît, la note suivante repart de `[1,T+1,1,1,T]`) ; séances invalides filtrées ; `null` donne une progression vide. |
+| L1-13 | `compareUtf8` (points de code, identique à l'ordre des octets UTF-8, donc à `collate "C"`) remplace `cmpText` pour `k`, `l` et la clé JSON de départage. | `progressMerge.test.ts` : emoji U+1F600 > U+FF01, et ordre des séances fusionnées. |
+| Parité | Le test compare désormais **l'ordre complet** des séances sur **tous** les cas (avant : 2 cas fixes). Nouveau cas fixe emoji/U+FF01 ; les libellés aléatoires incluent ces 2 caractères. Le commentaire `.fails` (anciennes lignes 108 à 110) est remplacé. | Base locale avec les migrations jusqu'à `20261014090000_lot2` : **5/5 verts, 307 cas**. Mutant (retour à `<` UTF-16) : le test « ordre complet » échoue sur le cas emoji. |
+| 11 / FE-4 | `createRequestCounter` + `runLatest` (`adminFlow.ts`) : une réponse, ou une erreur, de zone dépassée est ignorée. Au démontage, `invalidate()`. La liste est vidée au changement de zone. | `adminFlow.test.ts` : « une réponse de zone dépassée est ignorée » (zone 2 répond avant zone 1, seule zone 2 s'affiche) ; erreur dépassée ignorée ; démontage. |
+| 11 / FE-4 | `EditorState.zone` vient de `r.zone` (`editorFromRow`), et `saveCard` envoie `st.zone`. Le titre et la liste des documents de l'éditeur suivent aussi la zone de la ligne. | `cardEditor.test.ts` : « la zone vient de la ligne éditée ». |
+| 11 / UX-5 | Changement de zone ou « Annuler » avec une saisie modifiée : encart `role="alertdialog"` « Abandonner cette question ? Les modifications seront perdues. », boutons [Continuer l'écriture] (focus) et [Abandonner]. Sans modification, on part sans question. Fermeture de l'onglet du navigateur : `beforeunload`. Changement d'onglet Admin : garde `draftGuard.confirmLeaveDraft()`, à brancher par Front A (voir ci-dessous). | `cardEditor.test.ts` (`isEditorDirty`), `draftGuard.test.ts`. Rendu non testé : pas de tests de composants (QA, L1-8). |
+| 11 / BE-5, QA-5 | `.select('id')` sur `updateDocument`, `deleteDocument`, `setCardStatus` et `deleteCard`. `saveCard` en mise à jour : `.select(colonnes)` sans `.single()`. Si 0 ligne est touchée, erreur « Action refusée ou élément introuvable : rien n'a été modifié… », affichée par les `role="alert"` existants. `PGRST116` reçoit le même message. `deleteDocument` ne touche plus au fichier si la ligne n'a pas été retirée. | `adminApi.test.ts` : 4 tests « 0 ligne touchée lève une erreur », un par fonction. |
+| FE-12 | `Session.tsx` : `useRef` et `useEffect` sont appelés avant `if (!s) return null`. Leurs dépendances sont dérivées de `s?.i` et de `s.rev && mode !== 'ask'`. | `typecheck` ; lecture. |
+
+Vérifications (2026-10-13, dépôt partagé en cours de modification) :
+- `npx vitest run` : **24 fichiers verts, 1 ignoré ; 193 tests verts**. Couverture : `progressMerge`, `adminFlow`, `cardEditor`, `session` à 100 % ; `srs` et `practice` à 100 % des lignes ; `adminApi` à 80,6 %.
+- `npm run typecheck` et `npm run build` : 1 erreur restante, dans `src/lib/fetchTimeout.test.ts:25` (Front A, en cours). Aucune erreur dans les fichiers Front B. Sans `tsc`, `vite build` (variables factices, sortie hors dépôt) est vert.
+
+Hors périmètre : la confirmation au changement d'onglet Admin et dans la barre du bas demande un appel dans `Admin.tsx` et `App.tsx` (Front A) ; les puces de zone ne sont pas désactivées pendant l'édition (la confirmation suffit).
+
+## Lot 2 > Front A
+
+Hypothèses : le projet Supabase envoie un code à 6 chiffres (`otp_length = 6`, réglage Back du point 19) ; aucun essai sur un vrai Android ni en navigateur dans cet environnement (preuves par tests unitaires, typecheck et build).
+
+| Point | Fait | Preuve |
+|---|---|---|
+| 6 / D4 | Écran « Lien envoyé » : champ « Code à 6 chiffres » (`inputmode=numeric`, `autocomplete=one-time-code`) qui appelle `verifyOtp({ email, token, type: 'email' })` ; « Renvoyer dans N s » puis « Renvoyer le lien » ; « Modifier l'adresse » (adresse gardée, focus dessus) ; erreurs traduites (`role=alert`), renvoi annoncé (`role=status`). | `src/lib/signin.test.ts` (8 tests : minuteur 60 s, code, messages 429/réseau/code expiré) |
+| 7 | `go()` pousse `#écran` (`#apercu/12`) ; `popstate` ramène l'écran ; RETOUR vers l'écran précédent = `history.back()` (pile propre) ; sortie de séance = entrée remplacée ; retour en pleine séance = fin de séance comme QUITTER (bilan en mode « faire réciter »), jamais hors du site ; jetons du lien magique jamais effacés par le site. Admin : retour refusé si brouillon non confirmé (`confirmLeaveDraft`), entrée remise. | `src/lib/navHistory.test.ts` (13 tests) ; `src/hooks/useNavHistory.ts` |
+| 12 | Clés `xxb.catalog.v1`, `xxb.seen.v1`, `xxb.theme.v1` validées (liste entière refusée si une ligne est invalide, réponse réseau comprise) ; anciennes clés relues une fois puis effacées ; repli sur le catalogue intégré. `ErrorBoundary` racine : « Cette page n'a pas pu s'afficher » + « Recharger » qui purge les caches `xxb.*` sauf `xxb.progress.*`. | `src/lib/cache.test.ts` (8 tests, dont le catalogue intégré valide) |
+| 13 | `withTimeout` (15 s, repli sans `AbortSignal.timeout`, signal de l'appelant conservé, stockage exclu pour les envois de 50 Mo) dans le `fetch` du client. `rev.retry()` marche aussi pendant le chargement (jeton de chargement abandonné). `LoadingGate` : « Réessayer » après 6 s. | `src/lib/fetchTimeout.test.ts` (5 tests) |
+| 14 / D5 | Bandeau : « Le réseau est coupé. Les documents s'ouvriront dès son retour. Téléchargez à l'avance ceux dont vous aurez besoin. » Plus de pièces grisées selon « consultée » (FE-6). Écran indisponible : « La liste de la bibliothèque reste consultable. » | relecture `Library.tsx`, `DocCard.tsx`, `Gate.tsx` |
+| 15 | Sous 760 px, connecté : bouton « Mon compte » (44 px, `aria-expanded`) à la place du compteur ; panneau avec l'adresse en clair, le compteur, « Espace admin » (admins) et « Se déconnecter ». | `Shell.tsx` ; largeur de l'en-tête à 360 px : 36 + 125 + 44 + 44 + 3 × 8 ≈ 273 px sur 328 |
+| 16 | `--focus` : encre dans `.sheet`, `.qcard`, `.gate-card`, `.month.cur` ; papier sur `.panel-h`. Liens des fiches en `--green` soulignés ; aperçu en échec : bouton-lien « Ouvrir le PDF ». | Ratios WCAG calculés ci-dessous |
+| UX-9 | Admin : « Vérification de vos droits… » tant que la session ou `is_admin` sont inconnus ; refus avec « Retour à la bibliothèque » ; Réseau absent : écran indisponible. Onglets Documents/Questions protégés par `confirmLeaveDraft`. | `useAdminCheck` dans `AppContext.tsx` |
+
+Ratios (formule WCAG 2.x) : anneau ambre sur crème sombre 1,70:1 (avant) ; encre sur crème sombre **16,19:1**, sur crème clair **17,21:1** ; papier sur encre **17,21:1**. Lien acide sur crème 1,15:1 (avant) ; vert sur crème sombre **7,20:1**, sur crème clair **7,65:1** ; ambre clair sur crème clair 6,12:1 (déjà conforme).
+
+Commandes (2026-10-13) : `npm run typecheck` code 0 ; `npx vitest run` 24 fichiers verts, 1 ignoré, 194 tests verts (34 nouveaux) ; `VITE_SUPABASE_URL=https://ci.invalid VITE_SUPABASE_ANON_KEY=ci-anon-key npm run build` vert, `index` 103,6 Ko gzip (+0,4 Ko).
+
+**Tour 2 (QA L2-1, L2-2)** : écran « Lien envoyé » sans la promesse sur l'autre navigateur (« saisissez ici le code, ou touchez le lien ; si le lien a été touché, il a utilisé le code : demandez-en un nouveau avec Renvoyer »), échec du code + « Ce code a peut-être déjà servi par le lien : demandez-en un nouveau. » ; `onPopState` efface les jetons (`access_token`, `refresh_token`, `error_description`) par `replaceState` puis `history.back()` saute l'entrée morte (`hasAuthFragment`) ; `test.fail` retiré de `e2e/magic-link.spec.ts` ; `src/hooks` dans `coverage.include` et `src/hooks/useNavHistory.test.ts` (8 tests, happy-dom, useNavHistory 100 % des lignes). Preuves : typecheck 0 ; vitest 227 verts, 5 ignorés ; build factice vert, `index` 103,7 Ko gzip ; E2E local 8/8 (un échec isolé de `signin-code` « adresse neuve » à la première passe, juste après `supabase start`, vert 3 fois seul puis 8/8 en suite complète).
+
+### Action utilisateur : modèles d'e-mail Supabase (Authentication > Email Templates)
+
+Une adresse nouvelle reçoit « Confirm signup », une adresse connue « Magic Link ». Les deux portent un code accepté par `verifyOtp` de type `email` (GoTrue vérifie le jeton de confirmation comme celui du lien). Coller les deux modèles.
+
+**Magic Link.** Sujet : `Votre connexion à Xam Xam Bëy : code {{ .Token }}`. Corps :
+```html
+<h2>Connexion à Xam Xam Bëy</h2>
+<p>Votre code de connexion : <strong style="font-size:24px;letter-spacing:4px">{{ .Token }}</strong></p>
+<p>Saisissez ce code dans l'application, <strong>ou</strong> touchez le lien ci-dessous. Pas les deux : le lien utilise le code.</p>
+<p><a href="{{ .ConfirmationURL }}">Me connecter à la révision</a></p>
+<p>Le code et le lien expirent dans une heure. Si vous n'avez rien demandé, ignorez cet e-mail.</p>
+```
+**Confirm signup.** Sujet : `Bienvenue sur Xam Xam Bëy : code {{ .Token }}`. Corps : identique, avec le titre `<h2>Bienvenue sur Xam Xam Bëy</h2>` et le lien `<a href="{{ .ConfirmationURL }}">Confirmer mon adresse et me connecter</a>`.
+
+### Hors périmètre et écarts
+- `RevisionArea.tsx` (Front B) affiche encore son propre `<p>` de chargement : remplacer ce `<p>` par `<LoadingGate />` (export de `Gate.tsx`) pour que « Réessayer » apparaisse pendant le chargement. Sans ce branchement, l'expiration à 15 s mène quand même à l'écran indisponible et à son bouton.
+- ADMIN quitte l'en-tête mobile pour le panneau compte (place à 360 px).
+- Non faits : titre de page et focus du `h1` à chaque écran (UX-13), confirmation en ligne avant de quitter une séance (UX-14, `Session.tsx`), test du hook d'historique avec happy-dom (QA, L1-8).
+- `public/_headers` : commentaire Netlify retiré (demande de l'orchestrateur).
+
+## Lot 2 > Back
+
+Livré : `supabase/migrations/20261014090000_lot2.sql` (97 lignes), `supabase/tests/04_lot2_test.sql` (26 tests), `supabase/tests/01_rls_test.sql` (1 ligne devenue test, plan 29 → 30), `supabase/config.toml`, `scripts/content_sql.py`, `scripts/library_sql.py` (docstring), `docs/squad/decisions.md` (ADR-1).
+
+- **D6** : `save_progress` en `security definer`, `search_path = ''`, ligne ciblée par `auth.uid()` seul, `42501` si nul. `insert`, `update`, `delete` retirés à `authenticated` sur `progress` et politiques d'écriture supprimées (double verrou) ; `select` et sa politique gardés. Le front du lot 1 en ligne n'écrit que par la RPC : compatible.
+- **Durcissement constaté en local** : `truncate` (ignore la RLS), `references`, `trigger` étaient accordés à `anon` et `authenticated` sur toutes les tables de `public`. Retirés. PostgREST ne les expose pas : risque faible, à vérifier en production.
+- **L2-3 (tour 2)** : `maintain` (Postgres 17 : VACUUM, ANALYZE, LOCK TABLE) retiré aussi, dans un bloc `do` qui teste `server_version_num >= 170000` (sans erreur avant 17). Tables futures : `alter default privileges for role postgres in schema public revoke truncate, references, trigger` (et `maintain` si 17) `on tables from anon, authenticated`. `postgres` est le bon rôle : il possède les 5 tables de `public` (lu dans `pg_class`) et c'est lui qui exécute `db reset` et `db push`. Bloc rejoué deux fois de suite : aucune erreur, mêmes ACL (idempotent). Hors périmètre : les privilèges par défaut de `supabase_admin` (tables créées par la plateforme, pas par nos migrations) et ceux de `service_role` sont inchangés. Production : le CLI a mis en cache `17.11.0.003` (`supabase/.temp/postgres-version`), à confirmer par `select version()` (06-ops, I4b).
+- **L1-12** : après la règle des 200 dernières, la RPC retire les plus anciennes tant que `pg_column_size(sessions) > 65536`. Plus de `23514`. Preuve du rouge : la même migration sans la boucle lève `23514 progress_sessions_size` sur le scénario du test.
+- **D1** : cartes en `on conflict (id) do nothing` ; en plus, une carte dont l'id figure déjà dans une migration est ignorée (sinon une carte supprimée par l'admin reviendrait publiée). Vérifié : les 665 cartes de `data/seed/` sont déjà publiées, 0 regénérée ; une carte ajoutée `t1-999` sort seule, position 61 ; dans une transaction annulée, `t1-01` corrigée par l'admin reste corrigée et `t1-999` est insérée. `library_sql.py` était déjà en `do nothing` (documents, transfert des cartes).
+- **Point 19** : `site_url`, redirections sans joker de domaine, confirmation active, OTP 6. Lu dans le conteneur : `GOTRUE_SITE_URL=https://xam-xam-bey.pages.dev`, `GOTRUE_URI_ALLOW_LIST=https://xam-xam-bey.pages.dev/**,http://localhost:5173/**`, `GOTRUE_MAILER_AUTOCONFIRM=false`, `GOTRUE_MAILER_OTP_LENGTH=6`. **Mot de passe non désactivable** : la CLI 2.109.1 refuse la clé (`'auth.email' has invalid keys: enable_password`). Preuve que la confirmation suffit pour BE-7 : `signup` par mot de passe en local → 200, `email_confirmed_at` nul, connexion → `email_not_confirmed`.
+
+### Commandes et résultats (2026-10-13, pile locale 553xx)
+```
+supabase db reset --local      -> Applying migration 20261014090000_lot2.sql... Finished
+supabase test db               -> 01 ok ; 02 ok ; 03 ok ; 04 ok ; Files=4, Tests=89, Result: PASS (66 + 1 + 22)
+tour 2 (L2-3), même pile      -> 04 avant correctif : 3/26 en échec (tables existantes : m ; défauts et table sonde : D x t m)
+                                 après db reset --local : Files=4, Tests=93, Result: PASS (4 de plus dans 04) ; parité 5 passed (5)
+parité (XXB_PARITY_DB_URL=...55322) -> progressParity 5 passed (5)   (fichier modifié par Front B pendant le lot)
+retour arrière (transaction annulée) -> rpc 5 ; update direct 7 ; prosecdef f ; après rollback : prosecdef t, 1 politique
+```
+Note poste : `supabase start` restait bloqué sur `security find-generic-password` (trousseau macOS, projet lié). Contourné en écartant `supabase/.temp/project-ref` le temps de la commande, puis restauré.
+
+### Parité SQL / TS (pour Front B, `progressMerge.ts` inchangé)
+La RPC peut renvoyer **moins** de séances que `mergeProgress` : seulement si l'union des 200 dernières dépasse 64 Kio (taille binaire `jsonb`, non calculable exactement en TS). Avec les libellés de l'application (200 séances ≈ 18 Ko), jamais atteint ; le test de parité n'y entre pas. Effet résiduel : une copie locale gonflée (compte qui forge ses appels) renvoie plus de 64 Kio et reçoit `22023`, refus définitif déjà traité. Aucune action requise ; pour fermer ce cas, `saveArgs` coupe aussi par taille.
+
+### Retour arrière (SQL, en nouvelle migration, jamais dans l'éditeur)
+```sql
+alter function public.save_progress(jsonb, jsonb, integer) security invoker;
+grant insert, update on public.progress to authenticated;
+create policy "Création de sa progression" on public.progress for insert to authenticated
+  with check ((select auth.uid()) = user_id);
+create policy "Mise à jour de sa progression" on public.progress for update to authenticated
+  using ((select auth.uid()) = user_id) with check ((select auth.uid()) = user_id);
+```
+La coupe L1-12 et le retrait de `truncate`, `references`, `trigger`, `maintain` (tables existantes et privilèges par défaut) restent : ils ne font que réparer. S'il fallait quand même rendre ces droits (à éviter), en nouvelle migration :
+```sql
+grant truncate, references, trigger on all tables in schema public to anon, authenticated;
+alter default privileges for role postgres in schema public grant truncate, references, trigger on tables to anon, authenticated;
+-- Postgres 17 seulement :
+grant maintain on all tables in schema public to anon, authenticated;
+alter default privileges for role postgres in schema public grant maintain on tables to anon, authenticated;
+```
+
+### Réglages du tableau de bord à reporter (config.toml ne s'applique pas à la production)
+Authentication, libellés à confirmer dans l'interface :
+1. URL Configuration : Site URL `https://xam-xam-bey.pages.dev` ; Redirect URLs `https://xam-xam-bey.pages.dev/**` (et `http://localhost:5173/**` seulement pour tester en local contre la prod). Aucun joker de domaine.
+2. Sign In / Providers > Email : Confirm email **activé** ; Secure email change **activé** ; Email OTP length **6** ; OTP expiry 3600 s.
+3. Pas de réglage « mot de passe seul » : laisser Confirm email activé, c'est lui qui protège `is_admin()`.

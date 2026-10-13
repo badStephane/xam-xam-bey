@@ -93,7 +93,7 @@ export function Library() {
         {[[stats.count, 'PIÈCES'], [ZONES.length, 'ZONES'], [stats.ess, 'ESSENTIELS'], [stats.mo, 'MO']].map(([v, l]) => <div key={l}><dd>{v}</dd><dt>{l}</dt></div>)}
       </dl>
       {catalogStatus === 'cached' && !offline && <div className="banner" role="status"><b>CATALOGUE HORS LIGNE</b><span style={{ fontSize: 14 }}>La liste affichée est la dernière enregistrée sur cet appareil ; les nouveaux documents apparaîtront au retour de la connexion.</span></div>}
-      {offline && <div className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: 14 }}>Les pièces déjà consultées restent lisibles. Les autres s’ouvriront au retour de la connexion.</span></div>}
+      {offline && <div className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: 14 }}>Le réseau est coupé. Les documents s’ouvriront dès son retour. Téléchargez à l’avance ceux dont vous aurez besoin.</span></div>}
       <ZoneRoute counts={zoneCounts(docs, filters)} />
       <div className="lib-cols">
         <div className="lib-main">

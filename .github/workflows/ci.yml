@@ -1,6 +1,7 @@
 # CI : bloque chaque push et chaque pull request sur main si les types, les tests, le build,
-# le contenu de révision ou les tests de base (RLS) échouent. Ne déploie rien :
-# le déploiement reste assuré par l'intégration Git de Cloudflare Pages (voir docs/squad/06-ops.md).
+# le contenu de révision, les tests de base (RLS) ou les E2E Playwright échouent. Ne déploie rien : la production
+# (Cloudflare Pages, envoi direct) part de `npm run deploy:pages` depuis un main propre (docs/squad/06-ops.md §B).
+# Versions des actions vérifiées le 2026-10-13 (releases GitHub, runs.using de action.yml) : toutes tournent sous Node 24.
 name: ci
 
 on:
@@ -18,11 +19,11 @@ concurrency:
 
 jobs:
   app:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .node-version
           cache: npm
@@ -36,34 +37,55 @@ jobs:
           VITE_SUPABASE_ANON_KEY: ci-anon-key
       - name: dist complet
         run: test -f dist/index.html && test -f dist/_headers
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: contenu de révision (data/seed)
         run: python3 scripts/check_content.py
 
+  # Base ET E2E dans un seul job : une seule `supabase start` (téléchargement des images, ~2 min) et un seul
+  # `npm ci` par exécution. Dépôt privé en offre gratuite : chaque job est facturé à la minute entamée.
   db:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    name: db + e2e
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: supabase/setup-cli@v1
-        with:
-          version: 2.109.1
-      - name: base locale (services utiles aux tests seulement)
-        run: supabase start -x analytics,edge-runtime,functions,imgproxy,inbucket,meta,realtime,studio,vector
-      - name: tests pgTAP (RLS, fonctions)
-        run: supabase test db
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      # Node d'abord : setup-cli v3 installe la CLI depuis npm avec le Node déjà présent dans le job.
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .node-version
           cache: npm
+      - uses: supabase/setup-cli@v3
+        with:
+          version: 2.109.1 # version locale de l'équipe ; la monter en même temps que les postes
+      # inbucket = Mailpit (port 55324) : l'E2E y lit le code à 6 chiffres. Modèles d'e-mail : supabase/templates/.
+      - name: base locale (services utiles aux tests seulement)
+        run: supabase start -x analytics,edge-runtime,functions,imgproxy,meta,realtime,studio,vector
+      - name: tests pgTAP (RLS, fonctions)
+        run: supabase test db
       - run: npm ci
       - name: test de parité save_progress / mergeProgress (base locale, psql du runner)
         run: psql --version && npx vitest run src/lib/progressParity.test.ts
         env:
           # base locale jetable de `supabase start` (port [db] de supabase/config.toml), pas un secret
           XXB_PARITY_DB_URL: postgresql://postgres:postgres@127.0.0.1:55322/postgres
+      - name: navigateur Playwright (Chromium et ses dépendances système)
+        run: npx playwright install --with-deps chromium
+      - name: E2E (vite local sur la pile locale, jamais la production)
+        run: npm run e2e -- --reporter=list,html
+        env:
+          PLAYWRIGHT_HTML_OPEN: never
+      - name: rapport Playwright (en cas d'échec)
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
       - name: arrêt
         if: always()
         run: supabase stop --no-backup

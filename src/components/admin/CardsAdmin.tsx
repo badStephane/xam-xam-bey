@@ -1,28 +1,25 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useApp } from '../../AppContext'
 import { ZONES } from '../../lib/constants'
 import { adminError, deleteCard, listCards, saveCard, setCardStatus } from '../../lib/adminApi'
-import { checkCard, WRONG_COUNT, type CardDraft } from '../../lib/cardRules'
+import { createRequestCounter, runLatest } from '../../lib/adminFlow'
+import { editorFromRow, isEditorDirty, newEditor, type EditorState } from '../../lib/cardEditor'
+import { checkCard, type CardDraft } from '../../lib/cardRules'
+import { DISCARD_QUESTION, markUnsavedDraft } from '../../lib/draftGuard'
 import { p2, zoneColor } from '../../lib/format'
 import type { CardRow, CardStatus } from '../../lib/types'
 
-interface EditorState { id: string | null; documentId: number | null; src: string; draft: CardDraft; status: CardStatus }
+const errorText = (e: unknown): string => (e instanceof Error ? e.message : adminError(e))
 
-const EMPTY_DRAFT: CardDraft = { q: '', a: '', ok: '', no: Array(WRONG_COUNT).fill(''), note: '' }
-
-function fromRow(r: CardRow): EditorState {
-  const qcm = (r.qcm || {}) as { ok?: string; no?: string[] }
-  const no = Array.from({ length: WRONG_COUNT }, (_, i) => qcm.no?.[i] || '')
-  return { id: r.id, documentId: r.document_id, src: r.src, status: r.status, draft: { q: r.q, a: r.a, ok: qcm.ok || '', no, note: r.note } }
-}
-
-function CardEditor({ zone, initial, onSaved, onCancel }: { zone: number; initial: EditorState; onSaved(): void; onCancel(): void }) {
+function CardEditor({ initial, onSaved, onCancel, onDirtyChange }: { initial: EditorState; onSaved(): void; onCancel(): void; onDirtyChange(dirty: boolean): void }) {
   const { docs } = useApp()
   const [st, setSt] = useState<EditorState>(initial)
   const [msg, setMsg] = useState<{ error: boolean; text: string } | null>(null)
   const [busy, setBusy] = useState(false)
+  const zone = st.zone
   const zoneDocs = docs.filter(d => d.th === zone)
   const check = checkCard(st.draft)
+  useEffect(() => { onDirtyChange(isEditorDirty(initial, st)) }, [initial, st, onDirtyChange])
   const set = (patch: Partial<CardDraft>) => setSt(s => ({ ...s, draft: { ...s.draft, ...patch } }))
   const pickDoc = (id: number | null) => {
     const d = docs.find(x => x.id === id)
@@ -35,7 +32,7 @@ function CardEditor({ zone, initial, onSaved, onCancel }: { zone: number; initia
       await saveCard(st.id, { zone, documentId: st.documentId, src: st.src, q: st.draft.q, a: st.draft.a, note: st.draft.note, qcm: { ok: st.draft.ok, no: st.draft.no }, status })
       onSaved()
     } catch (err) {
-      setMsg({ error: true, text: err instanceof Error ? err.message : adminError(err) })
+      setMsg({ error: true, text: errorText(err) })
     } finally {
       setBusy(false)
     }
@@ -79,7 +76,7 @@ function CardItem({ r, docTitle, onEdit, onChanged }: { r: CardRow; docTitle: st
   const [confirmDel, setConfirmDel] = useState(false)
   const [err, setErr] = useState<string | null>(null)
   const act = async (task: () => Promise<void>) => {
-    try { await task(); onChanged() } catch (e) { setErr(e instanceof Error ? e.message : adminError(e)) }
+    try { setErr(null); await task(); onChanged() } catch (e) { setErr(errorText(e)) }
   }
   const draft = r.status === 'draft'
   return (
@@ -99,40 +96,93 @@ function CardItem({ r, docTitle, onEdit, onChanged }: { r: CardRow; docTitle: st
   )
 }
 
+/** Confirmation avant d'abandonner un brouillon modifié (UX-5). */
+function DiscardConfirm({ onKeep, onDiscard }: { onKeep(): void; onDiscard(): void }) {
+  const keepRef = useRef<HTMLButtonElement>(null)
+  useEffect(() => { keepRef.current?.focus() }, [])
+  return (
+    <div className="note-box col g8" role="alertdialog" aria-labelledby="discard-q">
+      <p id="discard-q" style={{ margin: 0, fontWeight: 700 }}>{DISCARD_QUESTION}</p>
+      <div className="row">
+        <button ref={keepRef} className="ink-btn" onClick={onKeep}>Continuer l’écriture</button>
+        <button className="ink-line" style={{ color: 'var(--stamp)', borderColor: 'var(--stamp)' }} onClick={onDiscard}>Abandonner</button>
+      </div>
+    </div>
+  )
+}
+
+/** Brouillon modifié : signalé à la navigation (draftGuard) et protégé contre la fermeture de l'onglet. */
+function useUnsavedDraft(dirty: boolean): void {
+  useEffect(() => {
+    markUnsavedDraft(dirty)
+    if (!dirty) return undefined
+    const warn = (e: BeforeUnloadEvent) => { e.preventDefault() }
+    window.addEventListener('beforeunload', warn)
+    return () => window.removeEventListener('beforeunload', warn)
+  }, [dirty])
+  useEffect(() => () => markUnsavedDraft(false), [])
+}
+
 type Filter = 'all' | 'draft' | 'published'
+type LoadState = { busy: boolean; error: string | null }
+
+/** Questions d'une zone ; seule la réponse de la dernière zone demandée s'affiche (FE-4). */
+function useZoneCards(zone: number) {
+  const [rows, setRows] = useState<CardRow[]>([])
+  const [load, setLoad] = useState<LoadState>({ busy: true, error: null })
+  const requests = useRef(createRequestCounter())
+  const refresh = useCallback(async () => {
+    setLoad({ busy: true, error: null })
+    await runLatest(requests.current, () => listCards(zone),
+      list => { setRows(list); setLoad({ busy: false, error: null }) },
+      e => { setLoad({ busy: false, error: errorText(e) }) })
+  }, [zone])
+  useEffect(() => {
+    setRows([])
+    void refresh()
+    const counter = requests.current
+    return () => counter.invalidate()
+  }, [refresh])
+  return { rows, load, refresh }
+}
 
 export function CardsAdmin() {
   const { docs, cur } = useApp()
   const [zone, setZone] = useState(cur)
   const [docFilter, setDocFilter] = useState<number | 'all'>('all')
   const [statusFilter, setStatusFilter] = useState<Filter>('all')
-  const [rows, setRows] = useState<CardRow[]>([])
-  const [load, setLoad] = useState<{ busy: boolean; error: string | null }>({ busy: true, error: null })
+  const { rows, load, refresh } = useZoneCards(zone)
   const [editor, setEditor] = useState<EditorState | null>(null)
+  const [dirty, setDirty] = useState(false)
+  const [pending, setPending] = useState<{ run(): void } | null>(null)
+  useUnsavedDraft(editor !== null && dirty)
 
-  const refresh = useCallback(async () => {
-    setLoad({ busy: true, error: null })
-    try { setRows(await listCards(zone)); setLoad({ busy: false, error: null }) } catch (e) { setLoad({ busy: false, error: e instanceof Error ? e.message : adminError(e) }) }
-  }, [zone])
-  useEffect(() => { setEditor(null); setDocFilter('all'); void refresh() }, [refresh])
+  const closeEditor = useCallback(() => { setEditor(null); setDirty(false); setPending(null) }, [])
+  /** Quitter l'éditeur (zone, Annuler) : confirmation seulement si la saisie a changé. */
+  const requestLeave = (run: () => void) => {
+    if (editor && dirty) { setPending({ run }); return }
+    run()
+  }
+  const pickZone = (z: number) => requestLeave(() => { closeEditor(); setDocFilter('all'); setZone(z) })
 
   const titles = useMemo(() => new Map(docs.map(d => [d.id, `${d.cote} · ${d.title}`])), [docs])
   const shown = rows.filter(r => (docFilter === 'all' || r.document_id === docFilter) && (statusFilter === 'all' || r.status === statusFilter))
   const drafts = rows.filter(r => r.status === 'draft').length
   const zoneDocs = docs.filter(d => d.th === zone)
-  const newCard = () => setEditor({ id: null, documentId: docFilter === 'all' ? null : docFilter, src: docFilter === 'all' ? '' : docs.find(d => d.id === docFilter)?.fileName || '', status: 'draft', draft: { ...EMPTY_DRAFT, no: [...EMPTY_DRAFT.no] } })
+  const newCard = () => setEditor(newEditor(zone, docFilter === 'all' ? null : docFilter, docFilter === 'all' ? '' : docs.find(d => d.id === docFilter)?.fileName || ''))
 
   return (
     <div className="col g16">
       <div className="chips" role="group" aria-label="Zone">
         {ZONES.map(([abbr], i) => (
-          <button key={i} className="chip" aria-pressed={zone === i + 1} onClick={() => setZone(i + 1)}>
+          <button key={i} className="chip" aria-pressed={zone === i + 1} onClick={() => pickZone(i + 1)}>
             <span aria-hidden="true" style={{ width: 9, height: 9, transform: 'rotate(45deg)', background: zoneColor(i + 1) }} />{p2(i + 1)} {abbr.toUpperCase()}
           </button>
         ))}
       </div>
+      {pending && <DiscardConfirm onKeep={() => setPending(null)} onDiscard={() => pending.run()} />}
       {editor
-        ? <CardEditor key={editor.id || 'new'} zone={zone} initial={editor} onCancel={() => setEditor(null)} onSaved={() => { setEditor(null); void refresh() }} />
+        ? <CardEditor key={editor.id || 'new'} initial={editor} onDirtyChange={setDirty} onCancel={() => requestLeave(closeEditor)} onSaved={() => { closeEditor(); void refresh() }} />
         : (
           <section className="box" aria-labelledby="cards-h">
             <div className="row" style={{ justifyContent: 'space-between' }}>
@@ -150,7 +200,7 @@ export function CardsAdmin() {
             {load.busy && <p className="mono" role="status" style={{ color: 'var(--acc)' }}>CHARGEMENT…</p>}
             {load.error && <p role="alert" style={{ color: 'var(--err)' }}>{load.error}</p>}
             {!load.busy && !load.error && (shown.length
-              ? <ul className="grid-docs" style={{ listStyle: 'none', margin: 0, padding: 0 }}>{shown.map(r => <CardItem key={r.id} r={r} docTitle={r.document_id ? titles.get(r.document_id) || '' : ''} onEdit={() => setEditor(fromRow(r))} onChanged={() => void refresh()} />)}</ul>
+              ? <ul className="grid-docs" style={{ listStyle: 'none', margin: 0, padding: 0 }}>{shown.map(r => <CardItem key={r.id} r={r} docTitle={r.document_id ? titles.get(r.document_id) || '' : ''} onEdit={() => setEditor(editorFromRow(r))} onChanged={() => void refresh()} />)}</ul>
               : <p className="muted" style={{ margin: 0 }}>Aucune question pour ce filtre.</p>)}
           </section>
         )}

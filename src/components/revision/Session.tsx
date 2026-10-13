@@ -81,6 +81,13 @@ function QcmBlock({ c, ch }: { c: Card; ch: Choices }) {
 export function Session() {
   const { ui, rev, mobile, answer, next, quitSession } = useApp()
   const s = ui.session
+  // Règle des hooks (FE-12) : tous les hooks avant le retour anticipé.
+  const questionRef = useRef<HTMLHeadingElement>(null)
+  const nextRef = useRef<HTMLButtonElement>(null)
+  const index = s?.i
+  const revealedSelf = !!s && s.rev && s.mode !== 'ask'
+  useEffect(() => { if (index !== undefined) questionRef.current?.focus({ preventScroll: true }) }, [index])
+  useEffect(() => { if (revealedSelf) nextRef.current?.focus({ preventScroll: true }) }, [revealedSelf])
   if (!s) return null
   const ask = s.mode === 'ask'
   const it = s.queue[Math.min(s.i, s.queue.length - 1)]
@@ -91,10 +98,6 @@ export function Session() {
   const checked = kps.filter((_, k) => ui.checks[k]).length
   const sugg = suggestedGrade(kps.length, checked)
   const hot = (g: Grade) => sugg === g && g > 0
-  const questionRef = useRef<HTMLHeadingElement>(null)
-  const nextRef = useRef<HTMLButtonElement>(null)
-  useEffect(() => { questionRef.current?.focus({ preventScroll: true }) }, [s.i])
-  useEffect(() => { if (s.rev && !ask) nextRef.current?.focus({ preventScroll: true }) }, [s.rev, ask])
   return (
     <div className="sess">
       <div className="sess-top">

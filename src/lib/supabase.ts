@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { withTimeout } from './fetchTimeout'
 import { withKeepalive } from './keepalive'
 
 const url = import.meta.env.VITE_SUPABASE_URL?.trim()
@@ -12,8 +13,8 @@ function makeClient(): SupabaseClient | null {
   if (!/^https:\/\/[\w-]+\.supabase\.co\/?$/.test(url)) console.warn('[xxb] VITE_SUPABASE_URL ne ressemble pas à une URL de projet Supabase :', url)
   return createClient(url, key, {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
-    // fetch résolu à l'appel ; keepalive sur save_progress pour survivre à la fermeture de l'onglet.
-    global: { fetch: withKeepalive((input, init) => fetch(input, init)) },
+    // fetch résolu à l'appel ; keepalive sur save_progress (fermeture de l'onglet) ; délai de 15 s hors stockage (FE-5).
+    global: { fetch: withKeepalive(withTimeout((input, init) => fetch(input, init))) },
   })
 }
 

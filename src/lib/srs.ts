@@ -1,4 +1,5 @@
 import { ACQUIRED_LV, INTERVAL, LEVEL_LABELS, MAX_LV, NEW_PER_DAY, RANKS, XP_BAR_SEGMENTS, XP_HES, XP_PER_LEVEL, XP_SU } from './constants'
+import { parseStoredProgress } from './progressMerge'
 import type { Card, CardProgress, CardRow, Grade, Progress, Qcm, RawCard, RevisionContent } from './types'
 
 export const EMPTY_PROGRESS: Progress = { cards: {}, sessions: [], xp: 0 }
@@ -36,17 +37,29 @@ export function allCards(content: RevisionContent): Card[] {
   return Object.keys(content.cards).map(Number).sort((a, b) => a - b).flatMap(t => content.cards[t])
 }
 
-export function readProgress(d: Partial<Progress> & Record<string, unknown>): Progress {
-  const sessions = Array.isArray(d.sessions) ? d.sessions.slice() : []
-  const xp = typeof d.xp === 'number' ? d.xp : sessions.reduce((a, s) => a + (s.ok || 0) * XP_SU, 0)
-  return { cards: { ...(d.cards || {}) }, sessions, xp }
+/** Lecture tolérante (QA-9) : mêmes règles que la synchronisation, les entrées invalides sont ignorées. */
+export const readProgress = (raw: unknown): Progress => parseStoredProgress(raw)
+
+/** Une carte se révise selon son calendrier si elle est nouvelle ou arrivée à échéance. */
+const isScheduled = (p: CardProgress | undefined, today: number): boolean => !p || p[1] <= today
+
+function nextSchedule(p: CardProgress, g: Grade, today: number, scheduled: boolean): readonly [number, number] {
+  if (g === 0) return [0, today + 1]
+  if (!scheduled) return [p[0], p[1]]
+  const lv = g === 2 ? Math.min(MAX_LV, p[0] + 1) : Math.max(1, p[0])
+  return [lv, today + INTERVAL[lv]]
 }
 
-/** Répétition espacée : Su monte d'un niveau, Hésitant garde l'intervalle (min. 1), Raté repart à zéro. */
+/**
+ * Répétition espacée (D2). À l'échéance ou pour une carte nouvelle : Su monte d'un niveau, Hésitant garde l'intervalle
+ * (min. 1). Hors calendrier (entraînement) : vues, réussites et XP comptent, niveau et échéance ne bougent pas.
+ * Raté repart toujours à zéro.
+ */
 export function applyGrade(prog: Progress, cardId: string, g: Grade, today: number): Progress {
-  const p: CardProgress = prog.cards[cardId] || [0, today, 0, 0, today]
-  const lv = g === 2 ? Math.min(MAX_LV, p[0] + 1) : g === 0 ? 0 : Math.max(1, p[0])
-  const entry: CardProgress = [lv, today + (g === 0 ? 1 : INTERVAL[lv]), p[2] + 1, p[3] + (g === 2 ? 1 : 0), p[4] || today]
+  const known = prog.cards[cardId]
+  const p: CardProgress = known || [0, today, 0, 0, today]
+  const [lv, due] = nextSchedule(p, g, today, isScheduled(known, today))
+  const entry: CardProgress = [lv, due, p[2] + 1, p[3] + (g === 2 ? 1 : 0), p[4] || today]
   return { ...prog, cards: { ...prog.cards, [cardId]: entry }, xp: prog.xp + xpFor(g) }
 }
 

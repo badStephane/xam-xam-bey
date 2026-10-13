@@ -28,6 +28,10 @@ function rng(seed: number): () => number {
   }
 }
 
+/** L1-13 : hors BMP (4 octets UTF-8, paire UTF-16) contre U+FF01 (3 octets UTF-8). */
+const EMOJI = '\u{1F600}'
+const FULLWIDTH = '\uFF01'
+
 const pick = <T>(r: () => number, xs: readonly T[]): T => xs[Math.floor(r() * xs.length)]
 const int = (r: () => number, max: number): number => Math.floor(r() * (max + 1))
 
@@ -38,7 +42,7 @@ function randomProgress(r: () => number, maxSessions: number): Progress {
     return { ...acc, [id]: [int(r, 3), 20700 + int(r, 3), int(r, 3), int(r, 3), 20700 + int(r, 2)] }
   }, {})
   const sessions = Array.from({ length: int(r, maxSessions) }, (): SessionLog => ({
-    d: 20700 + int(r, 4), n: pick(r, [9, 10, 12]), ok: int(r, 3), k: pick(r, ['daily', 'theme', 'Zone', 'éval']), l: pick(r, ['x', 'X', 'é', 'Z']),
+    d: 20700 + int(r, 4), n: pick(r, [9, 10, 12]), ok: int(r, 3), k: pick(r, ['daily', 'theme', 'Zone', 'éval', EMOJI, FULLWIDTH]), l: pick(r, ['x', 'X', 'é', 'Z', EMOJI, FULLWIDTH]),
   }))
   return { cards, sessions, xp: int(r, 50) }
 }
@@ -54,6 +58,7 @@ function buildCases(): Case[] {
     { name: 'égalité vues, échéance et [0], départage [3] puis [4]', a: { cards: { c: [1, 5, 2, 1, 9] }, sessions: [], xp: 3 }, b: { cards: { c: [1, 5, 2, 1, 10] }, sessions: [], xp: 2 } },
     { name: 'même jour, n = 9 et n = 10 (ordre numérique vs texte)', a: { cards: {}, sessions: [{ d: 1, n: 10, ok: 1, k: 'daily', l: 'x' }], xp: 0 }, b: { cards: {}, sessions: [{ d: 1, n: 9, ok: 1, k: 'daily', l: 'x' }], xp: 0 } },
     { name: 'même jour, libellés Zone / daily / éval (collation)', a: { cards: {}, sessions: [{ d: 1, n: 9, ok: 1, k: 'Zone', l: 'x' }, { d: 1, n: 9, ok: 1, k: 'éval', l: 'x' }], xp: 0 }, b: { cards: {}, sessions: [{ d: 1, n: 9, ok: 1, k: 'daily', l: 'x' }], xp: 0 } },
+    { name: 'même jour, emoji contre U+FF01 dans k et l (octets UTF-8, L1-13)', a: { cards: {}, sessions: [{ d: 1, n: 9, ok: 1, k: EMOJI, l: 'x' }, { d: 1, n: 9, ok: 1, k: 'x', l: EMOJI }], xp: 0 }, b: { cards: {}, sessions: [{ d: 1, n: 9, ok: 1, k: FULLWIDTH, l: 'x' }, { d: 1, n: 9, ok: 1, k: 'x', l: FULLWIDTH }], xp: 0 } },
     { name: 'plus de 200 séances, chevauchement partiel', a: { cards: {}, sessions: sameDaySessions(150, 1000, 0), xp: 0 }, b: { cards: {}, sessions: sameDaySessions(150, 1030, 0), xp: 0 } },
     { name: 'plus de 200 séances, coupure au milieu d’un jour à n = 9/10/11', a: { cards: {}, sessions: sameDaySessions(150, 1000, 0), xp: 0 }, b: { cards: {}, sessions: sameDaySessions(151, 1000, 1), xp: 0 } },
   ]
@@ -106,15 +111,9 @@ describe.skipIf(!DB_URL)('parité save_progress (SQL) / mergeProgress (TS)', () 
     })
   })
 
-  // L1-1 (documenté, non bloquant) : à jour égal, SQL départage sur l'ordre jsonb (nombres en valeur, textes selon la
-  // collation de la base), TS sur le JSON texte (« 10 » < « 9 », « Z » < « d »). Ordre différent dans la journée, et
-  // séances différentes gardées si la coupure à 200 tombe au milieu d'un jour. Retirer `.fails` une fois aligné.
-  it('L1-1 : même ordre à jour égal (n = 9 / n = 10)', () => {
-    const i = cases.findIndex(c => c.name.startsWith('même jour, n = 9'))
-    expect(sql[i].sessions).toEqual(ts[i].sessions)
-  })
-  it('L1-1 : mêmes séances gardées quand la coupure à 200 tombe au milieu d’un jour', () => {
-    const i = cases.findIndex(c => c.name.startsWith('plus de 200 séances, coupure au milieu'))
-    expect(sql[i].sessions.map(key).sort()).toEqual(ts[i].sessions.map(key).sort())
+  // L1-1 et L1-13 : ordre canonique commun (d, n, ok en nombres, puis k, l en octets UTF-8 comme `collate "C"`).
+  // Même ordre complet des séances et mêmes séances gardées après la coupure à 200, pour chaque cas.
+  it('séances : ordre complet identique, tous les cas (L1-1, L1-13)', () => {
+    cases.forEach((c, i) => expect(sql[i].sessions, c.name).toEqual(ts[i].sessions))
   })
 })

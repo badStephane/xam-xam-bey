@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   sonde:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     env:
       SITE_URL: ${{ secrets.SITE_URL }}

@@ -10,3 +10,5 @@ site/planches.html
 site/pdfjs/
 dist/
 site/f-min/
+test-results/
+playwright-report/
