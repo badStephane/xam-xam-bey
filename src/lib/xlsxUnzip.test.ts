@@ -9,6 +9,11 @@ const SHEET = 'xl/worksheets/sheet1.xml'
 const MB = 1024 * 1024
 /** Feuille réelle du zip menteur : 2 fois la borne de readFirstSheet (8 Mo), assez pour la dépasser, rapide à fabriquer. */
 const LIAR_BYTES = 2 * MAX_UNZIPPED_BYTES
+/**
+ * Fabriquer le menteur (16 Mo compressés en niveau 6) prend ~4 s sans charge, davantage sous couverture et machine chargée
+ * (05-build, Lot 4 > SRE). Délai propre au premier test qui le fabrique (les suivants réutilisent la copie).
+ */
+const LIAR_BUILD_TIMEOUT_MS = 30_000
 
 const sample = (): Uint8Array => new Uint8Array(readFileSync(resolve(__dirname, '__fixtures__/import-sample.xlsx')))
 
@@ -56,7 +61,7 @@ describe('IM-10 : zip qui ment sur sa taille', () => {
     const zip = lyingXlsx(LIAR_BYTES)
     expect(zip.length).toBeLessThan(MB)
     expect(declaredXmlSize(fflate, zip)).toBeLessThan(20_000)
-  })
+  }, LIAR_BUILD_TIMEOUT_MS)
 
   // L3-1 (12-qa-lot3.md) : aucune mesure à l'horloge murale ici, elle dépend de la charge de la machine. L'arrêt dès la
   // borne est prouvé par le test suivant (octets produits) ; la non-congélation du fil, par l'E2E IM-10 sous CPU / 4.

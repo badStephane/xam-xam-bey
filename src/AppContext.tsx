@@ -67,7 +67,7 @@ interface AppValue {
   /** Marque une pièce comme consultée (ouverture dans un nouvel onglet sur mobile). */
   markSeen(id: number): void
   toggleTheme(): void
-  /** Ouvre l'aperçu du document relié à une carte (séance, bilan) ; RETOUR y ramène. */
+  /** Ouvre l'aperçu du document relié à une carte (séance, bilan, fiches) ; RETOUR y ramène. */
   openCardDoc(id: number): void
   /** `name` : personne interrogée (mode « J’interroge ») ; par défaut, le prénom saisi. */
   startSession(mode: QuizMode, kind: string, label: string, cards: readonly Card[], name?: string): void
@@ -103,6 +103,9 @@ const CAN_KEEP_SESSION = !PARAMS.frame && !PARAMS.demo
 function tabStore(): Storage | null {
   try { return window.sessionStorage } catch { return null }
 }
+
+/** Écrans d'où un document relié à une carte s'ouvre, et où RETOUR ramène (F2 : fiches). */
+const DOC_RETURN_SCREENS: readonly Screen[] = ['session', 'fin', 'fiches']
 
 const entryOf = (u: Pick<Ui, 'screen' | 'sel'>): NavEntry => ({ screen: u.screen, sel: u.screen === 'apercu' ? u.sel : null })
 
@@ -209,6 +212,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const returnFromDoc = (): { screen: Screen; p: Partial<Ui> } | null => {
     const u = uiRef.current
     const from = docReturn.current
+    if (from === 'fiches') return { screen: 'fiches', p: {} }
     if (from === 'fin' && u.session) return { screen: 'fin', p: {} }
     if (u.session && !u.session.done) return from === 'session' ? { screen: 'session', p: {} } : null
     const saved = adoptTabSession()
@@ -235,7 +239,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   /** Ouvre l'aperçu du document d'une carte sans perdre la séance : nouvelle entrée d'historique, la séance reste derrière. */
   const openCardDoc = (id: number) => {
     const u = uiRef.current
-    if (!catalog.docs.some(d => d.id === id) || (u.screen !== 'session' && u.screen !== 'fin')) return
+    if (!catalog.docs.some(d => d.id === id) || !DOC_RETURN_SCREENS.includes(u.screen)) return
     const target: NavEntry = { screen: 'apercu', sel: id }
     if (u.screen === 'session') {
       // Une sortie de séance remplacerait son entrée (lot 2) : ici on empile, pour que le retour Android y ramène.

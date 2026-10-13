@@ -8,6 +8,7 @@ import { cardLevel } from '../../lib/srs'
 import type { Card, Choices, Grade } from '../../lib/types'
 import { Md } from '../Md'
 import { CardDocLink } from './CardDocLink'
+import { OfflineNotice } from './OfflineNotice'
 
 function Vigilance({ note, size }: { note: string; size: number }) {
   return <div className="vigil" role="note"><b>! VIGILANCE · SOURCES EN DÉSACCORD</b><span style={{ fontSize: size, lineHeight: 1.5 }}>{note}</span></div>
@@ -190,6 +191,7 @@ export function Session() {
         <span className="mono" role="status" aria-label={`Carte ${Math.min(s.i + 1, s.queue.length)} sur ${s.queue.length}`} style={{ fontSize: 12, fontWeight: 700, minWidth: 40, textAlign: 'right' }}>{p2(Math.min(s.i + 1, s.queue.length))}/{p2(s.queue.length)}</span>
       </div>
       <QuitConfirm ask={ask} />
+      <OfflineNotice />
       {ask
         ? (
           <div className="askbar">

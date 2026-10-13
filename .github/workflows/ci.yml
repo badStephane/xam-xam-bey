@@ -58,11 +58,10 @@ jobs:
           cache: npm
       - uses: supabase/setup-cli@v3
         with:
-          # Gardée en 2.109.1 au lot 3 (notes 2.110 à 2.120 relues le 2026-10-13) : `start`, `db test` et `db reset`
-          # passent sur le nouveau moteur TypeScript, le défaut `auto_expose_new_tables` a changé (2.116, touche les
-          # privilèges par défaut testés par 04_lot2_test.sql), Mailpit est isolé par pile (2.119). À monter dans une PR
-          # dédiée, en même temps que les postes, après `supabase test db` et `npm run e2e` verts en local.
-          version: 2.109.1
+          # 2.120.0 depuis le lot 4 (05-build, « Lot 4 > SRE ») : `start`, `db reset`, `test db` (93 tests), parité et
+          # E2E complet (46/46, Mailpit 55324) verts en local le 2026-10-13. `auto_expose_new_tables` reste non défini
+          # (défaut : pas d'exposition implicite), 04_lot2_test.sql passe ; toute nouvelle table devra porter ses GRANT.
+          version: 2.120.0
       # inbucket = Mailpit (port 55324) : l'E2E y lit le code à 6 chiffres. Modèles d'e-mail : supabase/templates/.
       - name: base locale (services utiles aux tests seulement)
         run: supabase start -x analytics,edge-runtime,functions,imgproxy,meta,realtime,studio,vector
