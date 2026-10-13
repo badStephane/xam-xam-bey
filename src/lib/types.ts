@@ -65,6 +65,8 @@ export interface Card {
   note: string
   th: number
   qcm?: Qcm
+  /** Document de la bibliothèque (documents.id) auquel la question est reliée (E4), sinon absent. */
+  doc?: number
 }
 
 /** Propositions affichées pour une carte (ordre mélangé) et indice de la bonne. */

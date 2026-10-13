@@ -1,10 +1,11 @@
 import { useApp } from '../../AppContext'
-import { gradeCounts, missedCards, mkSession, REDO } from '../../lib/session'
+import { gradeCounts, missedCards, REDO } from '../../lib/session'
 import { share } from '../../lib/share'
 import { Md } from '../Md'
+import { CardDocLink } from './CardDocLink'
 
 export function Fin() {
-  const { ui, go, patch } = useApp()
+  const { ui, go, patch, startSession } = useApp()
   const s = ui.session
   if (!s) return null
   const ask = s.mode === 'ask'
@@ -21,7 +22,8 @@ export function Fin() {
     : { tag: s.kind === REDO ? 'REPRISE TERMINÉE · DÉJÀ COMPTÉE AUJOURD’HUI' : 'SESSION TERMINÉE', title: 'Quête accomplie', list: 'À retravailler', redo: 'REFAIRE CES CARTES',
         stats: [[`${juste}/${n}`, 'SCORE', 'var(--hud)'], [pct(juste), 'JUSTES DU PREMIER COUP', 'var(--acc)'], [`+${s.xp}`, 'XP GAGNÉS', 'var(--amber)']],
         chips: [[`✓ JUSTES ${juste}`, 'var(--acc)'], [`✕ FAUSSES ${faux}`, 'var(--err)'], ...(partiel ? [[`~ HÉSITANT ${partiel}`, 'var(--amber)']] : [])] }
-  const redo = () => go('session', { session: mkSession(s.mode, ask ? 'ask' : REDO, ask ? 'Interrogation' : 'Cartes à retravailler', miss, s.name), checks: {}, hideAns: false })
+  // Par startSession : propositions du QCM attribuées et séance gardée pour l'onglet (E2).
+  const redo = () => startSession(s.mode, ask ? 'ask' : REDO, ask ? 'Interrogation' : 'Cartes à retravailler', miss, s.name)
   const shareFin = () => {
     const txt = `Xam Xam Bëy · Bilan de ${name} : ${juste} justes, ${partiel} partiels, ${faux} faux sur ${n}.`
     share({ title: 'Bilan Xam Xam Bëy', text: txt }, txt, () => patch({ shared: true }))
@@ -41,6 +43,7 @@ export function Fin() {
                 <div className="row" style={{ justifyContent: 'space-between' }}><span className="cote">{card.id.toUpperCase()}</span><span className="stamp" style={{ borderColor: color, color, transform: 'rotate(-2deg)' }}>{label}</span></div>
                 <strong style={{ font: '800 17px/1.2 var(--f-doc)' }}>{card.q}</strong>
                 <span style={{ fontSize: 15, lineHeight: 1.5, color: 'var(--ink2)' }}><Md text={card.a} /></span>
+                <CardDocLink card={card} />
               </div>
             )
           })

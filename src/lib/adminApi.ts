@@ -1,4 +1,5 @@
 import type { CardInsert, ExistingCard } from './cardImport'
+import type { ImportDocument } from './cardImportDocs'
 import { checkUpload, newCardId, storagePathFor } from './cardRules'
 import { openPdf } from './pdf'
 import { supabase } from './supabase'
@@ -144,17 +145,25 @@ export async function deleteCard(id: string): Promise<void> {
 /** Plafond de lignes par réponse de l'API (max_rows de supabase/config.toml) : on pagine au-delà. */
 const API_PAGE = 1000
 
-/** Questions existantes (tous statuts) des zones citées par un import : doublons, fin de zone, identifiants pris. */
-export async function listCardsForImport(zones: readonly number[]): Promise<ExistingCard[]> {
+/** Toutes les lignes `columns` de `table` dans les zones citées, page par page (ordre stable sur `id`). */
+async function listByZones<T>(table: 'cards' | 'documents', columns: string, zones: readonly number[]): Promise<T[]> {
   if (!zones.length) return []
-  const fetchPage = async (from: number, acc: ExistingCard[]): Promise<ExistingCard[]> => {
-    const { data, error } = await client().from('cards').select('id, zone, q, position').in('zone', [...zones]).order('id').range(from, from + API_PAGE - 1)
+  const fetchPage = async (from: number, acc: T[]): Promise<T[]> => {
+    const { data, error } = await client().from(table).select(columns).in('zone', [...zones]).order('id').range(from, from + API_PAGE - 1)
     if (error) throw new Error(adminError(error))
-    const rows = [...acc, ...((data || []) as ExistingCard[])]
+    const rows = [...acc, ...((data || []) as T[])]
     return (data?.length ?? 0) < API_PAGE ? rows : fetchPage(from + API_PAGE, rows)
   }
   return fetchPage(0, [])
 }
+
+/** Questions existantes (tous statuts) des zones citées par un import : doublons, fin de zone, identifiants pris. */
+export const listCardsForImport = (zones: readonly number[]): Promise<ExistingCard[]> =>
+  listByZones<ExistingCard>('cards', 'id, zone, q, position', zones)
+
+/** Documents des zones citées par un import, pour relier les questions par la colonne Source (E4). */
+export const listDocumentsForImport = (zones: readonly number[]): Promise<ImportDocument[]> =>
+  listByZones<ImportDocument>('documents', 'id, zone, title, file_name', zones)
 
 export const UNCERTAIN_IMPORT = 'Résultat incertain : rechargez la liste pour vérifier avant de réimporter.'
 

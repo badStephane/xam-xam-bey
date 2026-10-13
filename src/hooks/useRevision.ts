@@ -69,6 +69,8 @@ export interface Revision {
   /** null si tout est enregistré ; 'retry' : nouvel essai automatique ; 'rejected' : refus définitif du serveur. */
   saveErr: SaveErrorKind | null
   email: string | null
+  /** Compte dont la progression est chargée (propriétaire des écritures), sinon null. */
+  userId: string | null
   signIn: SignInState
   init(): void
   retry(): void
@@ -113,6 +115,7 @@ export function useRevision(demo: boolean): Revision {
   const [prog, setProg] = useState<Progress>(EMPTY_PROGRESS)
   const [saveErr, setSaveErr] = useState<SaveErrorKind | null>(null)
   const [email, setEmail] = useState<string | null>(null)
+  const [userId, setUserId] = useState<string | null>(null)
   const [signIn, setSignIn] = useState<SignInState>({ step: 'idle' })
   const statusRef = useRef<RevStatus>('idle')
   const progRef = useRef<Progress>(EMPTY_PROGRESS)
@@ -184,6 +187,7 @@ export function useRevision(demo: boolean): Revision {
     const current = ownerRef.current === userId ? progRef.current : EMPTY_PROGRESS
     const { prog: merged, dirty } = reconcileOnLoad(server, mergeProgress(local, current))
     ownerRef.current = userId
+    setUserId(userId)
     adopt(merged)
     if (dirty) schedule(false)
   }, [adopt, schedule])
@@ -217,6 +221,7 @@ export function useRevision(demo: boolean): Revision {
     loadSeq.current += 1
     loadingFor.current = null
     ownerRef.current = null
+    setUserId(null)
     dropPendingSave()
     progRef.current = EMPTY_PROGRESS
     setProg(EMPTY_PROGRESS)
@@ -252,6 +257,7 @@ export function useRevision(demo: boolean): Revision {
         if (isAccountSwitch(ownerRef.current, user.id)) {
           // Plus aucune écriture au nom de l'ancien compte avec le jeton du nouveau ; ses notes restent dans sa copie locale.
           ownerRef.current = null
+          setUserId(null)
           dropPendingSave()
         }
         setEmail(user.email || null)
@@ -272,7 +278,7 @@ export function useRevision(demo: boolean): Revision {
   }, [flush])
 
   return {
-    status, content, prog, saveErr, email, signIn, init,
+    status, content, prog, saveErr, email, userId, signIn, init,
     retry: () => {
       // Aussi depuis le chargement (FE-5) : le chargement en cours est abandonné par son jeton, puis relancé.
       loadSeq.current += 1

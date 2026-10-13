@@ -1,3 +1,4 @@
+import { buildDocIndex, docIdOf, linkDocument, type DocLink, type ImportDocument } from './cardImportDocs'
 import { newCardId, readQcm, type QcmRead } from './cardRules'
 import { p2 } from './format'
 import type { Qcm } from './types'
@@ -30,7 +31,8 @@ export const REASONS = {
 export interface SheetRow { line: number; values: Readonly<Record<ImportField, string>> }
 export type SheetParse = { ok: true; rows: SheetRow[] } | { ok: false; error: string }
 
-export interface ImportCard { line: number; zone: number; q: string; a: string; src: string; note: string; qcm: Qcm | null }
+/** `doc` : document de la zone relié par la colonne Source (E4). */
+export interface ImportCard { line: number; zone: number; q: string; a: string; src: string; note: string; qcm: Qcm | null; doc: DocLink }
 export interface RowError { line: number; zone: number | null; reason: string }
 export interface ZoneCount { zone: number | null; valid: number; errors: number }
 export interface ImportAnalysis { cards: ImportCard[]; errors: RowError[]; byZone: ZoneCount[] }
@@ -38,7 +40,7 @@ export interface ImportAnalysis { cards: ImportCard[]; errors: RowError[]; byZon
 export interface ExistingCard { id: string; zone: number; q: string; position: number }
 export interface CardInsert {
   id: string; zone: number; position: number; q: string; a: string; src: string; note: string
-  qcm: Qcm | null; status: 'draft'; document_id: null
+  qcm: Qcm | null; status: 'draft'; document_id: number | null
 }
 
 /** Nom de fichier, taille : refus clair avant toute lecture. */
@@ -138,9 +140,13 @@ function countByZone(cards: readonly ImportCard[], errors: readonly RowError[]):
     .map(zone => ({ zone, valid: cards.filter(c => c.zone === zone).length, errors: errors.filter(e => e.zone === zone).length }))
 }
 
-/** Valide chaque ligne ; les doublons (dans le fichier, puis avec la base de la même zone) sont écartés et signalés. */
-export function analyzeImport(rows: readonly SheetRow[], existing: readonly ExistingCard[]): ImportAnalysis {
+/**
+ * Valide chaque ligne ; les doublons (dans le fichier, puis avec la base de la même zone) sont écartés et signalés.
+ * Chaque ligne retenue est reliée au document de sa zone désigné par la colonne Source, s'il est unique (E4).
+ */
+export function analyzeImport(rows: readonly SheetRow[], existing: readonly ExistingCard[], docs: readonly ImportDocument[] = []): ImportAnalysis {
   const inBase = new Set(existing.map(c => `${c.zone}|${questionKey(c.q)}`))
+  const docIndex = buildDocIndex(docs)
   type Acc = { cards: ImportCard[]; errors: RowError[]; seen: ReadonlyMap<string, number> }
   const out = rows.reduce<Acc>((acc, { line, values: v }) => {
     const zone = parseZone(v.zone)
@@ -151,7 +157,7 @@ export function analyzeImport(rows: readonly SheetRow[], existing: readonly Exis
     const first = acc.seen.get(key)
     if (first !== undefined) return { ...acc, errors: [...acc.errors, { line, zone, reason: REASONS.inFile(first) }] }
     if (inBase.has(key)) return { ...acc, errors: [...acc.errors, { line, zone, reason: REASONS.inBase(zone) }] }
-    const card: ImportCard = { line, zone, q: v.q, a: v.a, src: v.src, note: v.note, qcm: qcm.qcm }
+    const card: ImportCard = { line, zone, q: v.q, a: v.a, src: v.src, note: v.note, qcm: qcm.qcm, doc: linkDocument(v.src, zone, docIndex) }
     return { cards: [...acc.cards, card], errors: acc.errors, seen: new Map([...acc.seen, [key, line]]) }
   }, { cards: [], errors: [], seen: new Map() })
   return { cards: out.cards, errors: out.errors, byZone: countByZone(out.cards, out.errors) }
@@ -164,7 +170,7 @@ export function planInserts(cards: readonly ImportCard[], existing: readonly Exi
   return cards.reduce<Acc>((acc, c) => {
     const id = freshId(c.zone, acc.taken, rand)
     const position = (acc.next[c.zone] ?? maxPos[c.zone] ?? 0) + 1
-    const row: CardInsert = { id, zone: c.zone, position, q: c.q, a: c.a, src: c.src, note: c.note, qcm: c.qcm, status: 'draft', document_id: null }
+    const row: CardInsert = { id, zone: c.zone, position, q: c.q, a: c.a, src: c.src, note: c.note, qcm: c.qcm, status: 'draft', document_id: docIdOf(c.doc) }
     return { rows: [...acc.rows, row], taken: new Set([...acc.taken, id]), next: { ...acc.next, [c.zone]: position } }
   }, { rows: [], taken: new Set(existing.map(c => c.id)), next: {} }).rows
 }

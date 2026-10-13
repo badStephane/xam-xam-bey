@@ -152,8 +152,8 @@ describe('analyzeImport', () => {
   test('carte valide : champs repris, QCM ou null', () => {
     const r = analyzeImport([row(2, { zone: '5', q: 'Q', a: 'A', ok: 'O', no1: 'N', src: 'S', note: 'Nt' }), valid(3, '5', 'Q2')], [])
     expect(r.cards).toEqual([
-      { line: 2, zone: 5, q: 'Q', a: 'A', src: 'S', note: 'Nt', qcm: { ok: 'O', no: ['N'] } },
-      { line: 3, zone: 5, q: 'Q2', a: 'Réponse', src: '', note: '', qcm: null },
+      { line: 2, zone: 5, q: 'Q', a: 'A', src: 'S', note: 'Nt', qcm: { ok: 'O', no: ['N'] }, doc: { kind: 'unknown' } },
+      { line: 3, zone: 5, q: 'Q2', a: 'Réponse', src: '', note: '', qcm: null, doc: { kind: 'none' } },
     ])
   })
 })

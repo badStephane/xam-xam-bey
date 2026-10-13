@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { allCards, applyGrade, cardsByZone, bestStreak, dailyCards, EMPTY_PROGRESS, levelBuckets, readProgress, seenCurve, streak, validCards, xpLevel, zoneStats } from './srs'
+import { allCards, applyGrade, cardsByZone, bestStreak, dailyCards, EMPTY_PROGRESS, levelBuckets, readProgress, seenCurve, streak, validCards, validDocId, xpLevel, zoneStats } from './srs'
 import type { Card, Progress } from './types'
 
 const T = 20000
@@ -136,5 +136,24 @@ describe('cardsByZone', () => {
     expect(Object.keys(out)).toEqual(['1', '2'])
     expect(out[1].map(c => c.id)).toEqual(['a', 'b'])
     expect(out[2][0].th).toBe(2)
+  })
+})
+
+describe('document relié à une carte (E4)', () => {
+  const row = (document_id: unknown) => ({ id: 't1-01', zone: 1, document_id, position: 1, q: 'q', a: 'a', src: 's', note: '', qcm: null, status: 'published' as const })
+
+  test('document_id valide : la carte garde son document', () => {
+    expect(cardsByZone([row(12) as never])[1][0].doc).toBe(12)
+  })
+
+  test.each([null, 0, -3, 1.5, '12', undefined])('document_id %s ignoré : carte sans document, sans erreur', v => {
+    const [card] = cardsByZone([row(v) as never])[1]
+    expect(card).toBeDefined()
+    expect('doc' in card).toBe(false)
+  })
+
+  test('validDocId', () => {
+    expect(validDocId(7)).toBe(7)
+    expect(validDocId(NaN)).toBeNull()
   })
 })

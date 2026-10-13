@@ -50,7 +50,15 @@ npm run e2e
   Enregistrer en .xlsx (2 Mo et 1 000 lignes au plus, première feuille seulement), puis « Importer un fichier Excel » : l’aperçu liste les lignes valides par zone et chaque ligne en erreur avec sa raison ; rien n’est écrit avant « Importer N questions ».
   Les questions arrivent en brouillon à la fin de leur zone, les doublons (fichier ou base) sont ignorés ; relire puis publier depuis la liste. Modèle régénérable : `python3 scripts/make_import_xlsx.py`.
 - **Ajouter un admin** (éditeur SQL) : `insert into public.admins (email) values ('prenom@exemple.sn');`
-- **Mise en place initiale** : appliquer la migration `*_library.sql`, puis envoyer les PDF d’origine : `SUPABASE_SERVICE_ROLE_KEY=… node scripts/upload_documents.mjs` (clé à ne jamais enregistrer dans un fichier).
+- **Mise en place initiale** : appliquer la migration `*_library.sql`, puis envoyer les PDF d’origine avec une clé secrète `sb_secret_…` créée pour l’occasion (Project Settings > API Keys), saisie sans écho ni historique, puis révoquée (`docs/squad/06-ops.md`, section J) :
+
+  ```bash
+  read -rs SUPABASE_SECRET_KEY; export SUPABASE_SECRET_KEY   # coller la clé, Entrée (rien ne s’affiche)
+  node scripts/upload_documents.mjs                          # refuse de démarrer si la variable manque
+  unset SUPABASE_SECRET_KEY                                  # puis supprimer la clé dans Supabase
+  ```
+
+  Ne jamais écrire la clé dans la commande (elle resterait dans `~/.zsh_history`), dans un fichier ni dans un message.
 - **Publier du contenu en masse** : déposer `fiche-N.json` / `cards-N.json` dans `data/seed/`, lancer `python3 scripts/content_sql.py`, puis `supabase db push`.
 - **QCM** : chaque carte peut porter `"qcm": { "ok": "bonne réponse courte", "no": ["3 mauvaises réponses plausibles"] }`. Sans ce champ, l’application prend comme propositions les réponses d’autres cartes de la même zone.
 - **Réglages du tableau de bord** : URL de connexion, SMTP Gmail et modèle d’e-mail (code à 6 chiffres) sont décrits pas à pas dans `docs/squad/06-ops.md` (sections A et B).
@@ -69,9 +77,9 @@ git switch main && git pull   # main propre et à jour, CI verte
 npm run deploy:pages          # contrôles git, puis npm run check (types, tests, build) et envoi de dist/
 ```
 
-`scripts/deploy-pages.sh` refuse de partir hors de `main`, avec des modifications non commitées, si `main` diffère de `origin/main` ou sans `.env.local` (les variables `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` sont lues au build). La connexion Cloudflare est demandée au premier lancement. Retour arrière, migrations et mise en production : `docs/squad/06-ops.md`.
+`scripts/deploy-pages.sh` refuse de partir hors de `main`, avec des modifications non commitées, si `main` diffère de `origin/main` ou sans `.env.local` (les variables `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` sont lues au build). La connexion Cloudflare est demandée au premier lancement. La version de wrangler est figée dans ce script (`WRANGLER_VERSION`). Retour arrière, migrations et mise en production : `docs/squad/06-ops.md`.
 
-Le site publié est le dossier `dist/` (application seule, environ 5 Mo) ; les PDF sont servis par Supabase. Les en-têtes de sécurité (CSP limitée au projet Supabase et à Google Fonts) sont dans `public/_headers`, copié dans `dist/`.
+Le site publié est le dossier `dist/` (application seule, environ 5 Mo) ; les PDF sont servis par Supabase Storage et comptent dans le quota d’egress gratuit (5 Go par mois) : relevé hebdomadaire et plan de repli vers Cloudflare dans `docs/squad/06-ops.md`, section K. Depuis le lot 3, un service worker garde sur l’appareil le site et chaque PDF ouvert (lecture hors ligne). Les en-têtes de sécurité (CSP limitée au site et au projet Supabase ; polices hébergées sur le site depuis le lot 3) sont dans `public/_headers`, copié dans `dist/`.
 
 ## Planches
 

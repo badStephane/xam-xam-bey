@@ -48,13 +48,27 @@ export interface LibFilters {
 
 export const isFiltering = (f: LibFilters): boolean => !!f.q.trim() || f.type !== 'all' || f.ess || f.month !== null
 
-export function matchDoc(d: Doc, f: LibFilters, skipZone = false): boolean {
+/** Mots de la recherche, normalisés (casse, accents) une seule fois pour tout le catalogue. */
+export const queryParts = (q: string): string[] => norm(q).split(/\s+/).filter(Boolean)
+
+function matchParts(d: Doc, f: LibFilters, parts: readonly string[], skipZone: boolean): boolean {
   if (!skipZone && f.month !== null && d.th !== f.month) return false
   if (f.type !== 'all' && d.ty !== f.type) return false
   if (f.ess && !d.ess) return false
-  return norm(f.q).split(/\s+/).filter(Boolean).every(part => d.key.includes(part))
+  return parts.every(part => d.key.includes(part))
+}
+
+export function matchDoc(d: Doc, f: LibFilters, skipZone = false): boolean {
+  return matchParts(d, f, queryParts(f.q), skipZone)
+}
+
+/** Pièces retenues par les filtres (recherche normalisée une fois, et non une fois par pièce : audit 23). */
+export function filterDocs(docs: readonly Doc[], f: LibFilters): Doc[] {
+  const parts = queryParts(f.q)
+  return docs.filter(d => matchParts(d, f, parts, false))
 }
 
 export function zoneCounts(docs: readonly Doc[], f: LibFilters): Record<number, number> {
-  return docs.reduce<Record<number, number>>((acc, d) => (matchDoc(d, f, true) ? { ...acc, [d.th]: (acc[d.th] || 0) + 1 } : acc), {})
+  const parts = queryParts(f.q)
+  return docs.reduce<Record<number, number>>((acc, d) => (matchParts(d, f, parts, true) ? { ...acc, [d.th]: (acc[d.th] || 0) + 1 } : acc), {})
 }

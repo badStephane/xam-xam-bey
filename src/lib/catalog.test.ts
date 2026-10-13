@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { buildDocs, catalogStats, docsFromRows, isFiltering, matchDoc, rowsFromCatalog, zoneCounts } from './catalog'
+import { buildDocs, catalogStats, docsFromRows, filterDocs, isFiltering, matchDoc, queryParts, rowsFromCatalog, zoneCounts } from './catalog'
 import { cleanTitle, currentZone, keyPoints, mdSpans, plural, shuffle } from './format'
 import type { RawDoc } from './types'
 
@@ -33,6 +33,14 @@ describe('filtres', () => {
   })
   test('zoneCounts ignore le filtre de zone', () => {
     expect(zoneCounts(docs, { ...none, month: 4 })).toEqual({ 1: 2, 4: 1 })
+  })
+  test('filterDocs donne le même résultat que matchDoc pièce par pièce', () => {
+    const cases = [{ ...none, q: 'Générales  BASES' }, { ...none, q: 'z4' }, { ...none, ess: true, month: 1 }, { ...none, type: 'DOC' as const }, none]
+    cases.forEach(f => expect(filterDocs(docs, f)).toEqual(docs.filter(d => matchDoc(d, f))))
+  })
+  test('queryParts normalise une fois : casse, accents, espaces', () => {
+    expect(queryParts('  Générales   BASES ')).toEqual(['generales', 'bases'])
+    expect(queryParts('   ')).toEqual([])
   })
   test('isFiltering', () => {
     expect(isFiltering(none)).toBe(false)

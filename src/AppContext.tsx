@@ -6,10 +6,12 @@ import { isRevScreen, PARAMS, type Screen } from './lib/params'
 import { checkIsAdmin } from './lib/adminApi'
 import { confirmLeaveDraft } from './lib/draftGuard'
 import { gradeOf, withChoices } from './lib/qcm'
-import { answerCard, isLogged, mkSession } from './lib/session'
+import { advance, answerCard, isLogged, isScored, mkSession, scoreCurrent } from './lib/session'
+import { clearSessionSnapshot, hasAnySessionSnapshot, readSessionSnapshot, saveSessionSnapshot } from './lib/sessionStore'
+import { screenTitle } from './lib/screenTitle'
 import { allCards } from './lib/srs'
 import { CACHE_KEYS, LEGACY_KEYS, parseSeen, parseTheme } from './lib/cache'
-import { initialEntry, normalizeTarget, type NavEntry } from './lib/navHistory'
+import { initialEntry, normalizeTarget, parseHash, type NavEntry } from './lib/navHistory'
 import { loadPref, savePref } from './lib/storage'
 import type { Scope } from './lib/practice'
 import type { Card, Doc, Grade, QuizMode, Session, TypeFilter } from './lib/types'
@@ -17,6 +19,7 @@ import { useCatalog, type CatalogStatus } from './hooks/useCatalog'
 import { useNavHistory } from './hooks/useNavHistory'
 import { useNow } from './hooks/useNow'
 import { useRevision, type Revision } from './hooks/useRevision'
+import { useScreenA11y } from './hooks/useScreenA11y'
 import { useIsMobile, useOnline } from './hooks/useViewport'
 
 export interface Ui {
@@ -37,6 +40,8 @@ export interface Ui {
   session: Session | null
   checks: Record<number, boolean>
   hideAns: boolean
+  /** Confirmation « Quitter ? » affichée en séance (UX-14). */
+  quitAsk: boolean
   shared: boolean
   seen: number[]
 }
@@ -62,13 +67,21 @@ interface AppValue {
   /** Marque une pièce comme consultée (ouverture dans un nouvel onglet sur mobile). */
   markSeen(id: number): void
   toggleTheme(): void
-  startSession(mode: QuizMode, kind: string, label: string, cards: readonly Card[]): void
+  /** Ouvre l'aperçu du document relié à une carte (séance, bilan) ; RETOUR y ramène. */
+  openCardDoc(id: number): void
+  /** `name` : personne interrogée (mode « J’interroge ») ; par défaut, le prénom saisi. */
+  startSession(mode: QuizMode, kind: string, label: string, cards: readonly Card[], name?: string): void
   reveal(): void
   answer(g: Grade): void
   pick(i: number): void
   validate(): void
   next(): void
+  /** QUITTER ou Échap : ouvre la confirmation, ou la referme si elle est ouverte (UX-14). */
   quitSession(): void
+  /** « Continuer » : referme la confirmation. */
+  cancelQuit(): void
+  /** « Quitter » confirmé : la séance se termine, réponses déjà données gardées. */
+  confirmQuit(): void
 }
 
 const Ctx = createContext<AppValue | null>(null)
@@ -82,6 +95,13 @@ function initialDark(): boolean {
   const t = PARAMS.theme || (PARAMS.frame ? null : loadPref(CACHE_KEYS.theme, parseTheme, null, LEGACY_KEYS.theme))
   if (t === 'dark' || t === 'light') return t === 'dark'
   return !window.matchMedia?.('(prefers-color-scheme: light)').matches
+}
+
+/** Planches et aperçus : aucune séance gardée ni relue. */
+const CAN_KEEP_SESSION = !PARAMS.frame && !PARAMS.demo
+
+function tabStore(): Storage | null {
+  try { return window.sessionStorage } catch { return null }
 }
 
 const entryOf = (u: Pick<Ui, 'screen' | 'sel'>): NavEntry => ({ screen: u.screen, sel: u.screen === 'apercu' ? u.sel : null })
@@ -109,7 +129,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     screen: start.screen,
     dark: initialDark(), q: PARAMS.q, type: 'all', ess: false, month: null, sel: start.screen === 'apercu' ? start.sel : PARAMS.sel,
     fiche: cur, practice: cur, scope: 'all', mode: PARAMS.mode, askName: '', askCount: ASK_COUNTS[0],
-    session: null, checks: {}, hideAns: false, shared: false, seen: loadPref(CACHE_KEYS.seen, parseSeen, [], LEGACY_KEYS.seen),
+    session: null, checks: {}, hideAns: false, quitAsk: false, shared: false, seen: loadPref(CACHE_KEYS.seen, parseSeen, [], LEGACY_KEYS.seen),
   }))
   const rev = useRevision(PARAMS.demo)
   const catalog = useCatalog()
@@ -126,19 +146,107 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const syncing = useRef(false)
 
   const patch = useCallback((p: Partial<Ui>) => setUi(u => ({ ...u, ...p })), [])
-  const go = useCallback((screen: Screen, p: Partial<Ui> = {}) => {
+  /** Changement d'écran brut (historique compris), sans le retour d'un document ouvert depuis une carte. */
+  const goRaw = useCallback((screen: Screen, p: Partial<Ui> = {}) => {
     const from = entryOf(uiRef.current)
     // Brouillon de question non enregistré (UX-5) : quitter l'admin demande confirmation. Le popstate a déjà demandé.
     if (!syncing.current && from.screen === 'admin' && screen !== 'admin' && !confirmLeaveDraft()) return
-    const next = { ...uiRef.current, screen, shared: false, ...p }
+    const next = { ...uiRef.current, screen, shared: false, quitAsk: false, ...p }
     uiRef.current = next
-    setUi(u => ({ ...u, screen, shared: false, ...p }))
+    setUi(u => ({ ...u, screen, shared: false, quitAsk: false, ...p }))
     window.scrollTo(0, 0)
     if (isRevScreen(screen)) rev.init()
     if (!syncing.current) navHist.record(from, entryOf(next))
   }, [rev, navHist])
 
   useEffect(() => { rev.init() }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Séance gardée pour l'onglet (E2) : propriétaire et jour fixés au démarrage ; jamais écrite pour un autre compte.
+  const sessionOwner = useRef<string | null>(null)
+  const sessionDay = useRef(today)
+  const keepSession = useCallback((s: Session | null) => {
+    const owner = sessionOwner.current
+    if (!CAN_KEEP_SESSION || !owner) return
+    if (s) saveSessionSnapshot(tabStore(), owner, sessionDay.current, s)
+    else clearSessionSnapshot(tabStore(), owner)
+  }, [])
+  useEffect(() => { keepSession(ui.session) }, [ui.session, keepSession])
+
+  /** Nouvel état de séance : appliqué tout de suite et gardé dans le même geste que la note (E1 + E2). */
+  const setSession = useCallback((s: Session, extra: Partial<Ui> = {}) => {
+    const next = { ...uiRef.current, session: s, quitAsk: false, ...extra }
+    uiRef.current = next
+    setUi(u => ({ ...u, session: s, quitAsk: false, ...extra }))
+    keepSession(s)
+  }, [keepSession])
+
+  // Rechargement en pleine séance (E2) : reprise une fois la progression et les cartes chargées, si l'état relu est valide.
+  const resumePending = useRef(CAN_KEEP_SESSION && parseHash(location.hash)?.screen === 'session')
+  useEffect(() => {
+    if (!resumePending.current || rev.status !== 'ready' || !rev.userId) return
+    resumePending.current = false
+    const u = uiRef.current
+    const s = readSessionSnapshot(tabStore(), rev.userId, today, allCards(rev.content))
+    if (!s || u.screen !== 'revision' || u.session) {
+      if (u.screen === 'revision') navHist.replace(entryOf(u))
+      return
+    }
+    sessionOwner.current = rev.userId
+    sessionDay.current = today
+    goRaw('session', { session: s, checks: {}, hideAns: false })
+  }, [rev.status, rev.userId, rev.content, today, goRaw, navHist])
+
+  /** Séance gardée pour l'onglet, relue et adoptée (retour d'un document après un rechargement). */
+  const adoptTabSession = (): Session | null => {
+    if (!CAN_KEEP_SESSION || !rev.userId || rev.status !== 'ready') return null
+    const saved = readSessionSnapshot(tabStore(), rev.userId, today, allCards(rev.content))
+    if (saved) { sessionOwner.current = rev.userId; sessionDay.current = today }
+    return saved
+  }
+
+  // Document ouvert depuis une carte : RETOUR (ou Échap) ramène à la séance ou au bilan, jamais à la bibliothèque.
+  const docReturn = useRef<Screen | null>(null)
+  const returnFromDoc = (): { screen: Screen; p: Partial<Ui> } | null => {
+    const u = uiRef.current
+    const from = docReturn.current
+    if (from === 'fin' && u.session) return { screen: 'fin', p: {} }
+    if (u.session && !u.session.done) return from === 'session' ? { screen: 'session', p: {} } : null
+    const saved = adoptTabSession()
+    if (saved) return { screen: 'session', p: { session: saved, checks: {}, hideAns: false } }
+    // Rechargé sur le document, progression encore en chargement : l'écran du jour reprendra la séance une fois prêt.
+    const loading = rev.status === 'idle' || rev.status === 'loading'
+    if (CAN_KEEP_SESSION && loading && hasAnySessionSnapshot(tabStore())) {
+      resumePending.current = true
+      return { screen: 'revision', p: {} }
+    }
+    return null
+  }
+  const returnRef = useRef(returnFromDoc)
+  returnRef.current = returnFromDoc
+
+  const go = useCallback((screen: Screen, p: Partial<Ui> = {}) => {
+    const fromDoc = uiRef.current.screen === 'apercu'
+    const back = fromDoc && screen === 'bibliotheque' ? returnRef.current() : null
+    if (fromDoc) docReturn.current = null
+    if (back) goRaw(back.screen, back.p)
+    else goRaw(screen, p)
+  }, [goRaw])
+
+  /** Ouvre l'aperçu du document d'une carte sans perdre la séance : nouvelle entrée d'historique, la séance reste derrière. */
+  const openCardDoc = (id: number) => {
+    const u = uiRef.current
+    if (!catalog.docs.some(d => d.id === id) || (u.screen !== 'session' && u.screen !== 'fin')) return
+    const target: NavEntry = { screen: 'apercu', sel: id }
+    if (u.screen === 'session') {
+      // Une sortie de séance remplacerait son entrée (lot 2) : ici on empile, pour que le retour Android y ramène.
+      syncing.current = true
+      try { goRaw('apercu', { sel: id }) } finally { syncing.current = false }
+      navHist.restore(target)
+    } else {
+      goRaw('apercu', { sel: id })
+    }
+    docReturn.current = u.screen
+  }
 
   // Planches : une fois les cartes d'exemple chargées, on installe la progression et la session de démonstration.
   const demoApplied = useRef(false)
@@ -164,6 +272,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   onPopRef.current = target => {
     const u = uiRef.current
+    if (target.screen === 'session' && !u.session) {
+      // Retour vers une séance après un rechargement (document ouvert depuis une carte) : reprise si elle est gardée.
+      const saved = adoptTabSession()
+      if (saved) {
+        syncing.current = true
+        try { docReturn.current = null; goRaw('session', { session: saved, checks: {}, hideAns: false }) } finally { syncing.current = false }
+        return
+      }
+    }
     const t = normalizeTarget(target, !!u.session)
     const s = u.session
     if (u.screen === 'admin' && t.screen !== 'admin' && !confirmLeaveDraft()) { navHist.restore(entryOf(u)); return }
@@ -198,39 +315,71 @@ export function AppProvider({ children }: { children: ReactNode }) {
       if (!PARAMS.frame) savePref(CACHE_KEYS.seen, seen)
       patch({ seen })
     },
+    openCardDoc,
     toggleTheme: () => { if (!PARAMS.frame) savePref(CACHE_KEYS.theme, ui.dark ? 'light' : 'dark'); patch({ dark: !ui.dark }) },
-    startSession: (mode, kind, label, cards) => {
+    startSession: (mode, kind, label, cards, name) => {
       if (!cards.length) return
-      const s = mkSession(mode, kind, label, cards, mode === 'ask' ? ui.askName.trim() : '')
+      const s = mkSession(mode, kind, label, cards, mode === 'ask' ? (name ?? ui.askName).trim() : '')
+      sessionOwner.current = rev.userId
+      sessionDay.current = today
       go('session', { session: mode === 'self' ? withChoices(s, allCards(rev.content)) : s, checks: {}, hideAns: false })
     },
-    reveal: () => { const s = ui.session; if (s && !s.rev && !s.done) patch({ session: { ...s, rev: true } }) },
+    reveal: () => { const s = uiRef.current.session; if (s && !s.rev && !s.done) setSession({ ...s, rev: true }) },
     pick: i => {
-      const s = ui.session
-      if (s && !s.rev && !s.done && s.queue[s.i]?.ch && i >= 0 && i < s.queue[s.i].ch!.options.length) patch({ session: { ...s, picked: i } })
+      const s = uiRef.current.session
+      if (s && !s.rev && !s.done && s.queue[s.i]?.ch && i >= 0 && i < s.queue[s.i].ch!.options.length) setSession({ ...s, picked: i })
     },
+    // E1 : la réponse au QCM compte dès que la correction s'affiche ; « Suivant » ne fait que changer de carte.
     validate: () => {
-      const s = ui.session
-      if (s && !s.rev && !s.done && s.picked !== null) patch({ session: { ...s, rev: true } })
+      const s = uiRef.current.session
+      if (!s || s.rev || s.done || s.picked === null) return
+      const shown: Session = { ...s, rev: true }
+      const g = gradeOf(shown)
+      const r = g === null ? null : scoreCurrent(shown, g)
+      if (r?.graded) rev.grade(r.graded.card.id, r.graded.grade, today)
+      setSession(r ? r.session : shown)
     },
     next: () => {
-      const s = ui.session
-      const g = s && s.rev ? gradeOf(s) : null
-      if (g !== null) value.answer(g)
+      const s = uiRef.current.session
+      if (!s || !s.rev || s.done) return
+      if (!isScored(s)) {
+        const g = gradeOf(s)
+        if (g !== null) value.answer(g)
+        return
+      }
+      const r = advance(s)
+      if (!r) return
+      if (r.finished) endSession(r.session)
+      else setSession(r.session, { checks: {}, hideAns: false })
     },
     answer: g => {
-      const r = ui.session && answerCard(ui.session, g)
+      const s = uiRef.current.session
+      const r = s && answerCard(s, g)
       if (!r) return
       if (r.graded) rev.grade(r.graded.card.id, r.graded.grade, today)
+      // Note gardée avant le changement de carte : un rechargement ne la rejoue pas.
+      keepSession(r.session)
       if (r.finished) endSession(r.session)
-      else patch({ session: r.session, checks: {}, hideAns: false })
+      else setSession(r.session, { checks: {}, hideAns: false })
     },
     quitSession: () => {
-      const s = ui.session
+      const u = uiRef.current
+      if (u.screen !== 'session' || !u.session || u.session.done) return
+      uiRef.current = { ...u, quitAsk: !u.quitAsk }
+      patch({ quitAsk: !u.quitAsk })
+    },
+    cancelQuit: () => {
+      uiRef.current = { ...uiRef.current, quitAsk: false }
+      patch({ quitAsk: false })
+    },
+    confirmQuit: () => {
+      const s = uiRef.current.session
       if (s && s.mode === 'ask') { endSession(s); return }
       if (s) logSession(s)
       go('revision', { session: null })
     },
   }
+  const doc = ui.screen === 'apercu' ? value.docById(ui.sel) : null
+  useScreenA11y(!PARAMS.frame, ui.screen, screenTitle(ui.screen, doc?.title))
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }

@@ -2,7 +2,7 @@
 
 Pour un bénévole, sans aide. Cocher chaque case au fur et à mesure. Aucun secret ne s'écrit dans ce fichier, dans git ni dans un message WhatsApp : seulement dans les champs prévus des tableaux de bord.
 
-**Hypothèses** : H1. Cible choisie (lot 2) : **Cloudflare Pages, projet `xam-xam-bey`, envoi direct**, `https://xam-xam-bey.pages.dev` ; Netlify et Workers abandonnés. H2. Dépôt GitHub privé sur un compte gratuit : pas de protection de branche, donc une CI rouge **n'empêche pas** un déploiement ; parades : CI verte vérifiée avant chaque envoi (B1) et `npm run deploy:pages` relance `npm run check`. H3. RPO 30 jours, RTO 4 heures, à valider par le PM. H4. Les sections D et C3 demandent Docker Desktop (la CLI Supabase lance `pg_dump` dans un conteneur).
+**Hypothèses** : H1. Cible choisie (lot 2) : **Cloudflare Pages, projet `xam-xam-bey`, envoi direct**, `https://xam-xam-bey.pages.dev` ; Netlify et Workers abandonnés. H2. Dépôt GitHub privé sur un compte gratuit : pas de protection de branche, donc une CI rouge **n'empêche pas** un déploiement ; parades : CI verte vérifiée avant chaque envoi (B1) et `npm run deploy:pages` relance `npm run check`. H3. RPO 30 jours, RTO 4 heures, à valider par le PM. H4. Les sections D et C3 demandent Docker Desktop (la CLI Supabase lance `pg_dump` dans un conteneur). H5 (lot 3). La section M suppose le service worker de Front B tel que décidé en E3 (`sw.js` à la racine, servi sans cache long, procédure de désinscription dans `05-build.md`) ; écrite avant la fin de son code.
 
 Vocabulaire : **URL de prod** = adresse publique du site (ex. `https://xam-xam-bey.pages.dev`). **Réf. projet** = identifiant Supabase visible dans l'URL du tableau de bord (`supabase.com/dashboard/project/<réf>`).
 
@@ -104,7 +104,7 @@ Le 1er de chaque mois, ~15 min, sur l'ordinateur d'un admin (Docker Desktop lanc
 Symptôme : alerte UptimeRobot, e-mail d'échec de la sonde GitHub, ou message d'un responsable.
 1. [ ] Ouvrir l'URL de prod en navigation privée sur téléphone. Erreur Cloudflare ? Voir cloudflarestatus.com.
 2. [ ] La page s'affiche mais pas les PDF ni la connexion : Supabase > tableau de bord. Bandeau **Paused** ? Cliquer **Restore project** (quelques minutes), puis GitHub > Actions > **sonde** > **Run workflow**.
-3. [ ] Pas en pause : Supabase > **Usage** (quota d'egress dépassé ?) et status.supabase.com.
+3. [ ] Pas en pause : Supabase > **Usage** (quota d'egress dépassé ? voir K, repli K3) et status.supabase.com. La sonde dit « le stockage répond 402 ou 403 » : même piste.
 4. [ ] Problème apparu juste après un déploiement (comparer avec Cloudflare > Deployments) : **rollback C1** immédiatement, comprendre ensuite.
 5. [ ] Message au groupe WhatsApp des responsables au début et à la résolution.
 Escalade : mainteneur technique, puis propriétaire de l'organisation Supabase / du compte Cloudflare.
@@ -186,6 +186,87 @@ Même discipline que H (une personne, Docker Desktop, CLI Supabase, consigne « 
 - [ ] I8. Vérifications en prod (Android d'entrée de gamme en 3G, ou « Slow 3G ») : e-mail reçu avec lien **et** code ; le code saisi connecte ; « Renvoyer » attend 60 s ; le bouton retour Android revient à l'écran précédent ; noter une carte, fermer, rouvrir : la note est là ; 3 PDF ouverts ; Admin : une modification de carte est enregistrée. Si bloquant : C1 (la base peut rester).
 - [ ] I9. Annoncer aux responsables, noter date et durée dans le journal.
 
+## J. Clé secrète Supabase : usage, rotation, révocation (audit 21)
+
+Seul `scripts/upload_documents.mjs` (envoi initial des PDF) a besoin d'une clé secrète : elle contourne la RLS, donc accès total à la base et au stockage. Le site, la sonde et l'admin n'utilisent que la clé anon (publique) et la session de la personne connectée. **Aucune clé secrète ne vit en permanence** : on en crée une pour un envoi, on la révoque juste après.
+
+- [ ] J1. Supabase > **Project Settings** > **API Keys** > **Secret keys** > **New secret key**, nom `upload-AAAA-MM-JJ`. Copier la valeur `sb_secret_…` (montrée une seule fois). Ne pas prendre la clé JWT historique `service_role` (`eyJ…`) : elle ne se révoque qu'en changeant le secret JWT du projet, ce qui change aussi la clé anon.
+- [ ] J2. Dans le terminal, à la racine du dépôt : `read -rs SUPABASE_SECRET_KEY; export SUPABASE_SECRET_KEY` (coller, Entrée ; rien ne s'affiche), puis `node scripts/upload_documents.mjs`. Le script refuse de démarrer sans la variable, avec une clé publishable ou un format inconnu ; il n'affiche jamais la clé.
+- [ ] J2b. **PDF corrigé** : lui donner un **nouveau nom de fichier** plutôt que de le renvoyer au même chemin (`upsert`). Sinon le CDN Supabase (7 jours) et les téléphones qui l’ont gardé hors ligne peuvent servir l’ancienne version un temps (lot 3, L3-6 : revalidation en arrière-plan seulement en ligne).
+- [ ] J3. Tout de suite après : `unset SUPABASE_SECRET_KEY`, puis Supabase > API Keys > ligne `upload-…` > **Delete** (révocation immédiate). Noter la date dans le journal.
+
+**Rotation ou révocation en urgence** (clé collée dans un message, un fichier, une capture ; poste perdu ; départ d'un bénévole qui en avait une) :
+- [ ] Clé `sb_secret_…` : API Keys > **Delete** sur la clé concernée. Rien d'autre à changer (le site n'en dépend pas). Contrôle : `select count(*) from storage.objects where bucket_id = 'documents' and updated_at > now() - interval '7 days';` (lecture seule) ne montre pas d'envoi inconnu ; Authentication > Users sans compte inconnu ; table `admins` inchangée.
+- [ ] Clé JWT historique `service_role` exposée : changer le secret JWT du projet (Project Settings > **JWT Keys**). La clé anon change aussi : mettre la nouvelle dans `.env.local`, redéployer (section B), mettre à jour le secret GitHub `SUPABASE_ANON_KEY` (section F), relancer la sonde. Toutes les sessions sont déconnectées.
+- [ ] Historique du shell : `grep -c -E 'SERVICE_ROLE|sb_secret_' ~/.zsh_history ~/.bash_history 2>/dev/null`. Un résultat non nul = la clé de cette ligne est exposée : la révoquer comme ci-dessus, puis supprimer les lignes concernées de l'historique.
+- Une fois par an, même sans incident : API Keys, supprimer toute clé secrète oubliée (il ne doit y en avoir aucune entre deux envois).
+
+## K. Egress Supabase : suivi et repli (audit 20)
+
+Quota gratuit : **5 Go par mois d'egress non mis en cache** et 5 Go de cache CDN, compté par cycle de facturation. Estimation de l'audit : 4,6 Go avec 300 personnes actives (20 PDF chacune). Les PDF sont envoyés avec `Cache-Control: max-age=604800` (7 jours) : les relectures d'un même PDF passent en partie par le cache CDN. Le service worker du lot 3 (E3) garde chaque PDF ouvert sur l'appareil (150 Mo au plus) : une relecture sur le même téléphone ne coûte plus rien. Il ne réduit pas la première ouverture, donc l'estimation de 4,6 Go reste la borne haute du mois de lancement.
+
+**K1. Relevé** (mainteneur technique, **chaque lundi** pendant les 8 semaines qui suivent la mise en production du lot 3, puis le 1er du mois avec la sauvegarde D) :
+- [ ] Supabase > organisation > **Usage** (choisir le projet `xam-xam-bey`) : lire **Egress** et **Cached Egress** depuis le début du cycle (dates du cycle en haut de la page).
+- [ ] Projection : `egress du cycle ÷ jours écoulés × 30`. Noter les deux chiffres dans le journal.
+- [ ] Seuils : projection **> 3,5 Go** = prévenir l'orchestrateur et préparer K3 (une journée de travail) ; projection **> 4,5 Go** ou egress réel > 4 Go = déclencher K3 sans attendre.
+- Supabase prévient aussi par e-mail les propriétaires de l'organisation quand un quota est dépassé. Ce message arrive trop tard pour servir d'alerte.
+
+**K2. Ce que fait la sonde** : chaque jour, un `HEAD` sur un PDF (quelques octets) vérifie que le stockage répond 200 et que l'en-tête de cache longue durée est présent (avertissement sinon). Elle **ne lit pas la consommation** : aucune API lisible avec la clé anon ne la donne, et la Management API exige un jeton personnel `sbp_…` qui ouvre tout le compte Supabase. Un tel jeton dans GitHub serait un secret plus dangereux que le risque couvert : refusé. Le relevé K1 reste manuel.
+
+**K3. Repli : servir les PDF depuis Cloudflare** (bande passante Pages illimitée). Deux options :
+
+| Option | Ce que ça implique | Effort |
+|---|---|---|
+| **A. PDF dans le build Pages** (retenue) | `site/f-min/` (170 fichiers, 125 Mo, le plus gros 7,3 Mo, sous la limite de 25 Mio par fichier ; 20 000 fichiers au plus) copié dans `dist/f/` par `deploy-pages.sh` ; `storageUrls.file` pointe vers `/f/<chemin>` pour les fichiers présents dans un manifeste généré au build, sinon vers Supabase. Même origine : CSP et service worker inchangés. Pages n'envoie que les fichiers modifiés. Limite : un PDF ajouté par l'admin reste servi par Supabase jusqu'au déploiement suivant ; `site/f-min` n'est pas dans git (OPS-20), le poste qui déploie doit le régénérer (`scripts/compress_pdfs.py`). | ~1 jour : Front B (URL + manifeste), SRE (copie au déploiement, `_headers` pour `/f/*`), QA (3 PDF, hors ligne). |
+| B. Bucket R2 (gratuit jusqu'à 10 Go stockés, sortie gratuite) | Adresse publique `*.r2.dev` limitée en débit et déconseillée en production par Cloudflare ; un domaine propre demande un nom de domaine (budget nul). L'envoi par l'admin doit passer par un Worker qui vérifie la session Supabase. | 2 à 3 jours, plus un secret Cloudflare à gérer. |
+
+Pendant la préparation : prévenir les responsables (WhatsApp) que seuls les documents déjà ouverts restent lisibles si le quota est dépassé. Décision et ADR : back et PM.
+
+## L. Audit des privilèges par défaut en production (lecture seule)
+
+Supabase > **SQL Editor**, une fois après chaque migration et une fois par trimestre. Ces requêtes ne modifient rien.
+
+```sql
+select r.rolname as proprietaire, coalesce(n.nspname, '(tous)') as schema,
+       case d.defaclobjtype when 'r' then 'tables' when 'S' then 'sequences' when 'f' then 'fonctions'
+                            when 'T' then 'types' when 'n' then 'schemas' end as objets,
+       case when a.grantee = 0 then 'PUBLIC' else a.grantee::regrole::text end as beneficiaire,
+       string_agg(a.privilege_type, ', ' order by a.privilege_type) as privileges
+from pg_default_acl d
+join pg_roles r on r.oid = d.defaclrole
+left join pg_namespace n on n.oid = d.defaclnamespace
+cross join lateral aclexplode(d.defaclacl) a
+where r.rolname in ('postgres', 'supabase_admin') and (n.nspname is null or n.nspname = 'public')
+group by 1, 2, 3, 4 order by 1, 2, 3, 4;
+
+select c.relname, pg_get_userbyid(c.relowner) as proprietaire
+from pg_class c
+where c.relnamespace = 'public'::regnamespace and c.relkind in ('r', 'p', 'v', 'm')
+  and pg_get_userbyid(c.relowner) <> 'postgres';
+```
+
+Ce qu'il faut trouver :
+- **postgres, public, tables**, pour `anon` et `authenticated` : au plus `DELETE, INSERT, SELECT, UPDATE`. **Jamais** `TRUNCATE`, `REFERENCES`, `TRIGGER` ni `MAINTAIN` (retirés par la migration du lot 2, même contrôle que `supabase/tests/04_lot2_test.sql`). Aucune ligne pour eux est aussi correct (projets récents : nouvelles tables non exposées par défaut).
+- **supabase_admin, public** : Supabase y accorde souvent tous les droits à `anon` et `authenticated`. Sans risque **tant que la seconde requête ne renvoie aucune ligne** (aucune table de `public` créée par supabase_admin). Ne pas modifier ces droits : ce rôle appartient à Supabase.
+- Autres lignes (séquences, fonctions, propriétaire lui-même) : à recopier dans le journal pour comparer d'un trimestre à l'autre, sans action.
+- Seconde requête : **0 ligne** attendue. Une ligne = une table créée hors migration (éditeur, extension) : la signaler au Back.
+- Une anomalie se corrige par une **nouvelle migration** (`supabase db push`), jamais dans l'éditeur. Copier le résultat au Back.
+
+## M. Mise en production du lot 3 (sans migration)
+
+Une personne, un ordinateur, la discipline de H (« Si échec » : s'arrêter). Pas de Docker ni de CLI Supabase : aucune base touchée.
+
+- [ ] M0. PR du lot 3 fusionnée, CI verte sur `main` (B1), verdict QA = GO (`12-qa-lot3.md`).
+- [ ] M1. Aucune migration : `git fetch && git diff --name-only 65ed46e origin/main -- supabase/migrations` n'affiche **rien**. Sinon s'arrêter et demander à l'orchestrateur (procédure I à suivre).
+- [ ] M2. Front : section B (B2 à B5) depuis `main` propre. wrangler est figé à 4.150.0 dans `scripts/deploy-pages.sh`.
+- [ ] M3. **Service worker**, Chrome ordinateur, fenêtre normale : DevTools > **Application** > **Service workers** : `sw.js` « activated and is running ». `curl -sI https://xam-xam-bey.pages.dev/sw.js | grep -i cache-control` montre `no-cache` ou `max-age=0` (sinon une correction met des heures à arriver : signaler à Front B). Ouvrir 2 PDF : ils apparaissent dans **Cache Storage**. Network : aucune requête vers `fonts.googleapis.com` ni `fonts.gstatic.com`.
+- [ ] M4. **Hors ligne** : DevTools > Network > **Offline**, recharger : l'application s'affiche, le bandeau dit « Les documents déjà ouverts sur cet appareil restent lisibles. », les 2 PDF de M3 s'ouvrent, un PDF jamais ouvert affiche une erreur claire. Repasser en ligne : noter une carte, la note est enregistrée (`rpc/save_progress` 200).
+- [ ] M5. **Android d'entrée de gamme en 3G** : premier affichage pas plus lent qu'avant ; répondre à une carte, voir la correction, recharger tout de suite : la réponse compte (E1) ; recharger au milieu d'une séance : elle reprend (E2) ; mode avion : PDF déjà ouvert lisible.
+- [ ] M6. Admin : importer un fichier Excel dont la colonne Source reprend le titre d'un document de la même zone : la question est reliée au document (E4).
+- [ ] M7. Annoncer, noter date et durée dans le journal, commencer le relevé K1.
+
+**Retour arrière avec un service worker** : C1 remet les anciens fichiers, mais **ne retire pas** le service worker déjà installé sur les téléphones. Si le problème vient du service worker (page figée sur une ancienne version, PDF qui ne se rafraîchit pas, boucle de rechargement) : appliquer la **procédure de secours de désinscription** écrite par Front B dans `05-build.md`, « Lot 3 > Front B » (envoi d'un `sw.js` qui se désinscrit et vide ses caches, par la section B, puis contrôle M3). Ne jamais utiliser l'en-tête `Clear-Site-Data: "storage"` : il effacerait aussi la copie locale des notes. Dépannage d'un seul téléphone : Chrome > ⋮ > **Paramètres** > **Paramètres des sites** > **Toutes les données des sites** > `xam-xam-bey.pages.dev` > **Effacer** (les notes non synchronisées de cet appareil sont perdues : synchroniser d'abord en ligne).
+
 ## Journal d'exploitation
 
 | Date | Exercice / incident | Durée | Remarque |
@@ -193,4 +274,5 @@ Même discipline que H (une personne, Docker Desktop, CLI Supabase, consigne « 
 | 2026-10-13 | Mise en place SMTP Gmail, test 3 adresses extérieures | | 3 e-mails reçus (section A) |
 | 2026-10-13 | Mise en production lot 1 (H1 à H10) | | Sauvegarde faite ; historique réparé pour 20261012191639 (appliquée à la main) ; migration 20261013090000 poussée ; front déployé par deploy:pages ; H8, H9, H10 OK. Mot de passe de la base changé (exposé en conversation). |
 | 2026-10-13 | Mise en production lot 2 (I1 à I8) | | Sauvegarde ; PG 17.11 ; migration 20261014090000 poussée et vérifiée ; front déployé par deploy:pages ; connexion par code OK après correction du modèle Magic Link (et longueur du code) ; I8 OK. Mot de passe de la base changé deux fois (exposé en conversation). |
+| 2026-10-13 | Clé service_role (JWT) trouvée en clair dans ~/.zsh_history (premier envoi des PDF) | | Lignes effacées ; site passé à la clé sb_publishable (deploy depuis un worktree main propre) ; secrets GitHub de la sonde créés, sonde verte ; clés JWT historiques désactivées ; REST et Auth vérifiés en 200 avec la nouvelle clé. |
 | | | | |
