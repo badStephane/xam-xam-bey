@@ -11,5 +11,5 @@ export function useRevisionOffline(): boolean {
 /** Bandeau hors réseau de la révision (F1) : les notes restent sur l'appareil et partent au retour du réseau. */
 export function OfflineNotice() {
   if (!useRevisionOffline()) return null
-  return <div className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: 14 }}>{OFFLINE_NOTICE}</span></div>
+  return <div className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: '0.875rem' }}>{OFFLINE_NOTICE}</span></div>
 }

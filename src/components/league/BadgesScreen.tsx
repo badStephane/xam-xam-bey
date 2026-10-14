@@ -63,7 +63,7 @@ export function BadgesScreen() {
         <Segments className="bar10 gm" count={BAR} on={Math.round(share * BAR)} />
         <span className="lbl">{rev.prog.xp} XP{next ? ` · ${next.name} à ${next.from} XP` : ' · GRADE LE PLUS HAUT'}</span>
       </div>
-      {lg.load === 'offline' && lg.data && <p className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: 14 }}>Hors réseau : badges de ligue et de défi de la dernière connexion.</span></p>}
+      {lg.load === 'offline' && lg.data && <p className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: '0.875rem' }}>Hors réseau : badges de ligue et de défi de la dernière connexion.</span></p>}
       {lg.load === 'error' && (
         <div className="warn-inline" role="alert">
           <span>Les badges de ligue et de défi n’ont pas pu être chargés.</span>

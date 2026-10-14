@@ -66,7 +66,7 @@ export function PseudosAdmin() {
 
   useEffect(() => { if (!offline) void fetchPage(query, null) }, [offline, query, fetchPage])
 
-  if (offline) return <p className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: 14 }}>Hors réseau : la modération demande du réseau.</span></p>
+  if (offline) return <p className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: '0.875rem' }}>Hors réseau : la modération demande du réseau.</span></p>
   const submit = (e: FormEvent) => { e.preventDefault(); setQuery(search) }
   // Ordre du serveur : signalés d'abord, puis les plus récents (16-design P-H).
   const shown = reportedOnly ? rows.filter(r => r.reports > 0) : rows

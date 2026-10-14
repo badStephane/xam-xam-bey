@@ -13,13 +13,13 @@ export function ImportDocLinks({ cards }: { cards: readonly ImportCard[] }) {
   return (
     <div className="col g6">
       <h3 id="imp-doc-h" className="f-lbl" style={{ margin: 0 }}>DOCUMENTS RELIÉS · {summary.linked} SUR {cards.length}</h3>
-      <p style={{ margin: 0, fontSize: 14 }}>{docSummaryText(summary)}</p>
+      <p style={{ margin: 0, fontSize: '0.875rem' }}>{docSummaryText(summary)}</p>
       {summary.ambiguous > 0 && (
         <p className="note-box" role="note">Plusieurs documents de la zone portent le nom indiqué dans certaines lignes : ces questions sont importées sans document, à relier dans l’éditeur.</p>
       )}
       <details open={withSrc.length <= OPEN_MAX_LINES}>
-        <summary style={{ cursor: 'pointer', fontSize: 14, minHeight: 44, display: 'flex', alignItems: 'center' }}>Détail par ligne ({withSrc.length})</summary>
-        <ul aria-labelledby="imp-doc-h" className="col g6" style={{ margin: 0, paddingLeft: 18, fontSize: 14 }}>
+        <summary style={{ cursor: 'pointer', fontSize: '0.875rem', minHeight: 44, display: 'flex', alignItems: 'center' }}>Détail par ligne ({withSrc.length})</summary>
+        <ul aria-labelledby="imp-doc-h" className="col g6" style={{ margin: 0, paddingLeft: 18, fontSize: '0.875rem' }}>
           {withSrc.map(c => (
             <li key={c.line}>
               <strong>Ligne {c.line}</strong> · zone {p2(c.zone)} : {c.doc.kind === 'linked' ? docLinkText(c.doc, c.src) : <em>{docLinkText(c.doc, c.src)}</em>}

@@ -33,21 +33,21 @@ export function Fiches() {
           </div>
           {!f && (
             <>
-              <p style={{ margin: 0, fontSize: 16, color: 'var(--ink2)' }}>Cette fiche sera publiée au début du mois de {month.toLowerCase()}. Les pièces de la zone sont déjà dans la bibliothèque.</p>
+              <p style={{ margin: 0, fontSize: '1rem', color: 'var(--ink2)' }}>Cette fiche sera publiée au début du mois de {month.toLowerCase()}. Les pièces de la zone sont déjà dans la bibliothèque.</p>
               <button className="ink-btn big" style={{ alignSelf: 'flex-start' }} onClick={() => go('bibliotheque', { month: n, q: '', type: 'all', ess: false })}>Voir les pièces de la zone</button>
             </>
           )}
-          {f?.intro && <p style={{ margin: 0, fontSize: 16, lineHeight: 1.6, color: 'var(--ink2)' }}>{f.intro}</p>}
+          {f?.intro && <p style={{ margin: 0, fontSize: '1rem', lineHeight: 1.6, color: 'var(--ink2)' }}>{f.intro}</p>}
           {f?.sections?.map((s, i) => (
             <section key={i} className="dash">
               <h3>{s.h}</h3>
               <ul>{(s.items || []).map((it, k) => <li key={k}><Md text={it} /></li>)}</ul>
-              {s.src && <span className="d-meta" style={{ fontSize: 11, lineHeight: 1.5 }}>SOURCES · {s.src}</span>}
+              {s.src && <span className="d-meta" style={{ fontSize: '0.6875rem', lineHeight: 1.5 }}>SOURCES · {s.src}</span>}
             </section>
           ))}
           {!!f?.vigilance?.length && (
             <div className="vg" role="note">
-              <strong className="f-lbl" style={{ fontSize: 11, color: 'var(--stamp)' }}>! POINTS DE VIGILANCE · LES SOURCES SE CONTREDISENT</strong>
+              <strong className="f-lbl" style={{ fontSize: '0.6875rem', color: 'var(--stamp)' }}>! POINTS DE VIGILANCE · LES SOURCES SE CONTREDISENT</strong>
               <ul>{f.vigilance.map((v, k) => <li key={k}><Md text={v} /></li>)}</ul>
             </div>
           )}

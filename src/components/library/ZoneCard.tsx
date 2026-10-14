@@ -16,12 +16,12 @@ export function ZoneCard() {
   return (
     <section className="sheet zone-card punch">
       <div className="row" style={{ justifyContent: 'space-between' }}>
-        <span className="cote" style={{ fontSize: 10.5 }}>CE MOIS-CI · ZONE {p2(cur)} · {month.toUpperCase()}</span>
+        <span className="cote" style={{ fontSize: '0.6875rem' }}>CE MOIS-CI · ZONE {p2(cur)} · {month.toUpperCase()}</span>
         {ready && st.cards > 0 && <span className="stamp">QUÊTE {st.acq}/{st.cards}</span>}
       </div>
       <h2>{theme}</h2>
-      {goal && <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.5, color: 'var(--ink2)', maxWidth: 560 }}>{plain(goal)}</p>}
-      <span className="d-meta" style={{ fontSize: 11 }}>
+      {goal && <p style={{ margin: 0, fontSize: '0.90625rem', lineHeight: 1.5, color: 'var(--ink2)', maxWidth: 560 }}>{plain(goal)}</p>}
+      <span className="d-meta" style={{ fontSize: '0.6875rem' }}>
         {plural(docs.length, 'PIÈCE', 'PIÈCES')} · {plural(docs.filter(d => d.ess).length, 'ESSENTIEL', 'ESSENTIELS')} · {plural(docs.filter(d => ui.seen.includes(d.id)).length, 'CONSULTÉE', 'CONSULTÉES')}
       </span>
       <div className="row" style={{ paddingTop: 4 }}>

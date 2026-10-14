@@ -6,6 +6,7 @@ import { createRequestCounter, runLatest } from '../../lib/adminFlow'
 import { editorFromRow, isEditorDirty, newEditor, publishError, type EditorState } from '../../lib/cardEditor'
 import { checkCard, readQcm, type CardDraft } from '../../lib/cardRules'
 import { TemplateLink } from './TemplateLink'
+import { LIST_PAGE_SIZE, moreLabel, nextLimit } from '../../lib/listPage'
 
 /** Import Excel chargé à la demande : ni sa logique ni la bibliothèque .xlsx n'entrent dans le bundle initial. */
 const CardsImport = lazy(() => import('./CardsImport').catch((err: unknown) => {
@@ -68,7 +69,7 @@ function CardEditor({ initial, onSaved, onCancel, onDirtyChange }: { initial: Ed
       <div className="col g6"><label htmlFor="ed-src" className="f-lbl">SOURCE AFFICHÉE</label><input id="ed-src" className="field" value={st.src} onChange={e => setSt({ ...st, src: e.target.value })} placeholder="Nom du ou des documents" /></div>
       <div className="col g6"><label htmlFor="ed-q" className="f-lbl">QUESTION</label><textarea id="ed-q" className="field" rows={2} value={st.draft.q} onChange={e => set({ q: e.target.value })} /></div>
       <div className="col g6"><label htmlFor="ed-a" className="f-lbl">RÉPONSE COMPLÈTE · **GRAS** POUR L’ESSENTIEL</label><textarea id="ed-a" className="field" rows={3} value={st.draft.a} onChange={e => set({ a: e.target.value })} /></div>
-      <p id="ed-qcm-help" className="muted" style={{ margin: 0, fontSize: 14 }}>QCM facultatif. Sans QCM, l’application propose les réponses d’autres questions de la zone. Avec QCM : une bonne réponse courte et 1 à 3 mauvaises.</p>
+      <p id="ed-qcm-help" className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>QCM facultatif. Sans QCM, l’application propose les réponses d’autres questions de la zone. Avec QCM : une bonne réponse courte et 1 à 3 mauvaises.</p>
       <div className="col g6"><label htmlFor="ed-ok" className="f-lbl" style={{ color: 'var(--green)' }}>✓ BONNE RÉPONSE COURTE (QCM)</label><input id="ed-ok" className="field" value={st.draft.ok} onChange={e => set({ ok: e.target.value })} /></div>
       {st.draft.no.map((w, i) => (
         <div key={i} className="col g6"><label htmlFor={`ed-no-${i}`} className="f-lbl" style={{ color: 'var(--stamp)' }}>✕ MAUVAISE RÉPONSE {i + 1}{i > 0 ? ' · FACULTATIVE' : ''} · PLAUSIBLE, CLAIREMENT FAUSSE</label>
@@ -76,12 +77,12 @@ function CardEditor({ initial, onSaved, onCancel, onDirtyChange }: { initial: Ed
       ))}
       <div className="col g6"><label htmlFor="ed-note" className="f-lbl">VIGILANCE · FACULTATIF (SOURCES EN DÉSACCORD)</label><textarea id="ed-note" className="field" rows={2} value={st.draft.note} onChange={e => set({ note: e.target.value })} /></div>
       {(check.errors.length > 0 || check.warnings.length > 0) && (
-        <ul className="col g6" style={{ margin: 0, paddingLeft: 18, fontSize: 14 }} aria-live="polite">
+        <ul className="col g6" style={{ margin: 0, paddingLeft: 18, fontSize: '0.875rem' }} aria-live="polite">
           {check.errors.map(e => <li key={e} style={{ color: 'var(--stamp)' }}>{e}</li>)}
           {check.warnings.map(w => <li key={w} style={{ color: 'var(--ochre)' }}>{w}</li>)}
         </ul>
       )}
-      {msg && <p role={msg.error ? 'alert' : 'status'} style={{ margin: 0, fontSize: 14, color: msg.error ? 'var(--stamp)' : 'var(--green)' }}>{msg.text}</p>}
+      {msg && <p role={msg.error ? 'alert' : 'status'} style={{ margin: 0, fontSize: '0.875rem', color: msg.error ? 'var(--stamp)' : 'var(--green)' }}>{msg.text}</p>}
       <div className="row">
         <button className="ink-btn big" disabled={busy || check.errors.length > 0} onClick={() => void save('published')}>Publier</button>
         <button className="ink-line big" disabled={busy || check.errors.length > 0} onClick={() => void save('draft')}>Enregistrer en brouillon</button>
@@ -101,9 +102,9 @@ function CardItem({ r, docTitle, onEdit, onChanged }: { r: CardRow; docTitle: st
   return (
     <li className="sheet punch doc">
       <div className="doc-top"><span className="cote">{r.id.toUpperCase()}</span><span className="stamp" style={draft ? { borderColor: 'var(--ochre)', color: 'var(--ochre)' } : { borderColor: 'var(--green)', color: 'var(--green)' }}>{draft ? 'BROUILLON' : 'PUBLIÉE'}</span></div>
-      <span className="d-title" style={{ fontSize: 15.5 }}>{r.q}</span>
+      <span className="d-title" style={{ fontSize: '0.96875rem' }}>{r.q}</span>
       <span className="d-meta">{docTitle || 'SANS DOCUMENT LIÉ'}</span>
-      {err && <p role="alert" style={{ margin: 0, fontSize: 13, color: 'var(--stamp)' }}>{err}</p>}
+      {err && <p role="alert" style={{ margin: 0, fontSize: '0.8125rem', color: 'var(--stamp)' }}>{err}</p>}
       <div className="row">
         <button className="ink-line" onClick={onEdit}>Modifier</button>
         <button className="ink-line" onClick={() => {
@@ -180,7 +181,11 @@ export function CardsAdmin() {
   const [pending, setPending] = useState<{ run(): void } | null>(null)
   const [importOpen, setImportOpen] = useState(false)
   const [imported, setImported] = useState<string | null>(null)
+  const [limit, setLimit] = useState(LIST_PAGE_SIZE)
+  const listRef = useRef<HTMLUListElement>(null)
   useUnsavedDraft(editor !== null && dirty)
+  // Nouvelle zone ou nouveau filtre : on repart de la première page.
+  useEffect(() => { setLimit(LIST_PAGE_SIZE) }, [zone, docFilter, statusFilter])
 
   const closeEditor = useCallback(() => { setEditor(null); setDirty(false); setPending(null) }, [])
   /** Quitter l'éditeur (zone, Annuler) : confirmation seulement si la saisie a changé. */
@@ -193,6 +198,13 @@ export function CardsAdmin() {
   const titles = useMemo(() => new Map(docs.map(d => [d.id, `${d.cote} · ${d.title}`])), [docs])
   const shown = rows.filter(r => (docFilter === 'all' || r.document_id === docFilter) && (statusFilter === 'all' || r.status === statusFilter))
   const drafts = rows.filter(r => r.status === 'draft').length
+  const more = moreLabel(limit, shown.length)
+  /** Le focus passe à la première question ajoutée : le bouton peut disparaître (dernière page). */
+  const showMore = () => {
+    const first = limit
+    setLimit(nextLimit(limit, shown.length))
+    requestAnimationFrame(() => listRef.current?.children[first]?.querySelector<HTMLElement>('button')?.focus())
+  }
   const zoneDocs = docs.filter(d => d.th === zone)
   const openImport = () => { setImported(null); setImportOpen(true) }
   const finishImport = (message: string) => { setImportOpen(false); setImported(message); void refresh() }
@@ -238,7 +250,13 @@ export function CardsAdmin() {
             {load.busy && <p className="mono" role="status" style={{ color: 'var(--acc)' }}>CHARGEMENT…</p>}
             {load.error && <p role="alert" style={{ color: 'var(--err)' }}>{load.error}</p>}
             {!load.busy && !load.error && (shown.length
-              ? <ul className="grid-docs" style={{ listStyle: 'none', margin: 0, padding: 0 }}>{shown.map(r => <CardItem key={r.id} r={r} docTitle={r.document_id ? titles.get(r.document_id) || '' : ''} onEdit={() => setEditor(editorFromRow(r))} onChanged={() => void refresh()} />)}</ul>
+              ? (
+                <>
+                  <ul ref={listRef} className="grid-docs" style={{ listStyle: 'none', margin: 0, padding: 0 }}>{shown.slice(0, limit).map(r => <CardItem key={r.id} r={r} docTitle={r.document_id ? titles.get(r.document_id) || '' : ''} onEdit={() => setEditor(editorFromRow(r))} onChanged={() => void refresh()} />)}</ul>
+                  {shown.length > LIST_PAGE_SIZE && <p className="lbl" role="status" style={{ margin: 0 }}>{Math.min(limit, shown.length)} SUR {shown.length} QUESTIONS AFFICHÉES</p>}
+                  {more && <button className="btn" style={{ alignSelf: 'flex-start' }} onClick={showMore}>{more}</button>}
+                </>
+              )
               : <p className="muted" style={{ margin: 0 }}>Aucune question pour ce filtre.</p>)}
           </section>
         )}

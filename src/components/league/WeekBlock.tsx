@@ -16,8 +16,8 @@ export function WeekBlock() {
   const league = s.status === 'active' || s.status === 'not_started' || s.status === 'pending'
   return (
     <section className="box week-block" aria-labelledby="wk-h">
-      <h2 id="wk-h" className="h-sec" style={{ fontSize: 17 }}>CETTE SEMAINE</h2>
-      <p className="mono" style={{ margin: 0, fontSize: 13 }}>
+      <h2 id="wk-h" className="h-sec" style={{ fontSize: '1.0625rem' }}>CETTE SEMAINE</h2>
+      <p className="mono" style={{ margin: 0, fontSize: '0.8125rem' }}>
         {ch && <>DÉFI {challengeCount(ch)}{offline ? ' (dernière connexion)' : ''}</>}
         {ch && league && ' · '}
         {league && <>{leagueName(s.tier).toUpperCase()} {offline ? 'Hors réseau' : me ? ordinal(me.rank).toUpperCase() : ''}</>}

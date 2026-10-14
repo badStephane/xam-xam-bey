@@ -41,13 +41,13 @@ function SentGate() {
       <form className="col g8" style={{ width: '100%' }} onSubmit={submit} noValidate>
         <label htmlFor="signin-code" className="f-lbl">CODE À 6 CHIFFRES</label>
         <input id="signin-code" className="field mono" type="text" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]*" maxLength={CODE_LENGTH + 4}
-          value={value} onChange={e => setValue(normalizeCode(e.target.value))} placeholder="123456" style={{ letterSpacing: '.3em', fontSize: 20 }}
+          value={value} onChange={e => setValue(normalizeCode(e.target.value))} placeholder="123456" style={{ letterSpacing: '.3em', fontSize: '1.25rem' }}
           aria-invalid={code?.status === 'error'} aria-describedby={code?.status === 'error' ? 'signin-code-error' : undefined} />
-        {code?.status === 'error' && <p id="signin-code-error" role="alert" style={{ margin: 0, fontSize: 14, color: 'var(--stamp)' }}>{code.message}</p>}
+        {code?.status === 'error' && <p id="signin-code-error" role="alert" style={{ margin: 0, fontSize: '0.875rem', color: 'var(--stamp)' }}>{code.message}</p>}
         <button type="submit" className="ink-btn big" style={{ minHeight: 50 }} disabled={verifying}>{verifying ? 'Vérification…' : 'Valider le code'}</button>
       </form>
-      <p style={{ fontSize: 14 }}>Rien reçu ? Regardez dans les indésirables, puis renvoyez le lien.</p>
-      {notice && <p role={notice.kind === 'error' ? 'alert' : 'status'} style={{ margin: 0, fontSize: 14, color: notice.kind === 'error' ? 'var(--stamp)' : 'var(--green)' }}>{notice.text}</p>}
+      <p style={{ fontSize: '0.875rem' }}>Rien reçu ? Regardez dans les indésirables, puis renvoyez le lien.</p>
+      {notice && <p role={notice.kind === 'error' ? 'alert' : 'status'} style={{ margin: 0, fontSize: '0.875rem', color: notice.kind === 'error' ? 'var(--stamp)' : 'var(--green)' }}>{notice.text}</p>}
       <div className="row" style={{ width: '100%' }}>
         <button type="button" className="ink-line" style={{ flex: 1 }} disabled={left > 0 || resending} onClick={() => { if (!PARAMS.frame) rev.resendLink() }}>
           {resending ? 'Envoi…' : left > 0 ? `Renvoyer dans ${left} s` : 'Renvoyer le lien'}
@@ -79,7 +79,7 @@ export function SignInForms() {
         <label htmlFor="signin-email" className="f-lbl">ADRESSE E-MAIL</label>
         <input ref={input} id="signin-email" className="field" type="email" inputMode="email" autoComplete="email" required value={email}
           onChange={e => setEmail(e.target.value)} placeholder="prenom@exemple.sn" aria-invalid={step === 'error'} aria-describedby={step === 'error' ? 'signin-error' : undefined} />
-        {step === 'error' && <p id="signin-error" role="alert" style={{ margin: 0, fontSize: 14, color: 'var(--stamp)' }}>{message}</p>}
+        {step === 'error' && <p id="signin-error" role="alert" style={{ margin: 0, fontSize: '0.875rem', color: 'var(--stamp)' }}>{message}</p>}
         <button type="submit" className="ink-btn big" style={{ marginTop: 4, minHeight: 50 }} disabled={step === 'sending'}>{step === 'sending' ? 'Envoi…' : 'Recevoir le lien de connexion'}</button>
       </form>
     </GateCard>

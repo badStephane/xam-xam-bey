@@ -41,8 +41,8 @@ function LeagueLine({ data, previous, load, redo, capped }: { data: LeagueState 
   return (
     <div className="col g6">
       {line}
-      {redo && <span className="muted" style={{ fontSize: 14 }}>Cartes déjà comptées aujourd’hui pour la ligue.</span>}
-      {!redo && capped && <span className="muted" style={{ fontSize: 14 }}>Plafond du jour atteint (300 XP) : les cartes suivantes comptent pour votre niveau, pas pour la ligue.</span>}
+      {redo && <span className="muted" style={{ fontSize: '0.875rem' }}>Cartes déjà comptées aujourd’hui pour la ligue.</span>}
+      {!redo && capped && <span className="muted" style={{ fontSize: '0.875rem' }}>Plafond du jour atteint (300 XP) : les cartes suivantes comptent pour votre niveau, pas pour la ligue.</span>}
     </div>
   )
 }
@@ -118,7 +118,7 @@ export function FinGamification({ session }: { session: Session }) {
       {fresh.slice(0, MAX_SHOWN_BADGES).map(b => (
         <section key={b.id} className="box fade-in" role="status">
           <b>Nouveau badge : {b.name}{b.count > 1 ? ` ×${b.count}` : ''}</b>
-          <span className="muted" style={{ fontSize: 14 }}>{b.rule}</span>
+          <span className="muted" style={{ fontSize: '0.875rem' }}>{b.rule}</span>
         </section>
       ))}
       {fresh.length > MAX_SHOWN_BADGES && <p className="muted" style={{ margin: 0 }}>et {fresh.length - MAX_SHOWN_BADGES} autres</p>}

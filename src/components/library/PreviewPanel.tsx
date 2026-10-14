@@ -14,7 +14,7 @@ export function PreviewPanel({ d }: { d: Doc }) {
       <div className="sheet r10">
         <div className="panel-h"><span>{d.cote}</span><button onClick={() => patch({ sel: null })} aria-label="Fermer l’aperçu">✕</button></div>
         <div className="col g12" style={{ padding: 14 }}>
-          <h2 style={{ margin: 0, font: '800 21px/1.15 var(--f-doc)' }}>{d.title}</h2>
+          <h2 style={{ margin: 0, font: '800 1.3125rem/1.15 var(--f-doc)' }}>{d.title}</h2>
           <div className="pdf-thumb"><LazyPdfViewer key={d.id} file={d.file} title={d.title} maxPages={1} /></div>
           <dl className="facts">
             <dt>FONDS</dt><dd>{d.folder}</dd>

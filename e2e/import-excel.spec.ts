@@ -60,8 +60,9 @@ test.describe('Import Excel des questions (admin)', () => {
     const rows = sql(`select zone || ':' || position || ':' || status || ':' || (qcm is not null) from public.cards where q like '${MARK}' order by zone, position`)
     expect(rows.split('\n')).toEqual([`11:${before[11] + 1}:draft:true`, `11:${before[11] + 2}:draft:false`, `12:${before[12] + 1}:draft:false`])
 
-    // Liste rechargée : les brouillons apparaissent dans leur zone.
+    // Liste rechargée : les brouillons apparaissent dans leur zone (filtre BROUILLONS : la liste s'affiche par pages de 50).
     await page.getByRole('button', { name: /^11 / }).click()
+    await page.getByRole('button', { name: 'BROUILLONS', exact: true }).click()
     await expect(page.getByText('[E2E import] Troisième question')).toBeVisible()
 
     // Règle QCM partagée : l'éditeur réenregistre une question importée sans QCM.

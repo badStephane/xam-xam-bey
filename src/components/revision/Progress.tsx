@@ -29,7 +29,7 @@ function ChartBox() {
         <path d={line} style={{ fill: 'none', stroke: 'var(--acc)', strokeWidth: 2.5, strokeLinejoin: 'round' }} vectorEffect="non-scaling-stroke" />
       </svg>
       <div className="days" aria-hidden="true">{days.map(p => <span key={p.d} className={p.on ? 'on' : undefined}>{dayDate(p.d).getUTCDate()}</span>)}</div>
-      <span className="lbl" style={{ fontSize: 10.5 }}>COURBE : CARTES VUES (CUMUL) · CASES : JOURS RÉVISÉS ({nOn} SUR {CHART_DAYS})</span>
+      <span className="lbl" style={{ fontSize: '0.6875rem' }}>COURBE : CARTES VUES (CUMUL) · CASES : JOURS RÉVISÉS ({nOn} SUR {CHART_DAYS})</span>
     </section>
   )
 }
@@ -44,12 +44,12 @@ function ExamsBox() {
         const r = s.n ? s.ok / s.n : 0
         return (
           <div key={i} className="exam">
-            <span className="mono muted" style={{ fontSize: 11 }}>{shortDate(s.d)}</span>
-            <span style={{ fontSize: 14 }}>{s.l || 'Mini-examen'}</span>
-            <strong style={{ font: '700 18px/1 var(--f-hud)', color: r >= 0.8 ? 'var(--acc)' : r >= 0.6 ? 'var(--hud)' : 'var(--err)' }}>{s.ok}<span style={{ fontSize: 12, color: 'var(--hud2)' }}>/{s.n}</span></strong>
+            <span className="mono muted" style={{ fontSize: '0.6875rem' }}>{shortDate(s.d)}</span>
+            <span style={{ fontSize: '0.875rem' }}>{s.l || 'Mini-examen'}</span>
+            <strong style={{ font: '700 1.125rem/1 var(--f-hud)', color: r >= 0.8 ? 'var(--acc)' : r >= 0.6 ? 'var(--hud)' : 'var(--err)' }}>{s.ok}<span style={{ fontSize: '0.75rem', color: 'var(--hud2)' }}>/{s.n}</span></strong>
           </div>
         )
-      }) : <p className="muted" style={{ margin: 0, fontSize: 14 }}>Aucun mini-examen pour le moment.</p>}
+      }) : <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Aucun mini-examen pour le moment.</p>}
     </section>
   )
 }
@@ -72,18 +72,18 @@ function GapsBox() {
         <h2 id="t-gaps" className="h-sec">MES LACUNES</h2>
         <span className="lbl">RÉUSSITE GLOBALE <b style={{ color: rateColor(all.rate) }}>{pct(all.rate)}</b></span>
       </div>
-      <p className="muted" style={{ margin: 0, fontSize: 14 }}>Une lacune est une carte ratée récemment, ou réussie moins de 6 fois sur 10.</p>
+      <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Une lacune est une carte ratée récemment, ou réussie moins de 6 fois sur 10.</p>
       {all.gaps > 0 && <button className="go" style={{ minHeight: 56 }} onClick={() => revise(ALL_ZONES)}><b>RÉVISER MES {all.gaps} LACUNES</b><span>TOUTES ZONES · {Math.min(all.gaps, GAP_SESSION_SIZE)} QUESTIONS AU PLUS</span></button>}
-      {!all.seen && <p className="muted" style={{ margin: 0, fontSize: 14 }}>Répondez à quelques cartes : vos lacunes apparaîtront ici, zone par zone.</p>}
+      {!all.seen && <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Répondez à quelques cartes : vos lacunes apparaîtront ici, zone par zone.</p>}
       <ul className="col g8" style={{ listStyle: 'none', margin: 0, padding: 0 }}>
         {rows.map(r => (
           <li key={r.zone} className="gap-row">
-            <span className="row mono" style={{ gap: 6, fontWeight: 700, fontSize: 10.5, flexWrap: 'nowrap' }}><span aria-hidden="true" style={{ width: 8, height: 8, transform: 'rotate(45deg)', background: zoneColor(r.zone) }} />{p2(r.zone)} {ZONES[r.zone - 1][0].toUpperCase()}</span>
-            <span className="mono muted" style={{ fontSize: 11 }}>{r.seen}/{r.cards} VUES</span>
-            <b className="mono" style={{ fontSize: 13, color: rateColor(r.rate) }}>{pct(r.rate)}</b>
+            <span className="row mono" style={{ gap: 6, fontWeight: 700, fontSize: '0.6875rem', flexWrap: 'nowrap' }}><span aria-hidden="true" style={{ width: 8, height: 8, transform: 'rotate(45deg)', background: zoneColor(r.zone) }} />{p2(r.zone)} {ZONES[r.zone - 1][0].toUpperCase()}</span>
+            <span className="mono muted" style={{ fontSize: '0.6875rem' }}>{r.seen}/{r.cards} VUES</span>
+            <b className="mono" style={{ fontSize: '0.8125rem', color: rateColor(r.rate) }}>{pct(r.rate)}</b>
             {r.gaps > 0
               ? <button className="btn-mono" onClick={() => revise(r.zone)} aria-label={`Réviser les ${r.gaps} lacunes de la zone ${r.zone}`}>{r.gaps} LACUNE{r.gaps > 1 ? 'S' : ''} →</button>
-              : <span className="mono muted" style={{ fontSize: 11, textAlign: 'right' }}>{r.seen ? 'AUCUNE' : '—'}</span>}
+              : <span className="mono muted" style={{ fontSize: '0.6875rem', textAlign: 'right' }}>{r.seen ? 'AUCUNE' : '—'}</span>}
           </li>
         ))}
       </ul>
@@ -123,9 +123,9 @@ export function Progress() {
               const st = zoneStats(rev.content.cards[n], rev.prog)
               return (
                 <li key={n} className="zrow">
-                  <span className="row mono" style={{ gap: 6, fontWeight: 700, fontSize: 10.5, flexWrap: 'nowrap' }}><span aria-hidden="true" style={{ width: 8, height: 8, transform: 'rotate(45deg)', background: zoneColor(n) }} />{p2(n)} {abbr.toUpperCase()}</span>
+                  <span className="row mono" style={{ gap: 6, fontWeight: 700, fontSize: '0.6875rem', flexWrap: 'nowrap' }}><span aria-hidden="true" style={{ width: 8, height: 8, transform: 'rotate(45deg)', background: zoneColor(n) }} />{p2(n)} {abbr.toUpperCase()}</span>
                   <Segments className="bar10" count={10} on={st.cards ? Math.round(10 * st.acq / st.cards) : 0} colorOn={zoneColor(n)} />
-                  <span className="mono muted" style={{ fontSize: 11, textAlign: 'right' }}>{st.cards ? `${st.acq}/${st.cards}` : 'à venir'}</span>
+                  <span className="mono muted" style={{ fontSize: '0.6875rem', textAlign: 'right' }}>{st.cards ? `${st.acq}/${st.cards}` : 'à venir'}</span>
                 </li>
               )
             })}
@@ -141,9 +141,9 @@ export function Progress() {
         <ul className="lv-legend">
           {buckets.map((b, i) => (
             <li key={i}>
-              <span className="row mono muted" style={{ gap: 6, fontSize: 10, fontWeight: 700 }}><span aria-hidden="true" style={{ width: 10, height: 10, background: lvColor(i), border: '1px solid var(--line)' }} />{i ? `NIV. ${i - 1}` : 'NON VUES'}</span>
-              <b style={{ font: '700 20px/1 var(--f-hud)' }}>{b}</b>
-              <span className="muted" style={{ fontSize: 12 }}>{LEVEL_LABELS[i]}</span>
+              <span className="row mono muted" style={{ gap: 6, fontSize: '0.6875rem', fontWeight: 700 }}><span aria-hidden="true" style={{ width: 10, height: 10, background: lvColor(i), border: '1px solid var(--line)' }} />{i ? `NIV. ${i - 1}` : 'NON VUES'}</span>
+              <b style={{ font: '700 1.25rem/1 var(--f-hud)' }}>{b}</b>
+              <span className="muted" style={{ fontSize: '0.75rem' }}>{LEVEL_LABELS[i]}</span>
             </li>
           ))}
         </ul>

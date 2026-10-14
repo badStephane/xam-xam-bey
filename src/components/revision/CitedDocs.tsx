@@ -22,7 +22,7 @@ export function CitedDocs({ zone }: { zone: number }) {
   }
   return (
     <section className="col g10" aria-labelledby="cited-h">
-      <h2 id="cited-h" className="h-screen" style={{ fontSize: 20 }}>Documents cités par les questions de la zone</h2>
+      <h2 id="cited-h" className="h-screen" style={{ fontSize: '1.25rem' }}>Documents cités par les questions de la zone</h2>
       <div className="grid-docs">{docs.map(d => (
         // Réseau coupé : navigateur hors ligne, ou base injoignable constatée (même règle que la bibliothèque).
         <DocCard key={d.id} d={d} seen={ui.seen.includes(d.id)} selected={false} mobile={mobile} offline={offline || catalogStatus === 'cached'}

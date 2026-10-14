@@ -22,13 +22,13 @@ function Examiner({ c, kps, checked }: { c: Card; kps: string[]; checked: number
     <div className="examiner">
       <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'nowrap' }}>
         <span className="f-lbl" style={{ color: 'var(--green)' }}>RÉPONSE ATTENDUE · POUR VOUS SEUL</span>
-        <button className="ink-line" style={{ minHeight: 36, padding: '0 10px', font: '700 10px/1 var(--f-mono)' }} onClick={() => patch({ hideAns: !ui.hideAns })} aria-pressed={ui.hideAns}>{ui.hideAns ? 'AFFICHER' : 'MASQUER'}</button>
+        <button className="ink-line" style={{ padding: '0 10px', font: '700 0.6875rem/1 var(--f-mono)' }} onClick={() => patch({ hideAns: !ui.hideAns })} aria-pressed={ui.hideAns}>{ui.hideAns ? 'AFFICHER' : 'MASQUER'}</button>
       </div>
       {ui.hideAns
-        ? <p style={{ margin: 0, fontSize: 14, color: 'var(--ink2)' }}>Réponse masquée. Touchez « Afficher » quand la personne ne voit plus l’écran.</p>
+        ? <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ink2)' }}>Réponse masquée. Touchez « Afficher » quand la personne ne voit plus l’écran.</p>
         : (
           <>
-            <p style={{ margin: 0, fontSize: 15.5, lineHeight: 1.55 }}><Md text={c.a} /></p>
+            <p style={{ margin: 0, fontSize: '0.96875rem', lineHeight: 1.55 }}><Md text={c.a} /></p>
             {c.note && <Vigilance note={c.note} size={14} />}
             <CardDocLink card={c} />
             {kps.length > 0 && (
@@ -95,7 +95,7 @@ function SelfCheckBlock({ c }: { c: Card }) {
   if (!s.rev) {
     return (
       <>
-        <p style={{ margin: 0, fontSize: 15, color: 'var(--ink2)' }}>Pas de propositions pour cette question : répondez de tête, puis vérifiez.</p>
+        <p style={{ margin: 0, fontSize: '0.9375rem', color: 'var(--ink2)' }}>Pas de propositions pour cette question : répondez de tête, puis vérifiez.</p>
         <button className="flip" onClick={reveal}>Voir la réponse</button>
       </>
     )
@@ -188,15 +188,15 @@ export function Session() {
         <div className="segs" role="progressbar" aria-label="Progression" aria-valuemin={0} aria-valuemax={s.queue.length} aria-valuenow={s.i}>
           {s.queue.map((_, k) => <span key={k} className={k < s.i ? 'done' : k === s.i ? 'now' : undefined} />)}
         </div>
-        <span className="mono" role="status" aria-label={`Carte ${Math.min(s.i + 1, s.queue.length)} sur ${s.queue.length}`} style={{ fontSize: 12, fontWeight: 700, minWidth: 40, textAlign: 'right' }}>{p2(Math.min(s.i + 1, s.queue.length))}/{p2(s.queue.length)}</span>
+        <span className="mono" role="status" aria-label={`Carte ${Math.min(s.i + 1, s.queue.length)} sur ${s.queue.length}`} style={{ fontSize: '0.75rem', fontWeight: 700, minWidth: 40, textAlign: 'right' }}>{p2(Math.min(s.i + 1, s.queue.length))}/{p2(s.queue.length)}</span>
       </div>
       <QuitConfirm ask={ask} />
       <OfflineNotice />
       {ask
         ? (
           <div className="askbar">
-            <span style={{ font: '700 13px/1 var(--f-hud)', letterSpacing: '.08em' }}>J’INTERROGE · {(s.name || 'la personne').toUpperCase()}</span>
-            <span className="mono" style={{ fontSize: 12, fontWeight: 700 }}><span style={{ color: 'var(--acc)' }}>{cnt[2]}</span> JUSTES · <span style={{ color: 'var(--amber)' }}>{cnt[1]}</span> PARTIELS · <span style={{ color: 'var(--err)' }}>{cnt[0]}</span> FAUX</span>
+            <span style={{ font: '700 0.8125rem/1 var(--f-hud)', letterSpacing: '.08em' }}>J’INTERROGE · {(s.name || 'la personne').toUpperCase()}</span>
+            <span className="mono" style={{ fontSize: '0.75rem', fontWeight: 700 }}><span style={{ color: 'var(--acc)' }}>{cnt[2]}</span> JUSTES · <span style={{ color: 'var(--amber)' }}>{cnt[1]}</span> PARTIELS · <span style={{ color: 'var(--err)' }}>{cnt[0]}</span> FAUX</span>
           </div>
         )
         : <div className="combo"><span style={{ color: 'var(--amber)' }}>COMBO ×{combo(s)}</span><span style={{ color: 'var(--acc)' }}>+{s.xp} XP</span><span className="muted">À REJOUER {replayCount(s)}</span></div>}

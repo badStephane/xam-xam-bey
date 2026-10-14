@@ -12,7 +12,7 @@ type Status = { kind: 'idle' } | { kind: 'busy'; text: string } | { kind: 'ok'; 
 function StatusLine({ status }: { status: Status }) {
   if (status.kind === 'idle') return null
   const color = status.kind === 'error' ? 'var(--stamp)' : status.kind === 'ok' ? 'var(--green)' : 'var(--ink2)'
-  return <p role={status.kind === 'error' ? 'alert' : 'status'} style={{ margin: 0, fontSize: 14, color }}>{status.text}</p>
+  return <p role={status.kind === 'error' ? 'alert' : 'status'} style={{ margin: 0, fontSize: '0.875rem', color }}>{status.text}</p>
 }
 
 function ZoneSelect({ id, value, onChange }: { id: string; value: number; onChange(z: number): void }) {
@@ -69,7 +69,7 @@ function UploadForm() {
         <div className="col g6"><label htmlFor="up-zone" className="f-lbl">ZONE</label><ZoneSelect id="up-zone" value={meta.zone} onChange={zone => setMeta({ ...meta, zone })} /></div>
         <div className="col g6"><label htmlFor="up-folder" className="f-lbl">DOSSIER · FACULTATIF</label><input id="up-folder" className="field" value={meta.folder} maxLength={200} placeholder="Ex. Bases Générales" onChange={e => setMeta({ ...meta, folder: e.target.value })} /></div>
       </div>
-      <label className="row" style={{ gap: 10, fontSize: 15 }}><input type="checkbox" checked={meta.essential} onChange={e => setMeta({ ...meta, essential: e.target.checked })} style={{ width: 20, height: 20 }} />Essentiel du mois</label>
+      <label className="row" style={{ gap: 10, fontSize: '0.9375rem', minHeight: 44 }}><input type="checkbox" checked={meta.essential} onChange={e => setMeta({ ...meta, essential: e.target.checked })} style={{ width: 20, height: 20 }} />Essentiel du mois</label>
       <StatusLine status={status} />
       <button type="submit" className="ink-btn big" style={{ alignSelf: 'flex-start', minHeight: 50 }} disabled={status.kind === 'busy'}>{status.kind === 'busy' ? 'Envoi…' : 'Envoyer le document'}</button>
     </form>
@@ -110,7 +110,7 @@ function DocRow({ d, onRemoved }: { d: Doc; onRemoved(s: Status): void }) {
         <span className="cote">{d.cote} · MODIFIER</span>
         <input className="field" aria-label="Titre" value={edit.title} maxLength={200} onChange={e => setEdit({ ...edit, title: e.target.value })} />
         <div className="form-row"><ZoneSelect id={`z-${d.id}`} value={edit.zone} onChange={zone => setEdit({ ...edit, zone })} /><input className="field" aria-label="Dossier" value={edit.folder} onChange={e => setEdit({ ...edit, folder: e.target.value })} /></div>
-        <label className="row" style={{ gap: 10, fontSize: 14 }}><input type="checkbox" checked={edit.essential} onChange={e => setEdit({ ...edit, essential: e.target.checked })} />Essentiel du mois</label>
+        <label className="row" style={{ gap: 10, fontSize: '0.875rem', minHeight: 44 }}><input type="checkbox" checked={edit.essential} onChange={e => setEdit({ ...edit, essential: e.target.checked })} />Essentiel du mois</label>
         <StatusLine status={status} />
         <div className="row">
           <button className="ink-btn" disabled={!edit.title.trim() || status.kind === 'busy'} onClick={() => run(() => updateDocument(d.id, edit), 'Modifications enregistrées.').then(ok => { if (ok) setEdit(null) })}>Enregistrer</button>

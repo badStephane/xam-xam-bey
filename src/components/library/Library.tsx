@@ -66,7 +66,7 @@ function Results({ items, filtering, env }: { items: Doc[]; filtering: boolean; 
   if (PARAMS.lib === 'loading') {
     return (
       <div className="col g8" aria-busy="true" aria-label="Chargement de l’inventaire">
-        <span className="mono" style={{ fontSize: 11, color: 'var(--acc)', animation: 'xxbPulse 1.2s ease-in-out infinite' }}>CHARGEMENT DE L’INVENTAIRE…</span>
+        <span className="mono" style={{ fontSize: '0.6875rem', color: 'var(--acc)', animation: 'xxbPulse 1.2s ease-in-out infinite' }}>CHARGEMENT DE L’INVENTAIRE…</span>
         {SKELETON_WIDTHS.map(w => <div key={w} className="skel"><span style={{ width: 60 }} /><span style={{ width: w, height: 14 }} /><span style={{ width: '45%' }} /></div>)}
       </div>
     )
@@ -77,7 +77,7 @@ function Results({ items, filtering, env }: { items: Doc[]; filtering: boolean; 
       <div className="empty">
         <span className="f-lbl" style={{ color: 'var(--amber)' }}>AUCUNE PIÈCE TROUVÉE</span>
         <h3>{q ? `Rien pour « ${q} »` : 'Aucune pièce avec ces filtres'}</h3>
-        <p style={{ margin: 0, fontSize: 15 }} className="muted">Essayez un mot plus court, ou l’un de ceux-ci :</p>
+        <p style={{ margin: 0, fontSize: '0.9375rem' }} className="muted">Essayez un mot plus court, ou l’un de ceux-ci :</p>
         <div className="row" style={{ gap: 6 }}>
           {SUGGESTIONS.map(w => <button key={w} className="chip" onClick={() => patch({ q: w, type: 'all', ess: false, month: null })}>{w.toUpperCase()}</button>)}
         </div>
@@ -96,7 +96,7 @@ function Results({ items, filtering, env }: { items: Doc[]; filtering: boolean; 
             <div className="grp-h">
               <span className="diamond" aria-hidden="true" style={{ background: zoneColor(n) }} />
               <h3>Zone {p2(n)} · {theme}</h3>
-              <span className="mono muted" style={{ fontSize: 11 }}>{plural(its.length, 'PIÈCE', 'PIÈCES')}</span>
+              <span className="mono muted" style={{ fontSize: '0.6875rem' }}>{plural(its.length, 'PIÈCE', 'PIÈCES')}</span>
             </div>
             <div className="grid-docs">{its.slice(0, cap).map(d => (
               <DocCard key={d.id} d={d} seen={env.seen.has(d.id)} selected={env.sel === d.id} mobile={env.mobile} offline={env.offline}
@@ -132,14 +132,14 @@ export function Library() {
     <div className="col g16">
       <div className="col g8" style={{ maxWidth: 720 }}>
         <h1 className="intro-h">Toutes les ressources du mouvement.</h1>
-        <p style={{ margin: 0, fontSize: 15.5 }} className="muted">Trouvez un document en quelques secondes. Révisez une zone par mois, toute l’année.</p>
+        <p style={{ margin: 0, fontSize: '0.96875rem' }} className="muted">Trouvez un document en quelques secondes. Révisez une zone par mois, toute l’année.</p>
       </div>
       <dl className="stats">
         {[[stats.count, 'PIÈCES'], [ZONES.length, 'ZONES'], [stats.ess, 'ESSENTIELS'], [stats.mo, 'MO']].map(([v, l]) => <div key={l}><dd>{v}</dd><dt>{l}</dt></div>)}
       </dl>
-      {catalogStatus === 'cached' && !offline && <div className="banner" role="status"><b>CATALOGUE HORS LIGNE</b><span style={{ fontSize: 14 }}>La liste affichée est la dernière enregistrée sur cet appareil ; les nouveaux documents apparaîtront au retour de la connexion.</span></div>}
+      {catalogStatus === 'cached' && !offline && <div className="banner" role="status"><b>CATALOGUE HORS LIGNE</b><span style={{ fontSize: '0.875rem' }}>La liste affichée est la dernière enregistrée sur cet appareil ; les nouveaux documents apparaîtront au retour de la connexion.</span></div>}
       {offline && (
-        <div className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: 14 }}>{kept.active
+        <div className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: '0.875rem' }}>{kept.active
           // E3 : promesse tenue par le service worker ; sans lui (navigateur ancien, worker désactivé), l'ancien texte honnête.
           ? 'Le réseau est coupé. Les documents déjà ouverts sur cet appareil restent lisibles : ils portent la mention HORS LIGNE.'
           : 'Le réseau est coupé. Les documents s’ouvriront dès son retour. Téléchargez à l’avance ceux dont vous aurez besoin.'}</span></div>
@@ -151,7 +151,7 @@ export function Library() {
           <SearchBar />
           {filtering && (
             <div className="row" style={{ justifyContent: 'space-between' }}>
-              <span role="status" className="mono muted" style={{ fontSize: 12 }}>{plural(items.length, 'PIÈCE', 'PIÈCES')}</span>
+              <span role="status" className="mono muted" style={{ fontSize: '0.75rem' }}>{plural(items.length, 'PIÈCE', 'PIÈCES')}</span>
               <button className="link" onClick={() => patch({ q: '', type: 'all', ess: false, month: null })}>EFFACER LES FILTRES</button>
             </div>
           )}
