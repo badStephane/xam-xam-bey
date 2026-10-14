@@ -128,9 +128,12 @@ const fileResponse = (res: Response) => ({ ok: res.ok, type: res.type, contentTy
 /**
  * Fichiers hachés (immuables) : cache d'abord ; un fichier absent est gardé au premier usage réussi, s'il a le type
  * attendu (L3-3 : la page HTML de repli de Pages pour un fichier disparu est servie, jamais gardée).
+ * `ignoreVary` (lot 4) : la copie préchargée par le worker (requête sans en-tête Origin) doit servir la requête de la page
+ * (script module `crossorigin`, avec Origin) même si le serveur répond `Vary: Origin` (vite 6 preview le fait). Sans risque :
+ * fichiers de même origine, au nom haché, donc immuables.
  */
 async function asset(req: Request): Promise<Response> {
-  const cached = await caches.match(req)
+  const cached = await caches.match(req, { ignoreVary: true })
   if (cached) return cached
   const res = await fetch(req)
   const path = sitePath(req.url, SCOPE)

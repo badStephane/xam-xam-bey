@@ -9,6 +9,8 @@ Plateforme de ressources et de révision scoute (District Grand Dakar).
 
 Application React + TypeScript construite avec Vite.
 
+**Versions de l'outillage** (lot 4) : Node 22 (`.node-version`), Vite 6.4.4, Vitest 4.1.11 (`@vitest/coverage-v8` 4.1.11), Playwright 1.64.0, CLI Supabase 2.120.0 en CI et conseillée sur les postes (`brew upgrade supabase`, ou `npx supabase@2.120.0` sans toucher à l'installation brew). `npm audit` : 0 vulnérabilité, dépendances de développement comprises.
+
 ```bash
 npm install
 cp .env.example .env.local   # puis renseigner l’URL et la clé anon du projet Supabase

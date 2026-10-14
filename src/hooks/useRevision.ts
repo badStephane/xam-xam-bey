@@ -4,6 +4,8 @@ import { PARAMS } from '../lib/params'
 import { mergeProgress, parseStoredProgress } from '../lib/progressMerge'
 import { canClearLocal, clearLocalProgress, fromSaveResult, isAccountSwitch, readLocalProgress, reconcileOnLoad, saveArgs, saveErrorKind, writeLocalProgress, type SaveErrorKind } from '../lib/progressSync'
 import { applyGrade, cardsByZone, EMPTY_PROGRESS, validCards } from '../lib/srs'
+import { clearCardsCache, readCardsCache, writeCardsCache } from '../lib/cardsCache'
+import { forgetKnownUser, readKnownUser, writeKnownUser, type KnownUser } from '../lib/knownUser'
 import { codeErrorMessage, isValidCode, sendErrorMessage } from '../lib/signin'
 import { isValidEmail, magicLinkRedirect, supabase } from '../lib/supabase'
 import type { CardRow, Fiche, Grade, Plan, Progress, RevisionContent, RevStatus, SessionLog } from '../lib/types'
@@ -11,6 +13,26 @@ import type { CardRow, Fiche, Grade, Plan, Progress, RevisionContent, RevStatus,
 const EMPTY_CONTENT: RevisionContent = { plan: null, fiches: {}, cards: {} }
 const SEED_FILES = ['plan', 'fiche-1', 'cards-1']
 const RETRY_DELAY = 10_000
+/** Pas de session valide pour le propriétaire (jeton en cours de rafraîchissement) : traité comme une erreur réseau. */
+const AUTH_PENDING = { code: 'auth_pending', message: 'Session en attente de rafraîchissement' }
+
+/** Navigateur hors réseau (F1). `navigator.onLine` vrai ne garantit pas le réseau ; faux garantit son absence. */
+const isOffline = (): boolean => typeof navigator !== 'undefined' && navigator.onLine === false
+
+/**
+ * Vrai si le client a, pour ce compte, une session dont le jeton n'est pas expiré (F1). Évite d'envoyer avec la clé anon
+ * quand le rafraîchissement du jeton n'a pas encore abouti après un retour du réseau (voir 05-build, Lot 4 > Front).
+ */
+async function hasLiveSession(userId: string): Promise<boolean> {
+  if (!supabase) return false
+  try {
+    const { data } = await supabase.auth.getSession()
+    const s = data.session
+    return !!s && s.user?.id === userId && (!s.expires_at || s.expires_at * 1000 > Date.now())
+  } catch {
+    return false
+  }
+}
 
 function toContent(rows: Array<{ id: string; data: unknown }>): RevisionContent {
   return rows.reduce<RevisionContent>((acc, { id, data }) => {
@@ -71,6 +93,8 @@ export interface Revision {
   email: string | null
   /** Compte dont la progression est chargée (propriétaire des écritures), sinon null. */
   userId: string | null
+  /** Vrai si cartes et progression viennent de l'appareil (hors réseau, F1) : les notes partiront au retour du réseau. */
+  localOnly: boolean
   signIn: SignInState
   init(): void
   retry(): void
@@ -108,6 +132,20 @@ function localStore(): Storage | null {
   try { return window.localStorage } catch { return null }
 }
 
+/**
+ * Oublie la révision gardée sur l'appareil (compte retenu et copie des cartes) pour `userId`, ou à défaut pour le compte
+ * retenu (L4-1 : session disparue avant tout chargement). À n'appeler que si la session est réellement absente : jamais hors
+ * réseau (getSession sauté) ni sur une erreur de rafraîchissement.
+ */
+function forgetDevice(userId: string | null): void {
+  if (!canWrite()) return
+  const store = localStore()
+  const id = userId ?? readKnownUser(store)?.id
+  if (!id) return
+  forgetKnownUser(store, id)
+  clearCardsCache(store, id)
+}
+
 /** Contenu de révision et progression personnelle (Supabase), enregistrée avec un léger délai et copiée en local. */
 export function useRevision(demo: boolean): Revision {
   const [status, setStatus] = useState<RevStatus>('idle')
@@ -116,6 +154,11 @@ export function useRevision(demo: boolean): Revision {
   const [saveErr, setSaveErr] = useState<SaveErrorKind | null>(null)
   const [email, setEmail] = useState<string | null>(null)
   const [userId, setUserId] = useState<string | null>(null)
+  const [localOnly, setLocalOnlyState] = useState(false)
+  const localOnlyRef = useRef(false)
+  const emailRef = useRef<string | null>(null)
+  const resyncTimer = useRef<ReturnType<typeof setTimeout> | 0>(0)
+  const resyncRef = useRef<() => void>(() => undefined)
   const [signIn, setSignIn] = useState<SignInState>({ step: 'idle' })
   const statusRef = useRef<RevStatus>('idle')
   const progRef = useRef<Progress>(EMPTY_PROGRESS)
@@ -133,6 +176,17 @@ export function useRevision(demo: boolean): Revision {
   }, [])
 
   const setStat = useCallback((s: RevStatus) => { statusRef.current = s; setStatus(s) }, [])
+  const setLocal = useCallback((v: boolean) => { localOnlyRef.current = v; setLocalOnlyState(v) }, [])
+  const setMail = useCallback((e: string | null) => { emailRef.current = e; setEmail(e) }, [])
+  const clearResync = useCallback(() => {
+    if (resyncTimer.current) clearTimeout(resyncTimer.current)
+    resyncTimer.current = 0
+  }, [])
+  /** Nouvel essai de synchronisation plus tard (réseau présent mais base ou jeton pas encore joignables). */
+  const resyncLater = useCallback(() => {
+    clearResync()
+    resyncTimer.current = setTimeout(() => resyncRef.current(), RETRY_DELAY)
+  }, [clearResync])
 
   /** Installe une progression en mémoire et dans la copie locale de son propriétaire. */
   const adopt = useCallback((p: Progress) => {
@@ -145,11 +199,14 @@ export function useRevision(demo: boolean): Revision {
     const sv = save.current
     const owner = ownerRef.current
     if (!supabase || !owner || !sv.dirty || !canWrite()) return
+    // Hors réseau (F1) : aucun essai, aucune erreur ; la note est dans la copie locale, l'événement `online` relancera.
+    if (isOffline()) return
     if (sv.saving) { sv.again = true; return }
     sv.saving = true
     sv.dirty = false
     if (sv.timer) clearTimeout(sv.timer)
-    const { data, error } = await supabase.rpc('save_progress', saveArgs(progRef.current))
+    const live = await hasLiveSession(owner)
+    const { data, error } = live ? await supabase.rpc('save_progress', saveArgs(progRef.current)) : { data: null, error: AUTH_PENDING }
     sv.saving = false
     if (ownerRef.current !== owner) return
     if (error) {
@@ -189,16 +246,49 @@ export function useRevision(demo: boolean): Revision {
     ownerRef.current = userId
     setUserId(userId)
     adopt(merged)
-    if (dirty) schedule(false)
+    // Notes prises hors réseau et pas encore envoyées : elles partent dans le même envoi.
+    if (dirty || save.current.dirty) schedule(false)
   }, [adopt, schedule])
 
-  /** Charge la progression puis le contenu. Si la lecture échoue, aucune écriture n'est autorisée. */
-  const loadFor = useCallback(async (userId: string) => {
+  /**
+   * Révision lue depuis l'appareil (F1) : copie des cartes de ce compte et copie locale de sa progression.
+   * Faux si aucune copie valide n'existe pour ce compte. Les notes vont dans la copie locale et partent au retour du réseau.
+   */
+  const fromDevice = useCallback((user: KnownUser): boolean => {
+    const store = localStore()
+    const cached = canWrite() ? readCardsCache(store, user.id) : null
+    if (!cached) return false
+    const current = ownerRef.current === user.id ? progRef.current : EMPTY_PROGRESS
+    ownerRef.current = user.id
+    setUserId(user.id)
+    setMail(user.email)
+    adopt(mergeProgress(readLocalProgress(store, user.id), current))
+    setContent(cached)
+    setLocal(true)
+    setStat(cached.plan ? 'ready' : 'empty')
+    // Réseau annoncé présent mais base injoignable : nouvel essai plus tard ; sinon l'événement `online` s'en charge.
+    if (!isOffline()) resyncLater()
+    return true
+  }, [adopt, resyncLater, setLocal, setMail, setStat])
+
+  /** Après un chargement en ligne réussi : copie des cartes et compte retenus pour la révision hors ligne. */
+  const rememberDevice = useCallback((userId: string, c: RevisionContent) => {
+    if (!canWrite()) return
+    const store = localStore()
+    if (writeCardsCache(store, userId, c)) writeKnownUser(store, { id: userId, email: emailRef.current })
+  }, [])
+
+  /**
+   * Charge la progression puis le contenu, et rafraîchit la copie de l'appareil. En échec : copie de l'appareil si ce compte
+   * en a une (F1), sinon « indisponible » sans aucune écriture. `quiet` (retour du réseau) : ni écran de chargement, ni
+   * changement d'état en cas d'échec.
+   */
+  const loadFor = useCallback(async (userId: string, quiet = false) => {
     if (!supabase || loadingFor.current === userId) return
     const seq = ++loadSeq.current
     const isCurrent = (): boolean => seq === loadSeq.current
     loadingFor.current = userId
-    setStat('loading')
+    if (!quiet) setStat('loading')
     try {
       const { data, error } = await supabase.from('progress').select('cards, sessions, xp').eq('user_id', userId).maybeSingle()
       if (error) throw error
@@ -207,28 +297,60 @@ export function useRevision(demo: boolean): Revision {
       const c = await loadContent()
       if (!isCurrent()) return
       setContent(c)
+      setLocal(false)
+      rememberDevice(userId, c)
       setStat(c.plan ? 'ready' : 'empty')
     } catch (err) {
       if (!isCurrent()) return
       console.error('[xxb] Révision indisponible', err)
-      setStat('unavailable')
+      if (!quiet && !fromDevice({ id: userId, email: emailRef.current })) setStat('unavailable')
     } finally {
       if (isCurrent()) loadingFor.current = null
     }
-  }, [install, setStat])
+  }, [fromDevice, install, rememberDevice, setLocal, setStat])
 
+  /**
+   * Retour du réseau, ou jeton rafraîchi (F1). Révision lue depuis l'appareil : rechargement discret, qui envoie au passage
+   * les notes prises hors réseau (une seule fois : `install` fusionne et `flush` n'a qu'un envoi en vol). Sinon : envoi
+   * des notes en attente. Session pas encore valide : nouvel essai dans 10 s (ou à l'événement TOKEN_REFRESHED).
+   */
+  const resync = useCallback(async (): Promise<void> => {
+    clearResync()
+    const owner = ownerRef.current
+    if (!supabase || !owner || !canWrite() || isOffline()) return
+    if (!localOnlyRef.current) {
+      if (save.current.dirty) await flush()
+      return
+    }
+    if (await hasLiveSession(owner)) await loadFor(owner, true)
+    if (localOnlyRef.current && ownerRef.current === owner && !isOffline()) resyncLater()
+  }, [clearResync, flush, loadFor, resyncLater])
+  resyncRef.current = () => void resync()
+
+  /** Hors réseau ou session illisible : révision du dernier compte chargé sur l'appareil, s'il en a une copie. */
+  const startFromDevice = useCallback((failed: boolean) => {
+    const known = canWrite() ? readKnownUser(localStore()) : null
+    if (known && fromDevice(known)) return
+    // Jamais connecté ici et hors réseau : écran « connectez-vous une première fois avec du réseau ».
+    setStat(known || failed ? 'unavailable' : 'signedout')
+  }, [fromDevice, setStat])
+
+  /** Déconnexion : plus aucune donnée de ce compte n'est lue sur l'appareil ; sa progression locale suit la règle du lot 1. */
   const resetUser = useCallback(() => {
+    forgetDevice(ownerRef.current)
     loadSeq.current += 1
     loadingFor.current = null
     ownerRef.current = null
     setUserId(null)
     dropPendingSave()
+    clearResync()
+    setLocal(false)
     progRef.current = EMPTY_PROGRESS
     setProg(EMPTY_PROGRESS)
     setContent(EMPTY_CONTENT)
-    setEmail(null)
+    setMail(null)
     setStat('signedout')
-  }, [dropPendingSave, setStat])
+  }, [clearResync, dropPendingSave, setLocal, setMail, setStat])
 
   const init = useCallback(() => {
     if (statusRef.current !== 'idle') return
@@ -239,35 +361,49 @@ export function useRevision(demo: boolean): Revision {
       return
     }
     if (!supabase) { setStat('unavailable'); return }
+    // Hors réseau (F1) : getSession attendrait l'échec du rafraîchissement d'un jeton expiré (jusqu'à ~25 s).
+    if (isOffline()) { startFromDevice(false); return }
     supabase.auth.getSession().then(({ data, error }) => {
       if (error) throw error
       const user = data.session?.user
-      if (!user) { setStat('signedout'); return }
-      setEmail(user.email || null)
+      // Session réellement absente en ligne (déconnexion ailleurs, jeton révoqué) : l'appareil oublie l'ancien compte (L4-1).
+      if (!user) { forgetDevice(null); setStat('signedout'); return }
+      setMail(user.email || null)
       void loadFor(user.id)
-    }).catch(err => { console.error('[xxb] Session illisible', err); setStat('unavailable') })
-  }, [demo, loadFor, setStat])
+    }).catch(err => { console.error('[xxb] Session illisible', err); startFromDevice(true) })
+  }, [demo, loadFor, setMail, setStat, startFromDevice])
 
   useEffect(() => {
     if (!supabase || demo) return
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT') { resetUser(); return }
       const user = session?.user
+      // Jeton rafraîchi (souvent au retour du réseau) : les notes en attente partent avec la nouvelle session.
+      if (event === 'TOKEN_REFRESHED' && user && user.id === ownerRef.current) { setTimeout(() => void resync(), 0); return }
       if (event === 'SIGNED_IN' && user && ownerRef.current !== user.id) {
         if (isAccountSwitch(ownerRef.current, user.id)) {
           // Plus aucune écriture au nom de l'ancien compte avec le jeton du nouveau ; ses notes restent dans sa copie locale.
           ownerRef.current = null
           setUserId(null)
           dropPendingSave()
+          clearResync()
+          setLocal(false)
         }
-        setEmail(user.email || null)
+        setMail(user.email || null)
         setSignIn({ step: 'idle' })
         // Différé : on ne rappelle pas Supabase depuis le rappel d'authentification lui-même.
         setTimeout(() => void loadFor(user.id), 0)
       }
     })
     return () => data.subscription.unsubscribe()
-  }, [demo, dropPendingSave, loadFor, resetUser])
+  }, [demo, clearResync, dropPendingSave, loadFor, resetUser, resync, setLocal, setMail])
+
+  // Retour du réseau (F1) : envoi des notes prises hors réseau, rechargement discret si la révision venait de l'appareil.
+  useEffect(() => {
+    const onOnline = () => void resync()
+    window.addEventListener('online', onOnline)
+    return () => window.removeEventListener('online', onOnline)
+  }, [resync])
 
   useEffect(() => {
     const onHide = () => void flush()
@@ -278,7 +414,7 @@ export function useRevision(demo: boolean): Revision {
   }, [flush])
 
   return {
-    status, content, prog, saveErr, email, userId, signIn, init,
+    status, content, prog, saveErr, email, userId, localOnly, signIn, init,
     retry: () => {
       // Aussi depuis le chargement (FE-5) : le chargement en cours est abandonné par son jeton, puis relancé.
       loadSeq.current += 1

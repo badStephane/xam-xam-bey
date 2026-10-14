@@ -23,7 +23,12 @@ function deferred<T>(): Deferred<T> {
 
 const fake = vi.hoisted(() => {
   const state = {
-    session: null as { user: { id: string; email: string } } | null,
+    session: null as { user: { id: string; email: string }; expires_at?: number } | null,
+    sessionError: null as unknown,
+    getSession: vi.fn(),
+    /** Lignes publiées de la table cards, et échec simulé de la lecture du contenu (base injoignable). */
+    cards: [] as unknown[],
+    contentError: null as unknown,
     authCb: null as ((event: string, session: unknown) => void) | null,
     progress: vi.fn<(userId: string) => Promise<{ data: unknown; error: unknown }>>(),
     rpc: vi.fn<(name: string, args: unknown) => Promise<{ data: unknown; error: unknown }>>(),
@@ -33,19 +38,23 @@ const fake = vi.hoisted(() => {
   }
   function builder(table: string) {
     let userId = ''
-    const rows = table === 'revision_content' ? [{ id: 'plan', data: { zones: [] } }] : []
+    const rows = table === 'revision_content' ? [{ id: 'plan', data: { months: [] } }] : state.cards
     const b = {
       select: () => b,
       eq: (_col: string, v: string) => { userId = v; return b },
       order: () => b,
       maybeSingle: () => state.progress(userId),
-      then: (ok: (r: unknown) => unknown, ko?: (e: unknown) => unknown) => Promise.resolve({ data: rows, error: null }).then(ok, ko),
+      then: (ok: (r: unknown) => unknown, ko?: (e: unknown) => unknown) =>
+        Promise.resolve(state.contentError ? { data: null, error: state.contentError } : { data: rows, error: null }).then(ok, ko),
     }
     return b
   }
   const client = {
     auth: {
-      getSession: async () => ({ data: { session: state.session }, error: null }),
+      getSession: async () => {
+        state.getSession()
+        return { data: { session: state.sessionError ? null : state.session }, error: state.sessionError }
+      },
       onAuthStateChange: (cb: (event: string, session: unknown) => void) => {
         state.authCb = cb
         return { data: { subscription: { unsubscribe: () => { state.authCb = null } } } }
@@ -75,6 +84,14 @@ const row = (cards: Record<string, CardProgress>, xp = 0) => ({ cards, sessions:
 const NETWORK_ERROR = { code: '', message: 'TypeError: Failed to fetch' }
 
 let root: Root | null = null
+let online = true
+Object.defineProperty(navigator, 'onLine', { configurable: true, get: () => online })
+
+/** Coupe ou rétablit le réseau comme le navigateur : `navigator.onLine` puis l'événement. */
+function setNetwork(on: boolean, dispatch = false): void {
+  online = on
+  if (dispatch) act(() => { window.dispatchEvent(new Event(on ? 'online' : 'offline')) })
+}
 const hook = { current: null as unknown as Revision }
 
 function render(): void {
@@ -112,7 +129,12 @@ beforeEach(() => {
   vi.spyOn(console, 'error').mockImplementation(() => undefined)
   localStorage.clear()
   fake.state.session = null
+  fake.state.sessionError = null
+  fake.state.getSession.mockClear()
+  fake.state.cards = []
+  fake.state.contentError = null
   fake.state.authCb = null
+  setNetwork(true)
   fake.state.progress.mockReset()
   fake.state.rpc.mockReset()
   fake.state.signOut.mockClear()
@@ -449,5 +471,310 @@ describe('useRevision : connexion par lien ou code (D4)', () => {
     expect(fake.state.signInWithOtp).toHaveBeenCalledTimes(2)
     expect(hook.current.signIn.notice).toEqual({ kind: 'ok', text: 'Nouveau lien envoyé à a@example.com.' })
     expect(hook.current.signIn.code).toBeUndefined()
+  })
+})
+
+describe('useRevision : révision hors ligne (lot 4, F1)', () => {
+  const CARD_ROWS = [
+    { id: 'c1', zone: 1, document_id: 7, position: 1, q: 'Q1', a: 'R1', src: '', note: '', qcm: null, status: 'published' },
+    { id: 'c2', zone: 1, document_id: null, position: 2, q: 'Q2', a: 'R2', src: '', note: '', qcm: null, status: 'published' },
+  ]
+  const cardsKey = (u: User) => `xxb.cards.v1.${u.id}`
+
+  /** Premier passage en ligne sur l'appareil : copie des cartes et compte retenus, puis la page est fermée. */
+  async function firstVisitOnline(u: User, serverRow: unknown = null): Promise<void> {
+    fake.state.cards = CARD_ROWS
+    await signedInAndLoaded(u, serverRow)
+    act(() => root!.unmount())
+    root = null
+  }
+
+  /** Rechargement hors réseau. */
+  async function reloadOffline(): Promise<void> {
+    setNetwork(false)
+    fake.state.getSession.mockClear()
+    fake.state.progress.mockReset()
+    render()
+    act(() => hook.current.init())
+    await settle()
+  }
+
+  test('chargement en ligne : copie des cartes et compte retenus sur l’appareil', async () => {
+    await firstVisitOnline(A)
+    expect(JSON.parse(localStorage.getItem(cardsKey(A))!)).toMatchObject({ v: 1, user: A.id })
+    expect(JSON.parse(localStorage.getItem('xxb.user.v1')!)).toEqual({ id: A.id, email: A.email })
+  })
+
+  test('rechargement hors réseau : révision lue depuis l’appareil sans attendre Supabase', async () => {
+    await firstVisitOnline(A, row({ old: card(1, T + 1, 1, 1) }, 10))
+    await reloadOffline()
+    expect(fake.state.getSession).not.toHaveBeenCalled()
+    expect(fake.state.progress).not.toHaveBeenCalled()
+    expect(hook.current.status).toBe('ready')
+    expect(hook.current.localOnly).toBe(true)
+    expect(hook.current.userId).toBe(A.id)
+    expect(hook.current.email).toBe(A.email)
+    expect(hook.current.content.cards[1].map(c => c.id)).toEqual(['c1', 'c2'])
+    expect(hook.current.content.cards[1][0].doc).toBe(7)
+    // Progression : la copie locale du lot 1.
+    expect(hook.current.prog.cards.old).toEqual(card(1, T + 1, 1, 1))
+  })
+
+  test('notes hors réseau : copie locale, aucun envoi, aucune erreur ; au retour, un seul envoi après relecture', async () => {
+    await firstVisitOnline(A)
+    await reloadOffline()
+    act(() => hook.current.grade('c1', 2, T))
+    act(() => hook.current.grade('c2', 0, T))
+    await settle(60_000)
+    expect(fake.state.rpc).not.toHaveBeenCalled()
+    expect(hook.current.saveErr).toBeNull()
+    expect(Object.keys((local(A) as { cards: Record<string, unknown> }).cards).sort()).toEqual(['c1', 'c2'])
+
+    fake.state.progress.mockResolvedValueOnce(ok(row({ other: card(3, T + 7, 4, 4) }, 40)))
+    fake.state.rpc.mockResolvedValue(ok([row({ c1: card(1, T + 1, 1, 1), c2: card(0, T + 1, 1, 0), other: card(3, T + 7, 4, 4) }, 50)]))
+    setNetwork(true, true)
+    await settle()
+    // Rechargement discret : jamais l'écran de chargement en pleine séance.
+    expect(hook.current.status).toBe('ready')
+    expect(fake.state.progress).toHaveBeenCalledTimes(1)
+    expect(hook.current.localOnly).toBe(false)
+    await settle(SAVE_DELAY)
+    expect(fake.state.rpc).toHaveBeenCalledTimes(1)
+    expect(Object.keys(lastRpcArgs()!.p_cards).sort()).toEqual(['c1', 'c2', 'other'])
+    expect(hook.current.prog.xp).toBe(50)
+
+    // Autres déclencheurs (second `online`, jeton rafraîchi) : rien de plus à envoyer.
+    setNetwork(true, true)
+    act(() => fake.state.authCb!('TOKEN_REFRESHED', { user: A }))
+    await settle(SAVE_DELAY * 3)
+    expect(fake.state.rpc).toHaveBeenCalledTimes(1)
+  })
+
+  test('jeton expiré au retour du réseau : rien avec la clé anon ; envoi après TOKEN_REFRESHED', async () => {
+    await firstVisitOnline(A)
+    await reloadOffline()
+    act(() => hook.current.grade('c1', 2, T))
+    fake.state.session = { user: A, expires_at: Math.floor(Date.now() / 1000) - 60 }
+    setNetwork(true, true)
+    await settle(SAVE_DELAY)
+    expect(fake.state.progress).not.toHaveBeenCalled()
+    expect(fake.state.rpc).not.toHaveBeenCalled()
+    expect(hook.current.localOnly).toBe(true)
+
+    fake.state.session = { user: A, expires_at: Math.floor(Date.now() / 1000) + 3600 }
+    fake.state.progress.mockResolvedValueOnce(ok(null))
+    fake.state.rpc.mockResolvedValue(ok([row({ c1: card(1, T + 1, 1, 1) }, 10)]))
+    act(() => fake.state.authCb!('TOKEN_REFRESHED', fake.state.session))
+    await settle(SAVE_DELAY)
+    expect(fake.state.rpc).toHaveBeenCalledTimes(1)
+    expect(lastRpcArgs()!.p_cards.c1).toBeDefined()
+    // Le nouvel essai programmé ne renvoie rien.
+    await settle(30_000)
+    expect(fake.state.rpc).toHaveBeenCalledTimes(1)
+  })
+
+  test('jeton toujours pas rafraîchi : nouvel essai toutes les 10 s, sans jamais l’écran de chargement', async () => {
+    await firstVisitOnline(A)
+    await reloadOffline()
+    fake.state.session = { user: A, expires_at: Math.floor(Date.now() / 1000) - 60 }
+    setNetwork(true, true)
+    await settle()
+    const calls = fake.state.getSession.mock.calls.length
+    await settle(10_000)
+    expect(fake.state.getSession.mock.calls.length).toBeGreaterThan(calls)
+    expect(hook.current.status).toBe('ready')
+  })
+
+  test('en ligne, note puis coupure : aucun essai ni erreur hors réseau, envoi unique à l’événement online', async () => {
+    await signedInAndLoaded(A)
+    setNetwork(false, true)
+    act(() => hook.current.grade('c1', 2, T))
+    await settle(60_000)
+    expect(fake.state.rpc).not.toHaveBeenCalled()
+    expect(hook.current.saveErr).toBeNull()
+    fake.state.rpc.mockResolvedValue(ok([row({ c1: card(1, T + 1, 1, 1) }, 10)]))
+    setNetwork(true, true)
+    await settle()
+    expect(fake.state.rpc).toHaveBeenCalledTimes(1)
+    await settle(60_000)
+    expect(fake.state.rpc).toHaveBeenCalledTimes(1)
+  })
+
+  test('jamais connecté sur l’appareil, hors réseau : écran de connexion, aucun appel', async () => {
+    setNetwork(false)
+    render()
+    act(() => hook.current.init())
+    await settle()
+    expect(hook.current.status).toBe('signedout')
+    expect(fake.state.getSession).not.toHaveBeenCalled()
+  })
+
+  test('compte retenu mais copie absente ou invalide : indisponible', async () => {
+    await firstVisitOnline(A)
+    localStorage.setItem(cardsKey(A), '{"v":1,"user":"user-a","cards":"x"}')
+    await reloadOffline()
+    expect(hook.current.status).toBe('unavailable')
+    expect(hook.current.userId).toBeNull()
+  })
+
+  test('copie d’un autre compte jamais lue', async () => {
+    await firstVisitOnline(A)
+    localStorage.setItem('xxb.user.v1', JSON.stringify({ id: B.id, email: B.email }))
+    localStorage.setItem(cardsKey(B), localStorage.getItem(cardsKey(A))!)
+    await reloadOffline()
+    expect(hook.current.status).toBe('unavailable')
+  })
+
+  test('réseau annoncé mais session illisible (rafraîchissement en échec) : révision depuis l’appareil', async () => {
+    await firstVisitOnline(A)
+    fake.state.sessionError = { name: 'AuthRetryableFetchError', status: 0, message: 'Failed to fetch' }
+    render()
+    act(() => hook.current.init())
+    await settle()
+    expect(hook.current.status).toBe('ready')
+    expect(hook.current.localOnly).toBe(true)
+  })
+
+  test('base injoignable au chargement : révision depuis l’appareil ; sans copie : indisponible', async () => {
+    await firstVisitOnline(A)
+    fake.state.contentError = NETWORK_ERROR
+    await signedInAndLoaded(A)
+    expect(hook.current.status).toBe('ready')
+    expect(hook.current.localOnly).toBe(true)
+    act(() => root!.unmount())
+    root = null
+    localStorage.clear()
+    await signedInAndLoaded(A)
+    expect(hook.current.status).toBe('unavailable')
+  })
+
+  test('déconnexion : compte retenu et copie des cartes oubliés', async () => {
+    fake.state.cards = CARD_ROWS
+    await signedInAndLoaded(A)
+    expect(localStorage.getItem(cardsKey(A))).not.toBeNull()
+    act(() => hook.current.signOut())
+    await settle()
+    expect(localStorage.getItem(cardsKey(A))).toBeNull()
+    expect(localStorage.getItem('xxb.user.v1')).toBeNull()
+  })
+
+  test('E1 tenu hors réseau : une note par appel, jamais rejouée par le retour du réseau', async () => {
+    await firstVisitOnline(A)
+    await reloadOffline()
+    act(() => hook.current.grade('c1', 2, T))
+    fake.state.progress.mockResolvedValueOnce(ok(null))
+    fake.state.rpc.mockImplementation(async (_n, args) => ok([args && { cards: (args as { p_cards: unknown }).p_cards, sessions: [], xp: 10 }]))
+    setNetwork(true, true)
+    await settle(SAVE_DELAY)
+    // Vues = 1 : la note n'a été appliquée qu'une fois, malgré la relecture et la fusion.
+    expect(lastRpcArgs()!.p_cards.c1[2]).toBe(1)
+    expect(hook.current.prog.cards.c1[2]).toBe(1)
+  })
+
+  // QA lot 4 (14-qa-lot4.md) : deux comptes sur un appareil, session d'un autre compte, stockage plein.
+  test('QA L4 : A puis B sur le même appareil (sans déconnexion) : la copie de A disparaît, B ne voit rien de A hors réseau', async () => {
+    await firstVisitOnline(A, row({ secretA: card(2, T + 3, 2, 2) }, 30))
+    fake.state.session = { user: A }
+    fake.state.progress.mockResolvedValueOnce(ok(row({ secretA: card(2, T + 3, 2, 2) }, 30)))
+    render()
+    act(() => hook.current.init())
+    await settle()
+    fake.state.session = { user: B }
+    fake.state.progress.mockResolvedValueOnce(ok(null))
+    act(() => fake.state.authCb!('SIGNED_IN', { user: B }))
+    await settle()
+    expect(hook.current.userId).toBe(B.id)
+    expect(localStorage.getItem(cardsKey(A))).toBeNull()
+    expect(JSON.parse(localStorage.getItem('xxb.user.v1')!)).toEqual({ id: B.id, email: B.email })
+    act(() => root!.unmount())
+    root = null
+    await reloadOffline()
+    expect(hook.current.userId).toBe(B.id)
+    expect(hook.current.email).toBe(B.email)
+    expect(hook.current.prog.cards.secretA).toBeUndefined()
+    expect(hook.current.prog.xp).toBe(0)
+  })
+
+  test('QA L4 : révision de A depuis l’appareil, session revenue au nom de B : jamais d’envoi des notes de A', async () => {
+    await firstVisitOnline(A)
+    await reloadOffline()
+    act(() => hook.current.grade('c1', 2, T))
+    fake.state.session = { user: B, expires_at: Math.floor(Date.now() / 1000) + 3600 }
+    fake.state.rpc.mockResolvedValue(ok([row({}, 0)]))
+    setNetwork(true, true)
+    act(() => fake.state.authCb!('TOKEN_REFRESHED', fake.state.session))
+    await settle(SAVE_DELAY + 30_000)
+    expect(fake.state.rpc).not.toHaveBeenCalled()
+    expect(fake.state.progress).not.toHaveBeenCalled()
+    expect((local(A) as { cards: Record<string, unknown> }).cards.c1).toBeDefined()
+  })
+
+  test('QA L4 : stockage plein à l’écriture de la copie des cartes : révision prête, rien ne plante', async () => {
+    // Pas de vi.spyOn sur localStorage : avec happy-dom, la restauration casse le stockage pour les tests suivants.
+    const store = window.localStorage
+    const full: Pick<Storage, 'getItem' | 'setItem' | 'removeItem' | 'key' | 'clear'> & { readonly length: number } = {
+      getItem: k => store.getItem(k),
+      setItem: (k, v) => {
+        if (k.startsWith('xxb.cards.')) throw new DOMException('quota', 'QuotaExceededError')
+        store.setItem(k, v)
+      },
+      removeItem: k => store.removeItem(k),
+      key: i => store.key(i),
+      clear: () => store.clear(),
+      get length() { return store.length },
+    }
+    const desc = Object.getOwnPropertyDescriptor(window, 'localStorage')
+    Object.defineProperty(window, 'localStorage', { configurable: true, get: () => full })
+    try {
+      fake.state.cards = CARD_ROWS
+      await signedInAndLoaded(A)
+      expect(hook.current.status).toBe('ready')
+      expect(hook.current.localOnly).toBe(false)
+      expect(store.getItem(cardsKey(A))).toBeNull()
+      // Sans copie, le compte n'est pas retenu : hors réseau, écran honnête plutôt qu'une révision vide.
+      expect(store.getItem('xxb.user.v1')).toBeNull()
+      act(() => hook.current.grade('c1', 2, T))
+      expect(JSON.parse(store.getItem(localProgressKey(A.id))!).cards.c1).toBeDefined()
+    } finally {
+      if (desc) Object.defineProperty(window, 'localStorage', desc)
+    }
+  })
+
+  // L4-1 (Mineur) : session absente au chargement en ligne (déconnecté ailleurs, jeton révoqué) : la copie et le compte
+  // retenu de l'ancien compte restent ; hors réseau ensuite, sa révision et sa progression locale s'affichent. Passe à
+  // `test` quand le correctif est fait (fait : forgetDevice dans init et resetUser).
+  test('L4-1 : SIGNED_OUT avant tout chargement : copie et compte retenu oubliés', async () => {
+    await firstVisitOnline(A)
+    render()
+    act(() => fake.state.authCb!('SIGNED_OUT', null))
+    await settle()
+    expect(localStorage.getItem('xxb.user.v1')).toBeNull()
+    expect(localStorage.getItem(cardsKey(A))).toBeNull()
+  })
+
+  test('L4-1 : hors réseau ou rafraîchissement en échec : rien n’est oublié', async () => {
+    await firstVisitOnline(A)
+    await reloadOffline()
+    act(() => root!.unmount())
+    root = null
+    setNetwork(true)
+    fake.state.sessionError = { name: 'AuthRetryableFetchError', status: 0, message: 'Failed to fetch' }
+    render()
+    act(() => hook.current.init())
+    await settle()
+    expect(hook.current.localOnly).toBe(true)
+    expect(localStorage.getItem('xxb.user.v1')).not.toBeNull()
+    expect(localStorage.getItem(cardsKey(A))).not.toBeNull()
+  })
+
+  test('QA L4-1 : session absente au chargement en ligne : copie des cartes et compte retenu oubliés', async () => {
+    await firstVisitOnline(A)
+    fake.state.session = null
+    render()
+    act(() => hook.current.init())
+    await settle()
+    expect(hook.current.status).toBe('signedout')
+    expect(localStorage.getItem('xxb.user.v1')).toBeNull()
+    expect(localStorage.getItem(cardsKey(A))).toBeNull()
   })
 })

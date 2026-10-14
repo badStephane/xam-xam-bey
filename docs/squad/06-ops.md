@@ -71,7 +71,7 @@ Pourquoi pas d'intégration Git : Cloudflare ne relie pas un projet Direct Uploa
 
 ## D. Sauvegarde mensuelle et test de restauration
 
-Le 1er de chaque mois, ~15 min, sur l'ordinateur d'un admin (Docker Desktop lancé, CLI Supabase installée).
+Le 1er de chaque mois, ~15 min, sur l'ordinateur d'un admin (Docker Desktop lancé, CLI Supabase installée, 2.120.0 comme la CI depuis le lot 4).
 
 - [ ] D1. Créer un dossier hors du dépôt : `mkdir -p ~/sauvegardes-xxb/$(date +%Y-%m) && cd ~/sauvegardes-xxb/$(date +%Y-%m)`
 - [ ] D2. Chaîne de connexion : Supabase > **Connect** (en haut) > **Session pooler** > copier l'URI. La saisir **sans** qu'elle reste dans l'historique :

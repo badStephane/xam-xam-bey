@@ -1,4 +1,4 @@
-/// <reference types="vitest" />
+/// <reference types="vitest/config" />
 import { cpSync, createReadStream, existsSync, rmSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
@@ -55,6 +55,9 @@ export default defineConfig(({ mode }) => {
     base: './',
     publicDir: 'public',
     plugins: [react(), siteDocs(), serviceWorker(env)],
+    // Vite 6 passe json.stringify à 'auto' (JSON.parse des gros JSON, clés entre guillemets) : +0,3 Ko gzip sur index.
+    // Sortie de Vite 5 gardée pour tenir le budget index ≤ 110 Ko gzip (05-build, « Lot 4 > SRE »).
+    json: { stringify: false },
     build: {
       outDir: OUT_DIR,
       emptyOutDir: false,
