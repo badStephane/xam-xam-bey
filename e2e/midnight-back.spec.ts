@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test'
+import { answerAny, startDailyOnQcm } from './cards'
 import { expect, freshEmail, signInWithCode, test } from './helpers'
 
 /**
@@ -18,9 +19,7 @@ const eyebrow = (page: Page) => page.locator('.head .eyebrow').first()
 /** Répond à une carte de la session du jour puis quitte : cette carte devient due le lendemain (J+1). */
 async function answerOneCardThenQuit(page: Page): Promise<void> {
   await page.getByRole('button', { name: /DÉMARRER LA SESSION DU JOUR/ }).click()
-  await page.getByRole('radiogroup', { name: 'Propositions' }).getByRole('radio').first().click()
-  await page.getByRole('button', { name: /^Valider/ }).click()
-  await page.getByRole('button', { name: /CARTE SUIVANTE|VOIR LE BILAN/ }).click()
+  await answerAny(page)
   await page.getByRole('button', { name: '✕ QUITTER' }).click()
   // Confirmation en ligne (UX-14, lot 3).
   await page.getByRole('button', { name: 'QUITTER', exact: true }).click()
@@ -62,8 +61,7 @@ test.describe('Passage à minuit (QA-1, C1)', () => {
 test.describe('Bouton retour (point 7)', () => {
   test('retour en pleine séance : la séance se termine, on reste sur le site', async ({ page, baseURL }) => {
     await signInWithCode(page, freshEmail('back'))
-    await page.getByRole('button', { name: /DÉMARRER LA SESSION DU JOUR/ }).click()
-    await expect(page.getByRole('radiogroup', { name: 'Propositions' })).toBeVisible()
+    await startDailyOnQcm(page)
     await page.goBack()
     expect(page.url().startsWith(baseURL!)).toBe(true)
     await expect(page.getByRole('heading', { name: 'Aujourd’hui' })).toBeVisible()

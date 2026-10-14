@@ -2,7 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { SAVE_DELAY } from '../lib/constants'
 import { PARAMS } from '../lib/params'
 import { mergeProgress, parseStoredProgress } from '../lib/progressMerge'
-import { canClearLocal, clearLocalProgress, fromSaveResult, isAccountSwitch, readLocalProgress, reconcileOnLoad, saveArgs, saveErrorKind, writeLocalProgress, type SaveErrorKind } from '../lib/progressSync'
+import { canClearLocal, clearLocalProgress, fromSaveResult, isAccountSwitch, isGradesRejected, isGradesUnsupported, readLocalProgress, reconcileOnLoad, saveArgs, saveErrorKind, weekOfSaveResult, writeLocalProgress, type SaveErrorKind } from '../lib/progressSync'
+import { clearGamification } from '../lib/gameKeys'
+import { clearGradesQueue, enqueueGrade, gradesBatch, readGradesQueue, removeSentGrades, utcDay } from '../lib/gradeQueue'
 import { applyGrade, cardsByZone, EMPTY_PROGRESS, validCards } from '../lib/srs'
 import { clearCardsCache, readCardsCache, writeCardsCache } from '../lib/cardsCache'
 import { forgetKnownUser, readKnownUser, writeKnownUser, type KnownUser } from '../lib/knownUser'
@@ -84,8 +86,14 @@ export interface SignInState {
   code?: { status: 'verifying' | 'error'; message?: string }
 }
 
+/** Dernier envoi réussi (lot 5) : `seq` augmente à chaque envoi ; XP de ligue de la semaine si la base la renvoie. */
+export interface WeekSync { seq: number; weekXp: number | null; counted: number }
+
 export interface Revision {
   status: RevStatus
+  weekSync: WeekSync
+  /** Vrai si des notes attendent l'envoi ou si un envoi est en cours. */
+  isSyncPending(): boolean
   content: RevisionContent
   prog: Progress
   /** null si tout est enregistré ; 'retry' : nouvel essai automatique ; 'rejected' : refus définitif du serveur. */
@@ -106,7 +114,8 @@ export interface Revision {
   /** Retour au formulaire d'adresse (« Modifier l'adresse »). */
   changeEmail(): void
   signOut(): void
-  grade(cardId: string, g: Grade, today: number): void
+  /** `choice` : texte de la proposition choisie pour un QCM (A11), absent en auto-évaluation. */
+  grade(cardId: string, g: Grade, today: number, choice?: string): void
   logSession(log: SessionLog): void
   retrySave(): void
   setDemoProgress(p: Progress): void
@@ -144,6 +153,7 @@ function forgetDevice(userId: string | null): void {
   if (!id) return
   forgetKnownUser(store, id)
   clearCardsCache(store, id)
+  clearGamification(store, id)
 }
 
 /** Contenu de révision et progression personnelle (Supabase), enregistrée avec un léger délai et copiée en local. */
@@ -160,6 +170,9 @@ export function useRevision(demo: boolean): Revision {
   const resyncTimer = useRef<ReturnType<typeof setTimeout> | 0>(0)
   const resyncRef = useRef<() => void>(() => undefined)
   const [signIn, setSignIn] = useState<SignInState>({ step: 'idle' })
+  const [weekSync, setWeekSync] = useState<WeekSync>({ seq: 0, weekXp: null, counted: 0 })
+  /** Base sans le 4e paramètre de save_progress (avant la migration du lot 5) : envois à 3 clés pour cette page. */
+  const gradesOff = useRef(false)
   const statusRef = useRef<RevStatus>('idle')
   const progRef = useRef<Progress>(EMPTY_PROGRESS)
   /** Identifiant de la personne dont la progression a été lue avec succès : condition pour écrire. */
@@ -206,10 +219,18 @@ export function useRevision(demo: boolean): Revision {
     sv.dirty = false
     if (sv.timer) clearTimeout(sv.timer)
     const live = await hasLiveSession(owner)
-    const { data, error } = live ? await supabase.rpc('save_progress', saveArgs(progRef.current)) : { data: null, error: AUTH_PENDING }
+    const sent = gradesOff.current ? [] : gradesBatch(readGradesQueue(localStore(), owner))
+    const { data, error } = live ? await supabase.rpc('save_progress', saveArgs(progRef.current, sent)) : { data: null, error: AUTH_PENDING }
     sv.saving = false
     if (ownerRef.current !== owner) return
-    if (error) {
+    if (error && sent.length && (isGradesRejected(error) || isGradesUnsupported(error))) {
+      // File refusée en bloc : abandonnée ; base sans p_grades : file gardée, envois à 3 clés. La progression repart aussitôt.
+      console.error('[xxb] Notes de ligue non envoyées', error)
+      if (isGradesRejected(error)) clearGradesQueue(localStore(), owner)
+      else gradesOff.current = true
+      sv.dirty = true
+      sv.again = true
+    } else if (error) {
       console.error('[xxb] Enregistrement de la progression impossible', error)
       const kind = saveErrorKind(error)
       sv.dirty = true
@@ -218,6 +239,11 @@ export function useRevision(demo: boolean): Revision {
       if (kind === 'retry') sv.timer = setTimeout(() => void flush(), RETRY_DELAY)
     } else {
       setSaveErr(null)
+      const left = sent.length ? removeSentGrades(localStore(), owner, sent) : []
+      // Plus de 500 notes en attente : le reste part dans l'envoi suivant.
+      if (left.length && !gradesOff.current) { sv.dirty = true; sv.again = true }
+      const week = weekOfSaveResult(data)
+      setWeekSync(w => ({ seq: w.seq + 1, weekXp: week?.weekXp ?? null, counted: week?.counted ?? 0 }))
       const saved = fromSaveResult(data)
       // État fusionné du serveur, refusionné avec ce qui a été noté pendant l'appel.
       if (saved) adopt(mergeProgress(saved, progRef.current))
@@ -414,7 +440,8 @@ export function useRevision(demo: boolean): Revision {
   }, [flush])
 
   return {
-    status, content, prog, saveErr, email, userId, localOnly, signIn, init,
+    status, content, prog, saveErr, email, userId, localOnly, signIn, init, weekSync,
+    isSyncPending: () => save.current.dirty || save.current.saving || save.current.again,
     retry: () => {
       // Aussi depuis le chargement (FE-5) : le chargement en cours est abandonné par son jeton, puis relancé.
       loadSeq.current += 1
@@ -468,7 +495,14 @@ export function useRevision(demo: boolean): Revision {
         resetUser()
       })
     },
-    grade: (cardId, g, today) => commit(applyGrade(progRef.current, cardId, g, today)),
+    grade: (cardId, g, today, choice) => {
+      const owner = ownerRef.current
+      // Jour et heure de la note pris sur la même horloge, en UTC : jamais un jour futur pour le serveur ; `t` toujours envoyé.
+      const at = Date.now()
+      const day = utcDay(at)
+      if (owner && canWrite()) enqueueGrade(localStore(), owner, { c: cardId, d: day, g, t: Math.floor(at / 1000), ...(choice === undefined ? {} : { a: choice }) }, day)
+      commit(applyGrade(progRef.current, cardId, g, today))
+    },
     logSession: log => commit({ ...progRef.current, sessions: [...progRef.current.sessions, log] }, true),
     retrySave: () => { setSaveErr(null); save.current.dirty = true; void flush() },
     setDemoProgress: p => { progRef.current = p; setProg(p) },

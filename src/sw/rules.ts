@@ -264,3 +264,26 @@ export function keepRequestUrl(data: unknown, scope: Scope, storageOrigin: strin
   if (type !== KEEP_PDF_MESSAGE || typeof url !== 'string') return null
   return routeRequest({ url, method: 'GET', mode: 'cors', hasRange: false }, scope, storageOrigin) === 'pdf' ? url : null
 }
+
+/** Morceau du build (vue réduite du bundle Rollup) : nom de fichier, module d'entrée, imports statiques. */
+export interface BuiltChunk { fileName: string; facadeModuleId: string | null; imports: readonly string[] }
+
+/** Écrans chargés à la demande à garder hors ligne dès l'installation du worker (lot 5 : Ligue, Badges, blocs du bilan). */
+export const OFFLINE_SCREENS = /[\\/]components[\\/]league[\\/]Gamification\.tsx$/
+
+/**
+ * Fichiers à précharger à l'installation : les morceaux dont le module d'entrée correspond à `entry`, et leurs imports
+ * statiques (dépendances partagées), sauf ceux déjà dans la coquille. Chemins relatifs au site, triés.
+ */
+export function offlineScreenAssets(chunks: readonly BuiltChunk[], shell: readonly string[], entry: RegExp = OFFLINE_SCREENS): string[] {
+  const byName = new Map(chunks.map(c => [c.fileName, c]))
+  const out = new Set<string>()
+  const visit = (name: string): void => {
+    if (out.has(name)) return
+    out.add(name)
+    byName.get(name)?.imports.forEach(visit)
+  }
+  chunks.filter(c => c.facadeModuleId && entry.test(c.facadeModuleId)).forEach(c => visit(c.fileName))
+  const inShell = new Set(shell)
+  return [...out].filter(p => !inShell.has(p)).sort()
+}

@@ -18,3 +18,41 @@ Date : 2026-10-13. Statut : acceptée (décision PM D1, lot 2). Source : audit p
 **Conséquences.** Une correction se fait dans l'admin, jamais dans `cards-N.json` (une modification d'une carte existante dans `data/seed/` n'a plus aucun effet). `data/seed/` diverge de la base avec le temps : ce n'est pas une sauvegarde, la sauvegarde est celle de la base (`06-ops.md`). Un id de carte ne doit jamais être réutilisé pour une autre question.
 
 **À revoir si :** on veut éditer le contenu en dehors de l'admin (relecture par lots dans un tableur), ou si un export régulier de la base vers le dépôt est mis en place.
+
+## ADR-2 : L'XP de ligue vient de notes vérifiées par le serveur
+
+Date : 2026-10-14. Statut : acceptée (P1, A6, A11, lot 5). Détail : `17-archi-lot5.md`.
+
+**Contexte.** `save_progress` accepte un `p_xp` libre jusqu'à 10 000 000 : un classement dessus se triche en une requête. Le client déclare aussi la note des cartes.
+
+**Décision.** Le classement ne lit que `grade_events` : une ligne par (scout, jour, carte), insérée par `save_progress` via `p_grades`. Le serveur fixe l'XP : QCM 10 si le texte choisi est égal à `qcm.ok` de la carte publiée, sinon 0 ; carte sans QCM 5 fixes. 30 cartes par jour au plus, QCM ratés compris. `p_xp` reste l'XP personnelle (niveaux).
+
+**Alternatives écartées.** Différence de `progress.cards` d'un envoi à l'autre (déclaré par le client, jour inconnu) ; RPC séparé `record_grades` (une requête de plus en 3G, pas d'atomicité) ; payer le « Su » auto-déclaré (pousse à cliquer « Su »).
+
+**Conséquences.** Borne honnête : 300 XP par jour. Le texte de la bonne réponse est lisible par tout scout connecté (table `cards`) : un script peut toujours atteindre le plafond, comme un scout très assidu. Les cartes sans QCM rapportent moitié moins.
+
+**À revoir si :** des plaintes de triche apparaissent (exiger que la carte soit due, ou tirer les propositions côté serveur), ou si beaucoup de cartes restent sans QCM.
+
+## ADR-3 : Clôture par date limite fixe, pg_cron plus repli paresseux
+
+Date : 2026-10-14. Statut : acceptée (P5, A7, lot 5).
+
+**Contexte.** Pas de serveur à nous, plan gratuit. La clôture doit être rejouable sans double promotion.
+
+**Décision.** Semaine du lundi 00:00 au dimanche 20:00 UTC ; notes acceptées jusqu'au lundi 06:00 UTC, puis refusées : les données sont gelées, la clôture donne toujours le même résultat. `league_close_week` pose un verrou, sort si `closed_at` est posé, et **affecte** la ligue (`tier = tier de la semaine + issue`), jamais d'incrément. Déclenchée par `pg_cron` (toutes les heures à la minute 5, migration séparée) et par `get_league_state`.
+
+**Alternatives écartées.** Cron seul (peut manquer une heure) ; paresseux seul (première lecture du lundi plus lente, reste le repli).
+
+**Conséquences.** Entre dimanche 20:00 et la clôture, le scout est « en attente » (`pending`). Une note hors ligne arrivée après lundi 06:00 ne compte que pour l'XP perso.
+
+**À revoir si :** des plaintes « ma note de dimanche n'a pas compté » apparaissent (allonger la grâce).
+
+## ADR-4 : Entrée paresseuse dans les groupes
+
+Date : 2026-10-14. Statut : acceptée (lot 5).
+
+**Décision.** Un scout avec pseudo entre dans un groupe de sa ligue à sa première note de la semaine (le groupe ouvert le plus rempli, sinon un nouveau ; 20 au plus, verrou par semaine et ligue). Pas de groupe formé à l'avance, donc pas de membre inactif affiché. Les petits groupes ne sont pas fusionnés.
+
+**Conséquences.** Le dernier groupe d'une ligue peut être petit (un scout seul ne monte ni ne descend).
+
+**À revoir si :** plus de 2 000 scouts par ligue, ou trop de groupes de moins de 5.

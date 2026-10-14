@@ -4,6 +4,8 @@ import { dayDate, p2, shortDate, zoneColor } from '../../lib/format'
 import { ALL_ZONES, selectCards, zoneReport } from '../../lib/practice'
 import { allCards, bestStreak, levelBuckets, seenCurve, streak, xpLevel, zoneStats } from '../../lib/srs'
 import { Segments } from '../Segments'
+import { useGrade } from '../../hooks/useGrade'
+import { ProgressChips } from './ProgressChips'
 
 const CHART_W = 320
 const CHART_H = 110
@@ -93,13 +95,15 @@ export function Progress() {
   const { rev, today } = useApp()
   const cards = allCards(rev.content)
   const lvl = xpLevel(rev.prog.xp)
+  const grade = useGrade(rev.userId, rev.prog, rev.status === 'ready')
   const buckets = levelBuckets(cards, rev.prog)
   const acq = buckets.slice(ACQUIRED_LV + 1).reduce((a, b) => a + b, 0)
   const total = cards.length || 1
   return (
     <div className="col g16">
+      <ProgressChips />
       <div className="head">
-        <span className="eyebrow">NIV. {lvl.lv} · {lvl.rank.toUpperCase()} · {lvl.xp} XP</span>
+        <span className="eyebrow">NIV. {lvl.lv} · {grade.name.toUpperCase()} · {lvl.xp} XP</span>
         <h1 className="h-screen">Progression</h1>
         <p style={{ margin: 0 }} className="muted">{acq} cartes acquises sur {cards.length} publiées. Une carte est acquise au niveau {ACQUIRED_LV}.</p>
       </div>

@@ -10,6 +10,7 @@ import { RevisionArea } from './components/revision/RevisionArea'
 import { Session } from './components/revision/Session'
 import { Today } from './components/revision/Today'
 import { Admin } from './components/admin/Admin'
+import { LazyBadges, LazyLeague } from './components/league/lazy'
 import { Shell } from './components/Shell'
 import { Topo } from './components/Topo'
 import { PARAMS } from './lib/params'
@@ -54,6 +55,8 @@ function Screen() {
     case 'plan': return <Shell><RevisionArea><Plan /></RevisionArea></Shell>
     case 'fiches': return <Shell><RevisionArea><Fiches /></RevisionArea></Shell>
     case 'progression': return <Shell><RevisionArea><Progress /></RevisionArea></Shell>
+    case 'ligue': return <Shell><RevisionArea><LazyLeague /></RevisionArea></Shell>
+    case 'badges': return <Shell><RevisionArea><LazyBadges /></RevisionArea></Shell>
     default: break
   }
   if (ui.screen === 'apercu') return <Shell><Library /></Shell>

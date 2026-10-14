@@ -1,5 +1,5 @@
 import { useApp } from '../AppContext'
-import type { Screen } from '../lib/params'
+import { PROGRESS_SCREENS, type Screen } from '../lib/params'
 
 const ICON = { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, 'aria-hidden': true }
 const Book = () => <svg {...ICON}><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" /><path d="M4 21V5M8 7h7M8 11h7" /></svg>
@@ -16,6 +16,7 @@ const ITEMS: Array<[Screen, string, () => JSX.Element]> = [
 export function BottomNav() {
   const { ui, go } = useApp()
   const active = (s: Screen) => ui.screen === s || (s === 'revision' && ['acces', 'horsligne'].includes(ui.screen))
+    || (s === 'progression' && PROGRESS_SCREENS.includes(ui.screen))
   return (
     <nav className="bottom-nav" aria-label="Navigation principale">
       {ITEMS.map(([screen, label, Icon]) => (

@@ -3,6 +3,7 @@ import { gradeCounts, missedCards, REDO } from '../../lib/session'
 import { share } from '../../lib/share'
 import { Md } from '../Md'
 import { CardDocLink } from './CardDocLink'
+import { LazyFinGamification } from '../league/lazy'
 
 export function Fin() {
   const { ui, go, patch, startSession } = useApp()
@@ -33,6 +34,7 @@ export function Fin() {
       <div className="col g8"><span className="f-lbl" style={{ fontSize: 11, letterSpacing: '.1em', color: 'var(--amber)' }}>{f.tag}</span><h1>{f.title}</h1></div>
       <div className="kpis">{f.stats.map(([v, l, c]) => <div key={l} className="kpi"><b style={{ color: c }}>{v}</b><span>{l}</span></div>)}</div>
       <div className="row" style={{ gap: 6 }}>{f.chips.map(([t, c]) => <span key={t} className="pill" style={{ borderColor: c, color: c }}>{t}</span>)}</div>
+      {!ask && <LazyFinGamification session={s} />}
       <section className="col g10">
         <h2 style={{ margin: 0, font: '700 22px/1.1 var(--f-hud)', letterSpacing: '.02em' }}>{f.list}</h2>
         {miss.length

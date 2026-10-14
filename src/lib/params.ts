@@ -1,5 +1,5 @@
 /** Paramètres d'URL : les planches pilotent l'écran, le thème et l'état affichés. */
-export const SCREENS = ['bibliotheque', 'apercu', 'revision', 'session', 'fin', 'plan', 'fiches', 'progression', 'acces', 'horsligne', 'admin'] as const
+export const SCREENS = ['bibliotheque', 'apercu', 'revision', 'session', 'fin', 'plan', 'fiches', 'progression', 'acces', 'horsligne', 'admin', 'ligue', 'badges'] as const
 export type Screen = typeof SCREENS[number]
 
 const p = new URLSearchParams(typeof location === 'undefined' ? '' : location.search)
@@ -17,5 +17,8 @@ export const PARAMS = {
   q: raw('q'),
   phase: raw('phase') || 'question',
 }
+
+/** Écrans du groupe PROGRÈS (lot 5) : puces PROGRESSION · LIGUE · BADGES. */
+export const PROGRESS_SCREENS: readonly Screen[] = ['progression', 'ligue', 'badges']
 
 export const isRevScreen = (s: Screen): boolean => !['bibliotheque', 'apercu', 'admin'].includes(s)

@@ -1,8 +1,8 @@
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { build } from 'esbuild'
-import type { Plugin, ResolvedConfig } from 'vite'
-import { buildVersion, CACHE_PREFIX, shellManifest } from './rules'
+import type { Plugin, ResolvedConfig, Rollup } from 'vite'
+import { buildVersion, CACHE_PREFIX, offlineScreenAssets, shellManifest, type BuiltChunk } from './rules'
 
 /**
  * Plugin Vite (lot 3, E3) : après l'écriture du build, génère dist/sw.js.
@@ -18,7 +18,7 @@ export function serviceWorker(env: Record<string, string>): Plugin {
     name: 'xxb-service-worker',
     apply: 'build',
     configResolved(c) { config = c },
-    async writeBundle() {
+    async writeBundle(_options, bundle: Rollup.OutputBundle) {
       const outDir = resolve(config.root, config.build.outDir)
       const target = resolve(outDir, 'sw.js')
       if (env.VITE_SW === 'off') {
@@ -28,6 +28,9 @@ export function serviceWorker(env: Record<string, string>): Plugin {
       const html = readFileSync(resolve(outDir, 'index.html'), 'utf8')
       const shell = shellManifest(html, path => readFileSync(resolve(outDir, path), 'utf8'))
       const assets = readdirSync(resolve(outDir, 'assets')).filter(n => !n.endsWith('.map')).map(n => `assets/${n}`).sort()
+      const chunks: BuiltChunk[] = Object.values(bundle).flatMap(o => (o.type === 'chunk' ? [{ fileName: o.fileName, facadeModuleId: o.facadeModuleId, imports: o.imports }] : []))
+      // Lot 5 : Ligue et Badges disponibles hors ligne sans visite préalable (préchargés, tolérés s'ils échouent).
+      const precache = offlineScreenAssets(chunks, shell)
       const version = buildVersion([html, ...shell, ...assets])
       const storage = storageOrigin(env.VITE_SUPABASE_URL)
       await build({
@@ -42,11 +45,12 @@ export function serviceWorker(env: Record<string, string>): Plugin {
           __XXB_SW_VERSION__: JSON.stringify(version),
           __XXB_SW_SHELL__: JSON.stringify(shell),
           __XXB_SW_ASSETS__: JSON.stringify(assets),
+          __XXB_SW_PRECACHE__: JSON.stringify(precache),
           __XXB_SW_STORAGE__: JSON.stringify(storage),
         },
         logLevel: 'warning',
       })
-      config.logger.info(`[xxb] sw.js : version ${version}, coquille de ${shell.length} fichiers, PDF de ${storage ?? '(aucun stockage)'}`)
+      config.logger.info(`[xxb] sw.js : version ${version}, coquille de ${shell.length} fichiers, ${precache.length} écran(s) préchargé(s), PDF de ${storage ?? '(aucun stockage)'}`)
     },
   }
 }

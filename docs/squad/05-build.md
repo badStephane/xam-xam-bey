@@ -526,3 +526,78 @@ Livré : `package.json`, `package-lock.json`, `vite.config.ts` (référence de t
   Une seconde passe a donné 45/46. L'échec venait d'un `/otp` en 504 après 10 s (`request_timeout` de GoTrue) sous une charge machine de 30 à 50. `midnight-back` est ensuite passé vert 3 fois de suite. C'est le même aléa de connexion sous charge que celui noté au lot 3. `config.toml` est inchangé : `auto_expose_new_tables` reste non défini, et ce champ disparaît le 2026-10-30. La CI passe en 2.120.0.
 - **Incidents pendant l'essai** : une passe E2E a été cassée par un arrêt et un redémarrage de la pile par un autre rôle (avec la CLI 2.109.1), en pleine suite. Un `start` a aussi échoué après une mise en veille de la machine. Le `start` suivant est passé en 1 min. Rien n'est imputable à la 2.120.0.
 - **Couverture (`test:coverage`)** : sous charge, le test `xlsxUnzip` « la fabrique produit bien un menteur » peut dépasser les 5 s par défaut. Il prenait déjà 4,3 s avec vitest 2, et a échoué 2 fois sur 4 avec vitest 4. Le correctif (un délai propre à ce test) relève du propriétaire du test. `npm test` et la CI ne sont pas concernés.
+
+## Lot 5 > Back
+
+Livré : `supabase/migrations/20261014120000_lot5_league.sql` (tables, ingestion des notes, clôture, `save_progress` à 4 paramètres), `20261014120100_lot5_pseudo.sql` (pseudo, `get_league_state`, signalement, admin, mots refusés amorcés), `20261014120200_lot5_cron.sql` (`pg_cron`, séparé) ; `supabase/tests/05_lot5_league_test.sql` (55), `06_lot5_social_test.sql` (68) ; `02` et `04` : signature de `save_progress` mise à jour (2 lignes). Contrat : `03-api-contract.md` L5 ; écarts à l'archi : `17-archi-lot5.md`, « État P5 » ; ADR-2 à 4.
+
+- **Anti-triche (A6, A11)** : XP de ligue = somme de `grade_events.xp`, calculée par le serveur (QCM : texte choisi comparé à `qcm.ok`, 10 ou 0 ; sans QCM : 5). `p_xp` n'est lu par aucune fonction de ligue. Une note par carte et par jour, 30 par jour, bornes de jour, semaine close refusée.
+- **Droits** : 8 tables en RLS sans politique, `revoke all` pour `public`, `anon`, `authenticated`. 20 fonctions internes révoquées explicitement (le `pg_default_acl` local donne `EXECUTE` à `anon` et `authenticated`) ; 10 RPC accordés à `authenticated` seulement. Testé.
+- **Compatibilité** : l'ancienne `save_progress(jsonb, jsonb, integer)` est supprimée (deux surcharges rendraient l'appel à 3 clés ambigu pour PostgREST). Appel REST à 3 clés vérifié en local : même fusion, colonnes en plus ignorables.
+- **Mots refusés** : 71 mots amorcés. La partie wolof (9 entrées) est à relire par un locuteur (A12) ; l'admin complète par `admin_set_blocked_word`.
+
+### Commandes et résultats (2026-10-14, pile locale 553xx, CLI 2.120.0)
+```
+supabase db reset --local      -> 3 migrations lot 5 appliquées, cron.job : xxb-close-weeks '5 * * * *'
+supabase test db               -> Files=6, Tests=216, Result: PASS (93 anciens + 55 + 68)
+REST save_progress 3 clés      -> 200, xp 15, week_xp 0 ; 4 clés (QCM juste + QCM faux) -> week_xp 10, grades_counted 2
+REST get_league_state anon     -> 42501 ; select direct grade_events (authenticated) -> 42501
+parité (XXB_PARITY_DB_URL=...55322) -> progressParity 5 passed (5)
+```
+
+### Déploiement (base avant front)
+1. `db push` des 3 migrations. Le front du lot 4 continue de marcher (appel à 3 clés) ; ses scouts ne marquent pas de points de ligue tant que leur PWA n'est pas à jour.
+2. Si `pg_cron` est refusé en production : sauter `20261014120200_lot5_cron.sql` (marquer appliquée) ; la clôture paresseuse suffit.
+3. Entre le `drop` et le rechargement du cache PostgREST, un appel peut échouer : le front le classe en `retry`.
+
+### Retour arrière (nouvelle migration, jamais dans l'éditeur)
+```sql
+select cron.unschedule('xxb-close-weeks');
+drop function public.save_progress(jsonb, jsonb, integer, jsonb);
+-- puis recréer save_progress(jsonb, jsonb, integer) à l'identique de 20261014090000_lot2.sql, avec ses revoke/grant.
+```
+Les tables et RPC du lot 5 peuvent rester (inertes, fermées aux clients).
+
+### Hors périmètre (signalé)
+- Pas de limite « trop d'essais » sur `set_pseudo` : une erreur annule la transaction, un compteur en base serait perdu. Le front espace les envois.
+- Quitter puis revenir permet de changer de pseudo sans attendre 24 h (accepté, rare).
+- Ajouter un mot refusé ne retire pas les pseudos existants qui le contiennent.
+
+## Lot 5 > Front
+
+Hypothèses : H1, plancher de grade (A1) retenu par appareil à la première lecture ; l'ancien barème ne s'applique qu'aux comptes ayant une séance avant le 30/11/2026 (`LEGACY_GRADE_UNTIL_DAY`, date volontairement tardive : au pire, un grade privé un peu trop haut). H2, « Non merci » = `set_league_opt_in(false)` (L5-2), donc définitif sur tous les appareils. H3, pas de compteur de classement pendant la séance (P-B) : « +10 XP » du QCM réussi reste juste (perso et ligue) ; l'auto-évaluation affiche toujours l'XP perso (+5/+10), la ligue lui donne 5 (règles dans « Comment ça marche ? »).
+
+### Fichiers
+- Règles pures (testées) : `src/lib/grades.ts` (C2, A1, barre de l'en-tête dans le niveau en cours), `gradeQueue.ts` (`xxb.grades.v1.<uid>`, une entrée par carte et par jour `{c,d,g,t,a?}`, `a` = texte de la proposition choisie pour un QCM, 500 par envoi, purge à 8 jours, cartes du jour pour le plafond), `league.ts` (lecture validée de `get_league_state`, copie `xxb.league.v1.<uid>` revalidée à la lecture, libellés, A7, A8), `badges.ts` (10 locaux + 4 serveur, dates de premier constat), `pseudo.ts` (C5, `details`/`hint` du serveur, 5 essais par minute côté appareil), `leagueApi.ts`, `gameKeys.ts` (toutes les clés du lot effacées à la déconnexion, L4-1 compris).
+- `useRevision.ts` : `grade(id, g, day, choice?)` remplit la file ; `flush` envoie `p_grades` (sans note : 3 clés, comme le lot 4), retire les notes envoyées après succès, garde les autres ; `GRADES_INVALID` : file abandonnée et progression renvoyée ; `PGRST202` (base sans la migration) : renvoi à 3 clés, file gardée ; `weekSync`, `isSyncPending`.
+- Écrans (morceau `Gamification`, à la demande) : `src/components/league/` (Ligue, Badges, formulaire de pseudo, blocs du bilan, bloc « Cette semaine »), `lazy.tsx` (chargeur, repli « Cet écran n'est pas encore sur votre téléphone », focus du titre à l'arrivée). Puces `ProgressChips` (index). Admin : onglet PSEUDOS + mots refusés (`PseudosAdmin`, `BlockedWords`, à la demande).
+- Navigation : écrans `ligue`, `badges` (titres, historique Android par `go`), PROGRÈS et PROGRESSION actifs sur les 3 écrans.
+
+### Hors ligne des écrans Ligue et Badges
+Le worker **précharge à son installation** le morceau `Gamification` et ses imports (`offlineScreenAssets`, calculé au build depuis le graphe Rollup, `__XXB_SW_PRECACHE__`), dans le cache d'exécution. Coût : environ 12,5 Ko gzip une fois par version, même pour qui n'ouvre jamais la ligue. Un échec n'empêche pas l'installation. Données : dernière réponse de `get_league_state` gardée par compte et revalidée ; badges locaux toujours calculés sur l'appareil.
+
+### Bundle (gzip, variables factices)
+`index` 112,42 Ko (plafond 115 ; 109,70 avant). `Gamification` 9,73, `leagueApi` (partagé) 2,82, `PseudosAdmin` 2,32.
+
+### Commandes et résultats (2026-10-14, pile locale 553xx, CLI 2.120.0, migrations du Back appliquées)
+- `npm run check` (variables factices) : vert, 549 réussis, 1 échec attendu, 5 ignorés.
+- `npx playwright test e2e/league.spec.ts` : 2/2 (badge, pseudo, ligue, retour arrière, Ligue et Badges hors ligne, préchargement).
+- `npx playwright test` complet : 45/50 ; `offline-revision` A puis B corrigé ensuite (clés du lot 5 effacées) : 4/4 ; `qa-lot3-session` (3) et `import-excel` (1) verts au passage isolé (lenteur de connexion connue).
+
+### Hors périmètre (signalé)
+- Carte avec `qcm` en base affichée en auto-évaluation (QCM rejeté par `validQcm` côté front) : sans `a`, 0 XP de ligue (règle du Back).
+- Estimation hors ligne du défi (L5-6) : on affiche la dernière valeur reçue « (sur cet appareil) », sans ajouter la file locale.
+- Planches de démonstration (annexe A6) et événements analytiques (A7) : non faits.
+- E2E admin PSEUDOS et mots refusés : non écrits (Vitest sur les règles seulement).
+
+### Correctifs QA (18-qa-lot5.md, 2026-10-14), dans les migrations non déployées
+- **L5-1** : `d > aujourd'hui` (UTC) refusé ; une note sans `t` est datée du début du jour `d`. Les jours passés de la semaine ouverte restent acceptés (risque accepté par le PM : 30 cartes x jours de la semaine).
+- **L5-2** : `league_refresh` ne change `last_gain_at` que si l'XP change ; à l'entrée en groupe, `last_gain_at` = dernière note à XP > 0.
+- **L5-3** : `nazi` et `salaud` en mot exact ; retirés de la liste amorcée : 3 mots wolof signalés par la QA et la variante d'orthographe de l'un d'eux. Tests de non-régression (Nazir, Nazira, Naziha, Nazim, Salahoudine) dans 06.
+- `supabase test db` : Files=7, Tests=232, PASS, aucun TODO (07 : les 3 TODO devenus tests, attendu du test 1 passé de 150 à 90) ; parité 5/5.
+
+### Corrections après QA lot 5 (18-qa-lot5.md)
+- **L5-1 (côté front)** : jour des notes de la file pris en UTC (`utcDay`) sur la même horloge que `t` (toujours envoyé) ; jamais « demain » pour le serveur, même à l'est de Dakar après minuit. Test Vitest.
+- **L5-5** : bloc « Cette semaine » hors réseau : « (dernière connexion) » au lieu de « (sur cet appareil) ».
+- **L5-6** : `e2e/cards.ts` (type de carte détecté, auto-évaluation « Voir la réponse » puis « Je savais », `startDailyOnQcm` renvoie la position du premier QCM) ; `qa-lot3-session`, `session-resume`, `midnight-back`, `offline-revision`, `league` ne supposent plus que la première carte est un QCM.
+- **L5-7** : bannière `frozen` et `resultsPending` supprimées (inatteignables : le serveur renvoie `pending` entre dimanche 20:00 et lundi 06:00).

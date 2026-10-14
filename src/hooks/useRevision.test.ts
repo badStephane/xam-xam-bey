@@ -8,6 +8,8 @@ import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { SAVE_DELAY } from '../lib/constants'
 import { localProgressKey } from '../lib/progressSync'
+import { gradesQueueKey, readGradesQueue, utcDay, type QueuedGrade } from '../lib/gradeQueue'
+import { leagueCacheKey } from '../lib/gameKeys'
 import type { CardProgress } from '../lib/types'
 import { useRevision, type Revision } from './useRevision'
 
@@ -776,5 +778,103 @@ describe('useRevision : révision hors ligne (lot 4, F1)', () => {
     expect(hook.current.status).toBe('signedout')
     expect(localStorage.getItem('xxb.user.v1')).toBeNull()
     expect(localStorage.getItem(cardsKey(A))).toBeNull()
+  })
+})
+
+describe('useRevision : notes de ligue (lot 5, L5-1, A11)', () => {
+  const argsAt = (i: number) => fake.state.rpc.mock.calls[i]?.[1] as Record<string, unknown>
+
+  test('QCM : la proposition choisie part dans p_grades, la file est vidée après succès, XP de la semaine lue', async () => {
+    await signedInAndLoaded(A)
+    fake.state.rpc.mockResolvedValue(ok([{ ...row({ c1: card(1, T + 1, 1, 1) }, 10), week_xp: 10, grades_counted: 1 }]))
+    act(() => hook.current.grade('c1', 2, T, 'Baden-Powell'))
+    act(() => hook.current.grade('c2', 1, T))
+    expect(readGradesQueue(localStorage, A.id)).toHaveLength(2)
+    expect(hook.current.isSyncPending()).toBe(true)
+    await settle(SAVE_DELAY)
+    expect(argsAt(0).p_grades).toEqual([{ c: 'c1', d: utcDay(Date.now()), g: 2, t: expect.any(Number), a: 'Baden-Powell' }, { c: 'c2', d: utcDay(Date.now()), g: 1, t: expect.any(Number) }])
+    expect(readGradesQueue(localStorage, A.id)).toEqual([])
+    expect(hook.current.weekSync).toEqual({ seq: 1, weekXp: 10, counted: 1 })
+    expect(hook.current.isSyncPending()).toBe(false)
+  })
+
+  test('GRADES_INVALID : file abandonnée, la progression repart aussitôt à 3 clés', async () => {
+    await signedInAndLoaded(A)
+    fake.state.rpc.mockResolvedValueOnce({ data: null, error: { code: '22023', message: 'GRADES_INVALID' } })
+    fake.state.rpc.mockResolvedValue(ok([row({ c1: card(1, T + 1, 1, 1) }, 10)]))
+    act(() => hook.current.grade('c1', 2, T))
+    await settle(SAVE_DELAY)
+    expect(fake.state.rpc).toHaveBeenCalledTimes(2)
+    expect(argsAt(1).p_grades).toBeUndefined()
+    expect(readGradesQueue(localStorage, A.id)).toEqual([])
+    expect(hook.current.saveErr).toBeNull()
+  })
+
+  test('base sans p_grades (PGRST202) : renvoi à 3 clés, file gardée', async () => {
+    await signedInAndLoaded(A)
+    fake.state.rpc.mockResolvedValueOnce({ data: null, error: { code: 'PGRST202', message: 'not found' } })
+    fake.state.rpc.mockResolvedValue(ok([row({ c1: card(1, T + 1, 1, 1) }, 10)]))
+    act(() => hook.current.grade('c1', 2, T))
+    await settle(SAVE_DELAY)
+    expect(fake.state.rpc).toHaveBeenCalledTimes(2)
+    expect(argsAt(1).p_grades).toBeUndefined()
+    expect(readGradesQueue(localStorage, A.id)).toHaveLength(1)
+  })
+
+  test('erreur réseau : la même file est renvoyée au nouvel essai', async () => {
+    await signedInAndLoaded(A)
+    fake.state.rpc.mockResolvedValueOnce({ data: null, error: NETWORK_ERROR })
+    fake.state.rpc.mockResolvedValue(ok([row({ c1: card(1, T + 1, 1, 1) }, 10)]))
+    act(() => hook.current.grade('c1', 2, T))
+    await settle(SAVE_DELAY)
+    await settle(10_000)
+    expect(argsAt(1).p_grades).toEqual(argsAt(0).p_grades)
+    expect(readGradesQueue(localStorage, A.id)).toEqual([])
+  })
+
+  test('hors réseau : note gardée dans la file, aucun envoi', async () => {
+    await signedInAndLoaded(A)
+    setNetwork(false)
+    act(() => hook.current.grade('c1', 0, T, 'Faux'))
+    await settle(SAVE_DELAY * 2)
+    expect(fake.state.rpc).not.toHaveBeenCalled()
+    expect(readGradesQueue(localStorage, A.id)).toEqual([{ c: 'c1', d: utcDay(Date.now()), g: 0, t: expect.any(Number), a: 'Faux' }])
+  })
+
+  // QA lot 5 (18-qa-lot5.md) : file de notes de A en attente, B se connecte sur le même appareil sans déconnexion.
+  test('QA L5 : A puis B sur le même appareil : les notes de A ne partent jamais au nom de B', async () => {
+    await signedInAndLoaded(A)
+    setNetwork(false)
+    act(() => hook.current.grade('c1', 2, T, 'Réponse de A'))
+    expect(readGradesQueue(localStorage, A.id)).toHaveLength(1)
+    fake.state.session = { user: B }
+    fake.state.progress.mockResolvedValueOnce(ok(null))
+    act(() => fake.state.authCb!('SIGNED_IN', { user: B }))
+    await settle()
+    expect(hook.current.userId).toBe(B.id)
+    setNetwork(true)
+    fake.state.rpc.mockResolvedValue(ok([row({ c2: card(1, T + 1, 1, 1) }, 5)]))
+    act(() => hook.current.grade('c2', 1, T))
+    await settle(SAVE_DELAY)
+    const sentGrades = fake.state.rpc.mock.calls.flatMap(c => ((c[1] ?? {}) as { p_grades?: QueuedGrade[] }).p_grades ?? [])
+    expect(sentGrades.map(g => g.c)).toEqual(['c2'])
+    expect(readGradesQueue(localStorage, B.id)).toEqual([])
+    // La file de A ne fuit pas vers B ; elle n'est pas lisible sous la clé de B.
+    expect(localStorage.getItem(gradesQueueKey(B.id)) ?? '').not.toContain('Réponse de A')
+    // Comme la copie de progression du lot 4, la file de A reste à A (envoyée à son retour, effacée à sa déconnexion).
+    expect(readGradesQueue(localStorage, A.id).map(g => g.c)).toEqual(['c1'])
+  })
+
+  test('déconnexion : file et classement gardé effacés', async () => {
+    await signedInAndLoaded(A)
+    setNetwork(false)
+    act(() => hook.current.grade('c1', 2, T))
+    localStorage.setItem(leagueCacheKey(A.id), '{}')
+    setNetwork(true)
+    fake.state.rpc.mockResolvedValue(ok([row({ c1: card(1, T + 1, 1, 1) }, 10)]))
+    act(() => hook.current.signOut())
+    await settle()
+    expect(localStorage.getItem(gradesQueueKey(A.id))).toBeNull()
+    expect(localStorage.getItem(leagueCacheKey(A.id))).toBeNull()
   })
 })

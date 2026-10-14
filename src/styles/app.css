@@ -333,3 +333,38 @@ textarea.field{padding:10px;font:inherit;font-size:16px;line-height:1.45;resize:
   .bottom-nav button:active{transform:scale(.95)}
   .shell-h .tabs,.shell-h .subnav{display:none}
 }
+
+/* Lot 5 : ligues, badges, pseudo (16-design). Jetons existants seulement ; zone de descente sans rouge. */
+.bar10.gm span.on{background:var(--acc)}
+.progress-chips .chip{min-height:44px}
+.skel-line{display:block;border:1px solid var(--line);background:var(--field);animation:xxbPulse 1.4s ease-in-out infinite}
+.field-err{color:var(--err);font-size:14px}
+.pseudo-input{min-height:44px;padding:0 12px;border:1.5px solid var(--field-bd);background:var(--field);color:var(--hud);font:500 16px/1 var(--f-body);max-width:100%}
+.pseudo-input[aria-invalid=true]{border-color:var(--err)}
+.fade-in{animation:xxbFade 200ms ease-out}
+@keyframes xxbFade{from{opacity:0}to{opacity:1}}
+.two-btn>.btn{flex:1 1 0;min-height:44px}
+.lg-zone{display:flex;flex-direction:column;gap:4px}
+.lg-sep{margin:6px 0 0}
+.lg-zone.down .lg-sep{color:var(--hud2)}
+.lg-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.lg-row{width:100%;min-height:48px;display:grid;grid-template-columns:2.2em 32px 1fr auto;align-items:center;gap:10px;padding:6px 10px;border:1px solid var(--line);background:transparent;color:var(--hud);text-align:left;font:500 15px/1.2 var(--f-body)}
+.lg-row.me{border:2px solid var(--acc)}
+.lg-rank{font-weight:700;color:var(--hud2)}
+.lg-ava{width:32px;height:32px;display:grid;place-items:center;color:#0D1512;font:700 15px/1 var(--f-hud)}
+.lg-name{overflow-wrap:anywhere}
+.lg-xp{font-size:13px;text-align:right}
+.lg-me{color:var(--acc)}
+.lg-note{padding:6px 10px 10px}
+.lg-rules summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font:700 13px/1 var(--f-mono)}
+.lg-rules ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.badge-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media (min-width:760px){.badge-grid{grid-template-columns:repeat(4,1fr)}}
+.badge-tile{width:100%;min-height:112px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:12px;border:1px dashed var(--line);background:transparent;color:var(--hud);text-align:left;font:500 14px/1.25 var(--f-body)}
+.badge-tile.on{border-style:solid;border-color:var(--amber)}
+.badge-rule{font-size:13px;color:var(--hud2)}
+.grade-ladder{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+.grade-ladder li{display:flex;gap:10px;align-items:center;min-height:32px}
+.grade-ladder li[aria-current=step]{font-weight:700}
+.adm-pseudo{border:1px solid var(--line);padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+@media (max-width:420px){.lg-row{grid-template-columns:2em 32px 1fr}.lg-xp{grid-column:3;text-align:left}}

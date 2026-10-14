@@ -2,6 +2,7 @@ import { execFileSync, spawn, type ChildProcess } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import type { Page } from '@playwright/test'
 import { LOCAL_API } from '../playwright.config'
+import { answerAny } from './cards'
 import { expect, freshEmail, signInWithCode, test } from './helpers'
 
 /**
@@ -68,13 +69,10 @@ async function reloadOffline(page: Page): Promise<void> {
   expect(res?.fromServiceWorker(), 'page servie par le service worker').toBe(true)
 }
 
-/** Note la carte affichée (première proposition, puis Valider) et passe à la suivante ; renvoie son identifiant. */
+/** Note la carte affichée (QCM ou auto-évaluation, QA L5-6) et passe à la suivante ; renvoie son identifiant. */
 async function gradeCurrent(page: Page): Promise<string> {
   const id = await cardId(page)
-  await page.getByRole('radiogroup', { name: 'Propositions' }).getByRole('radio').first().click()
-  await page.getByRole('button', { name: /^Valider/ }).click()
-  await expect(page.locator('.verdict')).toBeVisible()
-  await page.getByRole('button', { name: /CARTE SUIVANTE|VOIR LE BILAN/ }).click()
+  await answerAny(page)
   return id
 }
 

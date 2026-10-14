@@ -277,3 +277,17 @@ describe('revalidation des PDF gardés (L3-6)', () => {
     expect(evictionsFor(entries, 'b', PDF_CACHE_LIMIT + 1)).toBeNull()
   })
 })
+
+describe('écrans préchargés hors ligne (lot 5)', () => {
+  test('morceau Gamification et ses imports, hors coquille', async () => {
+    const { offlineScreenAssets } = await import('./rules')
+    const chunks = [
+      { fileName: 'assets/index-a.js', facadeModuleId: '/r/index.html', imports: ['assets/client-b.js'] },
+      { fileName: 'assets/client-b.js', facadeModuleId: null, imports: [] },
+      { fileName: 'assets/Gamification-c.js', facadeModuleId: '/r/src/components/league/Gamification.tsx', imports: ['assets/index-a.js', 'assets/leagueApi-d.js'] },
+      { fileName: 'assets/leagueApi-d.js', facadeModuleId: null, imports: ['assets/index-a.js'] },
+      { fileName: 'assets/PseudosAdmin-e.js', facadeModuleId: '/r/src/components/admin/PseudosAdmin.tsx', imports: ['assets/leagueApi-d.js'] },
+    ]
+    expect(offlineScreenAssets(chunks, ['index.html', 'assets/index-a.js', 'assets/client-b.js'])).toEqual(['assets/Gamification-c.js', 'assets/leagueApi-d.js'])
+  })
+})

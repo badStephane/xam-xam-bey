@@ -5,6 +5,7 @@
  *  - Mise à jour : nouvelle version active dès son installation (skipWaiting), caches des versions précédentes purgés.
  *  - Coquille (index.html, script principal, styles, polices) : préchargée à l'installation.
  *  - Fichiers hachés chargés à la demande (pdf.js, écrans secondaires) : gardés au premier usage, d'une version à l'autre ;
+ *    les écrans Ligue et Badges du lot 5 sont préchargés à l'installation (__XXB_SW_PRECACHE__) ;
  *    le lecteur PDF est préchargé à chaque version si l'appareil garde des PDF (sinon un PDF gardé deviendrait illisible).
  *  - PDF du bucket public : cache d'abord, plafond de 150 Mo, plus anciens évincés. Un PDF ouvert dans le lecteur du
  *    téléphone est gardé sur demande de la page (message « xxb-keep-pdf »). PDF déjà gardé et ouvert en ligne : revalidé
@@ -24,6 +25,8 @@ declare const __XXB_SW_SHELL__: string[]
 /** Tous les fichiers hachés du build (assets/), pour purger ceux qui ont disparu et précharger le lecteur PDF. */
 declare const __XXB_SW_ASSETS__: string[]
 declare const __XXB_SW_STORAGE__: string | null
+/** Écrans chargés à la demande gardés dès l'installation (lot 5 : Ligue, Badges), dans le cache d'exécution. */
+declare const __XXB_SW_PRECACHE__: string[]
 
 /** Types minimaux du contexte de service worker (la configuration TypeScript du projet charge la bibliothèque DOM). */
 interface ExtendableEvent extends Event { waitUntil(p: Promise<unknown>): void }
@@ -73,11 +76,18 @@ async function keepReader(): Promise<void> {
   await Promise.all(readerAssets(__XXB_SW_ASSETS__).map(p => keep(rt, p).catch(() => undefined)))
 }
 
+/** Ligue et Badges hors ligne sans visite préalable (lot 5). Un échec n'empêche pas l'installation : repli à l'écran. */
+async function keepOfflineScreens(): Promise<void> {
+  const rt = await caches.open(RUNTIME_CACHE)
+  await Promise.all(__XXB_SW_PRECACHE__.map(p => keep(rt, p).catch(() => undefined)))
+}
+
 sw.addEventListener('install', event => {
   // Tout ou rien pour la coquille : si un fichier manque, la nouvelle version ne s'installe pas et l'ancienne reste.
   event.waitUntil(caches.open(SHELL)
     .then(cache => Promise.all(__XXB_SW_SHELL__.map(p => keep(cache, p))))
     .then(() => keepReader())
+    .then(() => keepOfflineScreens())
     .then(() => sw.skipWaiting()))
 })
 
