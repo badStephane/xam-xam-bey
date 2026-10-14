@@ -496,6 +496,15 @@ Liste « Documents cités par les questions de la zone » sous la fiche : cartes
 - Contenu de révision rafraîchi au retour du réseau, mais une séance en cours garde ses cartes ; le compte admin n'est pas revérifié avant le prochain chargement.
 - Planches : aucun cadre hors ligne ajouté pour la révision.
 
+### Correctif déconnexion mobile (enquête, 2026-10-13) : aucune cause dans le code client, aucun code modifié
+Symptôme (production, lot 3) : sur mobile, connecté, onglet quitté une dizaine de minutes, déconnecté au retour.
+- **Seule voie vers « déconnecté »** dans la page : `SIGNED_OUT` (→ `resetUser`) ou `getSession` sans session ni erreur (→ L4-1). Dans auth-js 2.117.3, `_removeSession` n'est appelé que sur : session illisible en stockage, `signOut`, ou **refus non réseau** du rafraîchissement **avec un jeton d'accès déjà expiré** (`_callRefreshToken` ; jeton encore valide : session gardée). Les échecs réseau (`AuthRetryableFetchError`, 5xx, 52x) ne suppriment rien.
+- **Piste 1 écartée (délai de 15 s sur `/auth/v1/token`)** : GoTrue v2.197 (pile locale) accepte à tout moment le **parent du jeton actif** et rend le jeton actif sans nouvelle rotation. Relevé : rt1 → rt2 ; rt1 30 s après → 200 (rt2) ; rt2 → rt3 ; rt1 ensuite → 400 `refresh_token_already_used` ; rt3 toujours valide. Une réponse coupée puis redemandée ne déconnecte donc pas. E2E `e2e/slow-token-refresh.spec.ts` : réponse retardée de 17 s, coupée à 15 s, redemandée après la fenêtre de 10 s, personne toujours connectée (vert sur le code actuel).
+- **Piste 2 écartée** : `TimeoutError`/`AbortError` du fetch fourni (y compris pendant la lecture du corps) devient `AuthRetryableFetchError` (`_handleRequest`), donc réessayable, session gardée.
+- **Piste 3 écartée** : erreur de rafraîchissement → `getSession` rend une erreur → appareil ou « indisponible », jamais `signedout` (tests L4-1 existants). Le worker ne touche pas `/auth/` (POST et autre origine : `network`, pas de `respondWith`). Clé publishable : rafraîchissement vérifié sur la pile locale.
+- **Causes restantes, hors code client** : session invalidée côté serveur (`session_not_found` après « SE DÉCONNECTER » sur un autre appareil, `signOut` étant global par défaut ; `session_expired` si minuteur d'inactivité ou durée maximale réglés), limite de débit des rafraîchissements (429 non réessayable), jeton déjà tourné ailleurs (deux contextes avec la même session), ou stockage différent (navigateur intégré d'une application, application iOS ajoutée à l'écran d'accueil). À trancher avec les journaux Auth de production.
+- Tests : `src/lib/authRefresh.test.ts` (vrai client supabase-js et notre fetch face à un GoTrue simulé fidèle : réponse lente sans déconnexion ; refus non réseau avec jeton expiré → `SIGNED_OUT`).
+
 ## Lot 4 > SRE
 
 Livré : `package.json`, `package-lock.json`, `vite.config.ts` (référence de types et option `json`), `.github/workflows/ci.yml` (version de la CLI), `README.md` (versions), `docs/squad/06-ops.md` (version de la CLI en C). Aucun code applicatif ni test métier touché.
