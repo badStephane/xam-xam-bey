@@ -5,7 +5,7 @@ import { currentZone, dayNum } from './lib/format'
 import { isRevScreen, PARAMS, type Screen } from './lib/params'
 import { checkIsAdmin } from './lib/adminApi'
 import { confirmLeaveDraft } from './lib/draftGuard'
-import { gradeOf, withChoices } from './lib/qcm'
+import { gradeOf, isSelfCheck, withChoices } from './lib/qcm'
 import { advance, answerCard, isLogged, isScored, mkSession, scoreCurrent } from './lib/session'
 import { clearSessionSnapshot, hasAnySessionSnapshot, readSessionSnapshot, saveSessionSnapshot } from './lib/sessionStore'
 import { screenTitle } from './lib/screenTitle'
@@ -14,7 +14,7 @@ import { CACHE_KEYS, LEGACY_KEYS, parseSeen, parseTheme } from './lib/cache'
 import { initialEntry, normalizeTarget, parseHash, type NavEntry } from './lib/navHistory'
 import { loadPref, savePref } from './lib/storage'
 import type { Scope } from './lib/practice'
-import type { Card, Doc, Grade, QuizMode, Session, TypeFilter } from './lib/types'
+import type { Card, Doc, Grade, Progress, QuizMode, Session, TypeFilter } from './lib/types'
 import { useCatalog, type CatalogStatus } from './hooks/useCatalog'
 import { useNavHistory } from './hooks/useNavHistory'
 import { useNow } from './hooks/useNow'
@@ -59,6 +59,8 @@ interface AppValue {
   today: number
   cur: number
   now: Date
+  /** Progression au début de la séance en cours ou terminée (badges gagnés pendant la séance, lot 5). */
+  sessionStartProg: Progress | null
   mobile: boolean
   offline: boolean
   patch(p: Partial<Ui>): void
@@ -166,6 +168,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Séance gardée pour l'onglet (E2) : propriétaire et jour fixés au démarrage ; jamais écrite pour un autre compte.
   const sessionOwner = useRef<string | null>(null)
+  const sessionStartProg = useRef<Progress | null>(null)
   const sessionDay = useRef(today)
   const keepSession = useCallback((s: Session | null) => {
     const owner = sessionOwner.current
@@ -304,7 +307,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }
 
   const value: AppValue = {
-    ui, rev, isAdmin, adminChecking, today, cur, now, mobile,
+    ui, rev, isAdmin, adminChecking, today, cur, now, mobile, sessionStartProg: sessionStartProg.current,
     docs: catalog.docs, catalogStatus: catalog.status, reloadCatalog: catalog.reload,
     docById: id => (id === null ? null : catalog.docs.find(d => d.id === id) || null), offline: PARAMS.lib === 'offline' || !online, patch, go,
     openDoc: id => {
@@ -326,6 +329,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const s = mkSession(mode, kind, label, cards, mode === 'ask' ? (name ?? ui.askName).trim() : '')
       sessionOwner.current = rev.userId
       sessionDay.current = today
+      sessionStartProg.current = rev.prog
       go('session', { session: mode === 'self' ? withChoices(s, allCards(rev.content)) : s, checks: {}, hideAns: false })
     },
     reveal: () => { const s = uiRef.current.session; if (s && !s.rev && !s.done) setSession({ ...s, rev: true }) },
@@ -340,7 +344,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const shown: Session = { ...s, rev: true }
       const g = gradeOf(shown)
       const r = g === null ? null : scoreCurrent(shown, g)
-      if (r?.graded) rev.grade(r.graded.card.id, r.graded.grade, today)
+      // A11 : texte exact de la proposition choisie, comparé par le serveur à la bonne réponse (XP de ligue).
+      const ch = shown.queue[shown.i]?.ch
+      const choice = ch && !isSelfCheck(ch) && shown.picked !== null ? ch.options[shown.picked] : undefined
+      if (r?.graded) rev.grade(r.graded.card.id, r.graded.grade, today, choice)
       setSession(r ? r.session : shown)
     },
     next: () => {

@@ -18,7 +18,7 @@ end $$;
 grant usage on schema tests to anon, authenticated;
 grant execute on all functions in schema tests to anon, authenticated;
 
-select has_function('public', 'save_progress', array['jsonb', 'jsonb', 'integer'], 'save_progress existe');
+select has_function('public', 'save_progress', array['jsonb', 'jsonb', 'integer', 'jsonb'], 'save_progress existe (4e paramètre p_grades, lot 5)');
 
 -- Droits : anon ne peut pas appeler la fonction.
 select tests.login(null);

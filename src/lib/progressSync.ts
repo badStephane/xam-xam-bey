@@ -1,5 +1,6 @@
 import { KEPT_SESSIONS } from './constants'
 import { MAX_XP, mergeProgress, parseStoredProgress, progressEquals } from './progressMerge'
+import type { QueuedGrade } from './gradeQueue'
 import { EMPTY_PROGRESS } from './srs'
 import type { Progress, SessionLog } from './types'
 
@@ -42,14 +43,39 @@ export interface SaveArgs {
   p_cards: Progress['cards']
   p_sessions: SessionLog[]
   p_xp: number
+  p_grades?: QueuedGrade[]
 }
 
-/** Paramètres de la RPC save_progress (contrat §1). */
-export const saveArgs = (p: Progress): SaveArgs => ({
+/**
+ * Paramètres de la RPC save_progress (contrat §1, et L5-1 pour `p_grades`). Sans note en attente : appel à 3 clés,
+ * identique au lot 4 (compatible avec une base qui n'a pas encore la migration du lot 5).
+ */
+export const saveArgs = (p: Progress, grades: readonly QueuedGrade[] = []): SaveArgs => ({
   p_cards: p.cards,
   p_sessions: p.sessions.slice(-KEPT_SESSIONS),
   p_xp: Math.min(MAX_XP, Math.max(0, Math.floor(p.xp))),
+  ...(grades.length ? { p_grades: [...grades] } : {}),
 })
+
+/** XP de ligue de la semaine et notes comptées renvoyées par save_progress (L5-1) ; null si absentes (base du lot 4). */
+export function weekOfSaveResult(data: unknown): { weekXp: number; counted: number } | null {
+  const row: unknown = Array.isArray(data) ? data[0] : data
+  if (typeof row !== 'object' || row === null) return null
+  const { week_xp: weekXp, grades_counted: counted } = row as { week_xp?: unknown; grades_counted?: unknown }
+  if (typeof weekXp !== 'number' || !Number.isFinite(weekXp)) return null
+  return { weekXp, counted: typeof counted === 'number' && Number.isFinite(counted) ? counted : 0 }
+}
+
+const errorField = (error: unknown, k: 'code' | 'message'): string => {
+  const v = typeof error === 'object' && error !== null ? (error as Record<string, unknown>)[k] : undefined
+  return typeof v === 'string' ? v : ''
+}
+
+/** File de notes refusée en bloc (22023 GRADES_INVALID) : la file est abandonnée pour ne pas bloquer la progression. */
+export const isGradesRejected = (error: unknown): boolean => errorField(error, 'code') === '22023' && errorField(error, 'message') === 'GRADES_INVALID'
+
+/** Base sans le 4e paramètre (PostgREST PGRST202, fonction introuvable) : renvoi à 3 clés, la file reste gardée. */
+export const isGradesUnsupported = (error: unknown): boolean => errorField(error, 'code') === 'PGRST202'
 
 /** État fusionné renvoyé par save_progress (tableau d'une ligne), ou null si la réponse est inexploitable. */
 export function fromSaveResult(data: unknown): Progress | null {

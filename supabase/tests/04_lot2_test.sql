@@ -44,8 +44,8 @@ select is_empty($$select * from tests.risky_grants('public.zz_lot2_sonde')$$, 't
 drop table public.zz_lot2_sonde;
 
 -- 1. Forme de la fonction et des droits.
-select ok((select prosecdef from pg_proc where oid = 'public.save_progress(jsonb, jsonb, integer)'::regprocedure), 'save_progress est security definer');
-select is((select proconfig from pg_proc where oid = 'public.save_progress(jsonb, jsonb, integer)'::regprocedure), array['search_path=""'], 'search_path vide');
+select ok((select prosecdef from pg_proc where oid = 'public.save_progress(jsonb, jsonb, integer, jsonb)'::regprocedure), 'save_progress est security definer');
+select is((select proconfig from pg_proc where oid = 'public.save_progress(jsonb, jsonb, integer, jsonb)'::regprocedure), array['search_path=""'], 'search_path vide');
 select ok(not has_table_privilege('authenticated', 'public.progress', 'insert'), 'authenticated n''a plus insert sur progress');
 select ok(not has_table_privilege('authenticated', 'public.progress', 'update'), 'authenticated n''a plus update sur progress');
 select ok(has_table_privilege('authenticated', 'public.progress', 'select'), 'authenticated garde select sur progress');

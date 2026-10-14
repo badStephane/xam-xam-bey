@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test'
+import { atPos, startDailyOnQcm } from './cards'
 import { expect, freshEmail, signInWithCode, test } from './helpers'
 
 /**
@@ -21,14 +22,14 @@ async function viewsOf(page: Page, id: string): Promise<number> {
   }, id)
 }
 
-async function startAndValidateFirst(page: Page): Promise<string> {
-  await page.getByRole('button', { name: /DÉMARRER LA SESSION DU JOUR/ }).click()
-  await expect(page.getByRole('radiogroup', { name: 'Propositions' })).toBeVisible()
+/** Premier QCM de la séance (QA L5-6 : cartes en auto-évaluation éventuelles notées avant), validé par double clic. */
+async function startAndValidateFirst(page: Page): Promise<{ first: string; pos: number }> {
+  const pos = await startDailyOnQcm(page)
   const first = await cardId(page)
   await page.getByRole('radiogroup', { name: 'Propositions' }).getByRole('radio').first().click()
   await page.getByRole('button', { name: /^Valider/ }).dblclick()
   await expect(verdict(page)).toBeVisible()
-  return first
+  return { first, pos }
 }
 
 const sessionKeys = (page: Page): Promise<string[]> =>
@@ -36,17 +37,17 @@ const sessionKeys = (page: Page): Promise<string[]> =>
 
 test('L3 QA : double clic sur Valider puis sur Suivant : une seule note, une seule carte passée', async ({ page }) => {
   await signInWithCode(page, freshEmail('qa3-dbl'))
-  const first = await startAndValidateFirst(page)
+  const { first, pos } = await startAndValidateFirst(page)
   expect(await viewsOf(page, first)).toBe(1)
   await page.getByRole('button', { name: /CARTE SUIVANTE|VOIR LE BILAN/ }).dblclick()
-  await expect(counter(page)).toHaveText(/^02\//)
+  await expect(counter(page)).toHaveText(atPos(pos + 1))
   await expect(verdict(page)).toHaveCount(0)
   expect(await viewsOf(page, first)).toBe(1)
 })
 
 test('L3 QA : retour Android juste après la correction : la note compte une fois, la séance ne revient pas', async ({ page }) => {
   await signInWithCode(page, freshEmail('qa3-back'))
-  const first = await startAndValidateFirst(page)
+  const { first } = await startAndValidateFirst(page)
   await page.goBack()
   await expect(page.getByRole('heading', { name: 'Aujourd’hui' })).toBeVisible()
   expect(await viewsOf(page, first)).toBe(1)
@@ -86,7 +87,7 @@ for (const [label, forge] of [
 test('L3 QA : 360 px, confirmation au clavier : Entrée sur CONTINUER ne valide pas la carte, aucun débordement', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 740 })
   await signInWithCode(page, freshEmail('qa3-360'))
-  await page.getByRole('button', { name: /DÉMARRER LA SESSION DU JOUR/ }).click()
+  await startDailyOnQcm(page)
   await page.getByRole('radiogroup', { name: 'Propositions' }).getByRole('radio').first().click()
   await page.getByRole('button', { name: '✕ QUITTER' }).click()
   const stay = page.getByRole('button', { name: 'CONTINUER' })
@@ -108,8 +109,7 @@ test('L3 QA : 360 px, confirmation au clavier : Entrée sur CONTINUER ne valide 
 // L3-5 (constat QA, corrigé) : confirmation ouverte, aucun raccourci de carte (src/App.tsx, useKeyboard) ; Échap la referme.
 test('L3-5 : confirmation ouverte, la touche 1 ne choisit pas de proposition et ne ferme pas la confirmation', async ({ page }) => {
   await signInWithCode(page, freshEmail('qa3-keys'))
-  await page.getByRole('button', { name: /DÉMARRER LA SESSION DU JOUR/ }).click()
-  await expect(page.getByRole('radiogroup', { name: 'Propositions' })).toBeVisible()
+  await startDailyOnQcm(page)
   await page.getByRole('button', { name: '✕ QUITTER' }).click()
   await expect(page.getByRole('button', { name: 'CONTINUER' })).toBeFocused()
   await page.keyboard.press('1')

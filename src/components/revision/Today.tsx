@@ -2,6 +2,7 @@ import { useApp } from '../../AppContext'
 import { DAY_NAMES, MONTH_NAMES, NEW_PER_DAY, SECONDS_PER_CARD } from '../../lib/constants'
 import { p2, plural } from '../../lib/format'
 import { TrainCard } from './TrainCard'
+import { LazyWeekBlock } from '../league/lazy'
 import { allCards, dailyCards, streak } from '../../lib/srs'
 
 export function Today() {
@@ -23,6 +24,7 @@ export function Today() {
       {n
         ? <button className="go" onClick={() => startSession('self', 'daily', 'Session du jour', [...due, ...fresh])}><b>DÉMARRER LA SESSION DU JOUR ({plural(n, 'CARTE', 'CARTES')})</b><span>ENVIRON {Math.max(1, Math.round(n * SECONDS_PER_CARD / 60))} MIN · QCM</span></button>
         : <button className="go" disabled><b>RIEN À RÉVISER AUJOURD’HUI</b><span>VOUS ÊTES À JOUR · ENTRAÎNEZ-VOUS SUR UNE ZONE</span></button>}
+      <LazyWeekBlock />
       <div className="duo">
         <TrainCard />
         <section className="box" aria-labelledby="t-meth">

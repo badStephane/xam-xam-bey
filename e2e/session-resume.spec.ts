@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test'
+import { atPos, startDailyOnQcm } from './cards'
 import { expect, freshEmail, signInWithCode, test } from './helpers'
 
 /** Lot 3, Front A : E1 (la réponse compte à la correction), E2 (séance gardée au rechargement), UX-13, UX-14. */
@@ -17,18 +18,16 @@ async function viewsOf(page: Page, id: string): Promise<number> {
   }, id)
 }
 
-async function startDaily(page: Page): Promise<void> {
-  await page.getByRole('button', { name: /DÉMARRER LA SESSION DU JOUR/ }).click()
-  await expect(page.getByRole('radiogroup', { name: 'Propositions' })).toBeVisible()
-}
+/** Séance du jour, arrêtée sur son premier QCM (QA L5-6) ; renvoie sa position. */
+const startDaily = (page: Page): Promise<number> => startDailyOnQcm(page)
 
 test.describe('Séance : réponse comptée et reprise après rechargement (E1, E2)', () => {
   test('noter une carte, actualiser tout de suite : la note est gardée une seule fois et la séance reprend au bon endroit', async ({ page }) => {
     await signInWithCode(page, freshEmail('resume'))
     const freshBefore = Number(await freshKpi(page).textContent())
-    await startDaily(page)
+    const pos = await startDaily(page)
     const first = await cardId(page)
-    await expect(counter(page)).toHaveText(/^01\//)
+    await expect(counter(page)).toHaveText(atPos(pos))
 
     await page.getByRole('radiogroup', { name: 'Propositions' }).getByRole('radio').first().click()
     await page.getByRole('button', { name: /^Valider/ }).click()
@@ -39,20 +38,20 @@ test.describe('Séance : réponse comptée et reprise après rechargement (E1, E
     await page.reload()
     // E2 : même carte, correction toujours affichée, aucune nouvelle note.
     await expect(verdict(page)).toBeVisible()
-    await expect(counter(page)).toHaveText(/^01\//)
+    await expect(counter(page)).toHaveText(atPos(pos))
     expect(await cardId(page)).toBe(first)
     await expect(page).toHaveURL(/#session$/)
     expect(await viewsOf(page, first)).toBe(1)
 
     await page.getByRole('button', { name: /CARTE SUIVANTE|VOIR LE BILAN/ }).click()
-    await expect(counter(page)).toHaveText(/^02\//)
+    await expect(counter(page)).toHaveText(atPos(pos + 1))
     const second = await cardId(page)
     expect(second).not.toBe(first)
     expect(await viewsOf(page, first)).toBe(1)
 
     // Rechargement avant de répondre : reprise sur la deuxième carte, sans correction.
     await page.reload()
-    await expect(counter(page)).toHaveText(/^02\//)
+    await expect(counter(page)).toHaveText(atPos(pos + 1))
     expect(await cardId(page)).toBe(second)
     await expect(verdict(page)).toHaveCount(0)
     expect(await viewsOf(page, second)).toBe(0)
@@ -61,7 +60,7 @@ test.describe('Séance : réponse comptée et reprise après rechargement (E1, E
     await page.getByRole('button', { name: '✕ QUITTER' }).click()
     await page.getByRole('button', { name: 'QUITTER', exact: true }).click()
     await expect(page.getByRole('heading', { name: 'Aujourd’hui' })).toBeVisible()
-    await expect(freshKpi(page)).toHaveText(String(freshBefore - 1))
+    await expect(freshKpi(page)).toHaveText(String(freshBefore - pos))
     expect(await viewsOf(page, first)).toBe(1)
 
     // Séance quittée : un rechargement ne la fait pas revenir.

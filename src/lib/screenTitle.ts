@@ -14,6 +14,8 @@ const SCREEN_TITLES: Record<Screen, string> = {
   acces: 'Connexion',
   horsligne: 'Révision indisponible',
   admin: 'Administration',
+  ligue: 'Ligue',
+  badges: 'Badges',
 }
 
 /** Titre du document de chaque écran (UX-13, WCAG 2.4.2) : « Plan annuel · Xam Xam Bëy ». L'aperçu prend le titre du document ouvert. */

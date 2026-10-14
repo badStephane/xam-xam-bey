@@ -1,11 +1,16 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { useApp } from '../../AppContext'
 import { confirmLeaveDraft } from '../../lib/draftGuard'
 import { SignInGate, UnavailableGate } from '../revision/Gate'
 import { CardsAdmin } from './CardsAdmin'
 import { DocsAdmin } from './DocsAdmin'
 
-type Tab = 'docs' | 'cards'
+type Tab = 'docs' | 'cards' | 'pseudos'
+
+/** Modération des pseudos (lot 5), chargée à la demande. */
+const PseudosAdmin = lazy(() => import('./PseudosAdmin').then(m => ({ default: m.PseudosAdmin }), () => ({
+  default: () => <p className="muted" role="status">Cet onglet n’a pas pu se charger. Vérifiez la connexion puis rechargez la page.</p>,
+})))
 
 /** Espace Admin : documents de la bibliothèque et questions de révision. Les droits sont vérifiés par la base (RLS). */
 export function Admin() {
@@ -31,8 +36,11 @@ export function Admin() {
       <nav className="chips" aria-label="Administration">
         <button className="chip" aria-current={tab === 'docs' ? 'page' : undefined} onClick={() => { if (confirmLeaveDraft()) setTab('docs') }}>DOCUMENTS</button>
         <button className="chip" aria-current={tab === 'cards' ? 'page' : undefined} onClick={() => { if (confirmLeaveDraft()) setTab('cards') }}>QUESTIONS</button>
+        <button className="chip" aria-current={tab === 'pseudos' ? 'page' : undefined} onClick={() => { if (confirmLeaveDraft()) setTab('pseudos') }}>PSEUDOS</button>
       </nav>
-      {tab === 'docs' ? <DocsAdmin /> : <CardsAdmin />}
+      {tab === 'docs' ? <DocsAdmin /> : tab === 'cards' ? <CardsAdmin /> : (
+        <Suspense fallback={<p className="mono" role="status">CHARGEMENT…</p>}><PseudosAdmin /></Suspense>
+      )}
     </div>
   )
 }

@@ -1,8 +1,10 @@
 import { useState, type ReactNode } from 'react'
 import { useApp } from '../AppContext'
 import { XP_BAR_SEGMENTS } from '../lib/constants'
-import { isRevScreen, type Screen } from '../lib/params'
+import { isRevScreen, PROGRESS_SCREENS, type Screen } from '../lib/params'
+import { levelFill } from '../lib/grades'
 import { xpLevel } from '../lib/srs'
+import { useGrade } from '../hooks/useGrade'
 import { BottomNav } from './BottomNav'
 import { Segments } from './Segments'
 
@@ -33,7 +35,10 @@ export function Shell({ children }: { children: ReactNode }) {
   const { ui, rev, docs, isAdmin, mobile, go, toggleTheme } = useApp()
   const [accountOpen, setAccountOpen] = useState(false)
   const lvl = rev.status === 'ready' ? xpLevel(rev.prog.xp) : null
-  const showSub = rev.status === 'ready' && SUBNAV.some(([s]) => s === ui.screen)
+  const grade = useGrade(rev.userId, rev.prog, rev.status === 'ready')
+  // PROGRESSION reste active sur Ligue et Badges (16-design §1) : la sous-navigation garde 4 puces.
+  const subOf = (s: Screen): Screen => (PROGRESS_SCREENS.includes(s) ? 'progression' : s)
+  const showSub = rev.status === 'ready' && SUBNAV.some(([s]) => s === subOf(ui.screen))
   const current = (on: boolean) => (on ? 'page' as const : undefined)
   const pieces = `${ui.seen.filter(id => docs.some(d => d.id === id)).length}/${docs.length} PIÈCES`
   // Sous 760 px, connecté : le bouton compte remplace le compteur de pièces (place de l'en-tête à 360 px).
@@ -53,10 +58,10 @@ export function Shell({ children }: { children: ReactNode }) {
         {lvl && (
           <div className="col g6">
             <div className="row mono xp-row" style={{ justifyContent: 'space-between', fontSize: 10.5, fontWeight: 500, letterSpacing: '.06em' }}>
-              <span style={{ color: 'var(--acc)' }}>NIV. {lvl.lv} · {lvl.rank.toUpperCase()}</span>
+              <span style={{ color: 'var(--acc)' }}>NIV. {lvl.lv} · {grade.name.toUpperCase()}</span>
               <span className="muted">{lvl.xp} / {lvl.next} XP</span>
             </div>
-            <Segments className="xp-bar" count={XP_BAR_SEGMENTS} on={lvl.fill} />
+            <Segments className="xp-bar" count={XP_BAR_SEGMENTS} on={levelFill(lvl.xp)} />
           </div>
         )}
         <nav className="tabs" aria-label="Navigation principale">
@@ -66,7 +71,7 @@ export function Shell({ children }: { children: ReactNode }) {
         </nav>
         {showSub && (
           <nav className="chips subnav" aria-label="Révision">
-            {SUBNAV.map(([s, label]) => <button key={s} className="chip" onClick={() => go(s)} aria-current={current(ui.screen === s)}>{label}</button>)}
+            {SUBNAV.map(([s, label]) => <button key={s} className="chip" onClick={() => go(s)} aria-current={current(subOf(ui.screen) === s)}>{label}</button>)}
             {rev.email && <button className="chip" style={{ marginLeft: 'auto' }} onClick={rev.signOut} title={`Connecté : ${rev.email}`}>SE DÉCONNECTER</button>}
           </nav>
         )}
