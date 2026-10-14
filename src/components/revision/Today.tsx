@@ -28,7 +28,7 @@ export function Today() {
       <div className="duo">
         <TrainCard />
         <section className="box" aria-labelledby="t-meth">
-          <h2 id="t-meth" className="h-sec" style={{ fontSize: 19 }}>LA MÉTHODE</h2>
+          <h2 id="t-meth" className="h-sec" style={{ fontSize: '1.1875rem' }}>LA MÉTHODE</h2>
           <ol className="steps">
             <li><b>01</b><span>Lisez la question et cherchez la réponse de mémoire.</span></li>
             <li><b>02</b><span>Choisissez parmi les quatre propositions, puis validez.</span></li>

@@ -8,8 +8,10 @@ const Route = () => <svg {...ICON}><path d="M6 19c0-4 4-4 6-7s6-3 6-7" /><circle
 const Sheet = () => <svg {...ICON}><path d="M6 3h9l4 4v14H6z" /><path d="M14 3v5h5M9 13h7M9 17h5" /></svg>
 const Chart = () => <svg {...ICON}><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg>
 
-const ITEMS: Array<[Screen, string, () => JSX.Element]> = [
-  ['bibliotheque', 'BIBLIOTHÈQUE', Book], ['revision', 'AUJOURD’HUI', Today], ['plan', 'PLAN', Route], ['fiches', 'FICHES', Sheet], ['progression', 'PROGRÈS', Chart],
+/** [écran, libellé, libellé court (sous 360 px, R-1), icône]. Le libellé court est contenu dans le long : le nom accessible reste le libellé complet. */
+const ITEMS: Array<[Screen, string, string, () => JSX.Element]> = [
+  ['bibliotheque', 'BIBLIOTHÈQUE', 'BIBLIO', Book], ['revision', 'AUJOURD’HUI', 'JOUR', Today], ['plan', 'PLAN', 'PLAN', Route],
+  ['fiches', 'FICHES', 'FICHES', Sheet], ['progression', 'PROGRÈS', 'PROGRÈS', Chart],
 ]
 
 /** Navigation principale sur téléphone, dans la zone du pouce (masquée en session, en bilan et en aperçu). */
@@ -19,9 +21,10 @@ export function BottomNav() {
     || (s === 'progression' && PROGRESS_SCREENS.includes(ui.screen))
   return (
     <nav className="bottom-nav" aria-label="Navigation principale">
-      {ITEMS.map(([screen, label, Icon]) => (
-        <button key={screen} onClick={() => go(screen, screen === 'revision' ? { session: null } : {})} aria-current={active(screen) ? 'page' : undefined}>
-          <Icon />{label}
+      {ITEMS.map(([screen, label, short, Icon]) => (
+        <button key={screen} onClick={() => go(screen, screen === 'revision' ? { session: null } : {})} aria-current={active(screen) ? 'page' : undefined}
+          aria-label={short === label ? undefined : label}>
+          <Icon />{short === label ? label : <><span className="bn-long">{label}</span><span className="bn-short" aria-hidden="true">{short}</span></>}
         </button>
       ))}
     </nav>

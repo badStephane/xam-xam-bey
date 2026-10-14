@@ -47,9 +47,9 @@ export function PseudoForm({ onDone }: Props) {
       <input id={`${id}-in`} className="pseudo-input" value={value} maxLength={40} autoComplete="off" autoCapitalize="off" spellCheck={false}
         onChange={e => { setValue(e.target.value); setError(null) }} onBlur={check}
         aria-invalid={error ? true : undefined} aria-describedby={describedBy} />
-      <span id={`${id}-help`} className="muted" style={{ fontSize: 13 }}>Visible des autres scouts. Pas votre vrai nom ni votre prénom.</span>
+      <span id={`${id}-help`} className="muted" style={{ fontSize: '0.8125rem' }}>Visible des autres scouts. Pas votre vrai nom ni votre prénom.</span>
       {error && <span id={`${id}-err`} className="field-err" role="alert">{error}</span>}
-      {offline && <span id={`${id}-off`} className="muted" role="status" style={{ fontSize: 13 }}>Le choix du pseudo demande du réseau.</span>}
+      {offline && <span id={`${id}-off`} className="muted" role="status" style={{ fontSize: '0.8125rem' }}>Le choix du pseudo demande du réseau.</span>}
       <div className="row">
         <button type="button" className="btn-mono" onClick={() => { setValue(randomPseudo()); setError(null) }}>UN PSEUDO AU HASARD</button>
         <button type="submit" className="btn acc" disabled={busy || offline}>{busy ? 'VÉRIFICATION…' : 'REJOINDRE LES LIGUES'}</button>

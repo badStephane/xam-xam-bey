@@ -31,20 +31,20 @@ export function Fin() {
   }
   return (
     <div className="fin">
-      <div className="col g8"><span className="f-lbl" style={{ fontSize: 11, letterSpacing: '.1em', color: 'var(--amber)' }}>{f.tag}</span><h1>{f.title}</h1></div>
+      <div className="col g8"><span className="f-lbl" style={{ fontSize: '0.6875rem', letterSpacing: '.1em', color: 'var(--amber)' }}>{f.tag}</span><h1>{f.title}</h1></div>
       <div className="kpis">{f.stats.map(([v, l, c]) => <div key={l} className="kpi"><b style={{ color: c }}>{v}</b><span>{l}</span></div>)}</div>
       <div className="row" style={{ gap: 6 }}>{f.chips.map(([t, c]) => <span key={t} className="pill" style={{ borderColor: c, color: c }}>{t}</span>)}</div>
       {!ask && <LazyFinGamification session={s} />}
       <section className="col g10">
-        <h2 style={{ margin: 0, font: '700 22px/1.1 var(--f-hud)', letterSpacing: '.02em' }}>{f.list}</h2>
+        <h2 style={{ margin: 0, font: '700 1.375rem/1.1 var(--f-hud)', letterSpacing: '.02em' }}>{f.list}</h2>
         {miss.length
           ? miss.map(card => {
             const [label, color] = stamps[s.res[card.id]]
             return (
               <div key={card.id} className="sheet punch miss">
                 <div className="row" style={{ justifyContent: 'space-between' }}><span className="cote">{card.id.toUpperCase()}</span><span className="stamp" style={{ borderColor: color, color, transform: 'rotate(-2deg)' }}>{label}</span></div>
-                <strong style={{ font: '800 17px/1.2 var(--f-doc)' }}>{card.q}</strong>
-                <span style={{ fontSize: 15, lineHeight: 1.5, color: 'var(--ink2)' }}><Md text={card.a} /></span>
+                <strong style={{ font: '800 1.0625rem/1.2 var(--f-doc)' }}>{card.q}</strong>
+                <span style={{ fontSize: '0.9375rem', lineHeight: 1.5, color: 'var(--ink2)' }}><Md text={card.a} /></span>
                 <CardDocLink card={card} />
               </div>
             )

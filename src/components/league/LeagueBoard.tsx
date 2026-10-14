@@ -32,7 +32,7 @@ function Report({ row }: { row: LeagueRow }) {
   return (
     <div className="col g6 lg-note">
       <button className="btn-mono" onClick={send} disabled={offline || state === 'busy'}>SIGNALER CE PSEUDO</button>
-      {offline && <span className="muted" style={{ fontSize: 13 }}>Le signalement demande du réseau.</span>}
+      {offline && <span className="muted" style={{ fontSize: '0.8125rem' }}>Le signalement demande du réseau.</span>}
       {state === 'limit' && <span role="alert" className="field-err">Trop de signalements aujourd’hui. Réessayez demain.</span>}
       {state === 'error' && <span role="alert" className="field-err">Le signalement n’a pas pu être envoyé. Réessayez.</span>}
     </div>

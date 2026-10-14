@@ -77,6 +77,8 @@ test.describe('E4 : questions importées reliées à leur document', () => {
     ].join(';'))
     // La liste admin affiche le document relié de la question importée (brouillon de la zone 01).
     await page.getByRole('group', { name: 'Zone' }).getByRole('button', { name: /^01 / }).click()
+    // Brouillons importés en fin de zone : au-delà des 50 premières questions affichées.
+    await page.getByRole('button', { name: 'BROUILLONS', exact: true }).click()
     await expect(page.getByRole('listitem').filter({ hasText: '[QA import] E4 titre' })).toContainText('Bases du scoutisme')
     await expect(page.getByRole('listitem').filter({ hasText: '[QA import] E4 sans source' })).toContainText('SANS DOCUMENT LIÉ')
   })

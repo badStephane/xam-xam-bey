@@ -17,8 +17,8 @@ export function Apercu() {
       </div>
       <div className="col g14" style={{ padding: 16, flex: 1 }}>
         <div className="col g6">
-          <h1 style={{ margin: 0, font: '800 26px/1.1 var(--f-doc)' }}>{d.title}</h1>
-          <span className="mono muted" style={{ fontSize: 11, lineHeight: 1.4 }}>{docFormat(d).toUpperCase()} · {d.folder.toUpperCase()}</span>
+          <h1 style={{ margin: 0, font: '800 1.625rem/1.1 var(--f-doc)' }}>{d.title}</h1>
+          <span className="mono muted" style={{ fontSize: '0.6875rem', lineHeight: 1.4 }}>{docFormat(d).toUpperCase()} · {d.folder.toUpperCase()}</span>
         </div>
         <div className="viewer"><LazyPdfViewer file={d.file} title={d.title} /></div>
         <div className="two">

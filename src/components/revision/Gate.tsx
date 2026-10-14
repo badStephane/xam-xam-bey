@@ -14,7 +14,7 @@ export function GateCard({ tag, stamp, title, titleRef, children }: GateCardProp
         <div className="gate-card">
           <div className="band" style={{ background: 'var(--stamp)' }}>{tag}</div>
           <div className="gate-body">
-            <span className="stamp" style={{ fontSize: 11, padding: '5px 7px', borderWidth: 2, transform: 'rotate(-4deg)' }}>{stamp}</span>
+            <span className="stamp" style={{ fontSize: '0.6875rem', padding: '5px 7px', borderWidth: 2, transform: 'rotate(-4deg)' }}>{stamp}</span>
             <h1 ref={titleRef} tabIndex={titleRef ? -1 : undefined}>{title}</h1>
             {children}
           </div>
@@ -60,7 +60,7 @@ export function LoadingGate() {
       <p className="mono" role="status" style={{ margin: 0, color: 'var(--acc)', animation: 'xxbPulse 1.2s ease-in-out infinite' }}>CHARGEMENT DE L’ESPACE DE RÉVISION…</p>
       {slow && (
         <>
-          <p className="muted" role="status" style={{ margin: 0, fontSize: 15 }}>Le chargement est long : le réseau est peut-être lent.</p>
+          <p className="muted" role="status" style={{ margin: 0, fontSize: '0.9375rem' }}>Le chargement est long : le réseau est peut-être lent.</p>
           <button className="btn" onClick={() => { rev.retry(); setAttempt(a => a + 1) }}>RÉESSAYER</button>
         </>
       )}

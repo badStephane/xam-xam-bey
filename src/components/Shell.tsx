@@ -57,7 +57,7 @@ export function Shell({ children }: { children: ReactNode }) {
         {account && accountOpen && <AccountPanel pieces={pieces} onClose={() => setAccountOpen(false)} />}
         {lvl && (
           <div className="col g6">
-            <div className="row mono xp-row" style={{ justifyContent: 'space-between', fontSize: 10.5, fontWeight: 500, letterSpacing: '.06em' }}>
+            <div className="row mono xp-row" style={{ justifyContent: 'space-between', fontSize: '0.6875rem', fontWeight: 500, letterSpacing: '.06em' }}>
               <span style={{ color: 'var(--acc)' }}>NIV. {lvl.lv} · {grade.name.toUpperCase()}</span>
               <span className="muted">{lvl.xp} / {lvl.next} XP</span>
             </div>

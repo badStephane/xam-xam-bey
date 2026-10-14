@@ -18,7 +18,11 @@ function topoPaths(): string[] {
 }
 const PATHS = topoPaths()
 
-/** Courbes de niveau en fond de carte. */
+/** Courbes de niveau en fond de carte. Le cadre les coupe à la hauteur de la page (R-4) : un écran court ne s'allonge plus. */
 export const Topo = memo(function Topo() {
-  return <svg id="topo" aria-hidden="true" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMin slice">{PATHS.map((d, i) => <path key={i} d={d} />)}</svg>
+  return (
+    <div id="topo-clip" aria-hidden="true">
+      <svg id="topo" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMin slice">{PATHS.map((d, i) => <path key={i} d={d} />)}</svg>
+    </div>
+  )
 })

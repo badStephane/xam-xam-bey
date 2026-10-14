@@ -601,3 +601,31 @@ Le worker **précharge à son installation** le morceau `Gamification` et ses im
 - **L5-5** : bloc « Cette semaine » hors réseau : « (dernière connexion) » au lieu de « (sur cet appareil) ».
 - **L5-6** : `e2e/cards.ts` (type de carte détecté, auto-évaluation « Voir la réponse » puis « Je savais », `startDailyOnQcm` renvoie la position du premier QCM) ; `qa-lot3-session`, `session-resume`, `midnight-back`, `offline-revision`, `league` ne supposent plus que la première carte est un QCM.
 - **L5-7** : bannière `frozen` et `resultsPending` supprimées (inatteignables : le serveur renvoie `pending` entre dimanche 20:00 et lundi 06:00).
+
+## Responsivité (19-qa-responsive.md, 2026-10-14)
+
+Hypothèses : aucune pile Supabase (Docker figé) ; vérification par l'outillage d'audit de la QA (Supabase simulé par `page.route`, Vite dev), mêmes 27 écrans et mêmes 9 tailles, thème sombre (défaut) puis clair. Libellés courts de la barre du bas choisis par le Front (arbitrage PM : « sous 360 px »), à valider par le Design.
+
+### Ce qui change
+- **`#app` ne coupe plus rien** (`overflow-x:clip` retiré) : un débordement réel se voit et se mesure. Le fond topographique est coupé par son propre cadre (`#topo-clip`, `Topo.tsx`), il n'allonge plus la page (R-4).
+- **Barre du bas** (R-1, R-7) : colonnes `minmax(min-content,1fr)`, cases d'au moins 44 px ; de 360 à 399 px, espacement de lettres à 0 pour garder un blanc entre BIBLIOTHÈQUE et AUJOURD'HUI. Sous 360 px, libellés courts **BIBLIO, JOUR, PLAN, FICHES, PROGRÈS** ; le nom accessible reste le libellé complet (`aria-label`), le libellé court est contenu dans le long (WCAG 2.5.3). Sous 300 px (zoom 200 %), la barre passe sur deux lignes (3 + 2), `padding-bottom` de page ajusté.
+- **Zoom 200 %** (R-2, WCAG 1.4.10) : grilles en `minmax(min(Npx,100%),1fr)` (`.duo`, `.months`, `.cadence`, `.grid-docs`) ; `@container (max-width:260px)` : `.two`, `.kpis`, badges, notes J'interroge et `.seg3` sur une colonne, chiffres de la bibliothèque sur deux, lignes de zone et de lacunes empilées, marges réduites, `.who` sous la marque, barre de progression de séance sous QUITTER ; bandeaux, en-têtes de groupe et barre de l'aperçu passent à la ligne ; carte de connexion en `minmax(0,1fr)`.
+- **R-3** : lacunes par zone sur deux lignes sous 420 px (zone et taux, puis vues et bouton). **R-5** : sous 480 px de haut en paysage, QCM sur deux colonnes et Valider collé en bas (`position:sticky`, `.qcard` en `overflow:clip`, repli `hidden`). **R-6** : `main>.banner{margin-bottom:14px}`. **R-7** : fermeture de l'aperçu latéral 44×44, cases « Essentiel du mois » à 44 px de haut, MASQUER à 44 px. **R-9** : la marque passe à la ligne au lieu d'être tronquée. **R-10** : `.d-meta` passe à la ligne au lieu de l'ellipse.
+- **R-8, polices** : plus aucun texte sous 11 px (CSS et styles en ligne) ; **toutes les tailles de police en `rem`** (CSS et styles en ligne des composants, hors `src/planches`), donc la taille de police choisie dans le navigateur s'applique. Les dimensions (grilles, hauteurs) restent en `px`.
+- **Admin > Questions** : 50 questions puis « Afficher 50 de plus (N restantes) » (`src/lib/listPage.ts`, testé), compteur « 50 SUR 665 QUESTIONS AFFICHÉES », focus sur la première question ajoutée ; retour à la première page au changement de zone ou de filtre. E2E `import-excel` et `import-docs` : filtre BROUILLONS avant de chercher les questions importées (placées en fin de zone, au-delà de 50).
+
+### Contrôle automatique
+`e2e/responsive.spec.ts` (22 tests, sans base) : bibliothèque, connexion, séance, correction, J'interroge et bilan de démonstration à 320, 180 (zoom 200 %) et 740×360 : `scrollWidth` ≤ largeur et aucun élément hors fenêtre (hors zones qui défilent) ; barre du bas : 5 cases ≥ 44 px dans la fenêtre ; Valider visible sans défiler en paysage.
+- Seuils en `em` (media) et en `em` de conteneur (`@container`), largeurs minimales de grille en `rem` : avec une police de navigateur à 20 px, la barre du bas passe aux libellés courts sous 449 px, et l'audit à 320 et 360 px reste propre (police réglée par CDP `Page.setFontSizes`, comme le réglage de Chrome).
+
+### Bundle (gzip, variables factices)
+`index` 112,81 Ko (plafond 115 ; 112,42 au lot 5). +0,4 Ko : tailles en `rem` et pagination admin.
+
+### Commandes et résultats (2026-10-14, sans pile Supabase)
+- `VITE_SUPABASE_URL=https://ci.invalid VITE_SUPABASE_ANON_KEY=ci-anon-key npm run check` : vert, 553 réussis, 1 échec attendu, 5 ignorés.
+- `e2e/responsive.spec.ts` : 22/22, lancé contre un Vite local avec une configuration Playwright hors dépôt (sans `globalSetup`, qui exige la pile). Les autres E2E demandent Supabase (Docker figé sur le poste) : non lancés, la CI de la PR fait le passage complet, dont `import-excel` et `import-docs` modifiés.
+- Audit QA rejoué (scripts hors dépôt, ciblant la largeur visée) : 243 captures en sombre, 135 en clair, 54 avec une police de 20 px : 0 débordement, 0 texte coupé, 0 cible < 44 px, 0 texte < 11 px, 0 erreur JavaScript. Seuls restent des chevauchements de textes en ligne (faux positifs connus) et Valider collé au-dessus de la proposition D en paysage (voulu).
+
+### Hors périmètre (signalé)
+- Le mock de l'audit renvoie les 665 questions sans filtre de zone ; en base, une zone compte environ 60 questions : la liste s'arrête à 50 et le bouton propose « Afficher les 10 dernières ».
+- Vrais appareils, Safari iOS et WebKit, clavier virtuel réel : non couverts (comme l'audit QA).

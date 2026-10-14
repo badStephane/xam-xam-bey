@@ -106,7 +106,7 @@ function Body({ state, onJoined }: { state: LeagueState; onJoined(p: string): vo
         </section>
       )
     case 'pending':
-      return <p className="banner" role="status"><b>RÉSULTATS LUNDI MATIN</b><span style={{ fontSize: 14 }}>Les classements de la semaine sont en cours de calcul.</span></p>
+      return <p className="banner" role="status"><b>RÉSULTATS LUNDI MATIN</b><span style={{ fontSize: '0.875rem' }}>Les classements de la semaine sont en cours de calcul.</span></p>
     default:
       return <LeagueBoard state={state} canReport={!offline} />
   }
@@ -132,9 +132,9 @@ export function LeagueScreen() {
         {s?.status === 'active' && n < SMALL_GROUP && <p className="muted" style={{ margin: 0 }}>Le groupe se remplit au fil de la semaine.</p>}
         {s && <span className="lbl">{s.weekXp} XP CETTE SEMAINE</span>}
       </div>
-      {welcome && <p className="banner" role="status"><span style={{ fontSize: 14 }}>{welcome}</span></p>}
+      {welcome && <p className="banner" role="status"><span style={{ fontSize: '0.875rem' }}>{welcome}</span></p>}
       {lg.load === 'offline' && (
-        <p className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: 14 }}>{lg.at
+        <p className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: '0.875rem' }}>{lg.at
           ? `Hors réseau : classement de la dernière connexion (${cacheTimeLabel(lg.at)}).`
           : 'Hors réseau : le classement s’affichera au retour du réseau. Vos révisions comptent quand même.'}</span></p>
       )}

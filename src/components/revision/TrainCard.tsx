@@ -51,7 +51,7 @@ export function TrainCard() {
         <div className="col g6">
           <span id="t-scope" className="f-lbl">QUOI RÉVISER ?</span>
           <div className="seg3" role="radiogroup" aria-labelledby="t-scope">
-            {SCOPES.map(([k, label]) => <button key={k} role="radio" aria-checked={ui.scope === k} onClick={() => patch({ scope: k })} style={{ fontSize: 11 }}>{label}</button>)}
+            {SCOPES.map(([k, label]) => <button key={k} role="radio" aria-checked={ui.scope === k} onClick={() => patch({ scope: k })} style={{ fontSize: '0.6875rem' }}>{label}</button>)}
           </div>
         </div>
       )}

@@ -24,7 +24,7 @@ type Phase =
 function ZoneTable({ analysis }: { analysis: ImportAnalysis }) {
   const cell = { padding: '8px 6px', borderBottom: '1px solid var(--card-bd)', textAlign: 'left' as const }
   return (
-    <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 15 }}>
+    <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: '0.9375rem' }}>
       <caption className="f-lbl" style={{ textAlign: 'left', paddingBottom: 6 }}>LIGNES PAR ZONE</caption>
       <thead><tr><th scope="col" style={cell}>Zone</th><th scope="col" style={cell}>Valides</th><th scope="col" style={cell}>En erreur</th></tr></thead>
       <tbody>
@@ -45,7 +45,7 @@ function ErrorList({ analysis }: { analysis: ImportAnalysis }) {
   return (
     <div className="col g6">
       <h3 id="imp-err-h" className="f-lbl" style={{ margin: 0, color: 'var(--stamp)' }}>LIGNES IGNORÉES · {analysis.errors.length}</h3>
-      <ul aria-labelledby="imp-err-h" className="col g6" style={{ margin: 0, paddingLeft: 18, fontSize: 14 }}>
+      <ul aria-labelledby="imp-err-h" className="col g6" style={{ margin: 0, paddingLeft: 18, fontSize: '0.875rem' }}>
         {analysis.errors.map(e => <li key={e.line}><strong>Ligne {e.line}</strong>{e.zone !== null ? ` · zone ${p2(e.zone)}` : ''} : {e.reason}</li>)}
       </ul>
     </div>
@@ -61,7 +61,7 @@ function PreviewPanel({ phase, onConfirm, onCancel }: PreviewProps) {
   useEffect(() => { headRef.current?.focus() }, [phase.preview])
   return (
     <div className="col g12">
-      <h3 ref={headRef} tabIndex={-1} style={{ margin: 0, fontSize: 18 }}>Aperçu de « {fileName} »</h3>
+      <h3 ref={headRef} tabIndex={-1} style={{ margin: 0, fontSize: '1.125rem' }}>Aperçu de « {fileName} »</h3>
       <p role="status" style={{ margin: 0 }}>{plural(n, 'ligne valide', 'lignes valides')}, {plural(analysis.errors.length, 'ligne en erreur', 'lignes en erreur')}. Rien n’est encore enregistré.</p>
       {phase.changed && <p className="note-box" role="note">Les questions ont changé en base depuis l’aperçu : il est à jour, relisez-le avant d’importer.</p>}
       {analysis.byZone.length > 0 && <ZoneTable analysis={analysis} />}
@@ -112,7 +112,7 @@ export default function CardsImport({ onClose, onImported }: { onClose(): void; 
   return (
     <section className="sheet r10 train" aria-labelledby="imp-h">
       <h2 id="imp-h" ref={titleRef} tabIndex={-1}>Importer des questions</h2>
-      <p style={{ margin: 0, fontSize: 15 }}>Une ligne par question, avec les colonnes du modèle. Zone, Question et Réponse sont obligatoires ; tout arrive en brouillon, en fin de zone.</p>
+      <p style={{ margin: 0, fontSize: '0.9375rem' }}>Une ligne par question, avec les colonnes du modèle. Zone, Question et Réponse sont obligatoires ; tout arrive en brouillon, en fin de zone.</p>
       <TemplateLink className="ink-line" />
       <div className="col g6">
         <label htmlFor="imp-file" className="f-lbl">FICHIER EXCEL .XLSX · 2 MO ET {MAX_IMPORT_ROWS.toLocaleString('fr-FR')} LIGNES AU PLUS · PREMIÈRE FEUILLE</label>
