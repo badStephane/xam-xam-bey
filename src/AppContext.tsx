@@ -96,7 +96,8 @@ export function useApp(): AppValue {
 function initialDark(): boolean {
   const t = PARAMS.theme || (PARAMS.frame ? null : loadPref(CACHE_KEYS.theme, parseTheme, null, LEGACY_KEYS.theme))
   if (t === 'dark' || t === 'light') return t === 'dark'
-  return !window.matchMedia?.('(prefers-color-scheme: light)').matches
+  // Sombre par défaut, quel que soit le réglage du téléphone ; le choix fait avec le bouton reste prioritaire.
+  return true
 }
 
 /** Planches et aperçus : aucune séance gardée ni relue. */
