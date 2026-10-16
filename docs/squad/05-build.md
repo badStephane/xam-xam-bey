@@ -629,3 +629,35 @@ Hypothèses : aucune pile Supabase (Docker figé) ; vérification par l'outillag
 ### Hors périmètre (signalé)
 - Le mock de l'audit renvoie les 665 questions sans filtre de zone ; en base, une zone compte environ 60 questions : la liste s'arrête à 50 et le bouton propose « Afficher les 10 dernières ».
 - Vrais appareils, Safari iOS et WebKit, clavier virtuel réel : non couverts (comme l'audit QA).
+
+## Enquête : questions du jour revues le même jour (2026-10-16)
+
+Symptôme (production `93bfa14`, Chrome Android) : des questions répondues plus tôt dans la journée reviennent dans la quête du jour le même jour. Par conception, toute carte notée en « Je réponds » a une échéance au moins à demain (`applyGrade`) : si elle revient, la note n'a pas été gardée.
+
+### Cause (prouvée par test)
+L'écran de séance (`App.tsx`, `case 'session'`) n'est pas soumis à l'état de connexion, contrairement aux écrans passés par `RevisionArea`. Quand Supabase émet `SIGNED_OUT` pendant une séance (jeton refusé au retour, la « déconnexion après ~10 min » déjà signalée), `resetUser` remet `ownerRef` à null et la progression en mémoire à vide, mais la séance reste affichée et le scout continue de répondre. Chaque `grade` puis `logSession` passait alors par `commit` → `adopt` : sans propriétaire, **rien n'était écrit dans la copie locale et rien n'était envoyé**. À la reconnexion, `install` fusionne serveur + copie locale (+ mémoire seulement si le propriétaire n'a pas changé) : les notes prises après le `SIGNED_OUT` n'existent nulle part, les cartes sont de nouveau à échéance aujourd'hui.
+
+### Preuve
+`useRevision.test.ts` > « quête du jour : notes prises après un SIGNED_OUT imposé (séance en cours) gardées et renvoyées à la reconnexion » : c1 à revoir aujourd'hui, `SIGNED_OUT`, note Su et séance enregistrées, reconnexion du même compte avec la ligne serveur d'origine. Avant correctif : `dailyCards(...).due` contient encore c1 (rouge). Après : c1 à échéance > aujourd'hui, `save_progress` reçoit c1 avec 4 vues, la séance est dans l'historique (vert).
+
+### Correctif (`src/hooks/useRevision.ts`)
+- `lastOwnerRef` : dernier compte dont la progression a été chargée (`install`, `fromDevice`), gardé après un `SIGNED_OUT` imposé, remis à null par « Se déconnecter » (choix explicite, téléphone partagé).
+- `record(update)` remplace `commit` dans `grade` et `logSession` : avec un propriétaire, comportement inchangé ; sans propriétaire mais avec un dernier compte, la note (ou la séance) est appliquée à **sa copie locale** (`readLocalProgress` puis `writeLocalProgress`, qui fusionne). La mémoire de la page déconnectée n'est pas touchée.
+- À la reconnexion de ce compte, `install` lit la copie locale, la fusionne et programme l'envoi (chemin du lot 4 inchangé).
+- Garde : test « déconnexion choisie : une note arrivée ensuite ne recrée pas la copie locale effacée ».
+- Non changé : hors ligne du lot 4 (mêmes chemins `install`/`fromDevice`/`flush`), changement de compte L1-5 (les notes d'une séance de A ouverte au moment du passage à B vont dans la copie de A tant que B n'est pas chargé).
+
+### Ce que le correctif ne couvre pas
+- **XP de ligue** de ces notes : `forgetDevice` efface la file `xxb.grades.v1` au `SIGNED_OUT` (L4-1, lot 5), et `grade` n'ajoute rien à la file sans propriétaire. Les notes non envoyées avant le `SIGNED_OUT` et celles prises après ne comptent pas pour la ligue (inchangé, décision PM à prendre).
+- **Deux contextes ouverts** (onglet ancien + onglet ouvert par le lien magique, ou application installée + onglet) : la mémoire d'un onglet n'est jamais rafraîchie depuis la copie locale (aucun écouteur `storage`, rien au retour au premier plan). Un onglet resté en arrière-plan affiche une quête du jour périmée. Aucune perte (fusions en union partout), mais même symptôme visible. Non corrigé : hypothèse non confirmée chez l'utilisateur.
+- Séance après `SIGNED_OUT` sans aucun bandeau : le scout ne sait pas qu'il est déconnecté avant la fin. Signalé au Design.
+
+### Pistes écartées (lecture du code)
+- `applyGrade`, `dailyCards`, `today` (`dayNum` local, `useNow`) : une carte notée en séance a une échéance ≥ demain ; `sessionDay` et la reprise de séance (E2) ne rejouent ni ne perdent de note (`grade` avant `keepSession`).
+- `mergeProgress` et `save_progress` (lot 5) : même règle (plus de vues, puis échéance la plus lointaine) ; une entrée notée a toujours une vue de plus que sa base, elle ne perd pas.
+- `keepalive`, debounce : une note est dans la copie locale dès `adopt`, avant tout envoi ; un envoi perdu est rattrapé au chargement suivant.
+- Reprise de séance, « Quitter ? », QCM E1, auto-évaluation : `graded` n'est null que pour une deuxième chance, une reprise (REDO) ou « J'interroge », comme prévu.
+
+### Commandes et résultats (2026-10-16, sans pile Supabase)
+- Test ajouté rouge avant correctif, vert après. `npm run check` (variables factices) : vert, 555 réussis, 1 échec attendu, 5 ignorés. `index` 112,85 Ko gzip (plafond 115).
+- E2E non écrit : la déconnexion imposée demande un client Supabase et un refus de jeton (pile figée) ; le modèle sans base (`responsive.spec.ts`) ne simule pas l'authentification.
