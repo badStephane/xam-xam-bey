@@ -73,7 +73,7 @@ export function SignInForms() {
     if (!PARAMS.frame) rev.requestLink(email)
   }
   return (
-    <GateCard tag="CONNEXION NÉCESSAIRE" stamp="RESPONSABLES" title="Connectez-vous pour réviser">
+    <GateCard tag="CONNEXION NÉCESSAIRE" stamp="OUVERTE À TOUS" title="Connectez-vous pour réviser">
       <p>La révision enregistre vos progrès avec votre compte. Saisissez votre e-mail : vous recevrez un lien et un code de connexion, sans mot de passe. La bibliothèque reste ouverte à tous.</p>
       <form className="col g8" style={{ width: '100%' }} onSubmit={submit} noValidate>
         <label htmlFor="signin-email" className="f-lbl">ADRESSE E-MAIL</label>
