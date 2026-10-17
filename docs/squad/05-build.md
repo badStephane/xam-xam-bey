@@ -701,3 +701,11 @@ Choix de l'utilisateur : paliers de difficulté, zone 1 d'abord, environ 40 nouv
 - **Contenu** : `data/import/zone1-paliers.json` et `.xlsx`, 20 questions de palier 2 et 20 de palier 3 rédigées à partir des 11 documents de la zone 1 (sources et pages citées). Écartées faute de certitude : nombre de Boers à Mafeking (9 000 ou 10 000 selon les pages), ajout des articles 9 et 10. À vérifier : la question du district (« 2 à 6 », le mot « groupes » est déduit, signalé en note). Classeur relu par l'import de l'appli : 40 lignes valides. Import en brouillon par un admin, relecture, puis publication.
 - **Bundle** : l'espace Admin passe en chargement à la demande (`App.tsx`) ; `index` 108,56 Ko gzip (avant : 114,62).
 - Commandes : tests ajoutés rouges puis verts ; `npm run check` (variables factices) vert, 595 réussis, 1 échec attendu, 5 ignorés ; `npm run e2e` : 73 réussis ; `supabase test db` en local : `08_card_tier_test.sql` vert, `06_lot5_social_test.sql` 2 échecs dus aux données laissées par d'anciens E2E dans la base locale (10 pseudos au lieu de 4), à confirmer par la CI sur base neuve.
+
+## Import : source avec pages ou plusieurs documents (2026-10-17)
+
+À l'import de `zone1-paliers.xlsx`, les 40 lignes ressortaient « non reliées » : la colonne Source cite les pages (« Bases du scoutisme.pdf, p. 16-17 et 26 ») ou plusieurs documents séparés par « ; », alors que la liaison (E4) exigeait le titre ou le nom de fichier exact. Choix de l'utilisateur : corriger l'import avant d'importer.
+
+- `linkDocument` (`cardImportDocs.ts`) essaie la source entière, puis le nom de fichier en tête de chaque morceau séparé par « ; » (extension .pdf, .doc ou .docx comprise, suivie de la fin, d'une espace, d'une virgule ou d'une parenthèse). Première clé reliée retenue, sinon première ambiguë, sinon inconnue. Sans extension, aucune découpe : un titre peut contenir une virgule (« la devise, l'esprit… ») ; « Bases du scoutisme, p. 12 » reste non relié.
+- Simulation sur les noms du catalogue de la zone 1 : 40 lignes sur 40 reliées. La source affichée reste inchangée.
+- Commandes : test ajouté rouge puis vert ; `npm run check` vert, 596 réussis, 1 échec attendu, 5 ignorés ; `e2e/import-docs.spec.ts` vert.
