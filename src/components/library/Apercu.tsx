@@ -5,7 +5,7 @@ import { LazyPdfViewer } from './LazyPdfViewer'
 
 /** Aperçu plein écran (mobile). */
 export function Apercu() {
-  const { ui, go, patch, docById, offline } = useApp()
+  const { ui, go, patch, docById, offline, pages } = useApp()
   const d = docById(ui.sel)
   if (!d) return null
   const url = new URL(d.download, location.href).href
@@ -20,6 +20,7 @@ export function Apercu() {
           <h1 style={{ margin: 0, font: '800 1.625rem/1.1 var(--f-doc)' }}>{d.title}</h1>
           <span className="mono muted" style={{ fontSize: '0.6875rem', lineHeight: 1.4 }}>{docFormat(d).toUpperCase()} · {d.folder.toUpperCase()}</span>
         </div>
+        {pages.ids.has(d.id) && <button className="ink-btn big" onClick={() => go('page', { sel: d.id })}>Page de révision de ce document</button>}
         <div className="viewer"><LazyPdfViewer file={d.file} title={d.title} /></div>
         <div className="two">
           {/* Hors réseau, le lien de téléchargement serait mort (E3) : seul l'aperçu, lu depuis l'appareil, reste. */}

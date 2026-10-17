@@ -250,6 +250,8 @@ kbd{font:500 0.6875rem/1 var(--f-mono);padding:5px 7px;border:1px solid currentC
 .fiche ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:7px;font-size:1rem;line-height:1.6}
 .fiche .vg{border:2px solid var(--stamp);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
 .fiche .vg ul{font-size:0.9375rem;gap:6px}
+.fiche .ret{border:2px solid var(--green);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.fiche .ret ul{font-size:0.9375rem;gap:6px}
 .zrow{display:grid;grid-template-columns:62px minmax(0,1fr) 70px;align-items:center;gap:10px}
 .zrow .bar10 span{height:8px}
 .days{display:grid;grid-template-columns:repeat(12,1fr);gap:3px}

@@ -3,6 +3,7 @@ import { ZONES } from '../../lib/constants'
 import { p2, plural, zoneColor } from '../../lib/format'
 import { Md } from '../Md'
 import { CitedDocs } from './CitedDocs'
+import { ZonePages } from './ZonePages'
 
 export function Fiches() {
   const { ui, rev, patch, go } = useApp()
@@ -53,6 +54,7 @@ export function Fiches() {
           )}
         </div>
       </article>
+      <ZonePages zone={n} />
       <CitedDocs zone={n} />
     </div>
   )

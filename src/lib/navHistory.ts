@@ -20,18 +20,21 @@ const SESSION_SCREENS: readonly Screen[] = ['session', 'fin']
 const isScreen = (s: unknown): s is Screen => typeof s === 'string' && (SCREENS as readonly string[]).includes(s)
 const isId = (n: unknown): n is number => typeof n === 'number' && Number.isInteger(n) && n > 0
 
-export const sameEntry = (a: NavEntry, b: NavEntry): boolean =>
-  a.screen === b.screen && (a.screen !== 'apercu' || a.sel === b.sel)
+/** Écrans qui portent un document : l'aperçu et la page de révision (`sel` = documents.id). */
+export const hasSel = (s: Screen): boolean => s === 'apercu' || s === 'page'
 
-/** Hash d'une entrée : `#plan`, `#apercu/12`. */
-export const hashFor = (e: NavEntry): string => (e.screen === 'apercu' && e.sel ? `#apercu/${e.sel}` : `#${e.screen}`)
+export const sameEntry = (a: NavEntry, b: NavEntry): boolean =>
+  a.screen === b.screen && (!hasSel(a.screen) || a.sel === b.sel)
+
+/** Hash d'une entrée : `#plan`, `#apercu/12`, `#page/12`. */
+export const hashFor = (e: NavEntry): string => (hasSel(e.screen) && e.sel ? `#${e.screen}/${e.sel}` : `#${e.screen}`)
 
 /** Lit `#plan` ou `#apercu/12`. Tout autre hash (jetons du lien magique, ancres) renvoie null. */
 export function parseHash(hash: string): NavEntry | null {
   const m = /^#([a-z]+)(?:\/(\d+))?$/.exec(hash)
   if (!m || !isScreen(m[1])) return null
   const sel = m[2] ? Number(m[2]) : null
-  if (m[1] === 'apercu') return isId(sel) ? { screen: 'apercu', sel } : null
+  if (hasSel(m[1])) return isId(sel) ? { screen: m[1], sel } : null
   return { screen: m[1], sel: null }
 }
 
@@ -44,14 +47,14 @@ export function readState(state: unknown): NavState | null {
   if (!s || typeof s !== 'object' || !s.xxb || !isScreen(s.xxb.screen)) return null
   if (typeof s.idx !== 'number' || !Number.isInteger(s.idx) || s.idx < 0) return null
   const sel = isId(s.xxb.sel) ? s.xxb.sel : null
-  if (s.xxb.screen === 'apercu' && sel === null) return null
+  if (hasSel(s.xxb.screen) && sel === null) return null
   return { xxb: { screen: s.xxb.screen, sel }, idx: s.idx }
 }
 
 /** Écran de départ : le hash d'abord (rechargement), puis ?screen= (lien magique, planches), puis la bibliothèque. */
 export function initialEntry(hash: string, paramScreen: Screen | null, paramSel: number | null): NavEntry {
   const fromHash = parseHash(hash)
-  const e = fromHash ?? (paramScreen ? { screen: paramScreen, sel: paramScreen === 'apercu' ? paramSel : null } : DEFAULT_ENTRY)
+  const e = fromHash ?? (paramScreen ? { screen: paramScreen, sel: hasSel(paramScreen) ? paramSel : null } : DEFAULT_ENTRY)
   // Une séance n'existe qu'en mémoire : au rechargement, retour à l'écran du jour.
   return SESSION_SCREENS.includes(e.screen) && fromHash ? { screen: 'revision', sel: null } : e
 }

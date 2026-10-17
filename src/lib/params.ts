@@ -1,5 +1,5 @@
 /** Paramètres d'URL : les planches pilotent l'écran, le thème et l'état affichés. */
-export const SCREENS = ['bibliotheque', 'apercu', 'revision', 'session', 'fin', 'plan', 'fiches', 'progression', 'acces', 'horsligne', 'admin', 'ligue', 'badges'] as const
+export const SCREENS = ['bibliotheque', 'apercu', 'revision', 'session', 'fin', 'plan', 'fiches', 'progression', 'acces', 'horsligne', 'admin', 'ligue', 'badges', 'page'] as const
 export type Screen = typeof SCREENS[number]
 
 const p = new URLSearchParams(typeof location === 'undefined' ? '' : location.search)

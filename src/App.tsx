@@ -21,6 +21,10 @@ const BG = { dark: '#0D1512', light: '#EEE8DA' }
 const Admin = lazy(() => import('./components/admin/Admin').then(m => ({ default: m.Admin }), () => ({
   default: () => <p className="muted" role="status">L’espace Admin n’a pas pu se charger. Vérifiez la connexion puis rechargez la page.</p>,
 })))
+/** Page de révision d'un document (2026-10-18), chargée à la demande. */
+const DocPageView = lazy(() => import('./components/revision/DocPageView').then(m => ({ default: m.DocPageView }), () => ({
+  default: () => <p className="muted" role="status">Cette page n’a pas pu se charger. Vérifiez la connexion puis rechargez la page.</p>,
+})))
 const ADMIN_LOADING = <p className="mono" role="status" style={{ color: 'var(--acc)' }}>CHARGEMENT…</p>
 
 function useKeyboard() {
@@ -59,6 +63,7 @@ function Screen() {
     case 'admin': return <Shell><Suspense fallback={ADMIN_LOADING}><Admin /></Suspense></Shell>
     case 'plan': return <Shell><RevisionArea><Plan /></RevisionArea></Shell>
     case 'fiches': return <Shell><RevisionArea><Fiches /></RevisionArea></Shell>
+    case 'page': return <Shell><RevisionArea><Suspense fallback={ADMIN_LOADING}><DocPageView /></Suspense></RevisionArea></Shell>
     case 'progression': return <Shell><RevisionArea><Progress /></RevisionArea></Shell>
     case 'ligue': return <Shell><RevisionArea><LazyLeague /></RevisionArea></Shell>
     case 'badges': return <Shell><RevisionArea><LazyBadges /></RevisionArea></Shell>
