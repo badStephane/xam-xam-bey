@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { useApp } from '../../AppContext'
+import { readAuthLog } from '../../lib/authLog'
+import { formatAuthLog } from '../../lib/authLogFormat'
 import { PARAMS } from '../../lib/params'
+import { share } from '../../lib/share'
 import { CODE_LENGTH, normalizeCode, resendRemaining } from '../../lib/signin'
 import { GateCard } from './Gate'
 
@@ -58,6 +61,26 @@ function SentGate() {
   )
 }
 
+/**
+ * Journal de connexion de l'appareil (diagnostic des déconnexions), à recopier pour l'aide. Masqué s'il est vide.
+ * Sans e-mail ni identifiant : heure, type d'événement, onglet, réseau, mode d'ouverture, jeton présent.
+ */
+function AuthLogDetails() {
+  const [copied, setCopied] = useState(false)
+  const [text] = useState(() => {
+    try { return formatAuthLog(readAuthLog(window.localStorage)) } catch { return '' }
+  })
+  if (!text) return null
+  return (
+    <details className="lg-rules" style={{ width: '100%' }}>
+      <summary>JOURNAL DE CONNEXION</summary>
+      <p style={{ fontSize: '0.875rem' }}>Déconnecté sans l’avoir choisi ? Copiez ce journal et envoyez-le à l’équipe. Il ne contient ni e-mail ni nom.</p>
+      <pre className="mono" style={{ whiteSpace: 'pre-wrap', fontSize: '0.75rem', margin: '8px 0' }}>{text}</pre>
+      <button type="button" className="ink-line" onClick={() => share({ title: 'Journal de connexion Xam Xam Bëy', text }, text, () => setCopied(true))}>{copied ? 'Copié' : 'Copier le journal'}</button>
+    </details>
+  )
+}
+
 /** Connexion par lien magique ou code : un e-mail, aucun mot de passe. */
 export function SignInForms() {
   const { rev } = useApp()
@@ -82,6 +105,7 @@ export function SignInForms() {
         {step === 'error' && <p id="signin-error" role="alert" style={{ margin: 0, fontSize: '0.875rem', color: 'var(--stamp)' }}>{message}</p>}
         <button type="submit" className="ink-btn big" style={{ marginTop: 4, minHeight: 50 }} disabled={step === 'sending'}>{step === 'sending' ? 'Envoi…' : 'Recevoir le lien de connexion'}</button>
       </form>
+      <AuthLogDetails />
     </GateCard>
   )
 }
