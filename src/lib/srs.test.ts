@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { allCards, applyGrade, cardsByZone, bestStreak, dailyCards, EMPTY_PROGRESS, levelBuckets, readProgress, seenCurve, streak, validCards, validDocId, xpLevel, zoneStats } from './srs'
+import { allCards, applyGrade, cardsByZone, bestStreak, dailyCards, EMPTY_PROGRESS, levelBuckets, readProgress, seenCurve, streak, streakState, validCards, validDocId, xpLevel, zoneStats } from './srs'
 import type { Card, Progress } from './types'
 
 const T = 20000
@@ -109,6 +109,39 @@ describe('séries', () => {
   test('meilleure série', () => {
     expect(bestStreak(prog([1, 2, 3, 7, 8]))).toBe(3)
     expect(bestStreak(prog([]))).toBe(0)
+  })
+})
+
+describe('gel de série', () => {
+  const prog = (days: number[]): Progress => ({ cards: {}, sessions: days.map(d => ({ d, n: 1, ok: 1, k: 'daily', l: '' })), xp: 0 })
+  const run = (from: number, to: number): number[] => Array.from({ length: to - from + 1 }, (_, i) => from + i)
+
+  test('moins de 7 jours de suite : aucun gel, un jour manqué casse la série', () => {
+    expect(streakState(prog(run(T - 6, T - 2)), T)).toEqual({ current: 0, best: 5, freezes: 0, frozeYesterday: false })
+  })
+  test('7 jours de suite donnent un gel, utilisé automatiquement pour un jour manqué', () => {
+    // Révisé de T-8 à T-2 (7 jours), rien hier (T-1), journée en cours aujourd'hui.
+    expect(streakState(prog(run(T - 8, T - 2)), T)).toEqual({ current: 7, best: 7, freezes: 0, frozeYesterday: true })
+    // Révision aujourd'hui : la série reprend, le jour gelé ne compte pas.
+    expect(streakState(prog([...run(T - 8, T - 2), T]), T)).toMatchObject({ current: 8, freezes: 0, frozeYesterday: true })
+  })
+  test('deux jours manqués avec un seul gel : la série repart à zéro', () => {
+    expect(streakState(prog(run(T - 9, T - 3)), T)).toMatchObject({ current: 0, best: 7, freezes: 0 })
+  })
+  test('réserve plafonnée à 2 gels ; deux jours manqués couverts', () => {
+    expect(streakState(prog(run(T - 21, T)), T)).toMatchObject({ current: 22, freezes: 2 })
+    expect(streakState(prog(run(T - 23, T - 3)), T)).toMatchObject({ current: 21, freezes: 0, frozeYesterday: true })
+  })
+  test('aujourd’hui n’est pas manqué tant que la journée n’est pas finie', () => {
+    expect(streakState(prog(run(T - 7, T - 1)), T)).toEqual({ current: 7, best: 7, freezes: 1, frozeYesterday: false })
+  })
+  test('streak et bestStreak suivent la règle du gel', () => {
+    const days = [...run(1, 7), 9, 10]
+    expect(bestStreak(prog(days))).toBe(9)
+    expect(streak(prog(run(T - 8, T - 2)), T)).toBe(7)
+  })
+  test('aucune séance : série nulle', () => {
+    expect(streakState(prog([]), T)).toEqual({ current: 0, best: 0, freezes: 0, frozeYesterday: false })
   })
 })
 

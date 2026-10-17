@@ -685,3 +685,7 @@ Tableau de bord Supabase relevé par l'utilisateur : sessions sans limite (plan 
 ## Partage du score (2026-10-17)
 
 Écran de fin d'une séance « Je réponds » (hors reprise, au moins une réponse) : bouton « PARTAGER MON SCORE ». Menu de partage du téléphone (WhatsApp…) via `navigator.share`, sinon copie dans le presse-papiers (`lib/share.ts`). Texte (`lib/finShare.ts`) : justes sur total, série si plus d'un jour, adresse du site ; ni e-mail, ni pseudo, ni lien profond. `npm run check` vert (564 réussis, 1 échec attendu, 5 ignorés ; index 113,42 Ko gzip) ; `npm run e2e` : 73 réussis.
+
+## Gel de série (2026-10-17)
+
+Calcul sur l'appareil, à partir des jours de séance de la progression (`srs.ts`, `streakState`) ; sans migration. Règle par défaut proposée à l'utilisateur, modifiable : +1 gel tous les `FREEZE_EVERY` = 7 jours révisés de suite, `FREEZE_MAX` = 2 en réserve ; chaque jour manqué consomme un gel (le jour gelé ne compte pas dans la série), sinon la série repart à zéro ; aujourd'hui n'est jamais manqué. `streak` et `bestStreak` (série actuelle, meilleure série, badges de série) suivent la même règle : un scout ne peut que gagner au déploiement. Aujourd'hui : « JOURS DE SUITE · ❄ n GEL(S) », bandeau « GEL UTILISÉ » si hier a été couvert, étape 04 de « La méthode ». `npm run check` vert (585 réussis, 1 échec attendu, 5 ignorés) ; `index` 114,24 Ko gzip (plafond 115 : marge 0,76 Ko) ; `npm run e2e` : 73 réussis.

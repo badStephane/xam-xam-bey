@@ -1,4 +1,4 @@
-import { ACQUIRED_LV, INTERVAL, LEVEL_LABELS, MAX_LV, MISS_DROP, NEW_PER_DAY, RANKS, XP_BAR_SEGMENTS, XP_HES, XP_PER_LEVEL, XP_SU } from './constants'
+import { ACQUIRED_LV, FREEZE_EVERY, FREEZE_MAX, INTERVAL, LEVEL_LABELS, MAX_LV, MISS_DROP, NEW_PER_DAY, RANKS, XP_BAR_SEGMENTS, XP_HES, XP_PER_LEVEL, XP_SU } from './constants'
 import { parseStoredProgress } from './progressMerge'
 import type { Card, CardProgress, CardRow, Grade, Progress, Qcm, RawCard, RevisionContent } from './types'
 
@@ -86,20 +86,49 @@ export function dailyCards(cards: readonly Card[], prog: Progress, today: number
 
 export const sessionDays = (prog: Progress): Set<number> => new Set(prog.sessions.map(s => s.d))
 
-export function streak(prog: Progress, today: number): number {
-  const days = sessionDays(prog)
-  let d = days.has(today) ? today : today - 1
-  let n = 0
-  while (days.has(d)) { n++; d-- }
-  return n
+export interface StreakState {
+  /** Jours révisés de la série en cours (les jours gelés ne comptent pas). */
+  current: number
+  best: number
+  /** Gels en réserve. */
+  freezes: number
+  /** Vrai si hier, manqué, a été couvert par un gel. */
+  frozeYesterday: boolean
 }
 
+/**
+ * Série avec gel : chaque jour manqué consomme un gel s'il en reste, sinon la série repart à zéro. Un gel est gagné tous
+ * les FREEZE_EVERY jours révisés de suite (FREEZE_MAX en réserve). Aujourd'hui n'est pas manqué tant que la journée dure.
+ */
+export function streakState(prog: Progress, today: number): StreakState {
+  const days = sessionDays(prog)
+  let run = 0
+  let best = 0
+  let freezes = 0
+  let frozeYesterday = false
+  const first = [...days].reduce((a, b) => Math.min(a, b), today)
+  for (let d = first; d <= today; d++) {
+    if (days.has(d)) {
+      run++
+      best = Math.max(best, run)
+      if (run % FREEZE_EVERY === 0) freezes = Math.min(FREEZE_MAX, freezes + 1)
+    } else if (d === today) {
+      // Journée en cours : rien de manqué.
+    } else if (freezes > 0) {
+      freezes--
+      if (d === today - 1) frozeYesterday = true
+    } else {
+      run = 0
+    }
+  }
+  return { current: run, best, freezes, frozeYesterday }
+}
+
+export const streak = (prog: Progress, today: number): number => streakState(prog, today).current
+
 export function bestStreak(prog: Progress): number {
-  const ds = [...sessionDays(prog)].sort((a, b) => a - b)
-  return ds.reduce<{ best: number; run: number }>((acc, d, i) => {
-    const run = i && d === ds[i - 1] + 1 ? acc.run + 1 : 1
-    return { run, best: Math.max(acc.best, run) }
-  }, { best: 0, run: 0 }).best
+  const last = [...sessionDays(prog)].reduce((a, b) => Math.max(a, b), 0)
+  return streakState(prog, last + 1).best
 }
 
 export function zoneStats(cards: readonly Card[] | undefined, prog: Progress): { cards: number; acq: number } {
