@@ -83,7 +83,7 @@ export function PagesAdmin() {
   }
   return (
     <div className="col g14">
-      <ImportBox rows={rows || []} onDone={() => void refresh()} />
+      {rows ? <ImportBox rows={rows} onDone={() => void refresh()} /> : null}
       <div className="col g6">
         <label htmlFor="pg-zone" className="f-lbl">ZONE</label>
         <select id="pg-zone" className="field" value={zone} onChange={e => setZone(Number(e.target.value))}>

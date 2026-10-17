@@ -8,6 +8,9 @@ export interface DocPage { objectifs: string[]; sections: DocSection[] }
 export const MAX_SECTIONS = 12
 const MAX_ITEMS = 12
 const MAX_TEXT = 800
+/** Plafond de la base (check `octet_length(data::text) <= 60000`). */
+export const MAX_PAGE_BYTES = 60000
+const tooBig = (p: DocPage): boolean => new TextEncoder().encode(JSON.stringify(p)).length > MAX_PAGE_BYTES
 
 export const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v)
 export const text = (v: unknown): string => (typeof v === 'string' ? v.trim().slice(0, MAX_TEXT) : '')
@@ -24,7 +27,9 @@ export function validDocPage(v: unknown): DocPage | null {
   if (!isRecord(v) || (v.objectifs !== undefined && !Array.isArray(v.objectifs)) || !Array.isArray(v.sections)) return null
   if (!v.sections.length || v.sections.length > MAX_SECTIONS) return null
   const sections = v.sections.map(validSection)
-  return sections.every((s): s is DocSection => s !== null) ? { objectifs: texts(v.objectifs), sections } : null
+  if (!sections.every((s): s is DocSection => s !== null)) return null
+  const page = { objectifs: texts(v.objectifs), sections }
+  return tooBig(page) ? null : page
 }
 
 /* Format texte de l'éditeur Admin : « - » objectif (avant la première section) ou point, « ## » titre de section,
@@ -83,5 +88,7 @@ export function pageFromText(src: string): PageParse {
   if (read.sections.length > MAX_SECTIONS) return { ok: false, error: `Au plus ${MAX_SECTIONS} sections par page.` }
   const empty = read.sections.find(s => !s.h || !s.items.length)
   if (empty) return { ok: false, error: `Section « ${empty.h} » : ajoutez au moins un point (« - »).` }
-  return { ok: true, page: { objectifs: read.objectifs, sections: read.sections } }
+  const page = { objectifs: read.objectifs, sections: read.sections }
+  if (tooBig(page)) return { ok: false, error: `Page trop longue pour être enregistrée : raccourcissez-la (60 000 octets au plus).` }
+  return { ok: true, page }
 }

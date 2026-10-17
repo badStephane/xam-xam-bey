@@ -24,6 +24,13 @@ describe('validDocPage : données lues en base ou importées', () => {
     expect(validDocPage({ objectifs: [], sections: [{ h: 'T', items: [] }] })).toBeNull()
     expect(validDocPage({ objectifs: [], sections: Array.from({ length: 13 }, () => ({ h: 'T', items: ['a'] })) })).toBeNull()
   })
+  test('page trop lourde pour la base (60 000 octets) : refusée, avec un message clair dans l’éditeur', () => {
+    const long = 'é'.repeat(700)
+    const big = { objectifs: [], sections: Array.from({ length: 12 }, () => ({ h: 'T', items: Array.from({ length: 4 }, () => long) })) }
+    expect(validDocPage(big)).toBeNull()
+    const text = big.sections.map(s => `## ${s.h}\n${s.items.map(i => `- ${i}`).join('\n')}`).join('\n')
+    expect(pageFromText(text)).toEqual({ ok: false, error: 'Page trop longue pour être enregistrée : raccourcissez-la (60 000 octets au plus).' })
+  })
   test('ignore les entrées non textuelles', () => {
     expect(validDocPage({ objectifs: [1, 'o'], sections: [{ h: 'T', items: ['a', 3], retenir: [null] }] })?.sections[0].items).toEqual(['a'])
   })

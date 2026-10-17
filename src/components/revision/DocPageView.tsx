@@ -6,7 +6,7 @@ import { p2, plural } from '../../lib/format'
 import { allCards } from '../../lib/srs'
 import { Md } from '../Md'
 
-type Load = 'loading' | 'ready' | 'missing'
+type Load = 'loading' | 'ok' | 'missing' | 'error'
 
 function Box({ kind, items }: { kind: 'retenir' | 'attention'; items: readonly string[] }) {
   if (!items.length) return null
@@ -52,13 +52,16 @@ export function DocPageView() {
   const id = ui.sel ?? 0
   const d = docById(id)
   const page = pages.page(id)
-  const [load, setLoad] = useState<Load>(page ? 'ready' : 'loading')
+  // L'affichage suit la page présente (copie locale ou base) ; `load` ne dit que ce qui se passe quand il n'y en a pas.
+  const [load, setLoad] = useState<Load>('loading')
+  const [attempt, setAttempt] = useState(0)
   useEffect(() => {
-    if (offline) { setLoad(pages.page(id) ? 'ready' : 'missing'); return }
+    if (offline) { setLoad('missing'); return }
     let alive = true
-    pages.load(id).then(ok => { if (alive) setLoad(ok || pages.page(id) ? 'ready' : 'missing') })
+    setLoad('loading')
+    pages.load(id).then(r => { if (alive) setLoad(r) })
     return () => { alive = false }
-  }, [id, offline]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, offline, attempt]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const back = () => go('fiches', d ? { fiche: d.th } : {})
   const cards = allCards(rev.content).filter(c => c.doc === id)
@@ -77,6 +80,12 @@ export function DocPageView() {
             {page && <button className="ink-line no-print" onClick={() => window.print()}>Imprimer / PDF</button>}
           </div>
           {!page && load === 'loading' && <p className="mono" role="status" style={{ color: 'var(--acc)' }}>CHARGEMENT…</p>}
+          {!page && load === 'error' && (
+            <p className="warn-inline" role="alert" style={{ margin: 0 }}>
+              <span>La page n’a pas pu être chargée. Vérifiez la connexion.</span>
+              <button className="btn-mono" onClick={() => setAttempt(a => a + 1)}>RÉESSAYER</button>
+            </p>
+          )}
           {!page && load === 'missing' && (
             <p className="note-box" role="status">{offline
               ? 'Cette page n’a pas encore été ouverte sur cet appareil : elle sera lisible hors réseau une fois ouverte en ligne.'
