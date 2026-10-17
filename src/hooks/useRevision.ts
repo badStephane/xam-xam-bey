@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { SAVE_DELAY } from '../lib/constants'
 import { PARAMS } from '../lib/params'
-import { mergeProgress, parseStoredProgress } from '../lib/progressMerge'
-import { canClearLocal, clearLocalProgress, fromSaveResult, isAccountSwitch, isGradesRejected, isGradesUnsupported, readLocalProgress, reconcileOnLoad, saveArgs, saveErrorKind, weekOfSaveResult, writeLocalProgress, type SaveErrorKind } from '../lib/progressSync'
+import { appendAuthLog, authEvent, hasStoredToken, type AuthEventKind } from '../lib/authLog'
+import { mergeProgress, parseStoredProgress, progressEquals } from '../lib/progressMerge'
+import { canClearLocal, clearLocalProgress, fromSaveResult, isAccountSwitch, isGradesRejected, isGradesUnsupported, localProgressKey, readLocalProgress, reconcileOnLoad, saveArgs, saveErrorKind, weekOfSaveResult, writeLocalProgress, type SaveErrorKind } from '../lib/progressSync'
 import { clearGamification } from '../lib/gameKeys'
 import { clearGradesQueue, enqueueGrade, gradesBatch, readGradesQueue, removeSentGrades, utcDay } from '../lib/gradeQueue'
 import { applyGrade, cardsByZone, EMPTY_PROGRESS, validCards } from '../lib/srs'
@@ -143,6 +144,14 @@ const canWrite = (): boolean => !PARAMS.frame && !PARAMS.demo
 
 function localStore(): Storage | null {
   try { return window.localStorage } catch { return null }
+}
+
+/** Journal de connexion de l'appareil (diagnostic) ; `tok` : jeton présent avant l'événement, s'il est déjà connu. */
+function logAuth(k: AuthEventKind, tok?: boolean): void {
+  if (!canWrite()) return
+  const store = localStore()
+  const e = authEvent(k, store)
+  appendAuthLog(store, tok === undefined ? e : { ...e, tok })
 }
 
 /**
@@ -413,11 +422,18 @@ export function useRevision(demo: boolean): Revision {
     if (!supabase) { setStat('unavailable'); return }
     // Hors réseau (F1) : getSession attendrait l'échec du rafraîchissement d'un jeton expiré (jusqu'à ~25 s).
     if (isOffline()) { startFromDevice(false); return }
+    const hadToken = hasStoredToken(localStore())
     supabase.auth.getSession().then(({ data, error }) => {
       if (error) throw error
       const user = data.session?.user
       // Session réellement absente en ligne (déconnexion ailleurs, jeton révoqué) : l'appareil oublie l'ancien compte (L4-1).
-      if (!user) { forgetDevice(null); setStat('signedout'); return }
+      if (!user) {
+        // Diagnostic : seulement si un compte était connu ici (sinon : appareil jamais connecté, rien à expliquer).
+        if (hadToken || (canWrite() && readKnownUser(localStore()))) logAuth('absent', hadToken)
+        forgetDevice(null)
+        setStat('signedout')
+        return
+      }
       setMail(user.email || null)
       void loadFor(user.id)
     }).catch(err => { console.error('[xxb] Session illisible', err); startFromDevice(true) })
@@ -427,8 +443,15 @@ export function useRevision(demo: boolean): Revision {
     if (!supabase || demo) return
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
       // Déconnexion imposée (jeton refusé) si un compte était chargé et que « Se déconnecter » n'a pas été choisi.
-      if (event === 'SIGNED_OUT') { setForcedOut(lastOwnerRef.current !== null); resetUser(); return }
+      if (event === 'SIGNED_OUT') {
+        const forced = lastOwnerRef.current !== null
+        logAuth(forced ? 'forced' : 'chosen')
+        setForcedOut(forced)
+        resetUser()
+        return
+      }
       const user = session?.user
+      if (event === 'TOKEN_REFRESHED' && user) logAuth('refreshed')
       // Jeton rafraîchi (souvent au retour du réseau) : les notes en attente partent avec la nouvelle session.
       if (event === 'TOKEN_REFRESHED' && user && user.id === ownerRef.current) { setTimeout(() => void resync(), 0); return }
       if (event === 'SIGNED_IN' && user && ownerRef.current !== user.id) {
@@ -440,6 +463,7 @@ export function useRevision(demo: boolean): Revision {
           clearResync()
           setLocal(false)
         }
+        logAuth('signed_in')
         setMail(user.email || null)
         setSignIn({ step: 'idle' })
         // Différé : on ne rappelle pas Supabase depuis le rappel d'authentification lui-même.
@@ -456,13 +480,37 @@ export function useRevision(demo: boolean): Revision {
     return () => window.removeEventListener('online', onOnline)
   }, [resync])
 
+  /**
+   * Deux onglets (ou onglet + appli installée) du même compte : relit la copie locale, où l'autre contexte écrit ses notes,
+   * pour ne pas afficher une quête du jour périmée. Fusion en union : rien n'est perdu ni renvoyé.
+   */
+  const refreshFromDevice = useCallback(() => {
+    const owner = ownerRef.current
+    if (!owner || !canWrite()) return
+    const merged = mergeProgress(progRef.current, readLocalProgress(localStore(), owner))
+    if (progressEquals(merged, progRef.current)) return
+    progRef.current = merged
+    setProg(merged)
+  }, [])
+
   useEffect(() => {
     const onHide = () => void flush()
-    const onVisibility = () => { if (document.visibilityState === 'hidden') void flush() }
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') void flush()
+      else refreshFromDevice()
+    }
+    const onStorage = (e: StorageEvent) => {
+      if (ownerRef.current && e.key === localProgressKey(ownerRef.current)) refreshFromDevice()
+    }
     window.addEventListener('pagehide', onHide)
+    window.addEventListener('storage', onStorage)
     document.addEventListener('visibilitychange', onVisibility)
-    return () => { window.removeEventListener('pagehide', onHide); document.removeEventListener('visibilitychange', onVisibility) }
-  }, [flush])
+    return () => {
+      window.removeEventListener('pagehide', onHide)
+      window.removeEventListener('storage', onStorage)
+      document.removeEventListener('visibilitychange', onVisibility)
+    }
+  }, [flush, refreshFromDevice])
 
   return {
     status, content, prog, saveErr, email, userId, localOnly, signIn, init, weekSync, forcedOut,

@@ -7,7 +7,9 @@ import { act, createElement } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { SAVE_DELAY } from '../lib/constants'
-import { localProgressKey } from '../lib/progressSync'
+import { localProgressKey, writeLocalProgress } from '../lib/progressSync'
+import { readAuthLog } from '../lib/authLog'
+import { writeKnownUser } from '../lib/knownUser'
 import { gradesQueueKey, readGradesQueue, utcDay, type QueuedGrade } from '../lib/gradeQueue'
 import { leagueCacheKey } from '../lib/gameKeys'
 import { dailyCards } from '../lib/srs'
@@ -947,5 +949,82 @@ describe('useRevision : notes de ligue (lot 5, L5-1, A11)', () => {
     await settle()
     expect(localStorage.getItem(gradesQueueKey(A.id))).toBeNull()
     expect(localStorage.getItem(leagueCacheKey(A.id))).toBeNull()
+  })
+})
+
+describe('useRevision : journal de connexion de l’appareil (diagnostic)', () => {
+  const kinds = () => readAuthLog(localStorage).map(e => e.k)
+
+  test('SIGNED_OUT imposé, puis reconnexion : « forced » puis « signed_in »', async () => {
+    await signedInAndLoaded(A)
+    act(() => fake.state.authCb!('SIGNED_OUT', null))
+    fake.state.session = { user: A }
+    fake.state.progress.mockResolvedValueOnce(ok(null))
+    act(() => fake.state.authCb!('SIGNED_IN', { user: A }))
+    await settle()
+    expect(kinds().slice(-2)).toEqual(['forced', 'signed_in'])
+  })
+
+  test('« Se déconnecter » : « chosen », jamais « forced »', async () => {
+    await signedInAndLoaded(A)
+    fake.state.rpc.mockResolvedValue(ok(null))
+    act(() => hook.current.signOut())
+    await settle()
+    act(() => fake.state.authCb!('SIGNED_OUT', null))
+    expect(kinds()).toContain('chosen')
+    expect(kinds()).not.toContain('forced')
+  })
+
+  test('jeton rafraîchi : noté', async () => {
+    await signedInAndLoaded(A)
+    act(() => fake.state.authCb!('TOKEN_REFRESHED', { user: A }))
+    await settle()
+    expect(kinds()).toContain('refreshed')
+  })
+
+  test('ouverture sans session alors qu’un compte était connu sur l’appareil : « absent »', async () => {
+    writeKnownUser(localStorage, { id: A.id, email: A.email })
+    fake.state.session = null
+    render()
+    act(() => hook.current.init())
+    await settle()
+    expect(kinds()).toEqual(['absent'])
+  })
+
+  test('ouverture sans session sur un appareil jamais connecté : rien de noté', async () => {
+    fake.state.session = null
+    render()
+    act(() => hook.current.init())
+    await settle()
+    expect(kinds()).toEqual([])
+  })
+})
+
+describe('useRevision : deux onglets du même compte', () => {
+  const setVisibility = (v: DocumentVisibilityState) => Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => v })
+  afterEach(() => setVisibility('visible'))
+
+  test('retour au premier plan : les notes de l’autre onglet (copie locale) sont relues', async () => {
+    await signedInAndLoaded(A, row({ c1: card(1, T, 1, 1) }))
+    // L'autre onglet note c1 (échéance demain) et l'écrit dans la copie locale.
+    writeLocalProgress(localStorage, A.id, { cards: { c1: card(1, T + 1, 2, 2) }, sessions: [], xp: 10 })
+    setVisibility('visible')
+    act(() => { document.dispatchEvent(new Event('visibilitychange')) })
+    expect(hook.current.prog.cards.c1).toEqual(card(1, T + 1, 2, 2))
+    expect(hook.current.prog.xp).toBe(10)
+  })
+
+  test('événement storage de la copie locale du compte : relue tout de suite', async () => {
+    await signedInAndLoaded(A)
+    writeLocalProgress(localStorage, A.id, { cards: { c2: card(1, T + 1, 1, 1) }, sessions: [], xp: 10 })
+    act(() => { window.dispatchEvent(new StorageEvent('storage', { key: localProgressKey(A.id) })) })
+    expect(hook.current.prog.cards.c2).toEqual(card(1, T + 1, 1, 1))
+  })
+
+  test('copie locale d’un autre compte : ignorée', async () => {
+    await signedInAndLoaded(A)
+    writeLocalProgress(localStorage, B.id, { cards: { c3: card(1, T + 1, 1, 1) }, sessions: [], xp: 10 })
+    act(() => { window.dispatchEvent(new StorageEvent('storage', { key: localProgressKey(B.id) })) })
+    expect(hook.current.prog.cards.c3).toBeUndefined()
   })
 })
