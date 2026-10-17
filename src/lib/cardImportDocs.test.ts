@@ -58,7 +58,7 @@ describe('linkDocument', () => {
 })
 
 describe('analyse, insertion et résumé', () => {
-  const blank: Record<ImportField, string> = { zone: '', q: '', a: '', ok: '', no1: '', no2: '', no3: '', src: '', note: '' }
+  const blank: Record<ImportField, string> = { zone: '', q: '', a: '', ok: '', no1: '', no2: '', no3: '', src: '', note: '', tier: '' }
   const row = (line: number, zone: string, src: string): SheetRow => ({ line, values: { ...blank, zone, q: `Q${line}`, a: 'A', src } })
   const rows = [row(2, '1', 'bases du scoutisme.pdf'), row(3, '3', 'Rituel'), row(4, '1', 'Inconnu'), row(5, '2', '')]
 

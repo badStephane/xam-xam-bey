@@ -77,7 +77,7 @@ describe('classeur « comme enregistré par un tableur » (openpyxl : inlineStr,
 
 describe('QCM : même règle dans l’éditeur et dans l’import (décision PM)', () => {
   const row = (ok: string, no: string[]): Record<ImportField, string> =>
-    ({ zone: '1', q: 'Q', a: 'A', ok, no1: no[0] ?? '', no2: no[1] ?? '', no3: no[2] ?? '', src: '', note: '' })
+    ({ zone: '1', q: 'Q', a: 'A', ok, no1: no[0] ?? '', no2: no[1] ?? '', no3: no[2] ?? '', src: '', note: '', tier: '' })
   const cases: Array<[string, string, string[]]> = [
     ['mauvaise égale à la bonne à la casse près', 'Paris', ['paris']],
     ['deux mauvaises identiques', 'A', ['B', 'B']],

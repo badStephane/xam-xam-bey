@@ -1,4 +1,4 @@
-import { ACQUIRED_LV, FREEZE_EVERY, FREEZE_MAX, INTERVAL, LEVEL_LABELS, MAX_LV, MISS_DROP, NEW_PER_DAY, RANKS, XP_BAR_SEGMENTS, XP_HES, XP_PER_LEVEL, XP_SU } from './constants'
+import { ACQUIRED_LV, FREEZE_EVERY, FREEZE_MAX, INTERVAL, LEVEL_LABELS, MAX_LV, MAX_TIER, MISS_DROP, NEW_PER_DAY, RANKS, TIER_UNLOCK_LV, TIER_UNLOCK_RATIO, XP_BAR_SEGMENTS, XP_HES, XP_PER_LEVEL, XP_SU } from './constants'
 import { parseStoredProgress } from './progressMerge'
 import type { Card, CardProgress, CardRow, Grade, Progress, Qcm, RawCard, RevisionContent } from './types'
 
@@ -17,9 +17,13 @@ export function validCards(list: unknown, th: number): Card[] {
       const qcm = validQcm(c.qcm)
       // Ligne de la table cards (document_id) ou carte déjà convertie (doc).
       const doc = validDocId(c.document_id ?? c.doc)
-      return { id: c.id as string, q: c.q as string, a: c.a as string, src: c.src || '', note: c.note || '', th, ...(qcm ? { qcm } : {}), ...(doc ? { doc } : {}) }
+      const tier = validTier(c.tier)
+      return { id: c.id as string, q: c.q as string, a: c.a as string, src: c.src || '', note: c.note || '', th, ...(qcm ? { qcm } : {}), ...(doc ? { doc } : {}), ...(tier > 1 ? { tier } : {}) }
     })
 }
+
+/** Palier de difficulté valide (entier de 1 à MAX_TIER), sinon 1. */
+export const validTier = (v: unknown): number => (typeof v === 'number' && Number.isInteger(v) && v >= 1 && v <= MAX_TIER ? v : 1)
 
 /** Un QCM n'est retenu qu'avec une bonne proposition et au moins une mauvaise non vide, différente de la bonne. */
 export function validQcm(q: unknown): Qcm | null {
@@ -77,8 +81,29 @@ export const dueCards = (cards: readonly Card[], prog: Progress, today: number):
 export const newToday = (prog: Progress, today: number): number =>
   Object.values(prog.cards).filter(p => p[4] === today).length
 
-export const newCards = (cards: readonly Card[], prog: Progress, curZone: number, limit: number): Card[] =>
-  cards.filter(c => !prog.cards[c.id] && c.th <= curZone).slice(0, Math.max(0, limit))
+/**
+ * Palier le plus haut ouvert dans chaque zone : le palier t+1 s'ouvre quand TIER_UNLOCK_RATIO des cartes du palier t de la
+ * zone sont au niveau TIER_UNLOCK_LV ou plus (un palier sans carte ne bloque pas le suivant).
+ */
+export function openTiers(cards: readonly Card[], prog: Progress): Map<number, number> {
+  const zones = [...new Set(cards.map(c => c.th))]
+  return new Map(zones.map(z => {
+    const inZone = cards.filter(c => c.th === z)
+    let open = 1
+    while (open < MAX_TIER) {
+      const tierCards = inZone.filter(c => (c.tier ?? 1) === open)
+      const ready = tierCards.filter(c => cardLevel(prog, c.id) >= TIER_UNLOCK_LV && !!prog.cards[c.id]).length
+      if (tierCards.length && ready < TIER_UNLOCK_RATIO * tierCards.length) break
+      open++
+    }
+    return [z, open] as const
+  }))
+}
+
+export function newCards(cards: readonly Card[], prog: Progress, curZone: number, limit: number): Card[] {
+  const open = openTiers(cards, prog)
+  return cards.filter(c => !prog.cards[c.id] && c.th <= curZone && (c.tier ?? 1) <= (open.get(c.th) ?? 1)).slice(0, Math.max(0, limit))
+}
 
 export function dailyCards(cards: readonly Card[], prog: Progress, today: number, curZone: number): { due: Card[]; fresh: Card[] } {
   return { due: dueCards(cards, prog, today), fresh: newCards(cards, prog, curZone, NEW_PER_DAY - newToday(prog, today)) }

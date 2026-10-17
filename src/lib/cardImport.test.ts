@@ -7,7 +7,7 @@ import {
 import { QCM_ERRORS } from './cardRules'
 
 const HEADER = ['Zone', 'Question', 'Réponse', 'Bonne proposition', 'Mauvaise 1', 'Mauvaise 2', 'Mauvaise 3', 'Source', 'Note']
-const blank: Record<ImportField, string> = { zone: '', q: '', a: '', ok: '', no1: '', no2: '', no3: '', src: '', note: '' }
+const blank: Record<ImportField, string> = { zone: '', q: '', a: '', ok: '', no1: '', no2: '', no3: '', src: '', note: '', tier: '' }
 const row = (line: number, patch: Partial<Record<ImportField, string>>): SheetRow => ({ line, values: { ...blank, ...patch } })
 const valid = (line: number, zone: string, q: string): SheetRow => row(line, { zone, q, a: 'Réponse' })
 const seq = (values: number[]) => { let i = 0; return () => values[i++ % values.length] }
@@ -152,8 +152,8 @@ describe('analyzeImport', () => {
   test('carte valide : champs repris, QCM ou null', () => {
     const r = analyzeImport([row(2, { zone: '5', q: 'Q', a: 'A', ok: 'O', no1: 'N', src: 'S', note: 'Nt' }), valid(3, '5', 'Q2')], [])
     expect(r.cards).toEqual([
-      { line: 2, zone: 5, q: 'Q', a: 'A', src: 'S', note: 'Nt', qcm: { ok: 'O', no: ['N'] }, doc: { kind: 'unknown' } },
-      { line: 3, zone: 5, q: 'Q2', a: 'Réponse', src: '', note: '', qcm: null, doc: { kind: 'none' } },
+      { line: 2, zone: 5, q: 'Q', a: 'A', src: 'S', note: 'Nt', qcm: { ok: 'O', no: ['N'] }, doc: { kind: 'unknown' }, tier: 1 },
+      { line: 3, zone: 5, q: 'Q2', a: 'Réponse', src: '', note: '', qcm: null, doc: { kind: 'none' }, tier: 1 },
     ])
   })
 })
@@ -186,5 +186,22 @@ describe('importDoneMessage', () => {
   test('pluriel et zones', () => {
     expect(importDoneMessage([{ zone: 3 }, { zone: 1 }, { zone: 3 }])).toBe('3 questions importées en brouillon dans les zones 01, 03.')
     expect(importDoneMessage([{ zone: 12 }])).toBe('1 question importée en brouillon dans la zone 12.')
+  })
+})
+
+describe('palier de difficulté (colonne facultative « Palier »)', () => {
+  test('colonne absente ou vide : palier 1 ; 2 ou 3 lus', () => {
+    const parsed = readSheetRows([[...HEADER, 'Palier'], [1, 'Q1', 'R'], [1, 'Q2', 'R', '', '', '', '', '', '', '3']])
+    expect(parsed.ok).toBe(true)
+    const { cards } = analyzeImport(parsed.ok ? parsed.rows : [], [])
+    expect(cards.map(c => c.tier)).toEqual([1, 3])
+    const rows = planInserts(cards, [])
+    expect(rows.map(r => r.tier)).toEqual([1, 3])
+    expect(matchHeaders(HEADER).ok).toBe(true)
+  })
+  test('palier invalide : ligne écartée avec un message clair', () => {
+    const { cards, errors } = analyzeImport([row(2, { zone: '1', q: 'Q', a: 'R', tier: '5' })], [])
+    expect(cards).toEqual([])
+    expect(errors[0].reason).toBe(REASONS.tier('5'))
   })
 })

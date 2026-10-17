@@ -32,7 +32,7 @@ vi.mock('./pdf', () => ({ openPdf: vi.fn() }))
 const { UNCERTAIN_IMPORT, UncertainWriteError, insertImportedCards, listCardsForImport, listDocumentsForImport } = await import('./adminApi')
 
 const card = (i: number) => ({ id: `t1-${String(i).padStart(6, '0')}`, zone: 1, q: `Q${i}`, position: i })
-const insert = (n: number): CardInsert[] => Array.from({ length: n }, (_, i) => ({ ...card(i), a: 'A', src: '', note: '', qcm: null, status: 'draft', document_id: null }))
+const insert = (n: number): CardInsert[] => Array.from({ length: n }, (_, i) => ({ ...card(i), a: 'A', src: '', note: '', qcm: null, status: 'draft', document_id: null, tier: 1 }))
 
 beforeEach(() => {
   state.pages = []

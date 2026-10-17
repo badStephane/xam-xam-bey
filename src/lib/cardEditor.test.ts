@@ -25,6 +25,13 @@ describe('éditeur de question', () => {
     expect(isEditorDirty(initial, { ...initial, documentId: null })).toBe(true)
     expect(isEditorDirty(initial, { ...initial, src: 'x.pdf' })).toBe(true)
   })
+  test('palier : lu sur la ligne (1 si absent), 1 pour une nouvelle question ; un changement est une saisie', () => {
+    expect(editorFromRow(row).tier).toBe(1)
+    expect(editorFromRow({ ...row, tier: 3 }).tier).toBe(3)
+    expect(newEditor(1, null, '').tier).toBe(1)
+    const initial = editorFromRow(row)
+    expect(isEditorDirty(initial, { ...initial, tier: 2 })).toBe(true)
+  })
   test('qcm absent ou incomplet en base : trois champs vides', () => {
     expect(editorFromRow({ ...row, qcm: null }).draft.no).toEqual(['', '', ''])
   })

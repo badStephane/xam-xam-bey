@@ -209,6 +209,7 @@ export function Session() {
               {ask
                 ? <span className="f-lbl" style={{ padding: '6px 9px', background: 'var(--ink)', color: '#F3AE45' }}>À LIRE À VOIX HAUTE</span>
                 : <span className="row f-lbl" style={{ gap: 8, letterSpacing: 0 }}>MAÎTRISE<span className="pips" aria-hidden="true">{Array.from({ length: MAX_LV }, (_, k) => <i key={k} className={k < lv ? 'on' : undefined} />)}</span>{lv} SUR {MAX_LV}</span>}
+              {c.tier && <span className="stamp" style={{ borderColor: 'var(--ochre)', color: 'var(--ochre)', padding: '5px 7px' }}>{c.tier === 3 ? 'EXPERT' : 'APPROFONDI'}</span>}
               {it.second && <span className="stamp" style={{ marginLeft: 'auto', padding: '5px 7px' }}>DEUXIÈME CHANCE</span>}
             </div>
             <h1 ref={questionRef} tabIndex={-1}>{c.q}</h1>

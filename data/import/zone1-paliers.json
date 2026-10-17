@@ -1,0 +1,362 @@
+[
+ {
+  "tier": 2,
+  "q": "Combien de temps a duré le siège de Mafeking, et entre quelles dates ?",
+  "a": "**217 jours** : la ville est assiégée le **12 octobre 1899** (la guerre a éclaté la veille) et la garnison est relevée le **17 mai 1900**.",
+  "ok": "217 jours, du 12 octobre 1899 au 17 mai 1900",
+  "no": ["Environ 100 jours, d'octobre 1899 à janvier 1900", "Environ 300 jours, d'octobre 1899 à août 1900", "Environ 400 jours, de septembre 1899 à octobre 1900"],
+  "src": "Bases du scoutisme.pdf, p. 16-17 et 26",
+  "note": "La chronologie (p. 26) date la libération du 16 mai : c'est l'entrée de l'avant-garde ; la garnison est relevée le 17 mai (p. 17). La même chronologie parle d'un « siège de sept mois »."
+ },
+ {
+  "tier": 2,
+  "q": "Qui a constitué le corps des cadets de Mafeking, et qui le commandait ?",
+  "a": "Il a été constitué par **Lord Edward Cecil**, chef d'état-major. Il était commandé par un garçon, le sergent-major **Warner Goodyear**, âgé de **12 ans**.",
+  "ok": "Lord Edward Cecil ; commandé par Warner Goodyear, 12 ans",
+  "no": ["Le major MacLaren ; commandé par Donald Baden-Powell, 9 ans", "Sir Baker Russel ; commandé par Linden Bradfield, 15 ans", "Le colonel Vaux ; commandé par Robert Young, 14 ans"],
+  "src": "Bases du scoutisme.pdf, p. 17 et 26 ; Scouting for Boys (Baden-Powell, Robert) (z-lib.org).pdf, yarn 1",
+  "note": "La chronologie (p. 26) place le corps « sous le commandement de Baden-Powell, du major Lord Edward Cecil », secondé par le lieutenant Moncrieffe ; 18 cadets de 12 à 15 ans au départ."
+ },
+ {
+  "tier": 2,
+  "q": "Pourquoi B-P a-t-il confié des missions aux garçons de Mafeking, et lesquelles ?",
+  "a": "Pour **libérer les hommes** pour le service des armes. Les cadets assuraient le **courrier**, l'acheminement des **munitions** aux avant-postes, l'aide aux indigents, les **premiers soins** et la collecte de **renseignements**.",
+  "ok": "Libérer les hommes pour le combat : courrier, munitions, soins, renseignement",
+  "no": ["Les éloigner des combats : cuisine, lessive et garde des enfants", "Les former au tir : patrouilles armées et garde des forts", "Les occuper l'esprit : jeux, chants et veillées de garnison"],
+  "src": "Bases du scoutisme.pdf, p. 17 et 26 ; Scouting for Boys (Baden-Powell, Robert) (z-lib.org).pdf, yarn 1",
+  "note": ""
+ },
+ {
+  "tier": 2,
+  "q": "Quelle image figurait finalement sur les timbres imprimés pendant le siège de Mafeking, et pourquoi ?",
+  "a": "Un **garçon à bicyclette** (un cadet estafette). L'état-major y avait mis le portrait de B-P pour lui faire une surprise ; ravi mais **gêné**, B-P le fit remplacer.",
+  "ok": "Un cadet à bicyclette, à la place du portrait de B-P",
+  "no": ["Le roi Édouard VII en tenue de colonel", "Une fleur de lys, insigne des éclaireurs militaires", "Le portrait de Lord Edward Cecil, chef d'état-major"],
+  "src": "Bases du scoutisme.pdf, p. 17 ; Scouting for Boys (Baden-Powell, Robert) (z-lib.org).pdf, yarn 1",
+  "note": "Piège : le portrait de B-P a bien été prévu par son état-major, mais il a été remplacé."
+ },
+ {
+  "tier": 2,
+  "q": "Quel livre militaire de B-P passionnait déjà les garçons avant la création du scoutisme, et qui s'en servait ?",
+  "a": "**Aids to Scouting**, écrit pour les militaires. La **Boys Brigade** de Sir William Smith et les Boys Clubs l'utilisaient pour enseigner l'observation et la vie dans les bois.",
+  "ok": "Aids to Scouting, utilisé par la Boys Brigade",
+  "no": ["Scouting for Boys, utilisé par l'armée des Indes", "Rovering to Success, utilisé par les Boys Clubs", "Le Guide du chef éclaireur, utilisé par la Boys Brigade"],
+  "src": "Bases du scoutisme.pdf, p. 18 et 26-27",
+  "note": ""
+ },
+ {
+  "tier": 2,
+  "q": "Pour rédiger « Éclaireurs » (Scouting for Boys), quel plan en quatre parties B-P s'était-il fixé ?",
+  "a": "1) Établir le **but** du mouvement ; 2) rendre les **activités attrayantes** ; 3) établir une **loi**, ligne de conduite pour la promesse ; 4) donner une **organisation** convenable et des **chefs compétents**.",
+  "ok": "But, activités attrayantes, loi, organisation et chefs compétents",
+  "no": ["Histoire, techniques, uniforme, insignes et badges", "But, uniforme, jamborees, organisation internationale", "Loi, promesse, devise, salut et poignée de main"],
+  "src": "Bases du scoutisme.pdf, p. 28",
+  "note": ""
+ },
+ {
+  "tier": 2,
+  "q": "Comment B-P dissimulait-il le relevé d'une forteresse lors de ses missions d'espionnage ?",
+  "a": "Déguisé en **chasseur de papillons**, il dessinait des papillons : les lignes des ailes reproduisaient le **tracé des fortifications** et les taches indiquaient la **position et le type des canons**.",
+  "ok": "Dans des dessins de papillons : ailes = fortifications, taches = canons",
+  "no": ["Dans des partitions de musique : portées = remparts, notes = canons", "Dans des croquis de feuilles : nervures = routes, taches = postes", "Dans des cartes de chasse : pistes = remparts, traces = sentinelles"],
+  "src": "Bases du scoutisme.pdf, p. 13-14 ; fiches-BP.pdf, p. 14 ; Quiz-BP.pdf",
+  "note": "Bases situe cette mission en 1890."
+ },
+ {
+  "tier": 2,
+  "q": "Où B-P se retire-t-il en 1938, et que signifie le nom de sa maison ?",
+  "a": "Au **Kenya**. Sa maison s'appelle **Paxtu**, ce qui veut dire « **la paix seulement** ».",
+  "ok": "Au Kenya ; Paxtu, « la paix seulement »",
+  "no": ["Au Kenya ; Impeesa, « le loup qui ne dort jamais »", "En Afrique du Sud ; Paxtu, « la maison du scout »", "À Gilwell ; Kraal, « le lieu du rassemblement »"],
+  "src": "Bases du scoutisme.pdf, p. 20",
+  "note": ""
+ },
+ {
+  "tier": 2,
+  "q": "Quelle coïncidence de date unit B-P et Olave, et où Olave repose-t-elle ?",
+  "a": "Ils sont nés le **même jour de l'année**, un **22 février** (1857 pour B-P, **1889** pour Olave, à Chesterfield). Olave meurt le 25 juin 1977 et repose à **Nyeri**, auprès de B-P.",
+  "ok": "Tous deux nés un 22 février ; elle repose à Nyeri",
+  "no": ["Tous deux nés un 8 janvier ; elle repose à Gilwell", "Tous deux nés un 30 octobre ; elle repose à Londres", "Tous deux nés un 22 février ; elle repose à Chesterfield"],
+  "src": "fiches-BP.pdf, p. 4 ; Quiz-BP.pdf ; Bases du scoutisme.pdf, p. 25",
+  "note": "Le 30 octobre est la date de leur mariage (1912) ; Chesterfield est la ville natale d'Olave."
+ },
+ {
+  "tier": 2,
+  "q": "Dans l'insigne scout décrit par B-P, que rappellent les trois pointes, le parchemin relevé et le nœud ?",
+  "a": "Les **trois pointes** : les trois parties de la promesse. Le **parchemin** de la devise est relevé comme la bouche d'un scout qui **sourit** en faisant son devoir. Le **nœud** rappelle de faire une **bonne action** chaque jour.",
+  "ok": "La promesse ; le sourire dans le devoir ; la bonne action quotidienne",
+  "no": ["Les trois degrés ; la devise ; l'unité du mouvement", "Les trois vertus ; la route à suivre ; la fraternité mondiale", "La loi ; la bonne humeur ; le lien entre les patrouilles"],
+  "src": "Scouting for Boys.pdf, Campfire Yarn no 3",
+  "note": ""
+ },
+ {
+  "tier": 2,
+  "q": "Selon Scouting for Boys, quand deux scouts se croisent, lequel salue le premier ?",
+  "a": "**Le premier qui voit l'autre**, quel que soit son rang. Tous les porteurs de l'insigne se saluent **une fois par jour**.",
+  "ok": "Le premier qui aperçoit l'autre, quel que soit le rang",
+  "no": ["Le plus jeune salue toujours le plus âgé", "Le scout salue d'abord le chef ou le CP", "Le plus ancien dans le mouvement salue le premier"],
+  "src": "Scouting for Boys.pdf, Campfire Yarn no 3",
+  "note": ""
+ },
+ {
+  "tier": 2,
+  "q": "Quelle est la triple fonction de l'uniforme scout ?",
+  "a": "Un **signe d'appartenance** (il efface les différences de classe, de race et de nationalité), une **image pour le public** et une **identité pratique** (vêtement utile plus que de parade).",
+  "ok": "Appartenance, image pour le public, identité pratique",
+  "no": ["Discipline, hiérarchie, reconnaissance des grades", "Protection, camouflage, distinction des branches", "Uniformité, prestige, tenue de cérémonie"],
+  "src": "Bases du scoutisme.pdf, p. 40-41",
+  "note": ""
+ },
+ {
+  "tier": 2,
+  "q": "B-P a-t-il fixé une couleur pour l'uniforme scout ?",
+  "a": "**Non.** Il fallait seulement une couleur qui **se fonde dans la nature** (ce qui exclut le rouge, le jaune ou le bleu), la même pour toute la troupe.",
+  "ok": "Non : une couleur qui se fond dans la nature",
+  "no": ["Oui : le kaki de la police sud-africaine", "Oui : le beige, imposé à tous les pays", "Non : chaque patrouille choisit sa couleur"],
+  "src": "methode-bp.pdf, p. 40",
+  "note": "Bases du scoutisme (p. 17 et 19) rappelle que l'uniforme ressemblait à celui de la police sud-africaine : chapeau à larges bords, chemise beige, foulard, culotte courte."
+ },
+ {
+  "tier": 2,
+  "q": "Quels jamborees Bases du scoutisme cite-t-il pour 1947 et pour 1951 ?",
+  "a": "**1947 : Moisson**, en France. **1951 : Bad Ischl**, en Autriche.",
+  "ok": "Moisson (France) en 1947, Bad Ischl (Autriche) en 1951",
+  "no": ["Godollo (Hongrie) en 1947, Vogelenzang (Pays-Bas) en 1951", "Copenhague (Danemark) en 1947, Moisson (France) en 1951", "Birkenhead (Angleterre) en 1947, Bad Ischl (Autriche) en 1951"],
+  "src": "Bases du scoutisme.pdf, p. 20",
+  "note": "Godollo et Vogelenzang sont cités sans date, avant la guerre ; Birkenhead, c'est 1929."
+ },
+ {
+  "tier": 2,
+  "q": "Quels chiffres montrent la croissance du mouvement dans ses deux premières années, puis en 1933 ?",
+  "a": "En **moins de deux ans**, plus de **100 000** adhérents dans les îles Britanniques. En **1933**, environ **2 160 000** scouts répartis dans **45 pays**.",
+  "ok": "Plus de 100 000 en deux ans ; 2 160 000 dans 45 pays en 1933",
+  "no": ["Plus de 10 000 en deux ans ; 216 000 dans 45 pays en 1933", "Plus de 100 000 en deux ans ; 2 160 000 dans 34 pays en 1933", "Plus de 50 000 en deux ans ; 1 000 000 dans 20 pays en 1933"],
+  "src": "Bases du scoutisme.pdf, p. 20 et 29-30",
+  "note": "34 pays, c'est le premier Jamboree (1920)."
+ },
+ {
+  "tier": 2,
+  "q": "Quand a lieu chaque année le Jamboree sur les ondes (JSLO), et que comprend-il depuis 1996 ?",
+  "a": "La **troisième fin de semaine d'octobre**. Depuis **1996**, il inclut aussi le **Jamboree sur Internet (JOTI)**.",
+  "ok": "3e fin de semaine d'octobre ; le JOTI depuis 1996",
+  "no": ["1re fin de semaine de mai ; le JOTI depuis 1996", "3e fin de semaine d'octobre ; le Jamboree mondial depuis 1958", "Dernière fin de semaine d'avril ; la Saint-Georges depuis 1996"],
+  "src": "fiches-BP.pdf, p. 12",
+  "note": "1958 est l'année du premier JSLO."
+ },
+ {
+  "tier": 2,
+  "q": "Quand l'Association des Scouts du Sénégal est-elle créée, et avec qui forme-t-elle l'ASGS depuis 1981 ?",
+  "a": "Créée en **1961**, d'abord autonome. Depuis **1981**, elle forme avec les **Guides du Sénégal** l'Association des Scouts et Guides du Sénégal (**ASGS**).",
+  "ok": "En 1961 ; avec les Guides du Sénégal, depuis 1981",
+  "no": ["En 1932 ; avec les Scouts de France, depuis 1961", "En 1961 ; avec les EEDS, depuis 1981", "En 1981 ; avec les Guides du Sénégal, depuis 1991"],
+  "src": "Historique Scoutisme Senegal.pdf, p. 4",
+  "note": "Ne pas confondre l'ASGS (SDS et Guides) avec la Confédération sénégalaise du scoutisme (SDS et EEDS)."
+ },
+ {
+  "tier": 2,
+  "q": "Pourquoi les SDS et les EEDS forment-ils la Confédération sénégalaise du scoutisme (CSS) ?",
+  "a": "Parce que les textes de l'**OMMS** ne reconnaissent **qu'une seule organisation scoute par pays**. La CSS est surtout un **cadre de concertation** entre les deux associations, dirigé par un président.",
+  "ok": "L'OMMS ne reconnaît qu'une organisation scoute par pays",
+  "no": ["La loi sénégalaise interdit deux associations scoutes", "Les deux mouvements ont fusionné leurs unités en 1981", "L'OMMS exige une association mixte dans chaque pays"],
+  "src": "Historique Scoutisme Senegal.pdf, p. 5",
+  "note": ""
+ },
+ {
+  "tier": 2,
+  "q": "Dans l'organisation de l'ASGS, combien de groupes un district regroupe-t-il, et qui le dirige ?",
+  "a": "Un district regroupe **2 à 6** groupes d'une zone géographique bien définie. Il est dirigé par un **commissaire de district élu par le conseil de district**.",
+  "ok": "2 à 6 groupes ; un commissaire élu par le conseil de district",
+  "no": ["2 à 6 groupes ; un commissaire nommé par le commissaire général", "6 à 12 groupes ; un commissaire élu par l'assemblée régionale", "3 à 8 groupes ; le chef de groupe le plus ancien"],
+  "src": "Historique Scoutisme Senegal.pdf, p. 4",
+  "note": "Le texte écrit « un certain nombre (2 à 6) » sans répéter le mot « groupes », présentés juste après comme la base du mouvement. Tous les mandats, sauf celui de chef de groupe, durent 3 ans."
+ },
+ {
+  "tier": 2,
+  "q": "Quels sont les 7 éléments de la méthode scoute selon la fiche des Éclaireuses et Éclaireurs de la Nature ?",
+  "a": "La **loi et la promesse**, l'**auto-éducation par l'action**, la **vie en équipe**, le **cadre symbolique**, la **vie dans la nature**, la **progression personnelle** et la **relation éducative**.",
+  "ok": "Loi et promesse, action, équipe, symbolique, nature, progression, relation éducative",
+  "no": ["Loi et promesse, action, équipe, uniforme, camp, badges, chevalerie", "Loi et promesse, B.A., patrouille, totem, camp, CDH, jamboree", "Devise, action, équipe, symbolique, nature, compétition, discipline"],
+  "src": "Les-7-éléments-de-la-méthode-scoute-version-courte.pdf, p. 1-2",
+  "note": "La fiche nomme le premier élément « loi du cœur », terme propre aux EDLN. Elle insiste sur la réussite « dans un contexte non compétitif »."
+ },
+ {
+  "tier": 3,
+  "q": "Un scout affirme que la loi de B-P avait dix articles dès 1908. Que montre l'édition originale de Scouting for Boys ?",
+  "a": "Elle n'en compte que **neuf** ; le dernier est « A scout is **thrifty** » (économe). L'article « **propre** dans ses pensées, ses paroles et ses actes », 10e dans Bases du scoutisme, n'y figure pas.",
+  "ok": "Faux : neuf articles, sans l'article « propre »",
+  "no": ["Vrai : dix articles, dont « propre » en dernier", "Faux : onze articles, dont « pas un sot »", "Faux : douze articles, comme chez les Éclaireurs unionistes"],
+  "src": "Scouting for Boys (Baden-Powell, Robert) (z-lib.org).pdf, Scout Law ; Bases du scoutisme.pdf, p. 1",
+  "note": "Bases du scoutisme donne une version en 10 articles (plus le 11e non écrit) ; methode-bp.pdf (p. 21) cite une loi en 12 articles, traduite en ajoutant deux articles."
+ },
+ {
+  "tier": 3,
+  "q": "« Petit ami de tout le monde » : à qui ce surnom est-il donné, et quel article de la loi illustre-t-il ?",
+  "a": "À **Kim**, « le boy scout », ainsi appelé par les Indiens. B-P le cite à l'**article 4** : le scout est l'**ami de tous** et le frère de tout autre scout, quelle que soit sa classe sociale.",
+  "ok": "Kim ; article 4 (ami de tous, frère de tout scout)",
+  "no": ["Mowgli ; article 6 (ami des animaux)", "Kim ; article 5 (courtois envers tous)", "B-P lui-même ; article 3 (utile aux autres)"],
+  "src": "Scouting for Boys (Baden-Powell, Robert) (z-lib.org).pdf, Scout Law, art. 4",
+  "note": ""
+ },
+ {
+  "tier": 3,
+  "q": "« Transformer un art d'apprendre aux hommes à faire la guerre en un art d'apprendre aux garçons à faire la paix » : à qui et à quel projet rattacher cette formule ?",
+  "a": "À **Baden-Powell** : Bases du scoutisme résume ainsi le passage de la formation des **éclaireurs de l'armée** (Aids to Scouting) à l'**éducation des garçons**.",
+  "ok": "B-P, passage de la formation militaire à l'éducation des garçons",
+  "no": ["Lord Allenby, à propos du rôle des soldats et des politiciens", "Lord Edward Cecil, à propos des cadets de Mafeking", "Le roi Édouard VII, à propos du départ de B-P de l'armée"],
+  "src": "Bases du scoutisme.pdf, p. 15, 18 et 27",
+  "note": "Piège : sur la même page (p. 15), Lord Allenby est cité pour une autre phrase : « Ce ne sont pas les soldats qui font la guerre, ce sont les politiciens »."
+ },
+ {
+  "tier": 3,
+  "q": "Quels quatre buts B-P donne-t-il au scoutisme en 1908, et lequel des 5 buts SSSDF n'y figure pas ?",
+  "a": "En 1908 : **santé**, **sens du concret** (débrouillardise), **personnalité** (formation du caractère) et **service**. Le **sens de Dieu** n'y figure pas : le document précise qu'il n'est pas en soi un but défini par B-P, le clergé local l'ayant davantage mis en avant.",
+  "ok": "Le sens de Dieu",
+  "no": ["La santé", "La débrouillardise (sens du concret)", "La formation du caractère"],
+  "src": "Bases du scoutisme.pdf, p. 24-25 et 28 ; la devise, l_esprit et les élements fondamentaux du scoutismes.docx",
+  "note": "Nuance : pour B-P, la religion « englobait le tout » (Bases, p. 24 et 28). On retrouve quatre buts proches dans la préface de Scouting for Boys.pdf et dans Rovering to Success, chap. 7."
+ },
+ {
+  "tier": 3,
+  "q": "Dans Rovering to Success, pourquoi B-P conseille-t-il de « pagayer son propre canoë » plutôt que de ramer ?",
+  "a": "En canoë, on **regarde devant soi** et on se propulse soi-même : on **trace sa propre route**. En barque à rames, on tourne le dos à sa direction et on **se fie au pilotage des autres**, au risque de heurter des écueils.",
+  "ok": "On regarde devant soi et on trace sa propre route",
+  "no": ["Le canoë va plus vite et demande moins d'effort", "Le canoë se manœuvre à plusieurs, comme une patrouille", "On se laisse porter par le courant sans s'épuiser"],
+  "src": "Lord Robert Baden-Powell of Gilwell - Rovering to success.pdf, chap. 1 (Paddle your own canoe)",
+  "note": "Se laisser porter par le vent ou le courant est jugé par B-P « tout aussi fatal »."
+ },
+ {
+  "tier": 3,
+  "q": "Comment Rovering to Success définit-il les routiers (Rovers), et en quoi cela recoupe-t-il les trois degrés de Bases du scoutisme ?",
+  "a": "Une « **fraternité du plein air et du service** », branche aînée du mouvement pour les jeunes hommes de **plus de 17 ans** : cela correspond aux routiers « 17 ans et plus » de Bases. Pour être admis comme **Rover Squire**, il faut avoir au moins 17 ans et ne pas avoir atteint **22 ans**.",
+  "ok": "Fraternité du plein air et du service, plus de 17 ans",
+  "no": ["Fraternité du camp et de la prière, plus de 15 ans", "Fraternité du plein air et du service, plus de 21 ans", "Fraternité des chefs et de la formation, plus de 18 ans"],
+  "src": "Lord Robert Baden-Powell of Gilwell - Rovering to success.pdf, chap. 7 ; Bases du scoutisme.pdf, p. 19",
+  "note": "La limite de 22 ans concerne l'admission comme Rover Squire, pas la sortie de la Route."
+ },
+ {
+  "tier": 3,
+  "q": "Les sources désignent-elles le chef de patrouille de la même façon ?",
+  "a": "**Non.** Scouting for Boys : **chaque patrouille choisit** son chef. LE SCOUTISME : les CP sont **nommés en Cour d'honneur**. methode-bp : le **chef de troupe** avec ses adjoints, ou mieux le **CdC** des anciens CP.",
+  "ok": "Non : la patrouille, la Cour d'honneur ou le CT/CdC selon la source",
+  "no": ["Oui : toujours le chef de troupe seul", "Oui : toujours la Cour d'honneur", "Non : le second ou le CP sortant selon la source"],
+  "src": "Scouting for Boys.pdf, Campfire Yarn no 4 ; LE SCOUTISME.docx (Cour d'honneur) ; methode-bp.pdf, p. 7-8",
+  "note": "Point commun : le CP choisit son second (Scouting for Boys ; LE SCOUTISME ajoute « avec l'assentiment de la CDH »). methode-bp écarte le choix par ancienneté ou parce qu'on était second."
+ },
+ {
+  "tier": 3,
+  "q": "Un chef veut nommer CP un garçon turbulent « pour que ça lui fasse du bien ». Que répond methode-bp ?",
+  "a": "C'est **hors de question**, le risque est trop grand : le poste de CP **n'est ni une récompense, ni un grade, ni un encouragement, c'est une fonction**. On le choisit d'abord pour son **bon esprit**, puis pour ses qualités de leader, après un entretien avec le CT.",
+  "ok": "Non : CP est une fonction, pas une récompense ni un remède",
+  "no": ["Oui : un poste de CP récompense ses progrès", "Oui, à l'essai, s'il est le plus ancien de la patrouille", "Non : il faut d'abord qu'il ait été second un an"],
+  "src": "methode-bp.pdf, p. 7-8",
+  "note": ""
+ },
+ {
+  "tier": 3,
+  "q": "Au CDC, les CP votent une décision contraire aux traditions de la troupe. Que peut faire le chef de troupe selon LE SCOUTISME ?",
+  "a": "Opposer son **droit de veto**, en **expliquant pourquoi**. Ce veto vaut pour trois cas : décision contraire à la **loi scoute**, aux **traditions de la troupe** ou au **cadre législatif du pays**. Le CDC reste présidé par le **1er CP**, jamais par le CT.",
+  "ok": "Opposer son veto en expliquant pourquoi",
+  "no": ["Rien : seul le 1er CP peut revenir sur un vote", "Présider lui-même un nouveau CDC et trancher seul", "Renvoyer la question au conseil de patrouille"],
+  "src": "LE SCOUTISME.docx (Conseil des chefs)",
+  "note": "methode-bp.pdf (p. 26-27) admet aussi un veto du CT, mais exceptionnel et réservé aux questions vitales pour la troupe."
+ },
+ {
+  "tier": 3,
+  "q": "Un CP veut régler en conseil de patrouille le comportement d'un de ses patrouillards. Que recommande methode-bp ?",
+  "a": "**Jamais en patrouille** : ce « lavage de linge sale » en commun est très malsain. Toute question personnelle est examinée par le **chef de troupe et le CP concerné**.",
+  "ok": "Le traiter entre le CT et le CP, jamais en patrouille",
+  "no": ["L'inscrire à l'ordre du jour du prochain CdP", "Le soumettre au vote de toute la patrouille", "En parler au CdC devant tous les CP"],
+  "src": "methode-bp.pdf, p. 9",
+  "note": "Fréquence du conseil de patrouille : « pas moins de deux fois par trimestre », une demi-heure au plus (methode-bp) ; « une fois par quinzaine » (LE SCOUTISME)."
+ },
+ {
+  "tier": 3,
+  "q": "Au camp, quand tenir le CdC quotidien selon methode-bp, et pourquoi pas le soir ?",
+  "a": "Chaque jour, **15 à 20 minutes**, de préférence **le matin entre le petit déjeuner et le lever des couleurs** : les SP dirigent alors le rangement des coins. **Pas le soir** : les patrouilles ont besoin de leur CP au coucher, et les chefs ont besoin de sommeil.",
+  "ok": "Le matin, entre petit déjeuner et lever des couleurs",
+  "no": ["Le soir, après la veillée, quand le camp est calme", "Juste avant le coucher, pendant que les SP couchent la patrouille", "Une fois par semaine, le dimanche après le culte"],
+  "src": "methode-bp.pdf, p. 25-26",
+  "note": "Le document évoque aussi la sieste, avec une difficulté : toutes les patrouilles ne finissent pas de manger en même temps."
+ },
+ {
+  "tier": 3,
+  "q": "Un chef propose de faire toutes les promesses ensemble à la fin du camp d'été. Quelles objections tire-t-on de methode-bp ?",
+  "a": "Il faut **répartir les promesses** au fil de l'année, selon le désir de chacun : les grouper fait perdre le **caractère personnel** de l'engagement et l'occasion de **rappeler aux autres** leur propre promesse. La cérémonie convient à **un ou deux garçons**, pas plus ; trop attendre dissocie la promesse du fait d'« être éclaireur ».",
+  "ok": "Répartir les promesses dans l'année, une ou deux à la fois",
+  "no": ["Les grouper au camp pour leur donner plus d'éclat", "Attendre que chacun obéisse parfaitement à la loi", "Les faire de nuit, aux flambeaux, pour marquer les esprits"],
+  "src": "methode-bp.pdf, p. 13-15 et 67",
+  "note": "Repère donné : dans une troupe qui accueille des louveteaux en octobre, les premières promesses ont lieu en décembre ou janvier."
+ },
+ {
+  "tier": 3,
+  "q": "Un éclaireur triche pendant un jeu ; le chef s'écrie : « C'est une honte, tu n'as pas respecté la loi ! ». Pourquoi methode-bp déconseille-t-il cette réaction ?",
+  "a": "La loi n'est **pas un code pour juger ou punir** : l'éclaireur risque de **prendre la loi en grippe**. Il faut faire appel à sa **bonne volonté** par un mot fraternel et positif, féliciter dès que possible et, avant un jeu, rappeler l'article 2 comme exhortation.",
+  "ok": "La loi n'est pas un code pour punir ; faire appel à sa bonne volonté",
+  "no": ["Il faut d'abord le convoquer en Cour d'honneur", "Il faut citer l'article exact, mais en privé", "Il faut l'exclure du jeu sans commentaire"],
+  "src": "methode-bp.pdf, p. 21-22",
+  "note": ""
+ },
+ {
+  "tier": 3,
+  "q": "Dans le tableau des 7 principes pédagogiques de B-P, quel principe consiste à « faire désirer par l'enfant ce qu'on estime bon pour lui » plutôt que de l'imposer ?",
+  "a": "Le **libre consentement** : convaincre, ne pas contraindre ; le CT y joue le rôle de **grand frère** et mène des entretiens individuels. Les 7 principes : adaptation, réaction, activité, canalisation des tendances, suggestion, **libre consentement**, interpénétration.",
+  "ok": "Le libre consentement",
+  "no": ["La suggestion", "La canalisation des tendances", "L'adaptation"],
+  "src": "methode-bp.pdf, p. 71-74",
+  "note": "La suggestion consiste à mettre dans l'imagination l'image de ce qu'on doit être ; la canalisation, à orienter les désirs plutôt qu'à les refréner."
+ },
+ {
+  "tier": 3,
+  "q": "Selon le principe d'« activité » du tableau de methode-bp, quelle part retient-on de ce que l'on entend, voit et fait ?",
+  "a": "**1/10** de ce que nous entendons, **3/10** de ce que nous voyons, **6/10** de ce que nous faisons. D'où la règle : « **on devient ce que l'on pratique** ».",
+  "ok": "1/10, 3/10, 6/10",
+  "no": ["3/10, 6/10, 9/10", "1/10, 2/10, 7/10", "2/10, 4/10, 8/10"],
+  "src": "methode-bp.pdf, p. 72",
+  "note": ""
+ },
+ {
+  "tier": 3,
+  "q": "Animal totem de patrouille et totémisation : quelle origine leur donnent LE SCOUTISME et methode-bp ?",
+  "a": "Selon LE SCOUTISME, le **nom d'animal de patrouille** se rattache à la **chevalerie** (et déjà à la légion romaine), **non aux Indiens d'Amérique**. Selon methode-bp, la **totémisation** ne figure **pas dans les livres de B-P** : apparue comme une mode, il ne s'y est pas opposé.",
+  "ok": "Animal : chevalerie ; totémisation : absente des livres de B-P",
+  "no": ["Animal : Indiens d'Amérique ; totémisation : créée par B-P à Brownsea", "Animal : Indiens d'Amérique ; totémisation : absente des livres de B-P", "Animal : chevalerie ; totémisation : prévue dans le Guide du chef éclaireur"],
+  "src": "LE SCOUTISME.docx (L'animal totem) ; methode-bp.pdf, p. 62",
+  "note": "Bases du scoutisme (p. 27) rapporte que les « Indiens des bois » d'Ernest Thompson Seton donnaient déjà des noms d'animaux aux patrouilles : la question porte sur l'origine de la coutume selon LE SCOUTISME."
+ },
+ {
+  "tier": 3,
+  "q": "Selon la chronologie de Bases du scoutisme, d'où venaient les campeurs de Brownsea, et sur quoi les sources divergent-elles ?",
+  "a": "**10** venaient des écoles d'**Eton et Harrow**, **7** de la Boys Brigade de **Bournemouth**, **3** de celle de **Poole**, plus Donald, neveu de B-P. Mais Bases donne aussi **24 campeurs** (p. 19), et des dates du **25 juillet au 5 août**, contre **29 juillet - 9 août** dans fiches-BP.",
+  "ok": "10 d'Eton et Harrow, 7 de Bournemouth, 3 de Poole",
+  "no": ["10 de Poole, 7 d'Eton et Harrow, 3 de Londres", "Tous de la Boys Brigade de Sir William Smith", "12 de Bournemouth, 6 de Poole, 3 d'Eton"],
+  "src": "Bases du scoutisme.pdf, p. 19 et 27 ; fiches-BP.pdf, p. 5",
+  "note": "Autres écarts : Donald est un frère de B-P à la p. 19, un neveu de 9 ans à la p. 27 (où le frère présent s'appelle Georges) ; fiches-BP parle d'une vingtaine de jeunes de 9 à 17 ans."
+ },
+ {
+  "tier": 3,
+  "q": "Dans son dernier message, à quel personnage B-P se compare-t-il, et quel est pour lui « le véritable chemin du bonheur » ?",
+  "a": "Au **chef des pirates de Peter Pan**, qui préparait toujours son dernier discours. Le véritable chemin du bonheur est de **donner le bonheur aux autres** : « quitter la terre en la laissant **un peu meilleure** que vous ne l'avez trouvée ».",
+  "ok": "Au chef des pirates de Peter Pan ; donner le bonheur aux autres",
+  "no": ["À Peter Pan ; rester jeune et ne jamais grandir", "À Mowgli ; vivre libre dans la nature", "Au chef des pirates de Peter Pan ; réussir et devenir riche"],
+  "src": "Bases du scoutisme.pdf, p. 21-23",
+  "note": "Même idée dans Rovering to Success (chap. 1) : le seul vrai succès est le bonheur, pas la richesse ni la position."
+ },
+ {
+  "tier": 3,
+  "q": "Comparez le premier engagement de la promesse des premiers scouts du Sénégal (1932) avec celui du texte de B-P.",
+  "a": "Les scouts de Dakar s'engagent à « servir de mon mieux **Dieu, l'Église et la Patrie** » ; le texte de B-P parle du « devoir envers **Dieu et le roi** ». Les deux autres engagements se répondent : **aider son prochain** et **observer la loi scoute**.",
+  "ok": "« Dieu, l'Église et la Patrie » au lieu de « Dieu et le roi »",
+  "no": ["« Dieu et le roi », comme chez B-P", "« La Patrie et le roi », sans mention de Dieu", "« Dieu, la France et l'Empire » au lieu de « Dieu et le roi »"],
+  "src": "Historique Scoutisme Senegal.pdf, p. 1 ; Bases du scoutisme.pdf, p. 38",
+  "note": "Les premiers scouts du Sénégal étaient des Scouts de France : leur promesse s'ouvre par « Sur mon honneur, avec la grâce de Dieu »."
+ },
+ {
+  "tier": 3,
+  "q": "La loi scoute est « sans sanction » selon Bases du scoutisme. Cela vaut-il pour tout le système décrit dans les sources ?",
+  "a": "Pas tout à fait. La **loi** elle-même ne prévoit pas de sanction (une discussion suffit), mais la **Cour d'honneur** examine les manquements prolongés et peut décider de **recommandations ou de sanctions** (LE SCOUTISME). L'édition 1908 de Scouting for Boys punit même chaque juron d'un **gobelet d'eau froide versé dans la manche**.",
+  "ok": "Non : la CDH peut sanctionner, et l'édition 1908 punit les jurons",
+  "no": ["Oui : aucune source ne prévoit la moindre sanction", "Non : le CDC fixe des amendes pour chaque article violé", "Oui : seule la promesse prévoit des sanctions"],
+  "src": "Bases du scoutisme.pdf, p. 1 ; LE SCOUTISME.docx (Cour d'honneur) ; Scouting for Boys (Baden-Powell, Robert) (z-lib.org).pdf, Scout Law, art. 8",
+  "note": "La CDH reste éducative : elle est pour le scout mis en cause « l'occasion de se réhabiliter » (LE SCOUTISME)."
+ }
+]

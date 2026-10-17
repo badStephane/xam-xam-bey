@@ -10,12 +10,12 @@ export const MAX_IMPORT_ROWS = 1000
 export const ZONE_MIN = 1
 export const ZONE_MAX = 12
 
-export type ImportField = 'zone' | 'q' | 'a' | 'ok' | 'no1' | 'no2' | 'no3' | 'src' | 'note'
+export type ImportField = 'zone' | 'q' | 'a' | 'ok' | 'no1' | 'no2' | 'no3' | 'src' | 'note' | 'tier'
 
 /** En-têtes du modèle, dans l'ordre des colonnes. Garder aligné avec scripts/make_import_xlsx.py. */
 export const IMPORT_HEADERS: ReadonlyArray<readonly [ImportField, string]> = [
   ['zone', 'Zone'], ['q', 'Question'], ['a', 'Réponse'], ['ok', 'Bonne proposition'],
-  ['no1', 'Mauvaise 1'], ['no2', 'Mauvaise 2'], ['no3', 'Mauvaise 3'], ['src', 'Source'], ['note', 'Note'],
+  ['no1', 'Mauvaise 1'], ['no2', 'Mauvaise 2'], ['no3', 'Mauvaise 3'], ['src', 'Source'], ['note', 'Note'], ['tier', 'Palier'],
 ]
 const REQUIRED_FIELDS: readonly ImportField[] = ['zone', 'q', 'a']
 
@@ -23,6 +23,7 @@ export const REASONS = {
   zone: (raw: string) => (raw ? `Zone invalide (« ${raw} ») : un nombre entier de 1 à 12.` : 'Zone vide : un nombre entier de 1 à 12.'),
   q: 'Question vide.',
   a: 'Réponse vide.',
+  tier: (raw: string) => `Palier invalide (« ${raw} ») : 1, 2 ou 3, ou vide pour 1.`,
   inFile: (line: number) => `Doublon de la ligne ${line} du fichier.`,
   inBase: (zone: number) => `Doublon : la zone ${p2(zone)} contient déjà cette question.`,
 } as const
@@ -32,7 +33,7 @@ export interface SheetRow { line: number; values: Readonly<Record<ImportField, s
 export type SheetParse = { ok: true; rows: SheetRow[] } | { ok: false; error: string }
 
 /** `doc` : document de la zone relié par la colonne Source (E4). */
-export interface ImportCard { line: number; zone: number; q: string; a: string; src: string; note: string; qcm: Qcm | null; doc: DocLink }
+export interface ImportCard { line: number; zone: number; q: string; a: string; src: string; note: string; qcm: Qcm | null; doc: DocLink; tier: number }
 export interface RowError { line: number; zone: number | null; reason: string }
 export interface ZoneCount { zone: number | null; valid: number; errors: number }
 export interface ImportAnalysis { cards: ImportCard[]; errors: RowError[]; byZone: ZoneCount[] }
@@ -40,7 +41,7 @@ export interface ImportAnalysis { cards: ImportCard[]; errors: RowError[]; byZon
 export interface ExistingCard { id: string; zone: number; q: string; position: number }
 export interface CardInsert {
   id: string; zone: number; position: number; q: string; a: string; src: string; note: string
-  qcm: Qcm | null; status: 'draft'; document_id: number | null
+  qcm: Qcm | null; status: 'draft'; document_id: number | null; tier: number
 }
 
 /** Nom de fichier, taille : refus clair avant toute lecture. */
@@ -116,6 +117,13 @@ export function parseZone(raw: string): number | null {
   return Number.isInteger(n) && n >= ZONE_MIN && n <= ZONE_MAX ? n : null
 }
 
+/** Palier facultatif : vide = 1 ; sinon entier de 1 à 3 (nombre ou texte), sinon null. */
+export function parseTier(raw: string): number | null {
+  if (!raw) return 1
+  const n = Number(raw)
+  return Number.isInteger(n) && n >= 1 && n <= 3 ? n : null
+}
+
 /** QCM de la ligne, selon la règle partagée avec l'éditeur (readQcm). */
 export const rowQcm = (v: Readonly<Record<ImportField, string>>): QcmRead => readQcm(v.ok, [v.no1, v.no2, v.no3])
 
@@ -129,6 +137,7 @@ function fieldErrors(v: Readonly<Record<ImportField, string>>, zone: number | nu
     zone === null ? REASONS.zone(v.zone) : null,
     v.q ? null : REASONS.q,
     v.a ? null : REASONS.a,
+    parseTier(v.tier) === null ? REASONS.tier(v.tier) : null,
     qcm.ok ? null : qcm.error,
   ].filter((x): x is string => x !== null)
 }
@@ -157,7 +166,7 @@ export function analyzeImport(rows: readonly SheetRow[], existing: readonly Exis
     const first = acc.seen.get(key)
     if (first !== undefined) return { ...acc, errors: [...acc.errors, { line, zone, reason: REASONS.inFile(first) }] }
     if (inBase.has(key)) return { ...acc, errors: [...acc.errors, { line, zone, reason: REASONS.inBase(zone) }] }
-    const card: ImportCard = { line, zone, q: v.q, a: v.a, src: v.src, note: v.note, qcm: qcm.qcm, doc: linkDocument(v.src, zone, docIndex) }
+    const card: ImportCard = { line, zone, q: v.q, a: v.a, src: v.src, note: v.note, qcm: qcm.qcm, doc: linkDocument(v.src, zone, docIndex), tier: parseTier(v.tier) ?? 1 }
     return { cards: [...acc.cards, card], errors: acc.errors, seen: new Map([...acc.seen, [key, line]]) }
   }, { cards: [], errors: [], seen: new Map() })
   return { cards: out.cards, errors: out.errors, byZone: countByZone(out.cards, out.errors) }
@@ -170,7 +179,7 @@ export function planInserts(cards: readonly ImportCard[], existing: readonly Exi
   return cards.reduce<Acc>((acc, c) => {
     const id = freshId(c.zone, acc.taken, rand)
     const position = (acc.next[c.zone] ?? maxPos[c.zone] ?? 0) + 1
-    const row: CardInsert = { id, zone: c.zone, position, q: c.q, a: c.a, src: c.src, note: c.note, qcm: c.qcm, status: 'draft', document_id: docIdOf(c.doc) }
+    const row: CardInsert = { id, zone: c.zone, position, q: c.q, a: c.a, src: c.src, note: c.note, qcm: c.qcm, status: 'draft', document_id: docIdOf(c.doc), tier: c.tier }
     return { rows: [...acc.rows, row], taken: new Set([...acc.taken, id]), next: { ...acc.next, [c.zone]: position } }
   }, { rows: [], taken: new Set(existing.map(c => c.id)), next: {} }).rows
 }

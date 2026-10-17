@@ -104,7 +104,7 @@ export async function deleteDocument(id: number, storagePath: string): Promise<v
   if (!removed) throw new Error(`Le document est retiré du catalogue, mais son fichier (${storagePath}) reste en ligne. Réessayez ou signalez-le à un responsable technique.`)
 }
 
-const CARD_COLUMNS = 'id, zone, document_id, position, q, a, src, note, qcm, status'
+const CARD_COLUMNS = 'id, zone, document_id, position, q, a, src, note, qcm, status, tier'
 
 export async function listCards(zone: number): Promise<CardRow[]> {
   const { data, error } = await client().from('cards').select(CARD_COLUMNS).eq('zone', zone).order('position')
@@ -113,14 +113,14 @@ export async function listCards(zone: number): Promise<CardRow[]> {
 }
 
 /** `qcm` : null pour une question sans QCM (l'application compose alors les propositions). */
-export interface CardInput { zone: number; documentId: number | null; src: string; q: string; a: string; note: string; qcm: Qcm | null; status: CardStatus }
+export interface CardInput { zone: number; documentId: number | null; src: string; q: string; a: string; note: string; qcm: Qcm | null; status: CardStatus; tier: number }
 
 /** Crée (id absent) ou met à jour une question ; une nouvelle question va en fin de zone. */
 export async function saveCard(id: string | null, input: CardInput): Promise<CardRow> {
   const db = client()
   const fields = {
     zone: input.zone, document_id: input.documentId, src: input.src.trim(), q: input.q.trim(), a: input.a.trim(), note: input.note.trim(),
-    qcm: input.qcm ? { ok: input.qcm.ok.trim(), no: input.qcm.no.map(x => x.trim()).filter(Boolean) } : null, status: input.status,
+    qcm: input.qcm ? { ok: input.qcm.ok.trim(), no: input.qcm.no.map(x => x.trim()).filter(Boolean) } : null, status: input.status, tier: input.tier,
   }
   if (id) {
     const [row] = touchedRows(await db.from('cards').update(fields).eq('id', id).select(CARD_COLUMNS))

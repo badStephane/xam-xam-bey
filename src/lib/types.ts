@@ -67,6 +67,8 @@ export interface Card {
   qcm?: Qcm
   /** Document de la bibliothèque (documents.id) auquel la question est reliée (E4), sinon absent. */
   doc?: number
+  /** Palier de difficulté 2 ou 3 ; absent : palier 1. */
+  tier?: number
 }
 
 /** Propositions affichées pour une carte (ordre mélangé) et indice de la bonne. */
@@ -131,6 +133,8 @@ export interface CardRow {
   note: string
   qcm: unknown
   status: CardStatus
+  /** Palier de difficulté (1 à 3) ; absent avant la migration des paliers. */
+  tier?: number
 }
 
 export type Grade = 0 | 1 | 2
