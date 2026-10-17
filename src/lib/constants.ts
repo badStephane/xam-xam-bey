@@ -25,6 +25,9 @@ export const XP_REDO = 2
 export const XP_PER_LEVEL = 200
 export const XP_BAR_SEGMENTS = 20
 export const NEW_PER_DAY = 10
+/** Gel de série : +1 tous les FREEZE_EVERY jours révisés de suite, FREEZE_MAX en réserve ; un gel couvre un jour manqué. */
+export const FREEZE_EVERY = 7
+export const FREEZE_MAX = 2
 /** Nouvelles questions demandées en plus (« 10 de plus »), une fois la session du jour terminée. */
 export const EXTRA_NEW = 10
 export const ACQUIRED_LV = 4
