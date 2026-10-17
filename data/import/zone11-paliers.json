@@ -1,0 +1,509 @@
+[
+  {
+    "tier": 2,
+    "q": "Quelle est la conduite à tenir face à une brûlure du 1er degré selon le corrigé DAK23 ?",
+    "a": "**Arroser** la partie atteinte avec de l'eau, mettre un **produit antiseptique**, puis **appliquer un pansement**. Le corrigé 2017 précise de refroidir à grande eau **sans pression excessive**.",
+    "ok": "Arroser d'eau, mettre un antiseptique, appliquer un pansement",
+    "no": [
+      "Percer les cloques, sécher la peau, appliquer un pansement",
+      "Envelopper dans un drap stérile et évacuer à l'hôpital",
+      "Appliquer de la glace sur la peau, puis un bandage serré"
+    ],
+    "src": "secourisme rallye dak23.pdf, p. 1 ; Questions Réponses Rallye 2017.pdf, p. 7",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Dans le protocole RIRE, pourquoi ne faut-il jamais poser la glace directement sur la peau ?",
+    "a": "Pour **éviter les brûlures** : on met la glace **dans un linge** (gant, torchon). La glace sert aussi à **diminuer la douleur**.",
+    "ok": "Pour éviter les brûlures : on la met dans un linge",
+    "no": [
+      "Pour éviter l'infection : on la met dans une compresse",
+      "Pour éviter un saignement : on la met sur l'attelle",
+      "Pour éviter un malaise : on la met sur le front"
+    ],
+    "src": "secourisme rallye dak23.pdf, p. 3",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Selon le corrigé DAK23, comment immobilise-t-on une fracture fermée selon la partie du corps touchée ?",
+    "a": "**Attelle** pour les **membres inférieurs**, **écharpe** pour les **épaules**, **attelle + écharpe** (simple ou écharpe contre écharpe) pour les **membres supérieurs**.",
+    "ok": "Attelle en bas, écharpe à l'épaule, attelle + écharpe au bras",
+    "no": [
+      "Écharpe en bas, attelle à l'épaule, attelle seule au bras",
+      "Attelle partout, avec une écharpe seulement pour la jambe",
+      "Écharpe en bas, attelle + écharpe à l'épaule, rien au bras"
+    ],
+    "src": "secourisme rallye dak23.pdf, p. 3",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Dans le protocole RIRE, que précise le corrigé DAK23 pour le Repos et l'Élévation ?",
+    "a": "**Repos** : mettre le membre au repos, **les 2 premiers jours en général**, par exemple avec des **béquilles** pour éviter l'appui. **Élévation** : surélever le membre blessé **plusieurs heures par jour**.",
+    "ok": "Repos les 2 premiers jours (béquilles), élévation plusieurs heures par jour",
+    "no": [
+      "Repos une semaine (plâtre), élévation seulement la nuit",
+      "Repos quelques heures (écharpe), élévation toute la journée",
+      "Repos les 2 premiers jours (marche lente), élévation une heure par jour"
+    ],
+    "src": "secourisme rallye dak23.pdf, p. 3",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "En quoi le brêlage en étoile diffère-t-il du brêlage diagonal ?",
+    "a": "Les deux assemblent **2 perches selon un angle de croisement quelconque** ; ils diffèrent par la **disposition des perches**.",
+    "ok": "Même usage (angle quelconque), mais disposition des perches différente",
+    "no": [
+      "Le brêlage en étoile assemble 3 perches, le diagonal seulement 2",
+      "Le brêlage en étoile assemble des perches parallèles, le diagonal non",
+      "Le brêlage en étoile forme un trépied, le diagonal un angle droit"
+    ],
+    "src": "matelotage rallye dak23.pdf, p. 2",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Comment appelle-t-on le premier muezzin de l'islam, et comment dit-on Tamkharit en arabe ?",
+    "a": "Le premier muezzin est **Bilal** ; la Tamkharit se dit **Achoura**.",
+    "ok": "Bilal ; Achoura",
+    "no": [
+      "Bilal ; Mawlid",
+      "Omar ; Achoura",
+      "Ali ; Laylatoul Qadr"
+    ],
+    "src": "Questions Réponses Rallye 2023.pdf, p. 2",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quels éléments composent une trousse topographique complète selon le corrigé DAK23 ?",
+    "a": "**Boussole, compas, crayon, gomme, taille-crayon, papier quadrillé, grille panoramique, décimètre**.",
+    "ok": "Boussole, compas, crayon, gomme, taille-crayon, papier quadrillé, grille panoramique, décimètre",
+    "no": [
+      "Boussole, GPS, crayon, gomme, carte routière, papier calque, lampe, décimètre",
+      "Boussole, compas, stylo, règle, papier millimétré, rapporteur, lampe, sifflet",
+      "Boussole, jumelles, crayon, gomme, papier quadrillé, montre, ficelle, décimètre"
+    ],
+    "src": "TOPO RALLYE DAK23.pdf, p. 3",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Qu'est-ce que le baudrier d'Orion, et que sait-on de la constellation du Dragon pour s'orienter ?",
+    "a": "Le **baudrier** est la **ceinture d'Orion**. La constellation du **Dragon** se trouve **au nord**.",
+    "ok": "La ceinture d'Orion ; le Dragon se trouve au nord",
+    "no": [
+      "L'épée d'Orion ; le Dragon se trouve au sud",
+      "La tête d'Orion ; le Dragon indique l'est",
+      "La ceinture d'Orion ; le Dragon indique le sud"
+    ],
+    "src": "TOPO RALLYE DAK23.pdf, p. 1 et 4",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quelle est la première marque de reconnaissance scoute (le 1er signe de fraternité scoute) selon le corrigé DAK23 ?",
+    "a": "**L'uniforme**.",
+    "ok": "L'uniforme",
+    "no": [
+      "Le salut scout",
+      "La poignée de main gauche",
+      "Le foulard de groupe"
+    ],
+    "src": "CP RALLYE DAK23.pdf, p. 1-2",
+    "note": "La question est en bas de la p. 1, la réponse en haut de la p. 2."
+  },
+  {
+    "tier": 2,
+    "q": "Comment le corrigé 2017 définit-il un camp ?",
+    "a": "Un **isolement de quelques jours dans un cadre privilégié**, **lieu d'application de la méthode scoute**.",
+    "ok": "Un isolement de quelques jours dans un cadre privilégié, où s'applique la méthode scoute",
+    "no": [
+      "Une sortie d'une journée en plein air, où l'on teste les techniques scoutes",
+      "Un rassemblement de plusieurs troupes en ville, où l'on fête la promesse",
+      "Un séjour de vacances en famille, où l'on prépare l'année scoute"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 7",
+    "note": "Le corrigé donne des « points focus » plutôt qu'une définition rédigée."
+  },
+  {
+    "tier": 2,
+    "q": "En camp de patrouille, quels deux nœuds reviennent toujours dans les installations selon le corrigé 2017 ?",
+    "a": "La **ganse** et la **demi-clé**.",
+    "ok": "La ganse et la demi-clé",
+    "no": [
+      "Le plat et le pêcheur",
+      "Le cabestan et le tisserand",
+      "La chaise et le nœud de vache"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 3 et 7",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Selon le corrigé 2017, quel nœud utiliser pour une clôture passant par plusieurs piquets, et lequel pour nouer ses lacets ?",
+    "a": "Clôture : le **cabestan**. Lacets : le nœud de **rosette** (ou « cul de porc »).",
+    "ok": "Le cabestan ; la rosette (cul de porc)",
+    "no": [
+      "Le tisserand ; le nœud plat",
+      "La demi-clé ; le nœud simple",
+      "Le cabestan ; la ganse à tête d'alouette"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 3 et 7",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Votre cordage commence à s'effilocher : quels nœuds le corrigé 2017 propose-t-il pour ne pas le perdre ?",
+    "a": "Le nœud **simple** et le **capucin** (nœuds d'arrêt).",
+    "ok": "Le simple et le capucin",
+    "no": [
+      "Le plat et le pêcheur",
+      "La chaise et le cabestan",
+      "La jambe de chien et la ganse"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 3 et 7",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Perdu de jour au retour d'un raid, quels moyens d'orientation le corrigé 2017 cite-t-il ? Et à la tombée de la nuit ?",
+    "a": "De jour : un **édifice**, la **montre**, la **boussole**. La nuit : les **constellations** et la **lune**.",
+    "ok": "Jour : édifice, montre, boussole ; nuit : constellations, lune",
+    "no": [
+      "Jour : constellations, lune, boussole ; nuit : édifice, montre",
+      "Jour : soleil, mousse des arbres, vent ; nuit : boussole, GPS",
+      "Jour : édifice, GPS, carte ; nuit : feu, sifflet, lune"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 3 et 8",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Que recouvre chaque geste du PAS selon le corrigé 2017 ?",
+    "a": "**Protéger** : dégager, éloigner, **baliser**. **Alerter** : les secours et entités compétentes. **Secourir** : **examiner**, faire les gestes d'urgence si nécessaire, **surveiller**.",
+    "ok": "Protéger : dégager, éloigner, baliser ; Alerter : les secours ; Secourir : examiner, gestes d'urgence, surveiller",
+    "no": [
+      "Protéger : examiner, surveiller ; Alerter : la famille ; Secourir : dégager, baliser, évacuer",
+      "Protéger : appeler le 18 ; Alerter : baliser la route ; Secourir : transporter à l'hôpital",
+      "Protéger : couvrir la victime ; Alerter : crier à l'aide ; Secourir : faire boire et rassurer"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 9",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Citez trois techniques de transport d'une victime à un seul secouriste données par le corrigé DAK23.",
+    "a": "Le **porter-pompier**, l'**aide à la marche à 1 secouriste**, la **marche avec victime soulevée à 1 secouriste**.",
+    "ok": "Porter-pompier, aide à la marche, marche avec victime soulevée",
+    "no": [
+      "Siège à 4 mains, brancard, cuillérée à 3",
+      "Pont simple, pont néerlandais, cuillérée à 3",
+      "Siège à 4 mains, aide à la marche, porter-pompier"
+    ],
+    "src": "secourisme rallye dak23.pdf, p. 2",
+    "note": "Le siège à 4 mains, le brancard et la cuillérée à 3 demandent plusieurs secouristes."
+  },
+  {
+    "tier": 2,
+    "q": "Lors de l'examen d'une victime, comment vérifie-t-on la conscience et la respiration selon le corrigé 2017 ?",
+    "a": "**Conscience** : par la **communication** (parole, geste, écriture). **Respiration** : à travers les **narines** et le **soulèvement du ventre**.",
+    "ok": "Conscience par la communication ; respiration par les narines et le ventre",
+    "no": [
+      "Conscience par le pouls ; respiration par la couleur des lèvres",
+      "Conscience par les pupilles ; respiration par le rythme cardiaque",
+      "Conscience en pinçant la peau ; respiration par la toux"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 8",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quels coins de sous-camp étaient notés à l'inspection du rallye de Mbour 2015 ?",
+    "a": "**Coin prière, cuisine, feu, réfectoire, tentes, matériel, pharmacie, poubelle** (8 points).",
+    "ok": "Prière, cuisine, feu, réfectoire, tentes, matériel, pharmacie, poubelle",
+    "no": [
+      "Prière, cuisine, feu, kraal, couleurs, douches, infirmerie, jeux",
+      "Cuisine, feu, tentes, latrines, bibliothèque, atelier, parking, poubelle",
+      "Couleurs, kraal, maîtrise, cuisine, tentes, douches, jeux, poubelle"
+    ],
+    "src": "QUESTIONS REPONSES RALLYE MBOUR 2015.pdf, p. 4",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quelles sont les heures de la liturgie des heures chrétienne selon le corrigé 2022 ?",
+    "a": "**Matines, laudes, prime, tierce, sexte, none, vêpres, complies**.",
+    "ok": "Matines, laudes, prime, tierce, sexte, none, vêpres, complies",
+    "no": [
+      "Matines, angélus, prime, tierce, sexte, none, vêpres, complies",
+      "Laudes, matines, tierce, prime, none, sexte, complies, vêpres",
+      "Matines, laudes, prime, tierce, sexte, none, vêpres, rosaire"
+    ],
+    "src": "Questions Réponses Rallye 2022.pdf, p. 5",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quelles sont les régions naturelles du Sénégal selon le corrigé 2022 ?",
+    "a": "**Presqu'île du Cap-Vert**, **Petite Côte**, **Thiès-Diourbel-Kayar**, **Sine-Saloum**, **Casamance**.",
+    "ok": "Cap-Vert, Petite Côte, Thiès-Diourbel-Kayar, Sine-Saloum, Casamance",
+    "no": [
+      "Cap-Vert, Fleuve, Ferlo, Sine-Saloum, Casamance",
+      "Dakar, Thiès, Kaolack, Ziguinchor, Saint-Louis",
+      "Niayes, Petite Côte, Ferlo, Sénégal oriental, Casamance"
+    ],
+    "src": "Questions Réponses Rallye 2022.pdf, p. 5",
+    "note": "Liste propre au corrigé 2022 ; d'autres découpages existent (Fleuve, Ferlo, Sénégal oriental)."
+  },
+  {
+    "tier": 3,
+    "q": "Rentrée scoute : en tant que CP, que convoquez-vous, et quelle instance votre CT doit-il convoquer pour finaliser le programme annuel ?",
+    "a": "Le CP convoque la **réunion (ou conseil) de patrouille** ; le CT convoque la **cour d'honneur**, organe directeur de la troupe.",
+    "ok": "Le CP : le conseil de patrouille ; le CT : la cour d'honneur",
+    "no": [
+      "Le CP : la cour d'honneur ; le CT : le conseil des chefs",
+      "Le CP : le conseil de patrouille ; le CT : l'assemblée de groupe",
+      "Le CP : la veillée de patrouille ; le CT : le conseil de district"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 2 et 7",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Votre patrouille est témoin d'un accident sur l'autoroute. Que disent les corrigés 2022 et 2017 de la conduite à tenir ?",
+    "a": "2022 : **baliser**, **surveiller et/ou assister les victimes**, **appeler les secours**. 2017 précise le balisage **dans les deux sens de circulation** (100 à 150 m le jour, 200 à 300 m la nuit), pour éviter le **sur-accident**.",
+    "ok": "Baliser dans les deux sens, assister les victimes, appeler les secours",
+    "no": [
+      "Dégager les véhicules, transporter les victimes, prévenir la famille",
+      "Appeler les secours, attendre à distance, ne rien toucher",
+      "Évacuer les victimes vers l'hôpital, puis baliser la route"
+    ],
+    "src": "Questions Réponses Rallye 2022.pdf, p. 7 ; Questions Réponses Rallye 2017.pdf, p. 8",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un ancien affirme que le Général des Scouts du Sénégal est Serge Daniel Badji et le CNBV Dimitri Coly. Que montrent les annales ?",
+    "a": "C'était vrai en **2017** (corrigé de Médinakel). Le corrigé **DAK23** donne le Général **Antoine Ghislain Kaly** et le CNBV **Maurice Prospère Diatta** : ces réponses **changent d'une année à l'autre**.",
+    "ok": "Vrai en 2017 ; en 2023, Antoine Ghislain Kaly et Maurice Prospère Diatta",
+    "no": [
+      "Vrai en 2023 ; en 2017, Antoine Ghislain Kaly et Maurice Prospère Diatta",
+      "Faux : ce sont les noms de 2015, avant Léonard Pierre Sambou",
+      "Vrai en 2023 ; ils ont remplacé Rémi Niakh et Patrice Ndour"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 10 ; Connaissance du mvt rallye dak23.pdf, p. 1",
+    "note": "Noms à vérifier pour l'année en cours ; le corrigé 2017 donne aussi Léonard Pierre Sambou (président ASGDS), Michel Assane Ndour (CR) et Patrice Ndour (CRBV)."
+  },
+  {
+    "tier": 3,
+    "q": "Le corrigé 2017 annonce 4 parties pour le carnet de preuves mais n'en nomme que trois. Laquelle manque, d'après le corrigé DAK23 ?",
+    "a": "La partie **volontaire**. Le corrigé 2017 cite engagé, technicien, animateur ; DAK23 donne les 4 : **volontaire, engagé, technicien, animateur**.",
+    "ok": "La partie volontaire",
+    "no": [
+      "La partie aspirant",
+      "La partie novice",
+      "La partie éclaireur"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 10 ; Connaissance du mvt rallye dak23.pdf, p. 1",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Votre patrouille s'entraîne au bonnet (tête) de turc. Quel rallye exige le temps le plus court, et lequel ?",
+    "a": "Le **Rallye DAK23** : **2 min 30 s**. Les rallyes de Mbour 2015, Kaolack 2018 et 2022 demandent **3 minutes**.",
+    "ok": "DAK23, en 2 min 30 s (contre 3 min ailleurs)",
+    "no": [
+      "Mbour 2015, en 2 min (contre 3 min ailleurs)",
+      "Kaolack 2018, en 1 min 30 s (contre 3 min ailleurs)",
+      "2022, en 2 min 30 s (contre 5 min ailleurs)"
+    ],
+    "src": "matelotage rallye dak23.pdf, p. 1 ; QUESTIONS REPONSES RALLYE MBOUR 2015.pdf, p. 2 ; Questions-Reponses Rallye National Branche Verte Kaolack 2018.pdf, p. 1 ; Questions Réponses Rallye 2022.pdf, p. 7",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Quelle épreuve chronométrée de matelotage revient à Mbour 2015, en 2022 et au Rallye DAK23 ?",
+    "a": "Réaliser **10 nœuds en 1 minute** (les **10 nœuds de l'aspirant** en 2022 et en DAK23).",
+    "ok": "10 nœuds en 1 minute",
+    "no": [
+      "Une pomme de touline en 5 minutes",
+      "Un brêlage carré en 2 minutes",
+      "Un trépied en 3 minutes"
+    ],
+    "src": "QUESTIONS REPONSES RALLYE MBOUR 2015.pdf, p. 3 ; Questions Réponses Rallye 2022.pdf, p. 4 ; matelotage rallye dak23.pdf, p. 1",
+    "note": "En 2015 (stand CP), le sujet dit « 10 nœuds à réaliser en 1 min » sans préciser qu'il s'agit des nœuds de l'aspirant. La pomme de touline en 5 min n'apparaît qu'en DAK23."
+  },
+  {
+    "tier": 3,
+    "q": "« La fleur de l'idéal pousse aux sommets des montagnes et celui qui s'arrête à mi-côte ne l'atteindra jamais » : à qui le questionnaire TOPO DAK23 attribue-t-il cette citation ?",
+    "a": "À **Baden-Powell** (« cette citation de BP »), à transcrire en **morse**.",
+    "ok": "À Baden-Powell",
+    "no": [
+      "À Jacques Sevin",
+      "Au père Jacques Sevin et à B-P ensemble",
+      "À Albert Ndiaye"
+    ],
+    "src": "TOPO RALLYE DAK23.pdf, p. 1",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Au poste topographes de 2022, quel texte fallait-il coder par la clef de 1000, et de qui parle-t-il ?",
+    "a": "« **Jacques Sevin est le père du scoutisme catholique** » : il parle du père **Jacques Sevin**.",
+    "ok": "Jacques Sevin, père du scoutisme catholique",
+    "no": [
+      "Baden-Powell, père du scoutisme mondial",
+      "Albert Ndiaye, père du scoutisme sénégalais",
+      "Saint Georges, patron du scoutisme catholique"
+    ],
+    "src": "Questions Réponses Rallye 2022.pdf, p. 2",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un patrouillard pense que le rallye est avant tout une compétition entre patrouilles. Que dit la phrase à coder du poste CP DAK23 ?",
+    "a": "« Le rallye **n'est pas une compétition**, mais plutôt **un challenge envers soi** » (à transcrire en **code César**).",
+    "ok": "Ce n'est pas une compétition, mais un challenge envers soi",
+    "no": [
+      "C'est une compétition, mais surtout un jeu entre amis",
+      "Ce n'est pas un jeu, mais un examen de passage",
+      "C'est un challenge entre patrouilles, pas entre individus"
+    ],
+    "src": "CP RALLYE DAK23.pdf, p. 2",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "« Ta règle a sur nous-mêmes un droit sacré ; je suis faible, tu m'aimes : je maintiendrai » : de quel chant et de quel couplet s'agit-il ?",
+    "a": "Du **5e couplet** du **chant de la promesse** (poste Cigalou DAK23).",
+    "ok": "Chant de la promesse, couplet 5",
+    "no": [
+      "Chant des adieux, couplet 2",
+      "Cantique des patrouilles, couplet 5",
+      "Chant de la promesse, couplet 1"
+    ],
+    "src": "Questions Réponses Rallye 2023.pdf, p. 1",
+    "note": "Le corrigé ne cite que le début du couplet."
+  },
+  {
+    "tier": 3,
+    "q": "Le corrigé 2022 demande à combien de degrés correspond l'axe SSO. Que trouve-t-on en croisant avec la définition de la rose des vents DAK23 ?",
+    "a": "La rose des vents compte **16 directions**, soit **22,5°** entre deux directions. Le Sud est à 180°, donc **SSO = 202,5°**.",
+    "ok": "202,5°",
+    "no": [
+      "225°",
+      "157,5°",
+      "247,5°"
+    ],
+    "src": "Questions Réponses Rallye 2022.pdf, p. 2 ; TOPO RALLYE DAK23.pdf, p. 3",
+    "note": "Le corrigé 2022 ne donne pas la réponse : valeur déduite (16 directions, 360/16 = 22,5°)."
+  },
+  {
+    "tier": 3,
+    "q": "Un patrouillard s'est blessé au bras et vous n'avez ni écharpe ni attelle. Que proposent les annales ?",
+    "a": "Remplacer l'**écharpe** par le **foulard** et l'**attelle** par la **hampe** (corrigé 2022). Pour un membre supérieur, DAK23 associe **attelle + écharpe** ; un exercice DAK23 demande d'ailleurs de faire une écharpe avec son foulard.",
+    "ok": "Le foulard en écharpe, la hampe en attelle",
+    "no": [
+      "La ceinture en écharpe, le bâton de marche en attelle",
+      "Le foulard en attelle, la hampe en écharpe",
+      "Le fanion en écharpe, une branche en attelle"
+    ],
+    "src": "Questions Réponses Rallye 2022.pdf, p. 7 ; secourisme rallye dak23.pdf, p. 3",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "De nuit, au retour d'un raid, vous êtes perdus sous une pleine lune. Que disent les corrigés 2017 et DAK23 ?",
+    "a": "La nuit, on s'oriente avec les **constellations** et la lune (2017). Mais **on ne peut pas s'orienter avec la pleine lune**, seulement avec un **croissant** (DAK23) : il faut donc utiliser les **constellations**.",
+    "ok": "Utiliser les constellations : la pleine lune ne permet pas de s'orienter",
+    "no": [
+      "Suivre la pleine lune, qui se lève toujours au nord",
+      "Tracer la ligne B-Q sur la pleine lune pour trouver le nord",
+      "Attendre le lever du soleil : on ne s'oriente pas la nuit"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 8 ; TOPO RALLYE DAK23.pdf, p. 1",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un scout affirme que Benoît XVI était polonais. Que répond le corrigé 2017 ?",
+    "a": "Faux : **Benoît XVI** est **Joseph Ratzinger**, de nationalité **allemande**. Le pape polonais est **Jean-Paul II** (Karol Wojtyla), mort le **2 avril 2005** selon le corrigé DAK23.",
+    "ok": "Faux : Joseph Ratzinger, allemand ; le polonais est Jean-Paul II",
+    "no": [
+      "Vrai : Karol Wojtyla, polonais ; l'allemand est François",
+      "Faux : Joseph Ratzinger, argentin ; le polonais est Jean-Paul II",
+      "Faux : José Bergoglio, allemand ; le polonais est Benoît XVI"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 9 ; Questions Réponses Rallye 2023.pdf, p. 2",
+    "note": "Le corrigé 2017 écrit « Arnold Carol Voytila » et « José Bergolio » : orthographes fautives de Karol Wojtyla et Jorge Mario Bergoglio."
+  },
+  {
+    "tier": 3,
+    "q": "En 2017, le corrigé dit que la Vierge Marie est apparue à Fatima « depuis 100 ans ». À combien d'enfants, et en quelle année en déduit-on ?",
+    "a": "À **trois enfants** ; 100 ans avant 2017 donne **1917**.",
+    "ok": "Trois enfants, en 1917",
+    "no": [
+      "Deux enfants, en 1917",
+      "Trois enfants, en 1858",
+      "Un enfant, en 1907"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 6 et 9",
+    "note": "L'année 1917 est déduite (2017 - 100)."
+  },
+  {
+    "tier": 3,
+    "q": "« Jésus pleura » : à quelle référence biblique rattacher ces mots, et pourquoi sont-ils célèbres ?",
+    "a": "À **Jean 11, 35** : c'est le **verset le plus court de la Bible**.",
+    "ok": "Jean 11, 35 : le verset le plus court de la Bible",
+    "no": [
+      "Luc 11, 35 : le verset le plus court de la Bible",
+      "Jean 3, 16 : le verset le plus cité de la Bible",
+      "Marc 11, 35 : le premier verset des évangiles"
+    ],
+    "src": "Questions Réponses Rallye 2023.pdf, p. 2",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "« Je suis derrière le foulard de Mbao » : quel nœud se cache derrière cette devinette du rallye 2022, et quels autres rallyes le font réaliser ?",
+    "a": "Le nœud de **carrick**. Il est aussi demandé à **Kaolack 2018** et au **Rallye DAK23** (réaliser le carrick et donner son utilité).",
+    "ok": "Le carrick, aussi demandé à Kaolack 2018 et en DAK23",
+    "no": [
+      "Le nœud plat, aussi demandé à Kaolack 2018 et en DAK23",
+      "Le carrick, demandé uniquement en 2022",
+      "Le nœud de vache, aussi demandé à Mbour 2015"
+    ],
+    "src": "Questions Réponses Rallye 2022.pdf, p. 4 et 7 ; Questions-Reponses Rallye National Branche Verte Kaolack 2018.pdf, p. 1 ; matelotage rallye dak23.pdf, p. 1",
+    "note": "Le carrick sert souvent de bague de foulard ; l'utilité n'est pas donnée par les corrigés."
+  },
+  {
+    "tier": 3,
+    "q": "Vous construisez un abri et devez joindre 2 perches en V inversé pour fixer le toit. Quelle ligature le corrigé DAK23 indique-t-il ?",
+    "a": "La **ligature auto-serrante** : elle joint **2 perches formant un support en V inversé** pour fixer le toit d'un abri.",
+    "ok": "La ligature auto-serrante",
+    "no": [
+      "Le brêlage en tête de bigue",
+      "Le brêlage en long",
+      "Le brêlage triple"
+    ],
+    "src": "matelotage rallye dak23.pdf, p. 2",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un correspondant étranger pense que le Sénégal est à l'heure GMT+1. Que dit le corrigé 2017 ?",
+    "a": "Faux : le Sénégal est situé à l'**ouest de l'Afrique**, dans le **fuseau horaire 0**.",
+    "ok": "Faux : Ouest de l'Afrique, fuseau 0",
+    "no": [
+      "Vrai : Ouest de l'Afrique, fuseau +1",
+      "Faux : Afrique centrale, fuseau -1",
+      "Faux : Ouest de l'Afrique, fuseau -1"
+    ],
+    "src": "Questions Réponses Rallye 2017.pdf, p. 5 et 10",
+    "note": ""
+  }
+]

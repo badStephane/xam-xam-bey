@@ -1,0 +1,362 @@
+[
+  {
+    "tier": 2,
+    "q": "Dans l'histoire de Nangmo, combien de temps dure son épreuve seul dans la forêt, et qu'est-ce qui y met fin ?",
+    "a": "Environ **3 semaines** : il doit survivre seul jusqu'à ce que la **peinture blanche** passée sur son corps ait **complètement disparu**. Pendant ce temps, tous ceux qui l'apercevaient avaient **ordre de tirer sur lui**.",
+    "ok": "Trois semaines, jusqu'à disparition de sa peinture blanche",
+    "no": ["Trois jours, jusqu'au retour de la pleine lune", "Trois mois, jusqu'à la capture d'un lion", "Une semaine, jusqu'à l'appel du chef du village"],
+    "src": "Livret Carnet de Preuves.pdf, p. 5",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Selon le Manuel du CT, quels sont les deux temps forts du volontariat, et quelle erreur faut-il éviter avec le novice ?",
+    "a": "**L'accueil** et **la réflexion**. Il ne faut pas **confier au novice tout le travail de la troupe** sous prétexte d'une formation accélérée, car l'éducation scoute est **progressive et continue**.",
+    "ok": "L'accueil et la réflexion ; ne pas le surcharger de travail",
+    "no": ["L'inscription et la cotisation ; ne pas le laisser seul", "La montée et la promesse ; ne pas le changer de patrouille", "L'examen et le camp ; ne lui confier aucun poste"],
+    "src": "Manuel du CT.pdf, p. 31",
+    "note": "Le Manuel du CT précise qu'aucune cérémonie ne marque l'accueil, sauf pour le jeune venu de la meute (cérémonie de montée)."
+  },
+  {
+    "tier": 2,
+    "q": "Dans le carnet de preuves, combien d'arbres le volontaire doit-il connaître, et combien l'engagé ?",
+    "a": "Le **volontaire** connaît **3 arbres** dont le bois est utile au camp (feu ou installations). L'**engagé** connaît **6 arbres de sa région** avec leur utilisation, et sait les reconnaître sur photo ou les dessiner.",
+    "ok": "3 pour le volontaire, 6 de sa région pour l'engagé",
+    "no": ["6 pour le volontaire, 12 de sa région pour l'engagé", "3 pour le volontaire, 16 du pays pour l'engagé", "5 pour le volontaire, 10 de la forêt pour l'engagé"],
+    "src": "Livret Carnet de Preuves.pdf, p. 18 et 26",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quelles épreuves physiques le carnet de preuves demande-t-il à l'engagé dans la rubrique « Sport » ?",
+    "a": "Parcourir **1 km en 7 minutes au « pas scout »** (course et marche alternées), et réussir **en 2 minutes** un parcours : **50 m de vitesse**, **10 m en rampant**, **saut de 2 m en profondeur**, **6 cailloux lancés sur une cible à 6 m**, le tout fini avec le sourire. L'engagé sait aussi nager, sauf impossibilité.",
+    "ok": "1 km en 7 min au pas scout et un parcours en 2 min",
+    "no": ["5 km en 30 min au pas scout et un parcours en 10 min", "1 km en 4 min de course et un parcours en 5 min", "2 km en 15 min de marche et 100 m nagés"],
+    "src": "Livret Carnet de Preuves.pdf, p. 24-25",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quelles exigences de morse le carnet de preuves fixe-t-il au volontaire, à l'engagé, puis au technicien « transmetteur » ?",
+    "a": "Le **volontaire** sait lancer le **SOS** (au sifflet et avec les bras). L'**engagé** reçoit et émet un message au rythme de **10 signes par minute**. Le **transmetteur** envoie et reçoit **16 lettres par minute au son** et **10 à la lumière**.",
+    "ok": "SOS ; 10 signes/min ; 16 lettres/min au son",
+    "no": ["Alphabet ; 20 signes/min ; 30 lettres/min au son", "SOS ; 5 signes/min ; 8 lettres/min au son", "Chiffres ; 10 signes/min ; 10 lettres/min au son"],
+    "src": "Livret Carnet de Preuves.pdf, p. 18, 28 et 21",
+    "note": "Le livret écrit « 10 signes minutes » pour l'engagé, sans préciser s'il s'agit de lettres."
+  },
+  {
+    "tier": 2,
+    "q": "Lors de la cour d'honneur qui examine une demande de promesse, que doit dire le volontaire, et que font les membres ?",
+    "a": "Le volontaire explique devant l'assistance **pourquoi il veut s'engager** et **à quoi il s'engage**. Les membres disent publiquement, **en toute amitié et sincérité**, les **défauts et les qualités** qu'ils lui connaissent, pour l'aider à faire un bon choix de vie.",
+    "ok": "Pourquoi et à quoi il s'engage ; on lui dit défauts et qualités",
+    "no": ["Il récite la loi ; on note ses réponses sur 20", "Il présente son carnet ; on vote sans l'entendre", "Il lit sa lettre ; on lui remet aussitôt l'insigne"],
+    "src": "Manuel du CT.pdf, p. 13",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Pendant la veillée de promesse, quels gestes et quelles paroles reviennent au CP, puis au second ?",
+    "a": "Le **CP**, le **fanion dans la main droite**, pose la **main gauche sur l'épaule** du garçon et dit : « **Mon Dieu, nous vous offrons la promesse de X…** ». Le **second**, mains tendues vers le ciel, dit « **Notre Dame des éclaireurs, bénissez la promesse de X…** », puis **entonne le cantique des patrouilles**.",
+    "ok": "Le CP offre la promesse à Dieu ; le SP la confie à Notre-Dame",
+    "no": ["Le CP lit la Bible ; le SP allume le feu de la veillée", "Le CP fixe l'insigne ; le SP attache la barrette", "Le CP pose les questions ; le SP plie l'étendard"],
+    "src": "Manuel du CT.pdf, p. 14",
+    "note": "La veillée est réglée par la patrouille de l'aspirant, en accord avec la maîtrise (durée maximale prévue : 1 h 50)."
+  },
+  {
+    "tier": 2,
+    "q": "Au moment de l'engagement, qui fixe l'insigne de promesse, qui attache la barrette, et que dit le nouveau scout à son CP ?",
+    "a": "Le **chef de troupe** fixe l'**insigne de promesse** béni pendant la veillée. Le **CP** attache la **barrette de la patrouille**. Le nouveau scout lui prête **obédience** : « Je te promets de **t'obéir comme au chef**, de **t'aider comme un frère aîné**, et d'**être loyal à la patrouille**. »",
+    "ok": "Le CT fixe l'insigne, le CP la barrette ; obédience au CP",
+    "no": ["L'aumônier fixe l'insigne, le SP la barrette ; serment au CT", "Le CP fixe l'insigne, le CT la barrette ; salut au drapeau", "Le CT fixe les deux ; le scout remercie la maîtrise"],
+    "src": "Manuel du CT.pdf, p. 15",
+    "note": "L'obédience n'a lieu que si le CP est investi. À l'investiture du CP, la formule de la patrouille dit « t'aimer comme un frère aîné » (p. 17)."
+  },
+  {
+    "tier": 2,
+    "q": "Selon le Système de fonctionnement (version illustrée), où se portent les insignes de progression et les brevets de spécialité ?",
+    "a": "Les **insignes de progression** se portent sur la **manche gauche, à mi-hauteur entre le coude et l'épaule** ; ils **ne se cumulent pas, ils se remplacent**. Les **brevets** se portent sur la manche gauche **par rangées de 3**, dans l'ordre d'obtention, sauf le **secouriste**, porté **isolé au-dessus** des autres.",
+    "ok": "Manche gauche ; ils se remplacent ; brevets par rangées de 3",
+    "no": ["Manche droite ; ils se cumulent ; brevets par rangées de 5", "Poche gauche ; ils se cumulent ; brevets en une seule colonne", "Manche gauche ; ils se cumulent ; brevets autour de l'épaule"],
+    "src": "Système de fonctionnement .pdf, p. 6",
+    "note": "Document scanné. Il décrit l'insigne de technicien comme un rectangle avec l'Afrique et l'antilope et une bande rouge, alors que La Progression Personnelle parle d'une tête de biche : à vérifier sur l'insigne réel."
+  },
+  {
+    "tier": 2,
+    "q": "Comment sont disposées les bandes blanches du second, du CP et du « CPP ou 1er CP » ?",
+    "a": "Bandes de **2 cm de large** : le **second** porte **1 bande** verticale sur la poche gauche ; le **CP** porte **2 bandes** cousues **de part et d'autre de l'insigne de promesse** ; le **CPP ou 1er CP** porte **3 bandes** verticales sur la poche gauche.",
+    "ok": "SP : 1 bande ; CP : 2 ; CPP ou 1er CP : 3",
+    "no": ["SP : 2 bandes ; CP : 3 ; CPP ou 1er CP : 4", "SP : aucune ; CP : 1 ; CPP ou 1er CP : 2", "SP : 1 bande ; CP : 2 ; CPP ou 1er CP : 2 et un galon"],
+    "src": "Système de fonctionnement .pdf, p. 6",
+    "note": "Document scanné, mise en colonnes difficile à lire : à vérifier visuellement. La totale Branche Verte parle aussi de « la bande blanche que tu portes sur le cœur » pour le second."
+  },
+  {
+    "tier": 2,
+    "q": "Selon le projet éducatif, quel âge ont en général le CP et le SP ?",
+    "a": "Le **CP** est en général un jeune **de 15 à 17 ans**, qui conseille les plus jeunes en « **grand frère** ». Le **SP** a en général **de 14 à 16 ans**.",
+    "ok": "CP : 15 à 17 ans ; SP : 14 à 16 ans",
+    "no": ["CP : 13 à 15 ans ; SP : 12 à 14 ans", "CP : 17 à 19 ans ; SP : 15 à 17 ans", "CP : 16 à 18 ans ; SP : 13 à 15 ans"],
+    "src": "proposition educative eclaireurs VF.pdf, p. 83",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Selon le projet éducatif, comment se partagent les rôles entre la cour d'honneur et le conseil des chefs ?",
+    "a": "La **cour d'honneur détermine les objectifs** ; le **conseil des chefs organise leur mise en œuvre** dans les activités. Il existe **deux sortes de CDC** : celui qui porte sur un **cycle d'activités** et celui qui concerne **une activité précise** (journée de camp, réunion, sortie).",
+    "ok": "La CDH fixe les objectifs, le CDC organise leur réalisation",
+    "no": ["Le CDC fixe les objectifs, la CDH organise leur réalisation", "La CDH juge les fautes, le CDC décerne les badges", "La CDH gère les finances, le CDC prépare les veillées"],
+    "src": "proposition educative eclaireurs VF.pdf, p. 59",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Selon le projet éducatif, quels sont les trois temps d'un conseil, et qui prend la décision ?",
+    "a": "1. **La réflexion** : « Où en sommes-nous ? » 2. **La lumière** : « À quoi suis-je appelé ? », chacun s'exprime librement. 3. **La décision** : « Que faisons-nous concrètement ? » C'est **le responsable du conseil** qui décide, et il **en porte toute la responsabilité**.",
+    "ok": "Réflexion, lumière, décision ; le responsable décide",
+    "no": ["Prière, vote, bilan ; la majorité décide", "Accueil, débat, vote ; le plus âgé décide", "Lecture, partage, prière ; l'aumônier décide"],
+    "src": "proposition educative eclaireurs VF.pdf, p. 60-61",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Au camp, quand se tient le conseil de patrouille, et pourquoi le placer parfois le lendemain matin ?",
+    "a": "Il devrait se tenir **chaque jour, à la suite du conseil des chefs**. Si le CDC a lieu **le soir avant le coucher**, le conseil de patrouille se tient **le lendemain matin**, pour que le CP **informe sa patrouille des décisions** de la veille **avant le début des activités**.",
+    "ok": "Chaque jour après le CDC, pour transmettre ses décisions",
+    "no": ["Une fois par semaine, pour faire les comptes du camp", "Seulement le dernier jour, pour le bilan du camp", "Chaque soir avant le CDC, pour voter les sanctions"],
+    "src": "manuel du CP.pdf, p. 16",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "À quoi sert le cri de patrouille lors d'un rassemblement, et comment est-il lancé ?",
+    "a": "C'est un **signe de ralliement** : il sert à se présenter et à faire savoir au **chef d'unité** que la **patrouille est complète**. Il est lancé **à l'initiative du CP**, qui l'appelle par le totem ; tous répondent **d'une seule voix**. On n'utilise jamais le cri d'une autre patrouille.",
+    "ok": "Annoncer que la patrouille est complète ; lancé par le CP",
+    "no": ["Annoncer le début du repas ; lancé par l'intendant", "Saluer les couleurs ; lancé par le chef de troupe", "Fêter une victoire ; lancé par le plus jeune"],
+    "src": "manuel du CP.pdf, p. 23",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Comment choisit-on les couleurs du fanion de patrouille selon le manuel du CP ?",
+    "a": "La **couleur de fond** est celle de la **tresse extérieure du flot** de patrouille. Le fanion est bordé d'une **tresse de 2 cm** à la couleur de la **tresse intérieure du même flot**.",
+    "ok": "Fond : tresse extérieure du flot ; bordure : tresse intérieure",
+    "no": ["Fond : couleur du foulard ; bordure : couleur de la chemise", "Fond : vert de la troupe ; bordure : couleurs nationales", "Fond : tresse intérieure du flot ; bordure : blanche"],
+    "src": "manuel du CP.pdf, p. 24",
+    "note": "Pour les patrouilles africaines, le document Patrouilles Africaines fixe directement les couleurs de chaque totem (l'animal sur le fond de son milieu de vie)."
+  },
+  {
+    "tier": 2,
+    "q": "Quelle différence le Guide pratique et le manuel du CP font-ils entre l'hymne et le chant de patrouille ?",
+    "a": "L'**hymne** est **dédié à l'animal totem** : la patrouille le compose à partir d'un texte sur ses qualités, et tous le connaissent. Le **chant** est composé **sur un air connu** (ou par un membre) et chante surtout **les exploits de la patrouille** ; il peut avoir **un couplet par membre**.",
+    "ok": "L'hymne honore le totem ; le chant raconte les exploits",
+    "no": ["L'hymne honore le saint patron ; le chant est une prière", "L'hymne est national ; le chant est réservé au camp", "L'hymne se chante en wolof ; le chant en français"],
+    "src": "Guide Pratique pour Complément Sessions Cahier de Bord et Livre d’Or (1).pdf, p. 3-4 ; manuel du CP.pdf, p. 24 et 26",
+    "note": "Les deux documents disent que le chant peut aussi évoquer le totem et ses qualités : la frontière n'est pas absolue."
+  },
+  {
+    "tier": 2,
+    "q": "Selon la session de Yeumbeul, quels sont les trois devoirs du CP envers ses chefs ?",
+    "a": "**L'ouverture**, pour suivre les conseils qu'ils lui donnent ; **la confiance**, pour les suivre et les imiter ; **la loyauté**, pour les renseigner sur sa patrouille et **les soutenir devant ses scouts** en toutes circonstances.",
+    "ok": "Ouverture, confiance, loyauté",
+    "no": ["Obéissance, silence, ponctualité", "Respect, crainte, discrétion", "Franchise, dévouement, pureté"],
+    "src": "Session le Role du chef de patrouille camp CP SP Yeumbeul.docx, « Le CP n'est pas seul »",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Selon la session de Yeumbeul, quel est le premier devoir du CP envers la maîtrise, et à quel rythme doit-il aller voir ses chefs ?",
+    "a": "**Tenir ses chefs au courant** : il est le **seul trait d'union** entre eux et ses scouts. Sans attendre qu'on l'appelle, il va les voir **tous les 15 jours ou toutes les trois semaines** pour parler des progrès, des difficultés, des activités et de l'esprit de sa patrouille.",
+    "ok": "Les tenir au courant, tous les 15 jours ou 3 semaines",
+    "no": ["Leur obéir sans discuter, une fois par trimestre", "Leur remettre les cotisations, à chaque fin de mois", "Leur présenter le livre d'or, une fois par an"],
+    "src": "Session le Role du chef de patrouille camp CP SP Yeumbeul.docx, « Responsable envers les chefs »",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Selon le Système de fonctionnement, quelle session des engagés est présentée par l'aumônier, et quelles autres sessions leur sont destinées ?",
+    "a": "**La famille**, présentée par l'**aumônier**. Les autres sessions des engagés sont : le **sens de la promesse**, la **veillée de promesse**, la **cérémonie de promesse**, le **chant de la promesse** et la **spiritualité dans le scoutisme**.",
+    "ok": "La famille ; les autres portent sur la promesse et la spiritualité",
+    "no": ["Le kraal ; les autres portent sur le salut et la tenue", "La topographie ; les autres portent sur le camp et les feux", "Le rôle du CP ; les autres portent sur le livre d'or"],
+    "src": "Systeme de Fonctionnement.pdf, p. 3",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Au retour d'un camp, il manque de l'argent dans la caisse de patrouille, tenue par le trésorier. Le CP dit : « Ce n'est pas mon affaire. » Que répond la session de Yeumbeul ?",
+    "a": "Le CP **répond de sa caisse de patrouille, même s'il désigne un scout comme trésorier**. Il répond aussi du matériel, de la tente, du coin, de la réunion et de la santé de ses scouts. Être responsable, c'est **savoir rendre compte** de ses actes et de ceux de ses subordonnés.",
+    "ok": "Il en répond, même s'il a désigné un trésorier",
+    "no": ["Seul le trésorier en répond devant la patrouille", "Seul l'intendant en répond devant la maîtrise", "Seul le chef de troupe en répond devant les parents"],
+    "src": "Session le Role du chef de patrouille camp CP SP Yeumbeul.docx, « Responsable de sa patrouille »",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un CP se décourage : un patrouillard le dépasse en nœuds, un autre en secourisme. Selon la session de Yeumbeul, dans quel domaine doit-il se spécialiser plus que tous ?",
+    "a": "Dans **l'observation de ses patrouillards** : leur comportement, leurs réactions, dans les jeux, en marche, au camp. Il ne sera peut-être pas le plus fort en technique, mais **sa spécialité, c'est la connaissance de ses garçons**, sa « plus grande richesse ».",
+    "ok": "L'observation et la connaissance de ses garçons",
+    "no": ["Les nœuds, pour ne jamais être dépassé", "Le secourisme, pour garantir la sécurité", "La topographie, pour guider toutes les sorties"],
+    "src": "Session le Role du chef de patrouille camp CP SP Yeumbeul.docx, « Observation »",
+    "note": "Le même document demande ailleurs au CP d'être « un cran en avant » en technique ; l'observation reste présentée comme sa spécialité propre."
+  },
+  {
+    "tier": 3,
+    "q": "Un patrouillard a mal agi pendant une réunion. Le CP veut le reprendre tout de suite devant tout le monde. Que conseille la session de Yeumbeul ?",
+    "a": "Réprimander **au moment opportun**, **calmement** et **surtout en particulier**. Le CP doit rester juste, éviter le favoritisme et accepter ses garçons tels qu'ils sont ; l'ironie et la moquerie font vite perdre la confiance.",
+    "ok": "Le reprendre calmement, au bon moment et en particulier",
+    "no": ["Le reprendre aussitôt devant la patrouille, pour l'exemple", "Le signaler sans attendre au conseil de troupe", "Ne rien dire, pour préserver l'ambiance du groupe"],
+    "src": "Session le Role du chef de patrouille camp CP SP Yeumbeul.docx, « Justice »",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un SP affirme : « Quand notre CP partira, je deviendrai CP automatiquement. » Que disent le projet éducatif et la session de Yeumbeul ?",
+    "a": "C'est **faux** : le second **n'est pas appelé à être automatiquement CP**, car ce sont des **rôles de service et non des grades** (projet éducatif). Mais le CP doit **assurer la relève** : le SP doit être **prêt** à devenir CP, et le CP lui fait préparer des réunions, sorties et camps **sous son entière responsabilité** (Yeumbeul).",
+    "ok": "Faux : pas de succession automatique, mais il doit être prêt",
+    "no": ["Vrai : le second hérite toujours du fanion", "Vrai : le plus ancien de la patrouille succède", "Faux : un SP ne peut jamais devenir CP de sa patrouille"],
+    "src": "proposition educative eclaireurs VF.pdf, p. 65 et 67 ; Session le Role du chef de patrouille camp CP SP Yeumbeul.docx, « Responsable de chacun »",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Pour équilibrer les équipes d'un grand jeu, un chef de troupe veut redistribuer les scouts entre les patrouilles. Que dit le projet éducatif ?",
+    "a": "Il faut l'éviter : on ne change pas un jeune de patrouille **sans raison éducative**, ni **pour égaliser les équipes**. On ne divise pas les patrouilles pour les jeux : on s'en sert comme **unités de base** pour créer l'émulation (concours, défis inter-patrouilles, rallyes).",
+    "ok": "Non : on joue patrouille contre patrouille, sans les diviser",
+    "no": ["Oui : l'équilibre des équipes passe avant tout", "Oui, à condition que la cour d'honneur l'approuve", "Oui, mais seulement pour les jeux de nuit"],
+    "src": "proposition educative eclaireurs VF.pdf, p. 67-68",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Pendant une sortie, un patrouillard conteste le programme décidé la veille en conseil de patrouille. Que disent les manuels ?",
+    "a": "**Une fois le conseil terminé, les discussions sont closes** : c'est au **CP** de mener la patrouille vers les objectifs décidés. **Ce n'est qu'au conseil** que l'on peut émettre ses avis sur le fonctionnement de la patrouille.",
+    "ok": "Les discussions sont closes : il en parlera au prochain conseil",
+    "no": ["On rouvre le débat sur place et on vote à nouveau", "Le SP tranche et peut annuler la décision du conseil", "Le patrouillard peut quitter la sortie s'il est en désaccord"],
+    "src": "Manuel du CT.pdf, p. 11 ; manuel du CP.pdf, p. 16",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Une décision du conseil n'a pas convaincu tout le monde. Un patrouillard refuse de l'appliquer. Que dit le projet éducatif ?",
+    "a": "La décision, **même si elle n'est pas approuvée par tous**, doit être **respectée et appliquée** : c'est la « règle du jeu », la loi du conseil. « **L'obéissance et la fidélité se mesurent justement en cas de désaccord.** » Choisir d'obéir est une marque de **liberté intérieure**, non de soumission.",
+    "ok": "Il doit l'appliquer : l'obéissance se mesure dans le désaccord",
+    "no": ["Il peut l'ignorer : une décision non unanime est nulle", "Il peut exiger un nouveau vote à la réunion suivante", "Il doit saisir la cour d'honneur pour la faire annuler"],
+    "src": "proposition educative eclaireurs VF.pdf, p. 61",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Deux scouts passent la même épreuve : l'un, très doué, réussit sans effort ; l'autre, moins favorisé, réussit de justesse après beaucoup de travail. Sur quoi le projet éducatif dit-il de juger leur progression ?",
+    "a": "Sur **la somme d'efforts** mise à acquérir la connaissance ou l'habileté, plus que sur leur qualité. Ce critère crée une **égalité des chances** entre les jeunes : la progression **n'est pas compétitive** comme un examen scolaire.",
+    "ok": "Sur la somme d'efforts fournie par chacun",
+    "no": ["Sur la qualité du résultat, la même pour tous", "Sur le classement obtenu dans la patrouille", "Sur l'ancienneté de chacun dans la troupe"],
+    "src": "proposition educative eclaireurs VF.pdf, p. 71",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un engagé a déjà obtenu un badge de secouriste. Il demande à être reconnu animateur sans passer par l'étape de technicien. Que dit La Progression Personnelle ?",
+    "a": "Il **peut avoir un badge de spécialité dès l'étape d'engagé**, et commencer par n'importe quel degré de compétence. Mais **l'ordre des étapes reste obligatoire** : **d'abord engagé, puis technicien, enfin animateur**.",
+    "ok": "Badge possible tôt, mais l'ordre des étapes reste obligatoire",
+    "no": ["Oui : un badge de secouriste vaut l'étape de technicien", "Oui, si la cour d'honneur vote aux ¾ des voix", "Non : aucun badge n'est possible avant d'être technicien"],
+    "src": "La Progression Personnelle (1).pdf, p. 5",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un nouveau dit : « J'ai payé ma cotisation-assurance, donc je suis scout. » Que répond le carnet de preuves ?",
+    "a": "C'est faux : ce n'est **pas seulement en s'inscrivant ou en payant sa cotisation-assurance** qu'on est scout. Il faut d'abord passer par **l'étape de volontaire** pour découvrir le mouvement, puis **s'engager définitivement par la promesse**.",
+    "ok": "Faux : il doit d'abord vivre le volontariat puis la promesse",
+    "no": ["Vrai : la cotisation fait de lui un scout engagé", "Vrai, dès que son CP a signé sa fiche d'entrée", "Faux : il doit d'abord obtenir le badge de technicien"],
+    "src": "Livret Carnet de Preuves.pdf, p. 13",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "La Progression Personnelle annonce sept séries de services pour l'étape de technicien. Combien en annonce le manuel du CP ?",
+    "a": "**Six (6) séries**, chacune composée de degrés de compétence. La règle reste la même : **au moins 3 degrés de compétence dans 2 services différents**.",
+    "ok": "Six séries",
+    "no": ["Cinq séries", "Huit séries", "Dix séries"],
+    "src": "manuel du CP.pdf, p. 28 ; La Progression Personnelle (1).pdf, p. 4",
+    "note": "Contradiction entre sources. Le Carnet_de_preuves_1_word.doc affiche six titres de séries ; le Livret Carnet de Preuves.pdf en montre davantage (dont « Pionnier » et « Civisme et droits de l'enfant »). Nombre à vérifier sur le carnet en usage."
+  },
+  {
+    "tier": 3,
+    "q": "Une troupe a une patrouille Crocodile et une patrouille Épervier. Leurs fanions risquent-ils d'être confondus, et comment les distinguer ?",
+    "a": "Oui : les deux ont les mêmes couleurs, un **animal marron sur fond bleu**. On les distingue par l'animal et par la **tresse** : **marron** pour le Crocodile, **bleue** pour l'Épervier. Leurs cris du jour diffèrent : « **Crocodile toujours tenace** », « **Épervier toujours plus haut** ».",
+    "ok": "Oui : tous deux marron sur bleu ; la tresse diffère",
+    "no": ["Non : le Crocodile est vert sur fond jaune", "Non : l'Épervier est noir sur fond blanc", "Oui : ils sont identiques, tresse comprise"],
+    "src": "Patrouilles Africaines.pdf, p. 4-5",
+    "note": "Même cas pour Léopard/Guépard et Chacal : noir sur fond jaune, tresse noire pour les deux."
+  },
+  {
+    "tier": 3,
+    "q": "Un scout affirme : « Sans troupe, une patrouille ne peut pas exister. » Que disent le Manuel du CT et La totale Branche Verte ?",
+    "a": "C'est l'inverse : « **Une patrouille peut exister et fonctionner sans troupe**, mais **une troupe n'existe pas s'il n'y a pas de patrouille**. » La totale Branche Verte décrit d'ailleurs la **patrouille libre**, groupe autonome d'éclaireurs de **12 à 17 ans**, là où il n'y a pas de troupe.",
+    "ok": "Faux : une patrouille peut vivre sans troupe, pas l'inverse",
+    "no": ["Vrai : la patrouille n'est qu'une division de la troupe", "Vrai : il faut au moins deux patrouilles pour exister", "Faux, mais seulement si elle a un chef adulte à sa tête"],
+    "src": "Manuel du CT.pdf, p. 16 ; La totale Branche Verte.doc, section « La patrouille libre »",
+    "note": "La patrouille libre « ne rime pas avec aucune règle et aucun encadrement » : elle peut être rattachée à une troupe ou au centre national. Cette partie de La totale vient d'une source non sénégalaise."
+  },
+  {
+    "tier": 3,
+    "q": "« Une patrouille qui chante est une patrouille qui vit » : qui l'a dit, et à quelle fonction de patrouille les documents rattachent-ils cette phrase ?",
+    "a": "À **Baden-Powell**. Les documents la citent pour le **cigalou** (boute-en-train), **garant de la bonne humeur** : il anime réunions et sorties par des chants et des bans, prépare les veillées, et garde les légendes de la patrouille.",
+    "ok": "B-P, à propos du cigalou",
+    "no": ["B-P, à propos du liturgiste", "Alphonse Sene, à propos du secrétaire", "Le Manuel du CT, à propos de l'intendant"],
+    "src": "Manuel du CT.pdf, p. 18 ; Système de fonctionnement .pdf, p. 9",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "« Si la patrouille ne marche pas, c'est la faute pour un quart à trente-six choses et pour trois quarts… » : complétez et dites d'où vient la phrase.",
+    "a": "« … **au CP**. » C'est l'un des **10 secrets du CP**, avec par exemple « Quand tu t'es trompé, dis-le ! » et « Le CP doit être **maître de soi et serviteur de ses frères** ».",
+    "ok": "« … au CP », un des 10 secrets du CP",
+    "no": ["« … au chef de troupe », un des 10 secrets du CP", "« … au second », une des 10 sagesses du CP", "« … aux patrouillards », un article de la loi de patrouille"],
+    "src": "La totale Branche Verte.doc, section « Les 10 secrets du CP »",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "« N'ordonne pas, entraîne ! » : comment se poursuit ce conseil, et de quel ensemble fait-il partie ?",
+    "a": "« **Ne dis pas « fais cela » mais « faisons cela ».** » C'est l'une des **10 sagesses du chef de patrouille**, avec par exemple : être là le premier et **partir le dernier avec son second**, et prévoir **au moins un jeu ou un moment de détente** à chaque réunion.",
+    "ok": "« Ne dis pas fais cela mais faisons cela » ; 10 sagesses du CP",
+    "no": ["« Ne punis pas, explique » ; 10 secrets du CP", "« Ne crie pas, siffle » ; message de B-P aux CP", "« Ne décide pas seul, vote » ; règles du conseil"],
+    "src": "Session le Role du chef de patrouille camp CP SP Yeumbeul.docx, « Les 10 sagesses du CP » ; La totale Branche Verte.doc, section « Les 10 sagesses du CP »",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "« Deux ou trois animateurs voilà ce qui fera de votre patrouille… une véritable équipe de copains » : qui signe ce texte, et où le trouve-t-on ?",
+    "a": "**Alphonse SENE**, **1er commissaire national des SDS**, dans sa lettre en tête du **carnet de preuves** (« Sunu gal ta kanam »). Le Manuel du CT reprend ce texte sous le titre « Ce que nous attendons des chefs scouts ».",
+    "ok": "Alphonse Sene, 1er commissaire national, dans le carnet de preuves",
+    "no": ["Ernest Clément Mendy, dans la préface du Manuel du CT", "Baden-Powell, dans son message aux chefs de patrouille", "Jean Alfred Loppy, dans la session de Yeumbeul"],
+    "src": "Livret Carnet de Preuves.pdf, p. 4 ; Manuel du CT.pdf, p. 2",
+    "note": "Piège : dans le Manuel du CT, la préface qui suit est signée Ernest Clément Mendy, commissaire national à la branche verte."
+  },
+  {
+    "tier": 3,
+    "q": "Un animateur rêve de devenir chef d'unité. Selon le carnet de preuves (version Word), que lui faut-il avant de recevoir les promesses de ses garçons ?",
+    "a": "Il passe d'abord par l'étape d'**assistant**, membre de la maîtrise. Comme **chef**, le mouvement lui demande **deux ans** pour approfondir sa responsabilité ; il doit notamment **avoir le degré d'animateur**. Les **barrettes de fonction** sont remises par le **commissaire**, et ce n'est **qu'après la cérémonie d'investiture** qu'il peut recevoir les promesses.",
+    "ok": "Le degré d'animateur, deux ans de formation, puis l'investiture",
+    "no": ["Un an de technicien, puis une élection en cour d'honneur", "La 1re classe, puis une nomination par l'aumônier", "Trois brevets, puis un vote des chefs de patrouille"],
+    "src": "Carnet_de_preuves_1_word.doc, parties « Assistant » et « Chef »",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un CP doit accompagner en cour d'honneur un patrouillard qui a manqué à l'honneur. Quelle attitude La totale Branche Verte lui demande-t-elle ?",
+    "a": "**Ne pas l'accabler** et **être compréhensif** : « le jugement est trop facile ». La cour d'honneur est pour le mis en cause **l'occasion de se réhabiliter** ; s'il est bien préparé, il regrette déjà assez son manquement et **n'a pas besoin d'être condamné par son CP**.",
+    "ok": "Ne pas l'accabler : la CDH lui permet de se réhabiliter",
+    "no": ["Réclamer une sanction exemplaire pour l'honneur de la patrouille", "Refuser de l'accompagner pour rester impartial", "Témoigner contre lui pour prouver sa loyauté"],
+    "src": "La totale Branche Verte.doc, section « Attitude à la Cour d'honneur »",
+    "note": "Texte d'origine non sénégalaise (il fait siéger les scouts de 1re classe à la CDH)."
+  },
+  {
+    "tier": 3,
+    "q": "Le secrétaire veut mettre dans le cahier de bord une devise et une prière différentes de celles du livre d'or, « pour varier ». Que disent les documents ?",
+    "a": "C'est à éviter : la **présentation de la patrouille** (devise, cri, loi, prière, hymne, règlements…) doit être **exactement la même** dans le **livre d'or** et le **cahier de bord**. Le cahier de bord reprend en 1re partie « le même contenu que celui du livre d'or ».",
+    "ok": "Non : la présentation doit être identique dans les deux",
+    "no": ["Oui : le cahier de bord a sa propre présentation", "Oui, si le conseil de patrouille l'approuve", "Non : le cahier de bord ne contient aucune présentation"],
+    "src": "Guide Pratique pour Complément Sessions Cahier de Bord et Livre d’Or (1).pdf, p. 4 et 8 ; Cahier De Bord et Livre D_Or.pdf, p. 4",
+    "note": ""
+  }
+]

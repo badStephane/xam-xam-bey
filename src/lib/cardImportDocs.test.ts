@@ -51,6 +51,9 @@ describe('linkDocument', () => {
     expect(linkDocument('Les-7-éléments-de-la-méthode-scoute-version-courte.pdf, p. 1-2', 1, index)).toMatchObject({ kind: 'linked', id: 5 })
     expect(linkDocument('Veillée.pdf, p. 2', 3, index)).toEqual({ kind: 'ambiguous', titles: ['Carnet', 'veillee'] })
     expect(linkDocument('inconnu.pdf, p. 3 ; autre.docx', 1, index)).toEqual({ kind: 'unknown' })
+    const slides = buildDocIndex([{ id: 70, zone: 7, title: 'leadership SDS', file_name: 'leadership SDS.pptx' }, { id: 71, zone: 7, title: 'Suivi', file_name: 'Suivi financier.xlsx' }])
+    expect(linkDocument('leadership SDS.pptx, diapo 7', 7, slides)).toMatchObject({ kind: 'linked', id: 70 })
+    expect(linkDocument('x.pdf ; Suivi financier.xlsx, onglet 2', 7, slides)).toMatchObject({ kind: 'linked', id: 71 })
   })
   test('un document dont titre et fichier correspondent ne compte qu’une fois', () => {
     expect(linkDocument('Bases du scoutisme.pdf', 1, index)).toMatchObject({ kind: 'linked', id: 1 })
