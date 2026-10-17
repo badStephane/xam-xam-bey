@@ -10,6 +10,7 @@ import { SAVE_DELAY } from '../lib/constants'
 import { localProgressKey } from '../lib/progressSync'
 import { gradesQueueKey, readGradesQueue, utcDay, type QueuedGrade } from '../lib/gradeQueue'
 import { leagueCacheKey } from '../lib/gameKeys'
+import { dailyCards } from '../lib/srs'
 import type { CardProgress } from '../lib/types'
 import { useRevision, type Revision } from './useRevision'
 
@@ -376,6 +377,42 @@ describe('useRevision : changement de compte et déconnexion', () => {
     expect(hook.current.status).toBe('signedout')
     expect(hook.current.email).toBeNull()
     expect(fake.state.rpc).not.toHaveBeenCalled()
+  })
+
+  test('quête du jour : notes prises après un SIGNED_OUT imposé (séance en cours) gardées et renvoyées à la reconnexion', async () => {
+    // c1 est à revoir aujourd'hui ; la séance du jour est ouverte quand le serveur refuse le jeton (retour après ~10 min).
+    const due = row({ c1: card(1, T, 3, 2) })
+    await signedInAndLoaded(A, due)
+    act(() => fake.state.authCb!('SIGNED_OUT', null))
+    // L'écran de séance n'est pas gardé par l'état de connexion : le scout continue de répondre.
+    act(() => hook.current.grade('c1', 2, T))
+    act(() => hook.current.logSession({ d: T, n: 1, ok: 1, k: 'daily', l: 'Session du jour' }))
+    await settle(SAVE_DELAY * 2)
+    expect(fake.state.rpc).not.toHaveBeenCalled()
+
+    // Reconnexion du même compte : le serveur n'a jamais reçu la note.
+    fake.state.session = { user: A }
+    fake.state.progress.mockResolvedValueOnce(ok(due))
+    fake.state.rpc.mockResolvedValue(ok(null))
+    act(() => fake.state.authCb!('SIGNED_IN', { user: A }))
+    await settle(SAVE_DELAY * 2)
+
+    const c1 = { id: 'c1', q: 'Q', a: 'R', src: '', note: '', th: 1 }
+    expect(dailyCards([c1], hook.current.prog, T, 1).due).toEqual([])
+    expect(hook.current.prog.cards.c1[1]).toBeGreaterThan(T)
+    expect(lastRpcArgs()!.p_cards.c1[2]).toBe(4)
+    expect(hook.current.prog.sessions).toHaveLength(1)
+  })
+
+  test('déconnexion choisie : une note arrivée ensuite ne recrée pas la copie locale effacée', async () => {
+    await signedInAndLoaded(A)
+    fake.state.rpc.mockResolvedValue(ok(null))
+    act(() => hook.current.signOut())
+    await settle()
+    expect(local(A)).toBeNull()
+    act(() => hook.current.grade('c1', 2, T))
+    await settle(SAVE_DELAY * 2)
+    expect(local(A)).toBeNull()
   })
 })
 

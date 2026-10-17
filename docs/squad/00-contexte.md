@@ -6,7 +6,7 @@ Audit complet du projet **Xam Xam Bëy** (mode Revue) : chaque rôle relit son p
 
 ## Produit
 
-Plateforme de ressources et de révision scoute (District Grand Dakar, Sénégal). Utilisateurs : responsables scouts, majoritairement sur téléphone Android d'entrée de gamme, réseau mobile parfois lent.
+Plateforme de ressources et de révision scoute (District Grand Dakar, Sénégal). Utilisateurs : responsables scouts, et depuis le 2026-10-16 tout public (révision ouverte à tous, sans changement d’accès : tout e-mail peut déjà créer un compte), majoritairement sur téléphone Android d'entrée de gamme, réseau mobile parfois lent.
 
 - **Bibliothèque publique** : environ 170 PDF classés en 12 zones mensuelles (oct. 2026 à sept. 2027), avec recherche, filtres, aperçu PDF (pdf.js).
 - **Révision** (connexion par lien magique) : session du jour, répétition espacée, QCM, plan annuel, fiches, progression (XP, niveaux, séries).

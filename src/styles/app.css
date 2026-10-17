@@ -91,7 +91,6 @@ body{background:#0D1512}
 .tabs{display:flex;border-bottom:1px solid var(--line)}
 .tab{flex:1;max-width:240px;min-height:46px;border:none;border-bottom:2px solid transparent;background:transparent;color:var(--hud2);font:600 0.875rem/1 var(--f-hud);letter-spacing:.08em;display:flex;align-items:center;justify-content:center;gap:6px;transition:color 160ms}
 .tab[aria-current=page]{border-bottom-color:var(--acc);color:var(--hud)}
-.tag-resp{font:500 0.6875rem/1 var(--f-mono);padding:3px 4px;border:1px solid var(--amber);color:var(--amber)}
 main{max-width:1100px;margin:0 auto;padding:16px 16px 56px}
 .account{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:12px 14px;border:1px solid var(--line);background:var(--field)}
 .account-mail{font:700 0.9375rem/1.35 var(--f-mono);overflow-wrap:anywhere}

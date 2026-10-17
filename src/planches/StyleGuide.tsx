@@ -32,7 +32,7 @@ function ThemeColumn({ theme, label }: { theme: 'dark' | 'light'; label: string 
           <span className="t10" style={{ color: '#1D5A3F' }}>✓ CONSULTÉE</span>
           <span className="stamp">DEUXIÈME CHANCE</span><span className="stamp">EN COURS</span>
         </div>
-        <span className="mono" style={{ alignSelf: 'flex-start', fontSize: 9, fontWeight: 500, padding: '3px 4px', border: '1px solid var(--amber)', color: 'var(--amber)' }}>RESPONSABLES</span>
+        <span className="mono" style={{ alignSelf: 'flex-start', fontSize: 9, fontWeight: 500, padding: '3px 4px', border: '1px solid var(--amber)', color: 'var(--amber)' }}>OUVERTE À TOUS</span>
       </div>
       <div className="col" style={{ gap: 8 }}><span className="k">LIGNE DE RESSOURCE · FICHE PERFORÉE</span>
         <div className="sheet col" style={{ padding: '12px 12px 12px 30px', gap: 6 }}>

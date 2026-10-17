@@ -66,7 +66,7 @@ export function Shell({ children }: { children: ReactNode }) {
         )}
         <nav className="tabs" aria-label="Navigation principale">
           <button className="tab" onClick={() => go('bibliotheque')} aria-current={current(ui.screen === 'bibliotheque')}>BIBLIOTHÈQUE</button>
-          <button className="tab" onClick={() => go('revision', { session: null })} aria-current={current(isRevScreen(ui.screen))}>RÉVISION<span className="tag-resp">RESPONSABLES</span></button>
+          <button className="tab" onClick={() => go('revision', { session: null })} aria-current={current(isRevScreen(ui.screen))}>RÉVISION</button>
           {isAdmin && <button className="tab" style={{ maxWidth: 140 }} onClick={() => go('admin')} aria-current={current(ui.screen === 'admin')}>ADMIN</button>}
         </nav>
         {showSub && (

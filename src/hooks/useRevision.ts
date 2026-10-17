@@ -177,6 +177,11 @@ export function useRevision(demo: boolean): Revision {
   const progRef = useRef<Progress>(EMPTY_PROGRESS)
   /** Identifiant de la personne dont la progression a été lue avec succès : condition pour écrire. */
   const ownerRef = useRef<string | null>(null)
+  /**
+   * Dernier propriétaire chargé, gardé après un SIGNED_OUT imposé (jeton refusé) : une séance encore ouverte continue
+   * d'écrire ses notes dans la copie locale de ce compte, renvoyées à la reconnexion. Remis à null par « Se déconnecter ».
+   */
+  const lastOwnerRef = useRef<string | null>(null)
   /** Jeton de chargement : un chargement dépassé (autre loadFor, déconnexion) n'installe rien. */
   const loadSeq = useRef(0)
   const loadingFor = useRef<string | null>(null)
@@ -263,6 +268,17 @@ export function useRevision(demo: boolean): Revision {
     schedule(immediate)
   }, [adopt, schedule])
 
+  /**
+   * Note ou séance enregistrée (`update` appliqué à la progression). Sans propriétaire (SIGNED_OUT pendant une séance) :
+   * appliquée à la copie locale du dernier compte chargé, qu'`install` fusionnera et renverra à la reconnexion.
+   */
+  const record = useCallback((update: (p: Progress) => Progress, immediate = false) => {
+    const last = lastOwnerRef.current
+    if (ownerRef.current || !last || !canWrite()) { commit(update(progRef.current), immediate); return }
+    const store = localStore()
+    writeLocalProgress(store, last, update(readLocalProgress(store, last)))
+  }, [commit])
+
   /** Fusionne la ligne serveur, la copie locale et l'état en mémoire ; renvoie au serveur ce qu'il n'a pas. */
   const install = useCallback((userId: string, row: unknown) => {
     const server = row ? parseStoredProgress(row) : EMPTY_PROGRESS
@@ -270,6 +286,7 @@ export function useRevision(demo: boolean): Revision {
     const current = ownerRef.current === userId ? progRef.current : EMPTY_PROGRESS
     const { prog: merged, dirty } = reconcileOnLoad(server, mergeProgress(local, current))
     ownerRef.current = userId
+    lastOwnerRef.current = userId
     setUserId(userId)
     adopt(merged)
     // Notes prises hors réseau et pas encore envoyées : elles partent dans le même envoi.
@@ -286,6 +303,7 @@ export function useRevision(demo: boolean): Revision {
     if (!cached) return false
     const current = ownerRef.current === user.id ? progRef.current : EMPTY_PROGRESS
     ownerRef.current = user.id
+    lastOwnerRef.current = user.id
     setUserId(user.id)
     setMail(user.email)
     adopt(mergeProgress(readLocalProgress(store, user.id), current))
@@ -486,6 +504,8 @@ export function useRevision(demo: boolean): Revision {
     signOut: () => {
       if (!supabase) return
       const owner = ownerRef.current
+      // Déconnexion choisie : plus aucune note gardée pour ce compte sur l'appareil.
+      lastOwnerRef.current = null
       void flush().then(() => {
         // Copie locale effacée seulement si le serveur a tout reçu (téléphone partagé) ; gardée sinon.
         if (owner && canWrite() && canClearLocal(save.current)) clearLocalProgress(localStore(), owner)
@@ -501,9 +521,9 @@ export function useRevision(demo: boolean): Revision {
       const at = Date.now()
       const day = utcDay(at)
       if (owner && canWrite()) enqueueGrade(localStore(), owner, { c: cardId, d: day, g, t: Math.floor(at / 1000), ...(choice === undefined ? {} : { a: choice }) }, day)
-      commit(applyGrade(progRef.current, cardId, g, today))
+      record(p => applyGrade(p, cardId, g, today))
     },
-    logSession: log => commit({ ...progRef.current, sessions: [...progRef.current.sessions, log] }, true),
+    logSession: log => record(p => ({ ...p, sessions: [...p.sessions, log] }), true),
     retrySave: () => { setSaveErr(null); save.current.dirty = true; void flush() },
     setDemoProgress: p => { progRef.current = p; setProg(p) },
   }
