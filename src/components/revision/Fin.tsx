@@ -1,13 +1,15 @@
 import { useApp } from '../../AppContext'
 import { XP_REDO } from '../../lib/constants'
 import { gradeCounts, missedCards, REDO } from '../../lib/session'
+import { finShareText } from '../../lib/finShare'
 import { share } from '../../lib/share'
+import { streak } from '../../lib/srs'
 import { Md } from '../Md'
 import { CardDocLink } from './CardDocLink'
 import { LazyFinGamification } from '../league/lazy'
 
 export function Fin() {
-  const { ui, go, patch, startSession } = useApp()
+  const { ui, go, patch, startSession, rev, today } = useApp()
   const s = ui.session
   if (!s) return null
   const ask = s.mode === 'ask'
@@ -29,6 +31,12 @@ export function Fin() {
   const shareFin = () => {
     const txt = `Xam Xam Bëy · Bilan de ${name} : ${juste} justes, ${partiel} partiels, ${faux} faux sur ${n}.`
     share({ title: 'Bilan Xam Xam Bëy', text: txt }, txt, () => patch({ shared: true }))
+  }
+  // Séance « Je réponds » (hors reprise) : bilan à partager, avec une invitation à réviser (WhatsApp par le menu de partage).
+  const canShareQuest = !ask && s.kind !== REDO && n > 0
+  const shareQuest = () => {
+    const txt = finShareText({ juste, n, streak: streak(rev.prog, today), url: `${location.origin}/` })
+    share({ title: 'Xam Xam Bëy', text: txt }, txt, () => patch({ shared: true }))
   }
   return (
     <div className="fin">
@@ -55,6 +63,7 @@ export function Fin() {
       <div className="row">
         {miss.length > 0 && <button className="btn tall acc" onClick={redo}>{f.redo}</button>}
         {ask && n > 0 && <button className="btn tall" onClick={shareFin}>{ui.shared ? 'BILAN COPIÉ ✓' : 'PARTAGER LE BILAN'}</button>}
+        {canShareQuest && <button className="btn tall" onClick={shareQuest}>{ui.shared ? 'COPIÉ ✓' : 'PARTAGER MON SCORE'}</button>}
         <button className="btn tall" onClick={() => go('revision', { session: null })}>RETOUR À AUJOURD’HUI</button>
       </div>
     </div>

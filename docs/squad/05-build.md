@@ -681,3 +681,7 @@ Tableau de bord Supabase relevé par l'utilisateur : sessions sans limite (plan 
   - Lecture : `absent` + `sans jeton` + `webview` ou autre mode que d'habitude → session ouverte dans un autre contexte (lien de l'e-mail ouvert dans Gmail) ; `forced` sans erreur serveur → refus côté client (auth-js) ; `absent` + `jeton présent` → jeton perdu au rafraîchissement.
 - **Deux onglets** (ou onglet + appli installée) du même compte : au retour au premier plan et à l'événement `storage` de sa copie locale, l'onglet relit la copie locale et la fusionne en mémoire (`refreshFromDevice`). Corrige la quête du jour périmée d'un onglet resté en arrière-plan. Les notes d'un autre appareil (serveur) ne sont pas relues à ce moment-là : elles arrivent au chargement suivant.
 - Commandes : tests ajoutés rouges puis verts ; `npm run check` (variables factices) vert, 575 réussis, 1 échec attendu, 5 ignorés ; `index` 113,78 Ko gzip (plafond 115) ; `npm run e2e` : 73 réussis.
+
+## Partage du score (2026-10-17)
+
+Écran de fin d'une séance « Je réponds » (hors reprise, au moins une réponse) : bouton « PARTAGER MON SCORE ». Menu de partage du téléphone (WhatsApp…) via `navigator.share`, sinon copie dans le presse-papiers (`lib/share.ts`). Texte (`lib/finShare.ts`) : justes sur total, série si plus d'un jour, adresse du site ; ni e-mail, ni pseudo, ni lien profond. `npm run check` vert (564 réussis, 1 échec attendu, 5 ignorés ; index 113,42 Ko gzip) ; `npm run e2e` : 73 réussis.
