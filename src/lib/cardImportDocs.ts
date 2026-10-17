@@ -2,7 +2,7 @@ import { plural } from './format'
 
 /**
  * E4 (lot 3) : une question importée est reliée au document de sa zone dont le titre ou le nom de fichier
- * correspond à la colonne Source. Comparaison sans casse ni accents, espaces réduits, extension retirée ;
+ * correspond à la colonne Source, ou au premier fichier nommé en tête d'un de ses morceaux (« x.pdf, p. 3 ; y.docx »). Comparaison sans casse ni accents, espaces réduits, extension retirée ;
  * tirets, soulignés et apostrophes valent une espace (« l_esprit » = « l'esprit » = « l esprit »).
  * Aucun document, ou plusieurs : `document_id` reste null, sans erreur ; l'aperçu le dit.
  */
@@ -47,13 +47,30 @@ export function buildDocIndex(docs: readonly ImportDocument[]): DocIndex {
   }, new Map())
 }
 
-/** Document relié à une ligne valide (zone connue). */
-export function linkDocument(src: string, zone: number, index: DocIndex): DocLink {
-  const key = docKey(src)
-  if (!key) return NO_DOC
+/** Nom de fichier en tête d'un morceau de source, extension comprise (« x.pdf, p. 3 » → « x.pdf »). */
+const FILE_HEAD = /^\s*(.+?\.(?:pdf|docx?))(?=$|[\s,(])/i
+
+/**
+ * Clés essayées dans l'ordre : la source entière, puis le fichier en tête de chaque morceau séparé par « ; »
+ * (« Bases du scoutisme.pdf, p. 16 ; fiches-BP.pdf »). Sans extension, pas de découpe : un titre peut contenir une virgule.
+ */
+function sourceKeys(src: string): string[] {
+  const heads = src.split(';').map(part => FILE_HEAD.exec(part)?.[1] ?? '')
+  return [...new Set([src, ...heads].map(docKey).filter(Boolean))]
+}
+
+function linkKey(key: string, zone: number, index: DocIndex): DocLink {
   const found = index.get(indexKey(zone, key)) ?? []
   if (found.length === 1) return { kind: 'linked', id: found[0].id, title: found[0].title }
   return found.length ? { kind: 'ambiguous', titles: found.map(d => d.title) } : { kind: 'unknown' }
+}
+
+/** Document relié à une ligne valide (zone connue) : première clé reliée, sinon première ambiguë, sinon inconnue. */
+export function linkDocument(src: string, zone: number, index: DocIndex): DocLink {
+  const keys = sourceKeys(src)
+  if (!keys.length) return NO_DOC
+  const links = keys.map(k => linkKey(k, zone, index))
+  return links.find(l => l.kind === 'linked') ?? links.find(l => l.kind === 'ambiguous') ?? { kind: 'unknown' }
 }
 
 export const docIdOf = (link: DocLink): number | null => (link.kind === 'linked' ? link.id : null)

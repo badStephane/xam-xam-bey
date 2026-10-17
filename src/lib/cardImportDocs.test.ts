@@ -44,6 +44,14 @@ describe('linkDocument', () => {
     // titre d'un document = nom de fichier d'un autre
     expect(linkDocument('Veillée', 3, index)).toEqual({ kind: 'ambiguous', titles: ['Carnet', 'veillee'] })
   })
+  test('fichier suivi de pages ou d’un passage, ou plusieurs sources : premier fichier de la zone reconnu', () => {
+    expect(linkDocument('Bases du scoutisme.pdf, p. 16-17 et 26', 1, index)).toMatchObject({ kind: 'linked', id: 1 })
+    expect(linkDocument('inconnu.pdf, p. 3 ; Bases du scoutisme.pdf, p. 25', 1, index)).toMatchObject({ kind: 'linked', id: 1 })
+    expect(linkDocument('la devise, l_esprit et les élements fondamentaux du scoutismes.docx (devise) ; x', 1, index)).toMatchObject({ kind: 'linked', id: 4 })
+    expect(linkDocument('Les-7-éléments-de-la-méthode-scoute-version-courte.pdf, p. 1-2', 1, index)).toMatchObject({ kind: 'linked', id: 5 })
+    expect(linkDocument('Veillée.pdf, p. 2', 3, index)).toEqual({ kind: 'ambiguous', titles: ['Carnet', 'veillee'] })
+    expect(linkDocument('inconnu.pdf, p. 3 ; autre.docx', 1, index)).toEqual({ kind: 'unknown' })
+  })
   test('un document dont titre et fichier correspondent ne compte qu’une fois', () => {
     expect(linkDocument('Bases du scoutisme.pdf', 1, index)).toMatchObject({ kind: 'linked', id: 1 })
   })
