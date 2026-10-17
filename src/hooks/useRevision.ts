@@ -103,6 +103,8 @@ export interface Revision {
   userId: string | null
   /** Vrai si cartes et progression viennent de l'appareil (hors réseau, F1) : les notes partiront au retour du réseau. */
   localOnly: boolean
+  /** Vrai après une déconnexion imposée (jeton refusé) d'un compte chargé ; les notes restent sur l'appareil. */
+  forcedOut: boolean
   signIn: SignInState
   init(): void
   retry(): void
@@ -117,6 +119,8 @@ export interface Revision {
   /** `choice` : texte de la proposition choisie pour un QCM (A11), absent en auto-évaluation. */
   grade(cardId: string, g: Grade, today: number, choice?: string): void
   logSession(log: SessionLog): void
+  /** XP perso sans carte notée ni note de ligue (bonus de reprise). */
+  addXp(n: number): void
   retrySave(): void
   setDemoProgress(p: Progress): void
 }
@@ -170,6 +174,7 @@ export function useRevision(demo: boolean): Revision {
   const resyncTimer = useRef<ReturnType<typeof setTimeout> | 0>(0)
   const resyncRef = useRef<() => void>(() => undefined)
   const [signIn, setSignIn] = useState<SignInState>({ step: 'idle' })
+  const [forcedOut, setForcedOut] = useState(false)
   const [weekSync, setWeekSync] = useState<WeekSync>({ seq: 0, weekXp: null, counted: 0 })
   /** Base sans le 4e paramètre de save_progress (avant la migration du lot 5) : envois à 3 clés pour cette page. */
   const gradesOff = useRef(false)
@@ -287,6 +292,7 @@ export function useRevision(demo: boolean): Revision {
     const { prog: merged, dirty } = reconcileOnLoad(server, mergeProgress(local, current))
     ownerRef.current = userId
     lastOwnerRef.current = userId
+    setForcedOut(false)
     setUserId(userId)
     adopt(merged)
     // Notes prises hors réseau et pas encore envoyées : elles partent dans le même envoi.
@@ -420,7 +426,8 @@ export function useRevision(demo: boolean): Revision {
   useEffect(() => {
     if (!supabase || demo) return
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_OUT') { resetUser(); return }
+      // Déconnexion imposée (jeton refusé) si un compte était chargé et que « Se déconnecter » n'a pas été choisi.
+      if (event === 'SIGNED_OUT') { setForcedOut(lastOwnerRef.current !== null); resetUser(); return }
       const user = session?.user
       // Jeton rafraîchi (souvent au retour du réseau) : les notes en attente partent avec la nouvelle session.
       if (event === 'TOKEN_REFRESHED' && user && user.id === ownerRef.current) { setTimeout(() => void resync(), 0); return }
@@ -458,7 +465,7 @@ export function useRevision(demo: boolean): Revision {
   }, [flush])
 
   return {
-    status, content, prog, saveErr, email, userId, localOnly, signIn, init, weekSync,
+    status, content, prog, saveErr, email, userId, localOnly, signIn, init, weekSync, forcedOut,
     isSyncPending: () => save.current.dirty || save.current.saving || save.current.again,
     retry: () => {
       // Aussi depuis le chargement (FE-5) : le chargement en cours est abandonné par son jeton, puis relancé.
@@ -509,7 +516,8 @@ export function useRevision(demo: boolean): Revision {
       void flush().then(() => {
         // Copie locale effacée seulement si le serveur a tout reçu (téléphone partagé) ; gardée sinon.
         if (owner && canWrite() && canClearLocal(save.current)) clearLocalProgress(localStore(), owner)
-        return supabase!.auth.signOut()
+        // Ce téléphone seulement : la session des autres appareils du compte reste ouverte.
+        return supabase!.auth.signOut({ scope: 'local' })
       }).then(({ error }) => {
         if (error) console.error('[xxb] Déconnexion impossible', error)
         resetUser()
@@ -524,6 +532,7 @@ export function useRevision(demo: boolean): Revision {
       record(p => applyGrade(p, cardId, g, today))
     },
     logSession: log => record(p => ({ ...p, sessions: [...p.sessions, log] }), true),
+    addXp: n => { if (n > 0) record(p => ({ ...p, xp: p.xp + n })) },
     retrySave: () => { setSaveErr(null); save.current.dirty = true; void flush() },
     setDemoProgress: p => { progRef.current = p; setProg(p) },
   }

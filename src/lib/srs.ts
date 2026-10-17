@@ -1,4 +1,4 @@
-import { ACQUIRED_LV, INTERVAL, LEVEL_LABELS, MAX_LV, NEW_PER_DAY, RANKS, XP_BAR_SEGMENTS, XP_HES, XP_PER_LEVEL, XP_SU } from './constants'
+import { ACQUIRED_LV, INTERVAL, LEVEL_LABELS, MAX_LV, MISS_DROP, NEW_PER_DAY, RANKS, XP_BAR_SEGMENTS, XP_HES, XP_PER_LEVEL, XP_SU } from './constants'
 import { parseStoredProgress } from './progressMerge'
 import type { Card, CardProgress, CardRow, Grade, Progress, Qcm, RawCard, RevisionContent } from './types'
 
@@ -50,7 +50,7 @@ export const readProgress = (raw: unknown): Progress => parseStoredProgress(raw)
 const isScheduled = (p: CardProgress | undefined, today: number): boolean => !p || p[1] <= today
 
 function nextSchedule(p: CardProgress, g: Grade, today: number, scheduled: boolean): readonly [number, number] {
-  if (g === 0) return [0, today + 1]
+  if (g === 0) return [Math.max(0, p[0] - MISS_DROP), today + 1]
   if (!scheduled) return [p[0], p[1]]
   const lv = g === 2 ? Math.min(MAX_LV, p[0] + 1) : Math.max(1, p[0])
   return [lv, today + INTERVAL[lv]]
@@ -59,7 +59,7 @@ function nextSchedule(p: CardProgress, g: Grade, today: number, scheduled: boole
 /**
  * Répétition espacée (D2). À l'échéance ou pour une carte nouvelle : Su monte d'un niveau, Hésitant garde l'intervalle
  * (min. 1). Hors calendrier (entraînement) : vues, réussites et XP comptent, niveau et échéance ne bougent pas.
- * Raté repart toujours à zéro.
+ * Raté perd toujours MISS_DROP niveaux (plancher 0) et revient le lendemain.
  */
 export function applyGrade(prog: Progress, cardId: string, g: Grade, today: number): Progress {
   const known = prog.cards[cardId]

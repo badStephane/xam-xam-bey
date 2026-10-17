@@ -661,3 +661,14 @@ L'écran de séance (`App.tsx`, `case 'session'`) n'est pas soumis à l'état de
 ### Commandes et résultats (2026-10-16, sans pile Supabase)
 - Test ajouté rouge avant correctif, vert après. `npm run check` (variables factices) : vert, 555 réussis, 1 échec attendu, 5 ignorés. `index` 112,85 Ko gzip (plafond 115).
 - E2E non écrit : la déconnexion imposée demande un client Supabase et un refus de jeton (pile figée) ; le modèle sans base (`responsive.spec.ts`) ne simule pas l'authentification.
+
+## Irritants (2026-10-17)
+
+Choix de l'utilisateur : options recommandées pour les quatre points.
+
+- **Raté** : la carte perd `MISS_DROP` = 2 niveaux (plancher 0) au lieu de repartir à zéro, et revient toujours le lendemain (`srs.ts`, `nextSchedule`). Effet de bord accepté : une carte haute ratée une fois (niveau ≥ 3 après la baisse) n'entre plus dans « MES LACUNES » (`isGap` : niveau ≤ 1, D3) ; elle revient le lendemain dans la quête du jour.
+- **Reprise** (« Refaire ces cartes ») : +`XP_REDO` = 2 XP perso par carte sue, sans niveau, sans note de ligue, sans séance journalisée (`session.ts` : `bonus`, `positionXp` ; `useRevision.addXp`). Le verdict du QCM affiche l'XP réellement gagnée (rien en deuxième chance).
+- **Nouvelles questions** : session du jour finie, l'écran Aujourd'hui propose `EXTRA_NEW` = 10 questions jamais vues (session `extra`, comptée comme une séance « Je réponds » ; plafond de ligue inchangé, 30 cartes par jour).
+- **Thème** : le bouton soleil/lune existe déjà dans l'en-tête (`Shell.tsx`), choix gardé ; aucun changement.
+- **Déconnexion imposée** (enquête en lecture seule) : « Se déconnecter » passe en `signOut({ scope: 'local' })` (avant : `global` par défaut, qui révoquait aussi la session des autres appareils du compte, cause possible des déconnexions au rafraîchissement suivant). `rev.forcedOut` : vrai après un `SIGNED_OUT` non choisi d'un compte chargé ; bandeau « DÉCONNECTÉ » en séance « Je réponds ». Restent à vérifier dans le tableau de bord Supabase : Authentication > Sessions (minuteur d'inactivité, durée maximale, session unique), JWT expiry ; Logs > Auth, `/token` en 4xx (`session_expired`, `session_not_found`, `refresh_token_already_used`, `over_request_rate_limit`).
+- Commandes : tests ajoutés rouges puis verts ; `npm run check` (variables factices) vert, 561 réussis, 1 échec attendu, 5 ignorés ; `index` 113,23 Ko gzip (plafond 115) ; `npm run e2e` : 72 réussis, `magic-link.spec.ts` instable (rouge une fois, vert en relance seul).

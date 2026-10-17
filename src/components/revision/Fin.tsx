@@ -1,4 +1,5 @@
 import { useApp } from '../../AppContext'
+import { XP_REDO } from '../../lib/constants'
 import { gradeCounts, missedCards, REDO } from '../../lib/session'
 import { share } from '../../lib/share'
 import { Md } from '../Md'
@@ -20,7 +21,7 @@ export function Fin() {
     ? { tag: 'INTERROGATION TERMINÉE · NE COMPTE PAS DANS VOTRE PROGRESSION', title: `Bilan de ${name}`, list: 'Questions à reprendre', redo: 'REPOSER CES QUESTIONS',
         stats: [[`${String(juste + partiel / 2).replace('.', ',')}/${n}`, 'SCORE', 'var(--hud)'], [pct(juste), 'RÉPONSES JUSTES', 'var(--acc)'], [String(partiel), 'PARTIELLES', 'var(--amber)']],
         chips: [[`✓ JUSTE ${juste}`, 'var(--acc)'], [`~ PARTIEL ${partiel}`, 'var(--amber)'], [`✕ FAUX ${faux}`, 'var(--err)']] }
-    : { tag: s.kind === REDO ? 'REPRISE TERMINÉE · DÉJÀ COMPTÉE AUJOURD’HUI' : 'SESSION TERMINÉE', title: 'Quête accomplie', list: 'À retravailler', redo: 'REFAIRE CES CARTES',
+    : { tag: s.kind === REDO ? `REPRISE TERMINÉE · +${XP_REDO} XP PAR CARTE SUE, NIVEAUX INCHANGÉS` : 'SESSION TERMINÉE', title: 'Quête accomplie', list: 'À retravailler', redo: 'REFAIRE CES CARTES',
         stats: [[`${juste}/${n}`, 'SCORE', 'var(--hud)'], [pct(juste), 'JUSTES DU PREMIER COUP', 'var(--acc)'], [`+${s.xp}`, 'XP GAGNÉS', 'var(--amber)']],
         chips: [[`✓ JUSTES ${juste}`, 'var(--acc)'], [`✕ FAUSSES ${faux}`, 'var(--err)'], ...(partiel ? [[`~ HÉSITANT ${partiel}`, 'var(--amber)']] : [])] }
   // Par startSession : propositions du QCM attribuées et séance gardée pour l'onglet (E2).

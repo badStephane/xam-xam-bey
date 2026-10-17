@@ -22,9 +22,11 @@ describe('applyGrade', () => {
     expect(dues).toEqual([1, 3, 7, 21, 60, 60, 60])
     expect(p.cards.t1[0]).toBe(5)
   })
-  test('raté remet au niveau 0 et revient le lendemain', () => {
+  test('raté fait baisser de 2 niveaux (minimum 0) et revient le lendemain', () => {
     const p = applyGrade(applyGrade(applyGrade(EMPTY_PROGRESS, 't1', 2, T), 't1', 2, T + 1), 't1', 0, T + 1)
     expect(p.cards.t1.slice(0, 2)).toEqual([0, T + 2])
+    const known: Progress = { cards: { t1: [5, T, 9, 9, T - 90] }, sessions: [], xp: 0 }
+    expect(applyGrade(known, 't1', 0, T).cards.t1.slice(0, 2)).toEqual([3, T + 1])
   })
   test('D2 : 5 « Su » le même jour ne donnent qu’un seul niveau (QA-3)', () => {
     let p: Progress = EMPTY_PROGRESS
@@ -37,9 +39,9 @@ describe('applyGrade', () => {
     expect(applyGrade(start, 't1', 2, T)).toEqual({ ...start, cards: { t1: [3, T + 5, 5, 4, T - 20] }, xp: 110 })
     expect(applyGrade(start, 't1', 1, T)).toEqual({ ...start, cards: { t1: [3, T + 5, 5, 3, T - 20] }, xp: 105 })
   })
-  test('D2 : « Raté » remet toujours à zéro, même hors calendrier', () => {
+  test('D2 : « Raté » fait toujours baisser de 2 niveaux et revenir demain, même hors calendrier', () => {
     const start: Progress = { cards: { t1: [4, T + 15, 6, 6, T - 30] }, sessions: [], xp: 0 }
-    expect(applyGrade(start, 't1', 0, T).cards.t1).toEqual([0, T + 1, 7, 6, T - 30])
+    expect(applyGrade(start, 't1', 0, T).cards.t1).toEqual([2, T + 1, 7, 6, T - 30])
   })
   test('D2 : une carte due (échéance passée) monte d’un niveau', () => {
     const start: Progress = { cards: { t1: [2, T - 2, 3, 3, T - 10] }, sessions: [], xp: 0 }

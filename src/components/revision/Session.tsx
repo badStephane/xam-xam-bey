@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react'
 import { useApp } from '../../AppContext'
-import { GRADE_ASK, MAX_LV, XP_SU, ZONES } from '../../lib/constants'
+import { GRADE_ASK, MAX_LV, ZONES } from '../../lib/constants'
 import { keyPoints, p2 } from '../../lib/format'
-import { combo, gradeCounts, replayCount, suggestedGrade } from '../../lib/session'
+import { combo, gradeCounts, positionXp, replayCount, suggestedGrade } from '../../lib/session'
 import { isSelfCheck } from '../../lib/qcm'
 import { cardLevel } from '../../lib/srs'
 import type { Card, Choices, Grade } from '../../lib/types'
 import { Md } from '../Md'
 import { CardDocLink } from './CardDocLink'
-import { OfflineNotice } from './OfflineNotice'
+import { ForcedOutNotice, OfflineNotice } from './OfflineNotice'
 
 function Vigilance({ note, size }: { note: string; size: number }) {
   return <div className="vigil" role="note"><b>! VIGILANCE · SOURCES EN DÉSACCORD</b><span style={{ fontSize: size, lineHeight: 1.5 }}>{note}</span></div>
@@ -71,7 +71,7 @@ function QcmBlock({ c, ch }: { c: Card; ch: Choices }) {
       {!s.rev && <button className="flip" onClick={validate} disabled={s.picked === null}>Valider<kbd>ENTRÉE</kbd></button>}
       {s.rev && (
         <>
-          <div className={`verdict ${right ? 'ok' : 'ko'}`} role="status">{right ? `✓ BONNE RÉPONSE · +${XP_SU} XP` : '✕ MAUVAISE RÉPONSE · LA CARTE REVIENDRA'}</div>
+          <div className={`verdict ${right ? 'ok' : 'ko'}`} role="status">{right ? `✓ BONNE RÉPONSE${positionXp(s) ? ` · +${positionXp(s)} XP` : ''}` : '✕ MAUVAISE RÉPONSE · LA CARTE REVIENDRA'}</div>
           <div className="verso"><i />RÉPONSE<i /></div>
           <p className="answer" tabIndex={-1}><Md text={c.a} /></p>
           {c.note && <Vigilance note={c.note} size={14.5} />}
@@ -192,6 +192,7 @@ export function Session() {
       </div>
       <QuitConfirm ask={ask} />
       <OfflineNotice />
+      {!ask && <ForcedOutNotice />}
       {ask
         ? (
           <div className="askbar">
