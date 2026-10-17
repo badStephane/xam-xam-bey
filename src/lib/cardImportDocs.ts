@@ -48,7 +48,7 @@ export function buildDocIndex(docs: readonly ImportDocument[]): DocIndex {
 }
 
 /** Nom de fichier en tête d'un morceau de source, extension comprise (« x.pdf, p. 3 » → « x.pdf »). */
-const FILE_HEAD = /^\s*(.+?\.(?:pdf|docx?))(?=$|[\s,(])/i
+const FILE_HEAD = /^\s*(.+?\.(?:pdf|docx?|pptx?|xlsx?))(?=$|[\s,(])/i
 
 /**
  * Clés essayées dans l'ordre : la source entière, puis le fichier en tête de chaque morceau séparé par « ; »

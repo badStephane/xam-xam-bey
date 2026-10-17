@@ -1,0 +1,522 @@
+[
+  {
+    "tier": 2,
+    "q": "Selon le guide du trésorier, comment le rôle de la trésorerie a-t-il évolué ?",
+    "a": "Autrefois limitée à **garantir une liquidité suffisante à chaque échéance**, la trésorerie doit aujourd'hui aussi **optimiser la rentabilité des fonds disponibles**, **couvrir les risques** et **sécuriser les paiements**.",
+    "ok": "De la seule liquidité aux échéances à la rentabilité, aux risques et aux paiements",
+    "no": [
+      "Du seul paiement des camps au financement de tout le matériel du groupe",
+      "De la tenue d'un cahier papier à l'usage exclusif de tableaux Excel",
+      "Du seul contrôle des chefs à la collecte des cotisations des parents"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 3",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Sous quelle forme le bilan est-il représenté, et qu'est-ce qui l'équilibre ?",
+    "a": "Le bilan se présente sous forme d'une **égalité** : **actif = passif**, ou **emplois = ressources**. C'est le **résultat, bénéficiaire ou déficitaire**, qui équilibre le bilan.",
+    "ok": "Une égalité emplois = ressources, équilibrée par le résultat",
+    "no": [
+      "Une liste de recettes, équilibrée par les cotisations de l'année",
+      "Une égalité recettes = cotisations, équilibrée par les dons reçus",
+      "Un tableau trimestriel, équilibré par le solde initial de la caisse"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 7",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Dans le modèle de budget trimestriel, que représente T' et comment calcule-t-on le solde final du 2e trimestre ?",
+    "a": "**T' est le solde final du 1er trimestre**, qui devient le solde initial du 2e. Le solde final du 2e trimestre vaut **T' + Total 2 (encaissements) – Total 5 (décaissements)**. Le guide rappelle que **le solde final d'une période est le solde initial de la suivante**.",
+    "ok": "T' = solde final du 1er trimestre ; T' + Total 2 – Total 5",
+    "no": [
+      "T' = solde initial de l'année ; T' + Total 5 – Total 2",
+      "T' = total des recettes du 1er trimestre ; T' – Total 2 – Total 5",
+      "T' = moyenne des trois trimestres ; T' + Total 2 + Total 5"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 10 et 15",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Dans quel ordre le cahier des recettes et dépenses enregistre-t-il les opérations, et à quel rythme le tient-on pendant un camp ?",
+    "a": "Il recense les entrées et sorties de caisse **dans l'ordre chronologique**, chaque opération étant enregistrée **individuellement**. Pour un camp ou une activité, on le tient **généralement au rythme journalier**, car les flux d'argent y sont nombreux.",
+    "ok": "Ordre chronologique ; rythme généralement journalier en camp",
+    "no": [
+      "Classement par rubrique ; rythme hebdomadaire en camp",
+      "Ordre des montants ; rythme unique en fin de camp",
+      "Classement par unité ; rythme trimestriel en camp"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 11",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quelles signatures une pièce de caisse recette (PCR) doit-elle porter ?",
+    "a": "Le **trésorier** y appose sa signature en confirmant avoir reçu le montant qui approvisionne la caisse, et la **signature du donneur** est aussi requise.",
+    "ok": "Celle du trésorier et celle du donneur",
+    "no": [
+      "Celle du chef de groupe et celle du commissaire",
+      "Celle du trésorier seul, le donneur étant facultatif",
+      "Celle du comptable et celle du chef d'unité"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 15",
+    "note": "Le modèle de pièce de caisse imprimable (p. 16 et fichier Suivi des dépenses et pièces de caisse.xlsx) prévoit trois cases : approbation du chef, signature du trésorier, signature du tiers."
+  },
+  {
+    "tier": 2,
+    "q": "Quelle différence le guide fait-il entre la fonction financière et la fonction d'enregistrement ?",
+    "a": "La **fonction financière** est celle de l'**encaissement et du décaissement** (pièces de caisse, virements, espèces) : elle est effectuée par le **trésorier**. La **fonction d'enregistrement** consiste à inscrire tous les mouvements dans le **cahier recettes dépenses** : elle revient au **comptable**. Les petites structures les réunissent souvent chez le trésorier.",
+    "ok": "Financière : encaisser et décaisser ; enregistrement : inscrire au cahier",
+    "no": [
+      "Financière : autoriser la dépense ; enregistrement : contrôler la caisse",
+      "Financière : établir le budget ; enregistrement : classer les factures",
+      "Financière : rechercher des fonds ; enregistrement : signer les décharges"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 17-18",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Que se passe-t-il si un dépôt à terme (DAT) est rompu avant l'échéance, et comment sa rémunération varie-t-elle avec la durée ?",
+    "a": "Si le contrat est rompu avant l'échéance, **un malus peut s'appliquer**. Et **plus la durée du placement est longue, plus sa rémunération est avantageuse**. Un nouveau dépôt implique d'ouvrir un **nouveau DAT** en renégociant les conditions.",
+    "ok": "Un malus peut s'appliquer ; plus c'est long, mieux c'est rémunéré",
+    "no": [
+      "Les intérêts sont doublés ; plus c'est court, mieux c'est rémunéré",
+      "Rien ne change ; la rémunération est fixe quelle que soit la durée",
+      "Le capital est perdu ; la rémunération baisse avec la durée"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 20",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Dans l'onglet SUIVI du fichier Suivi financier Groupe-Unité, comment est calculé l'écart d'une ligne de recettes, et celui d'une ligne de dépenses ?",
+    "a": "Pour les recettes : **écart = réel – budgétisé**. Pour les dépenses : **écart = budgétisé – réel**. Dans les deux cas, un **écart positif est favorable** (plus de recettes ou moins de dépenses que prévu).",
+    "ok": "Recettes : réel – budgétisé ; dépenses : budgétisé – réel",
+    "no": [
+      "Recettes : budgétisé – réel ; dépenses : réel – budgétisé",
+      "Recettes et dépenses : réel – budgétisé dans les deux cas",
+      "Recettes et dépenses : réel divisé par budgétisé"
+    ],
+    "src": "Suivi financier Groupe-Unité.xlsx, onglet SUIVI ; Suivi financier Région-District.xlsx, onglet SUIVI",
+    "note": "Déduit des formules des cellules (E = D – C pour les recettes, I = G – H pour les dépenses) ; le classeur ne l'écrit pas en toutes lettres."
+  },
+  {
+    "tier": 2,
+    "q": "Que faut-il faire aux extrémités d'une corde dès son achat, et pourquoi ?",
+    "a": "Les entretenir **avec des surliures ou des épissures**, pour **éviter le décommettage** (que les torons se desserrent). Pour le stockage, on défait tous les nœuds **sauf les épissures d'extrémité**.",
+    "ok": "Des surliures ou épissures, pour éviter le décommettage",
+    "no": [
+      "Un nœud de capucin, pour alourdir le bout de la corde",
+      "Un passage à la flamme, pour durcir les fibres du bout",
+      "Un nœud en huit, pour caler la corde dans un trou"
+    ],
+    "src": "Matelotage.pdf, p. 3 ; session matelotage camp regional de formation.pdf, p. 3",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quelle différence y a-t-il entre l'anse, la ganse ouverte et la ganse fermée ?",
+    "a": "L'**anse** est la courbure de la corde entre le courant et le dormant. La **ganse ouverte** est une longue anse où le **courant longe le dormant**. La **ganse fermée** est une ganse ouverte où le courant vient **se coller au dormant sans le croiser**.",
+    "ok": "Ganse fermée : le courant se colle au dormant sans le croiser",
+    "no": [
+      "Ganse fermée : le courant croise le dormant et forme une boucle",
+      "Ganse fermée : le courant fait deux tours autour du dormant",
+      "Ganse fermée : le courant est noué au dormant par une demi-clé"
+    ],
+    "src": "Matelotage.pdf, p. 4 ; session matelotage camp regional de formation.pdf, p. 4",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Qu'est-ce qui distingue une aussière d'un câbleau ?",
+    "a": "Les deux servent à l'amarrage, mais l'**aussière** est un cordage de **gros diamètre** servant à amarrer le bateau, tandis que le **câbleau** est de **diamètre moyen** et sert à l'amarrage ou au **mouillage**.",
+    "ok": "L'aussière est de gros diamètre, le câbleau de diamètre moyen",
+    "no": [
+      "L'aussière sert à hisser une voile, le câbleau à hisser un pavillon",
+      "L'aussière est en chanvre, le câbleau en polypropylène",
+      "L'aussière est de diamètre moyen, le câbleau de gros diamètre"
+    ],
+    "src": "Matelotage.pdf, p. 4 ; Matelotage1_Niveau4_Maugis.pdf, p. 3",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Comment réalise-t-on le nœud d'étalingure, et à quoi sert-il ?",
+    "a": "On fait **deux tours morts** sur le poteau, puis **deux demi-clés** (la première en finissant le brin par le bas), qu'on serre contre le poteau. Il sert à **attacher une petite embarcation** ou à fixer une corde sur un poteau qui subit de **violentes tractions**.",
+    "ok": "Deux tours morts et deux demi-clés ; pour de violentes tractions",
+    "no": [
+      "Un tour mort et un nœud plat ; pour joindre deux cordes",
+      "Deux nœuds simples emboîtés ; pour des cordes mouillées",
+      "Une ganse et trois tours ; pour alourdir le bout d'une corde"
+    ],
+    "src": "Section MATELOTAGE.docx, « Amarrage par 2 tours morts et 2 demi-clés »",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Pourquoi faut-il ajouter des ligatures aux extrémités d'un nœud de carrick ?",
+    "a": "Sans ligatures, dès que le nœud se serre, il **perd sa forme plate, s'inverse et fait une boule** : le travail des cordes n'est plus optimal, le nœud est **plus difficile à défaire** et il a du mal à **passer dans une poulie**.",
+    "ok": "Sinon il se retourne en boule et passe mal dans une poulie",
+    "no": [
+      "Sinon il glisse dès que les deux câbles sont mouillés",
+      "Sinon il ne peut joindre que des cordes de même couleur",
+      "Sinon il se défait seul dès que la traction diminue"
+    ],
+    "src": "Section MATELOTAGE.docx, « Nœud de carrick »",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Le brelage en étoile et le brelage diagonal ont la même utilité. Qu'est-ce qui les distingue ?",
+    "a": "Tous deux assemblent **deux perches selon un angle de croisement quelconque** ; le brelage en étoile **diffère du brelage diagonal par la disposition des perches**.",
+    "ok": "La disposition des perches",
+    "no": [
+      "Le nombre de perches assemblées",
+      "Le nœud qui débute le brelage",
+      "Le diamètre de la corde utilisée"
+    ],
+    "src": "Matelotage.pdf, p. 14 ; session matelotage camp regional de formation.pdf, p. 14",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Sur quelle distance le signe de piste « Suivre ce cours d'eau » est-il valable ?",
+    "a": "Par prudence, il n'est valable que **sur 500 m** et **doit être répété**. Il indique de suivre le cours d'eau dans la direction de la flèche et facilite le traçage.",
+    "ok": "500 m, puis il doit être répété",
+    "no": [
+      "20 pas, puis il doit être répété",
+      "100 m, sans répétition nécessaire",
+      "Jusqu'au signe « Fin de piste »"
+    ],
+    "src": "Topographie.pdf, p. 5",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Que s'est-il passé en 1832 dans la vie de Samuel Morse ?",
+    "a": "Sur le bateau qui le ramenait d'Europe, il rencontre le **Dr Charles Thomas Jackson**, qui étudiait l'**électroaimant** : il **abandonne la peinture** pour se consacrer aux transmissions. La même année, il devient professeur de peinture et de sculpture à l'université de New York. Il achève son appareil en **1836**.",
+    "ok": "Il rencontre le Dr Jackson et se tourne vers les transmissions",
+    "no": [
+      "Il envoie son premier message de Washington à Baltimore",
+      "Il obtient du Congrès 30 000 dollars pour une ligne d'essai",
+      "Il fonde l'Académie nationale de dessin de New York"
+    ],
+    "src": "Topographie.pdf, p. 8 ; Samuel Finley Breese Morse.docx",
+    "note": "SESSION SIGNALISATION ORIENTATION-1.pdf (p. 1) dit que le code a été « inventé par Samuel Morse en 1832 » : c'est l'année du déclic, l'appareil est achevé en 1836 et le brevet déposé l'année suivante."
+  },
+  {
+    "tier": 2,
+    "q": "Selon l'aide-mémoire J+S, comment calcule-t-on le temps de marche ?",
+    "a": "On calcule la **valeur topographique** du trajet = **distance en km + dénivellation en hectomètres** (1 hm = 100 m). Temps en heures : **valeur ÷ 4 en montée**, **valeur ÷ 6 en descente**. Exemple : 3 km et 500 m = 8, soit 2 h en montée.",
+    "ok": "km + hm de dénivelé, divisé par 4 en montée et par 6 en descente",
+    "no": [
+      "km + m de dénivelé, divisé par 6 en montée et par 4 en descente",
+      "km × hm de dénivelé, divisé par 5 dans les deux sens",
+      "km seuls divisés par 4, plus une heure par 100 m de dénivelé"
+    ],
+    "src": "07_Orientation.pdf, p. 2",
+    "note": "Document suisse (J+S) : l'aide-mémoire précise qu'avec un groupe le temps peut « décupler »."
+  },
+  {
+    "tier": 2,
+    "q": "Sur une carte au 1:50 000, que représentent 4 mm et 1 cm sur le terrain ?",
+    "a": "Au 1:50 000, **1 mm = 50 m**, donc **4 mm = 200 m** et **1 cm = 500 m** (le dénominateur donne le nombre de cm de terrain pour 1 cm de carte).",
+    "ok": "4 mm = 200 m ; 1 cm = 500 m",
+    "no": [
+      "4 mm = 100 m ; 1 cm = 250 m",
+      "4 mm = 400 m ; 1 cm = 1 km",
+      "4 mm = 2 km ; 1 cm = 5 km"
+    ],
+    "src": "pdfcoffee.com_orientation-et-topographie-pdf-free.pdf, p. 10 et 17 ; La carte.docx",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Comment trace-t-on un relevé Gilwell ?",
+    "a": "On trace une **grande flèche vers le haut** qui symbolise le **Nord** et on part du bas de la feuille. À **chaque changement de direction**, on trace une petite flèche formant l'angle de l'azimut et on note **le nombre de pas et l'azimut**, avec des remarques sur les repères (bâtiments, routes…).",
+    "ok": "Flèche du Nord vers le haut ; à chaque virage, azimut et nombre de pas",
+    "no": [
+      "Courbes de niveau tous les 5 m ; altitude notée à chaque point",
+      "Croquis du paysage vu d'un point, avec la date et l'angle de vue",
+      "Trois visées sur des repères ; position au croisement des droites"
+    ],
+    "src": "pdfcoffee.com_orientation-et-topographie-pdf-free.pdf, p. 13-14",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Dans la méthode d'apprentissage du morse par association avec des mots, que représente une syllabe contenant un « O » ?",
+    "a": "Une syllabe contenant un **« O » vaut un ta (‒)**, les autres syllabes valent un **ti (•)** : par exemple « Bo-na-par-te » donne B = ‒ • • •. Le document juge cette méthode **peu efficace**, car elle oblige à **transposer à chaque fois**.",
+    "ok": "Un ta (trait) ; les autres syllabes valent un ti",
+    "no": [
+      "Un ti (point) ; les autres syllabes valent un ta",
+      "Un espace entre deux lettres de 3 temps",
+      "La fin du mot, soit un silence de 7 temps"
+    ],
+    "src": "Méthodes Apprentissage du Morse.docx, « Association avec des mots »",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un groupe a 10 000 F en caisse au début du 1er trimestre, prévoit 40 000 F d'encaissements et 55 000 F de décaissements. Que conclut le trésorier selon le guide ?",
+    "a": "Solde final = 10 000 + 40 000 – 55 000 = **– 5 000 F**. Un **solde final négatif** signifie qu'**il faudra chercher des fonds** : en accord avec le conseil de groupe, le trésorier peut **équilibrer par anticipation**, par exemple en insérant une **activité lucrative** avant la période, et ajuster le budget avant validation.",
+    "ok": "Solde de – 5 000 F : chercher des fonds par anticipation",
+    "no": [
+      "Solde de 5 000 F : financer un surcroît de dépenses",
+      "Solde de 0 F : équilibre sans réserve, rien à faire",
+      "Solde de – 15 000 F : annuler toutes les activités"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 10",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Le trésorier remet 20 000 F à l'intendant, qui achète 10 kg de riz à 600 F et 2 litres d'huile à 1 500 F. Que doit indiquer le tableau des notes de frais ?",
+    "a": "Total des dépenses = (10 × 600) + (2 × 1 500) = 6 000 + 3 000 = **9 000 F**. **Solde = montant reçu (1) – total dépenses (2) = 20 000 – 9 000 = 11 000 F**, que l'intendant doit justifier ou restituer. Le tableau est signé par le **trésorier** et le **tiers**.",
+    "ok": "Dépenses de 9 000 F ; solde de 11 000 F",
+    "no": [
+      "Dépenses de 7 500 F ; solde de 12 500 F",
+      "Dépenses de 11 000 F ; solde de 9 000 F",
+      "Dépenses de 2 100 F ; solde de 17 900 F"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 13 ; Suivi des dépenses et pièces de caisse.xlsx, onglet Suivi dépenses",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Le tableau des comptes d'un groupe affiche 150 000 F de recettes et 170 000 F de dépenses. Que fait apparaître le tableau, et comment le juger ?",
+    "a": "Un **solde déficitaire de 20 000 F**, inscrit du côté des recettes pour que les deux totaux s'équilibrent (170 000 F). La légende le qualifie d'**anormal** : on ne doit pas dépenser plus que ce qu'il y a en caisse, les recettes devant normalement **dépasser** les dépenses.",
+    "ok": "Un solde déficitaire de 20 000 F, jugé anormal",
+    "no": [
+      "Un solde excédentaire de 20 000 F, jugé normal",
+      "Un solde nul, signe d'équilibre sans réserve",
+      "Un bénéfice de 320 000 F à reporter au trimestre suivant"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 14-15 ; Suivi financier Groupe-Unité.xlsx, onglet Tableau comptes Groupe",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Au camp, le trésorier paie un service à un villageois qui ne peut fournir ni facture ni reçu. Que prévoit le guide ?",
+    "a": "Pour une opération sans justification ni facture, le trésorier doit établir une **pièce de caisse signée**, ici une **pièce de caisse dépense (PCD)**, avec le montant **en chiffres et en lettres**, le bénéficiaire, l'objet, et les cases **approbation du chef, signature du trésorier et signature du tiers**.",
+    "ok": "Établir une pièce de caisse dépense signée, y compris par le tiers",
+    "no": [
+      "Noter la dépense au cahier sans pièce, faute de facture",
+      "Faire signer une décharge par le seul chef d'unité",
+      "Payer sur ses fonds propres et ne rien enregistrer"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 15-16 ; Suivi des dépenses et pièces de caisse.xlsx, onglet Pièces de caisse (à imprimer)",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Pour les vivres d'un camp, quelle organisation respecte le principe de séparation des tâches du guide ?",
+    "a": "Le guide pose que **la personne qui paye ne peut être celle qui achète**, elle-même **différente de celle qui autorise** la dépense. Donc : **le chef autorise, l'intendant achète, le trésorier paie** (et l'enregistrement est contrôlé par le conseil).",
+    "ok": "Le chef autorise, l'intendant achète, le trésorier paie",
+    "no": [
+      "L'intendant autorise, achète et enregistre lui-même",
+      "Le chef autorise et achète, puis il paie lui-même",
+      "Le trésorier autorise, achète, paie et enregistre"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 17-18",
+    "note": "Le guide admet que les petites structures ont du mal à réaliser cette séparation ; il recommande alors une double signature (p. 17)."
+  },
+  {
+    "tier": 3,
+    "q": "En conseil de groupe, le débat sur une grosse dépense ne mène à aucun consensus. Que prévoit le guide ?",
+    "a": "L'unanimité étant parfois difficile, le **chef décideur** (pour le groupe, le **Chef de groupe**) doit faire converger les idées vers les objectifs et l'intérêt général ; **si les débats ne mènent pas à un consensus, son avis reste prépondérant**. Il ne doit jamais décider contre les intérêts de la structure.",
+    "ok": "L'avis du chef décideur reste prépondérant",
+    "no": [
+      "Le trésorier tranche, car il est responsable des fonds",
+      "La dépense est automatiquement refusée",
+      "La décision remonte au commissaire de district"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 18-19",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "En fin d'année, un groupe a 300 000 F en caisse mais doit les utiliser dans deux mois pour un camp. Le trésorier propose un DAT de six mois. Que dit le guide ?",
+    "a": "C'est **déconseillé** : un DAT ne peut être retiré **qu'à l'échéance** fixée au contrat, une rupture anticipée peut entraîner un **malus**, et le placement doit se faire sur une période où **les fonds ne devraient pas être utilisés**, pour éviter un coût d'opportunité.",
+    "ok": "Non : retrait seulement à l'échéance, sinon malus possible",
+    "no": [
+      "Oui : le DAT se retire à tout moment sans frais",
+      "Oui : plus le placement est court, plus il rapporte",
+      "Non : le DAT est réservé aux régions et aux districts"
+    ],
+    "src": "LE GUIDE DU TRÉSORIER.pdf, p. 20",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Benoît Maugis classe le nœud plat, le nœud de pêcheur et le nœud d'écoute parmi les « nœuds d'ajut ». À quelle famille des Scouts du Sénégal correspondent-ils ?",
+    "a": "Aux **nœuds de jonction**, qui servent à joindre des cordes de même ou de différente épaisseur pour augmenter la longueur. Maugis définit l'ajut comme le fait de **rallonger un cordage ou lier deux bouts** ; les Scouts du Sénégal ne retiennent que **deux familles** (arrêt et jonction).",
+    "ok": "Aux nœuds de jonction",
+    "no": [
+      "Aux nœuds d'arrêt",
+      "Aux nœuds d'amarrage",
+      "Aux nœuds décoratifs"
+    ],
+    "src": "Matelotage1_Niveau4_Maugis.pdf, p. 10 ; Matelotage.pdf, p. 5 et 13",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un scout veut joindre deux cordes de même diamètre qui vont subir une forte traction et propose un nœud de vache. Que lui répondre d'après Section MATELOTAGE ?",
+    "a": "Refuser : le nœud de vache (nœud plat raté, les deux nœuds simples faits dans le même sens) **ne tient pas à la traction** et fait une boule. Pour de **violentes tractions**, le document recommande le **nœud de pêcheur**, **plus solide que le nœud plat**.",
+    "ok": "Non : il ne tient pas à la traction, préférer le nœud de pêcheur",
+    "no": [
+      "Oui : c'est le nœud le plus solide pour deux cordes égales",
+      "Non : il faut un nœud de tisserand pour des cordes égales",
+      "Oui : à condition de le terminer par une demi-clé"
+    ],
+    "src": "Section MATELOTAGE.docx, « Nœud plat » et « Nœud de pêcheur »",
+    "note": "Contradiction : le tableau de Matelotage.pdf (p. 7) et de la session du camp régional (p. 7) donne au nœud de vache l'utilité « joindre 2 cordes de même épaisseur » ; Section MATELOTAGE.docx le dit « d'aucune utilité »."
+  },
+  {
+    "tier": 3,
+    "q": "Pour hisser un gros rondin lourd jusqu'à une plateforme, quel nœud choisir d'après la session matelotage ?",
+    "a": "Le **nœud de bois double** : le nœud de bois simple sert à **tirer ou hisser un rondin**, et le double a **la même utilité en plus solide**.",
+    "ok": "Le nœud de bois double",
+    "no": [
+      "Le nœud de tendeur double",
+      "La tête d'alouette",
+      "Le nœud de grappin"
+    ],
+    "src": "Matelotage.pdf, p. 7 ; session matelotage camp regional de formation.pdf, p. 7",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Une patrouille veut fixer le toit de son abri sur deux perches formant un V inversé. Quel assemblage le document indique-t-il ?",
+    "a": "La **ligature auto-serrante**, qui sert à **joindre deux perches formant un support en V inversé** pour fixer le toit d'un abri.",
+    "ok": "La ligature auto-serrante",
+    "no": [
+      "Le brelage en tête de bigue",
+      "Le brelage en long",
+      "Le brelage carré"
+    ],
+    "src": "Matelotage.pdf, p. 14 ; session matelotage camp regional de formation.pdf, p. 14",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "« Le serpent sort du puits, tourne autour de l'arbre et rentre dans le puits » : à quel nœud rattacher cette image ?",
+    "a": "Au **nœud de chaise**, que Benoît Maugis présente ainsi. C'est un nœud de **grande fiabilité**, qui se défait même après souquage, et qui sert notamment à **porter secours** (monter ou descendre une personne).",
+    "ok": "Le nœud de chaise",
+    "no": [
+      "Le nœud de cabestan",
+      "Le nœud de capucin",
+      "La jambe de chien"
+    ],
+    "src": "Matelotage1_Niveau4_Maugis.pdf, p. 8 et 14 ; Section MATELOTAGE.docx, « Nœud de chaise simple »",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un itinéraire fait 6 km avec 400 m de montée. Selon l'aide-mémoire J+S, combien de temps prévoir pour la montée ?",
+    "a": "Valeur topographique = 6 (km) + 4 (hm) = **10**. En montée, on divise par 4 : **10 ÷ 4 = 2,5 h, soit 2 h 30**. (En descente, ce serait 10 ÷ 6, environ 1 h 40.)",
+    "ok": "Environ 2 h 30",
+    "no": [
+      "Environ 1 h 40",
+      "Environ 1 h 30",
+      "Environ 4 h"
+    ],
+    "src": "07_Orientation.pdf, p. 2",
+    "note": "Durée indicative : l'aide-mémoire rappelle qu'on avance plus vite par temps frais et que le temps peut augmenter fortement avec un groupe."
+  },
+  {
+    "tier": 3,
+    "q": "Un objet de 4 m de long est vu sous un angle de 2 millièmes. À quelle distance se trouve-t-il ?",
+    "a": "Le millième est l'angle sous lequel on voit **1 m à 1 km**. Un objet de 2 m vu sous 2 millièmes est à 1 km ; un objet de **4 m** sous **2 millièmes** est donc à **2 km** (4 ÷ 2 = 2 m par millième, soit 2 km).",
+    "ok": "À 2 km",
+    "no": [
+      "À 500 m",
+      "À 1 km",
+      "À 8 km"
+    ],
+    "src": "Topographie.pdf, p. 20-21 ; La rose des vents.docx, « Les millièmes »",
+    "note": "Calcul déduit de la définition et de l'exemple des documents (2 m sous 2 millièmes = 1 km)."
+  },
+  {
+    "tier": 3,
+    "q": "À la boussole, l'azimut du soleil est de 135°. Quelle heure solaire est-il environ ?",
+    "a": "180° – 135° = 45° ; 45 ÷ 15 = **3 h** d'écart avec midi. L'azimut étant **inférieur à 180°**, on soustrait : 12 – 3 = **environ 9 h du matin**. La méthode ne vaut qu'**à l'heure solaire**.",
+    "ok": "Environ 9 h du matin",
+    "no": [
+      "Environ 15 h",
+      "Environ 7 h du matin",
+      "Environ 11 h du matin"
+    ],
+    "src": "Section ORIENTATION.docx, « Trouver l'heure à l'aide de la boussole » ; Orientation par Chef Jean Alfred Lopy.doc",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Avec la méthode de la « lettre décalée », que signifie le message « TDPVU » ?",
+    "a": "La lettre décalée consiste à prendre **la lettre qui vient avant** celle qui figure (ex. MFPQPME = LEOPOLD). T → S, D → C, P → O, V → U, U → T : **SCOUT**.",
+    "ok": "SCOUT",
+    "no": [
+      "UEQWV",
+      "SCOTU",
+      "RBNTS"
+    ],
+    "src": "Topographie.pdf, p. 12",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "« Pour trouver le Nord la nuit, cherche l'étoile la plus brillante du ciel : c'est l'étoile polaire. » Que répondre d'après les documents ?",
+    "a": "C'est faux : l'**étoile polaire n'est pas la plus brillante**, c'est une étoile d'**assez faible magnitude**, difficile à voir s'il y a une lumière parasite. La plus brillante est **Sirius**. Pour trouver la Polaire, on reporte **5 fois** l'écart des deux étoiles du bout de la « casserole » de la Grande Ourse.",
+    "ok": "Faux : la Polaire est peu brillante, la plus brillante est Sirius",
+    "no": [
+      "Vrai : la Polaire est la plus brillante et ne bouge pas",
+      "Faux : la plus brillante est la Polaire, mais elle indique le Sud",
+      "Vrai, mais seulement quand Orion est visible en hiver"
+    ],
+    "src": "Topographie.pdf, p. 21 ; orientation sans boussole.docx ; pdfcoffee.com_orientation-et-topographie-pdf-free.pdf, p. 9-10",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "En triangulation, une patrouille trace trois droites à partir de trois repères, mais elles forment un petit triangle au lieu de se couper en un point. Que conclure ?",
+    "a": "Les **mesures ne sont pas parfaites**, mais on sait que l'on se trouve **à l'intérieur de ce triangle**. C'est pourquoi on prend idéalement **trois points** (deux au minimum) : le troisième sert de **confirmation**.",
+    "ok": "Les mesures sont imparfaites, mais on est dans le triangle",
+    "no": [
+      "Il faut recommencer avec deux repères seulement",
+      "On se trouve au sommet le plus proche du Nord",
+      "La carte est fausse et la position est inconnue"
+    ],
+    "src": "pdfcoffee.com_orientation-et-topographie-pdf-free.pdf, p. 14",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Le CP annonce un azimut de 1 600 millièmes, mais un scout a une boussole graduée en degrés. Que doit-il afficher ?",
+    "a": "**90°**, c'est-à-dire l'**Est** (1 600 millièmes = 100 grades = 90°, le tour complet faisant 6 400 millièmes). L'aide-mémoire J+S demande justement de **vérifier que toutes les boussoles du groupe sont graduées de la même manière**, sinon de **convertir les données**.",
+    "ok": "90°, c'est-à-dire l'Est",
+    "no": [
+      "160°, c'est-à-dire le Sud-Sud-Est",
+      "45°, c'est-à-dire le Nord-Est",
+      "180°, c'est-à-dire le Sud"
+    ],
+    "src": "La rose des vents.docx, « Table de conversions » ; 07_Orientation.pdf, p. 2",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Topographie.pdf annonce d'abord « HORIZONTAL : panneaux ; VERTICAL : marquage au sol ». Que faut-il retenir ?",
+    "a": "C'est une **inversion** : la suite du même document classe les **panneaux** (danger, interdiction, obligation…) en signalisation **verticale** et le **marquage au sol** (lignes, passages piétons, stop) en signalisation **horizontale**.",
+    "ok": "Les panneaux sont verticaux, le marquage au sol horizontal",
+    "no": [
+      "Les panneaux sont horizontaux, le marquage au sol vertical",
+      "Panneaux et marquage au sol sont tous deux verticaux",
+      "Seuls les feux tricolores sont une signalisation verticale"
+    ],
+    "src": "Topographie.pdf, p. 6-7",
+    "note": "Contradiction interne du document : la liste de la p. 6 inverse les deux termes, que les titres « VERTIVAL » (p. 6) et « HORIZONTAL » (p. 7) remettent dans le bon ordre."
+  }
+]

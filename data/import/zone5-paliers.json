@@ -1,0 +1,470 @@
+[
+  {
+    "tier": 2,
+    "q": "Qu'affirme la théorie du risque, et a-t-elle détrôné la faute comme fondement de la responsabilité civile ?",
+    "a": "Selon elle, **est responsable celui qui, par son activité dangereuse, fait courir un risque** (c'est le cas des sociétés). Malgré ces assauts, **la faute reste le fondement** de la responsabilité civile.",
+    "ok": "Responsable qui crée un risque ; la faute reste le fondement",
+    "no": [
+      "Responsable qui crée un risque ; la faute est abandonnée",
+      "Responsable qui tire profit d'autrui ; le risque remplace la faute",
+      "Responsable qui assure son activité ; la faute ne compte plus"
+    ],
+    "src": "RESPONSABILITE CIVILE ET PENALE.pdf, p. 2",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Selon l'article 121 cité dans le cours, dans quel cas n'y a-t-il pas de faute malgré un dommage ?",
+    "a": "Quand l'auteur du dommage était, **par son état naturel, dans l'impossibilité d'apprécier son acte** : c'est la question de l'**imputabilité**. La **loi n° 77-64 du 26 mai 1977** précise toutefois que tout acte peut obliger à réparation ou servir à une exonération partielle ou totale.",
+    "ok": "L'auteur ne pouvait, par son état naturel, apprécier son acte",
+    "no": [
+      "L'auteur n'avait pas l'intention de causer le dommage",
+      "L'auteur a agi sur l'ordre de son chef d'unité",
+      "L'auteur a réparé le dommage dans les huit jours"
+    ],
+    "src": "RESPONSABILITE CIVILE ET PENALE.pdf, p. 3",
+    "note": "Le cours nuance aussitôt la règle par la loi n° 77-64 : l'acte peut quand même obliger à réparation."
+  },
+  {
+    "tier": 2,
+    "q": "Qu'est-ce qu'une faute par abus de droit selon l'article 122 ?",
+    "a": "C'est **user de son droit dans la seule intention de nuire à autrui**, ou en faire un **usage contraire à sa destination**.",
+    "ok": "User de son droit pour nuire, ou contre sa destination",
+    "no": [
+      "Exercer un droit sans l'avoir déclaré aux autorités",
+      "Réclamer un droit que la loi ne reconnaît pas",
+      "Céder son droit à un tiers sans son accord"
+    ],
+    "src": "RESPONSABILITE CIVILE ET PENALE.pdf, p. 3",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Un dommage qui ne s'est pas encore produit peut-il engager la responsabilité ? Que dit l'article 126 ?",
+    "a": "Oui, s'il est **certain** : le dommage est certain lorsque, bien que **non réalisé sur le champ**, il se **produit nécessairement dans l'avenir**.",
+    "ok": "Oui, s'il se produira nécessairement dans l'avenir",
+    "no": [
+      "Non, seul un dommage déjà réalisé est réparable",
+      "Oui, dès qu'il est simplement possible ou probable",
+      "Non, sauf s'il est moral et non matériel"
+    ],
+    "src": "RESPONSABILITE CIVILE ET PENALE.pdf, p. 3",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Qui répond du dommage causé par un enfant mineur, et que se passe-t-il si plusieurs personnes en ont la garde ?",
+    "a": "Le **père, la mère ou le parent qui en a la garde**, l'enfant **habitant avec lui** (article 143). Si plusieurs personnes se partagent la garde, elles sont **solidairement responsables** (article 144).",
+    "ok": "Le parent gardien avec qui il habite ; solidarité entre gardiens",
+    "no": [
+      "Toujours le père seul ; la mère n'est jamais tenue",
+      "L'enfant seul, dès qu'il a plus de treize ans",
+      "Le parent le plus âgé ; aucune solidarité entre gardiens"
+    ],
+    "src": "RESPONSABILITE CIVILE ET PENALE.pdf, p. 4",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Le commettant reste-t-il responsable quand son préposé abuse de ses fonctions ?",
+    "a": "Oui. Il l'est déjà quand le préposé a agi **au moins apparemment** dans l'exercice de ses fonctions (article 147) ; en cas d'**abus de fonction**, un **lien de causalité ou de connexité** avec l'exercice des fonctions suffit (article 148).",
+    "ok": "Oui : un lien de causalité ou de connexité avec les fonctions suffit",
+    "no": [
+      "Non : l'abus de fonction libère toujours le commettant",
+      "Oui, mais seulement si le commettant a donné l'ordre",
+      "Non : seul le préposé répond, par l'action récursoire"
+    ],
+    "src": "RESPONSABILITE CIVILE ET PENALE.pdf, p. 4",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Où pose-t-on exactement un garrot, et comment écrit-on l'heure de pose ?",
+    "a": "Au **membre inférieur, sur la cuisse, entre la plaie et l'aine** ; au **membre supérieur, sur le bras, entre la plaie et l'aisselle**. L'heure est marquée clairement et visiblement sur la victime, **de 0 à 23 h puis les minutes** (exemple : 17h30).",
+    "ok": "Entre la plaie et l'aine ou l'aisselle ; heure notée de 0 à 23 h",
+    "no": [
+      "Sous la plaie, côté main ou pied ; heure notée matin ou soir",
+      "Sur la plaie elle-même ; heure gardée de mémoire par le chef",
+      "Au poignet ou à la cheville ; heure notée sur un carnet à part"
+    ],
+    "src": "Formation aux Premiers Secours.pdf, p. 50 ; Session Secourisme.docx, Le garrot",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Le sauveteur doit se libérer : par quoi remplace-t-il la compression manuelle d'une plaie, et où est-ce impossible ?",
+    "a": "Par un **tampon relais** : tissu propre couvrant toute la plaie, mis en place **le plus vite possible**, tenu par un **lien large faisant au moins 2 tours**, assez serré. Au **cou, au thorax et à l'abdomen**, on ne peut pas le fixer : la **compression manuelle doit être maintenue**.",
+    "ok": "Un tampon tenu par un lien large ; impossible au cou, thorax, abdomen",
+    "no": [
+      "Un garrot posé au plus près ; impossible aux bras et aux jambes",
+      "Un coton imbibé d'alcool ; impossible à la tête et aux mains",
+      "Un point de compression ; impossible chez l'enfant et le nourrisson"
+    ],
+    "src": "Formation aux Premiers Secours.pdf, p. 45-46",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Pendant la mise en PLS, pourquoi tient-on la main de la victime contre son oreille, et pourquoi saisit-on sa jambe derrière le genou ?",
+    "a": "La main contre l'oreille **accompagne le mouvement de la tête** et **diminue la flexion de la colonne cervicale**. La jambe saisie au genou sert de **bras de levier** : tout sauveteur peut retourner la victime, **quelle que soit sa force physique**.",
+    "ok": "Protéger la nuque ; faire levier quelle que soit sa force",
+    "no": [
+      "Garder la bouche fermée ; empêcher la victime de glisser",
+      "Tenir la victime éveillée ; bloquer le sang dans la jambe",
+      "Contrôler le pouls ; éviter une crampe à la victime"
+    ],
+    "src": "Formation aux Premiers Secours.pdf, p. 61-62",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quels signes rendent un malaise grave, et où apprécier la pâleur sur une peau foncée ?",
+    "a": "Douleur **serrant la poitrine** ou douleur du ventre intense, **sueurs abondantes** sans effort ni chaleur, **pâleur intense**, gêne pour respirer ou parler, **paralysie** d'un bras ou d'une jambe, bouche déformée. Sur une peau halée ou colorée, la pâleur s'apprécie à la **face interne des lèvres**.",
+    "ok": "Sueurs, douleur thoracique, paralysie ; pâleur vue aux lèvres",
+    "no": [
+      "Fièvre, toux, fatigue passagère ; pâleur vue aux ongles",
+      "Bâillements, faim, soif soudaine ; pâleur vue aux paumes",
+      "Rougeur, hoquet, frissons légers ; pâleur vue au front"
+    ],
+    "src": "Formation aux Premiers Secours.pdf, p. 86",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quelles sont les trois classes de feux distinguées par la Croix-Rouge sénégalaise ?",
+    "a": "**Classe A** : feux secs de solides (tissus, bois, paille, papier, caoutchouc) ; **classe B** : feux gras de liquides (essence, peintures, huiles, alcool) ; **classe C** : feux de gaz (propane, butane, gaz de ville).",
+    "ok": "A : solides ; B : liquides gras ; C : gaz",
+    "no": [
+      "A : gaz ; B : solides ; C : liquides gras",
+      "A : liquides gras ; B : gaz ; C : solides",
+      "A : électriques ; B : solides ; C : métaux"
+    ],
+    "src": "Fascicule de premiers secours.pdf, p. 26",
+    "note": "Le tableau des agents extincteurs est mal aligné dans le PDF : la question s'en tient aux classes."
+  },
+  {
+    "tier": 2,
+    "q": "Quand pratique-t-on un dégagement en relais, et de quelles façons ?",
+    "a": "Quand la victime **n'est pas visible en totalité** (sous un véhicule…), à **au moins 2 secouristes**. Quatre façons : par les **aisselles**, par **un poignet et la ceinture**, par les **poignets**, par les **chevilles** (quand la tête n'est pas accessible).",
+    "ok": "Victime en partie cachée ; aisselles, poignet-ceinture, poignets, chevilles",
+    "no": [
+      "Victime trop lourde ; épaules, genoux, hanches, pieds joints",
+      "Victime inconsciente ; tête, bras, jambes, vêtements du haut",
+      "Victime tombée dans l'eau ; cheveux, col, ceinture, chevilles"
+    ],
+    "src": "Session Secourisme.docx, Protéger ; Secourisme Alexis 12e.pdf, p. 3",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "On installe le coin cuisson sous une toile : à quelle hauteur au moins, et où placer le feu ?",
+    "a": "Toile à **au moins 2,15 m** : même avec un feu bas, la **colonne d'air chaud** finirait par la déformer. Placer le feu **tout juste à la limite de la toile** pour mieux évacuer la fumée, après avoir repéré les **vents dominants**.",
+    "ok": "Au moins 2,15 m ; feu à la limite de la toile",
+    "no": [
+      "Au moins 1,50 m ; feu au centre, sous la toile",
+      "Au moins 3,50 m ; feu à dix mètres de la toile",
+      "Au moins 1,80 m ; feu contre le mât principal"
+    ],
+    "src": "CAMPISME.docx, Cuisine sous auvent",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quelle largeur de bande pour quelle partie du corps, et comment commence et finit tout bandage ?",
+    "a": "**5 cm** pour le doigt, **7 cm** pour la main, la tête et les segments de membre, **10 cm** pour la cuisse, l'épaule et le tronc. Tout bandage **commence et se termine par 2 circulaires**, globe toujours en l'air, fixé par un nœud plat ou une épingle de sûreté.",
+    "ok": "Doigt 5, main 7, cuisse 10 cm ; 2 circulaires au début et à la fin",
+    "no": [
+      "Doigt 3, main 5, cuisse 8 cm ; 1 circulaire au début et à la fin",
+      "Doigt 7, main 10, cuisse 15 cm ; 3 circulaires au début seulement",
+      "Doigt 5, main 10, cuisse 20 cm ; 2 circulaires à la fin seulement"
+    ],
+    "src": "Fascicule de premiers secours.pdf, p. 23",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Comment distinguer un coup de chaleur d'une insolation, et que faire en priorité pour le coup de chaleur ?",
+    "a": "L'insolation donne un **visage très rouge**, maux de tête, vertiges, nausées : ombre, torse surélevé, boisson tiède, repos. Le coup de chaleur : **peau chaude et sèche, sans transpiration**, température **au-dessus de 40,5 °C**, confusion : **refroidir par tous les moyens** puis hôpital ou appel d'urgence.",
+    "ok": "Coup de chaleur : peau sèche, plus de 40,5 °C ; refroidir d'urgence",
+    "no": [
+      "Coup de chaleur : visage rouge, sueurs ; simple repos à l'ombre",
+      "Coup de chaleur : frissons, 38 °C ; couvrir et donner du café",
+      "Coup de chaleur : peau moite, 37 °C ; faire marcher la victime"
+    ],
+    "src": "asjdossier_technique_v3-1msds_20180319.pdf, p. 49",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quelles règles de sécurité le dossier technique donne-t-il pour la hache ?",
+    "a": "La planter sur une **souche ou un billot**, jamais dans la terre ni dans un arbre ; ne pas s'en servir comme **marteau** (son dos n'est pas trempé) ; **ne jamais couper vers soi** ; la transporter **par le fer, lame vers l'avant**.",
+    "ok": "Sur un billot, jamais en marteau, jamais vers soi, portée par le fer",
+    "no": [
+      "Plantée en terre, utile en marteau, portée par le manche",
+      "Plantée dans un arbre, lame vers soi, portée sur l'épaule",
+      "Posée au sol, utile en cale, portée lame vers l'arrière"
+    ],
+    "src": "asjdossier_technique_v3-1msds_20180319.pdf, p. 32",
+    "note": ""
+  },
+  {
+    "tier": 2,
+    "q": "Quelles précautions d'emplacement et de profondeur le dossier technique impose-t-il pour les latrines ?",
+    "a": "**Loin d'une source ou d'un ruisseau** (pollution des eaux), pas trop près d'un arbre (racines), en tenant compte du **vent dominant** (odeurs). Fosse assez profonde pour pouvoir la **recouvrir de 30 cm de terre** après le camp ; toit, abri des regards et signal libre ou occupé.",
+    "ok": "Loin des sources, selon le vent ; recouvrir de 30 cm de terre",
+    "no": [
+      "Près du ruisseau pour rincer ; recouvrir de 5 cm de terre",
+      "Près de la cuisine pour l'accès ; ne pas recouvrir du tout",
+      "Sous un grand arbre pour l'ombre ; recouvrir de pierres"
+    ],
+    "src": "asjdossier_technique_v3-1msds_20180319.pdf, p. 45",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un CP veut cuire ses repas sous un auvent avec des branches de pin. Que lui répondent les documents ?",
+    "a": "Mauvaise idée : les **résineux** brûlent très vite, donnent **peu de braises et beaucoup de fumée** (bons pour l'allumage), et les conifères projettent des **tisons** qui trouent la toile. Pour cuire, il faut **des braises, pas des flammes** : prendre des **bois durs** (chêne, hêtre, érable, frêne…).",
+    "ok": "Non : peu de braises et des tisons ; prendre des bois durs",
+    "no": [
+      "Oui : le pin donne les meilleures braises de cuisson",
+      "Oui, à condition de mouiller le bois avant l'allumage",
+      "Non : sous un auvent, seul le bois vert convient"
+    ],
+    "src": "12_specificites_combustible.pdf, p. 1 ; CAMPISME.docx, Cuisine sous auvent",
+    "note": "Essences européennes : à transposer aux bois disponibles localement."
+  },
+  {
+    "tier": 3,
+    "q": "Un chef frappe un jeune jusqu'à le blesser. Selon le cours, de quelle responsabilité relève ce geste ?",
+    "a": "De la **responsabilité pénale** : le cours le range parmi les **infractions commises en collectivités éducatives**, sous le nom de **coups et blessures volontaires**, à côté du chef qui vole l'argent d'un jeune.",
+    "ok": "Pénale : coups et blessures volontaires",
+    "no": [
+      "Civile seulement : simple faute de surveillance",
+      "Aucune : le chef exerce un droit de correction",
+      "Disciplinaire : affaire interne à l'association"
+    ],
+    "src": "RESPONSABILITE CIVILE ET PENALE.pdf, p. 5",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un CP affirme que les toilettes sont la toute première installation du camp. Les deux documents de campisme sont-ils d'accord ?",
+    "a": "Pas tout à fait. CAMPISME.docx fait des **feuillées la première installation, le premier jour du camp**. Le dossier technique ASJ place d'abord le **montage des tentes**, puis les **toilettes** (2e), la cuisine, les tables couvertes, enfin le mât et les lavabos.",
+    "ok": "Non : CAMPISME les met en premier, l'ASJ juste après les tentes",
+    "no": [
+      "Oui : les deux les mettent en premier, avant les tentes",
+      "Non : les deux les placent après la cuisine et le mât",
+      "Oui : les deux les placent juste après le mât"
+    ],
+    "src": "CAMPISME.docx, Les feuillées ; asjdossier_technique_v3-1msds_20180319.pdf, p. 33-34",
+    "note": "Selon CAMPISME.docx, l'emplacement des feuillées se choisit dès la visite du lieu de camp."
+  },
+  {
+    "tier": 3,
+    "q": "Dans quel sens porter un blessé sur un brancard ? Comparez la Croix-Rouge sénégalaise et le dossier technique ASJ.",
+    "a": "Ils divergent : le Fascicule dit **tête en avant**, sauf victime sous ventilation artificielle ou perfusion ; le dossier ASJ dit **pieds en avant**, sauf pour gravir un escalier ou une forte pente. Ils s'accordent pour **ne pas marcher au pas** et éviter toute secousse.",
+    "ok": "Fascicule : tête en avant ; ASJ : pieds en avant ; jamais au pas",
+    "no": [
+      "Les deux : tête en avant, porteurs au pas cadencé",
+      "Les deux : pieds en avant, sans aucune exception",
+      "Fascicule : pieds en avant ; ASJ : tête en avant ; au pas"
+    ],
+    "src": "Fascicule de premiers secours.pdf, p. 25 ; asjdossier_technique_v3-1msds_20180319.pdf, p. 58",
+    "note": "Contradiction réelle entre les sources : à trancher par le formateur."
+  },
+  {
+    "tier": 3,
+    "q": "Deux chefs parlent de « l'ABC du secourisme » sans se comprendre. Que recouvre ce sigle dans les sessions scoutes de Dakar et dans le dossier ASJ ?",
+    "a": "Dans les sessions du Groupe XIIe Dakar : **Allonger, Bouche-à-bouche, Comprimer**. Dans le dossier ASJ : **Airways, Breathing, Circulation** (voies aériennes, respiration, circulation), qui remplace l'ancien **RRSS** (Répond-il, Respire-t-il, Saigne-t-il…).",
+    "ok": "Allonger, Bouche-à-bouche, Comprimer / Airways, Breathing, Circulation",
+    "no": [
+      "Alerter, Baliser, Couvrir / Airways, Bleeding, Casualty care",
+      "Assister, Bander, Calmer / Alert, Breathing, Calling help",
+      "Allonger, Bander, Chauffer / Airways, Breathing, Cooling"
+    ],
+    "src": "Session Secourisme.docx, Quelques notions ; Secourisme Alexis 12e.pdf, p. 12 ; asjdossier_technique_v3-1msds_20180319.pdf, p. 46",
+    "note": "premiers_secours_cusstr.pdf (p. 5) emploie aussi l'ABC Airways, Breathing, Circulation."
+  },
+  {
+    "tier": 3,
+    "q": "Pourquoi le guide de la DRPC Kayes enchaîne-t-il 30 compressions sans vérifier le pouls ?",
+    "a": "Parce que la pression créée par le massage est **longue à monter** et **retombe instantanément** à l'arrêt : **interrompre trop souvent aggrave le pronostic**. D'où 30 compressions pour 2 insufflations, en réduisant les interruptions au strict minimum.",
+    "ok": "La pression monte lentement et chute dès qu'on s'arrête",
+    "no": [
+      "Le pouls est trop difficile à trouver chez l'enfant",
+      "Les insufflations risquent de faire vomir la victime",
+      "Le sauveteur se fatigue moins en comptant jusqu'à 30"
+    ],
+    "src": "Formaion Secourisme DRPCK.pdf, p. 33 et 35",
+    "note": "Formation aux Premiers Secours.pdf (2001) donne encore 15/2 : ce rythme a été abandonné en 2005. Les recommandations actuelles retiennent 30 compressions pour 2 insufflations."
+  },
+  {
+    "tier": 3,
+    "q": "Au camp, un scout est électrisé par une ligne à haute tension tombée au sol. Que faire selon les documents ?",
+    "a": "**Ne pas toucher** la victime ni s'approcher, et **alerter les secours** : la société nationale d'électricité (**SENELEC**) et les sapeurs-pompiers. Couper le disjoncteur et écarter le fil avec un bâton sec ne valent que pour le **courant domestique**.",
+    "ok": "Ne pas toucher ; alerter la SENELEC et les sapeurs-pompiers",
+    "no": [
+      "Écarter le fil avec un bâton sec puis masser",
+      "Tirer la victime par les chevilles avec des gants",
+      "Couper le disjoncteur du camp puis la toucher"
+    ],
+    "src": "Secourisme Alexis 12e.pdf, p. 10-11 ; asjdossier_technique_v3-1msds_20180319.pdf, p. 50-51",
+    "note": "Le dossier ASJ fixe la haute tension à plus de 1 000 volts : ne pas toucher, alerter les secours."
+  },
+  {
+    "tier": 3,
+    "q": "Un louveteau a avalé un produit ménager. Un chef veut le faire vomir et lui donner du lait. Que dit le guide national ?",
+    "a": "Non : en cas de **brûlure interne par ingestion**, **ne pas faire vomir**, **ne pas donner à boire**, surveiller la victime, **garder l'emballage** et le produit restant, et toujours appeler les secours médicalisés.",
+    "ok": "Ni vomir ni boire ; garder l'emballage et appeler",
+    "no": [
+      "Faire vomir aussitôt, puis donner beaucoup d'eau",
+      "Donner du lait, puis le coucher sur le dos",
+      "Faire vomir, puis jeter le produit restant"
+    ],
+    "src": "Formation aux Premiers Secours.pdf, p. 96",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un scout s'est cogné la tête et semblait aller bien. Vingt minutes plus tard, il vomit et ne se souvient plus de l'accident. Que faire ?",
+    "a": "**Demander un avis médical** et le **surveiller en lui parlant régulièrement** : après un coup sur la tête, une **atteinte du cerveau** est toujours possible et peut se **révéler secondairement** (agitation, prostration, vomissements, maux de tête, oubli de l'accident).",
+    "ok": "Avis médical et surveillance : atteinte cérébrale possible",
+    "no": [
+      "Le laisser dormir : la fatigue explique les vomissements",
+      "Lui donner de l'aspirine et reprendre les activités",
+      "Le faire marcher pour vérifier son équilibre"
+    ],
+    "src": "Formation aux Premiers Secours.pdf, p. 98 ; asjdossier_technique_v3-1msds_20180319.pdf, p. 51",
+    "note": "Le dossier ASJ (commotion cérébrale) dit de toujours alerter un médecin."
+  },
+  {
+    "tier": 3,
+    "q": "Une victime inconsciente qui respire a peut-être une lésion de la colonne. Un chef refuse de la mettre en PLS. A-t-il raison ?",
+    "a": "Non : une victime inconsciente qui respire est **toujours mise en PLS**, car le **danger de détresse respiratoire** (chute de la langue, inhalation de liquides) **prime** sur le risque d'aggraver une lésion nerveuse. Le retournement limite au maximum les mouvements de la nuque.",
+    "ok": "Non : la détresse respiratoire prime, PLS quand même",
+    "no": [
+      "Oui : on la laisse sur le dos jusqu'aux secours",
+      "Oui : on l'assoit pour soulager sa colonne",
+      "Non : on la met sur le ventre, tête de côté"
+    ],
+    "src": "Formation aux Premiers Secours.pdf, p. 60 et 63 ; Formaion Secourisme DRPCK.pdf, p. 31",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un scout diabétique, conscient, fait un malaise et réclame du sucre. Le chef hésite à « jouer au médecin ». Que dit le guide ?",
+    "a": "Il faut **lui en donner, de préférence en morceaux**. De même, on l'aide à prendre **son traitement prescrit**, aux doses fixées par son médecin, s'il le demande ou sur consigne du médecin alerté.",
+    "ok": "Lui donner du sucre, de préférence en morceaux",
+    "no": [
+      "Refuser : seul un médecin peut donner du sucre",
+      "Lui faire boire un café très sucré et brûlant",
+      "Attendre l'avis médical avant tout apport"
+    ],
+    "src": "Formation aux Premiers Secours.pdf, p. 87",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Au camp, trois scouts ont en même temps diarrhée, vomissements et fièvre après le même repas. Que retenir en croisant les documents ?",
+    "a": "Le dossier ASJ impose de **contacter un médecin** dès que **trois malades ou plus ont les mêmes symptômes** ; ces signes évoquent une **intoxication alimentaire**. Et le cours de droit rappelle que l'**intendant** peut être **civilement responsable** d'une intoxication alimentaire.",
+    "ok": "Médecin dès 3 malades ; l'intendant peut être civilement responsable",
+    "no": [
+      "Attendre 3 jours ; l'intendant n'est jamais responsable",
+      "Isoler les malades ; seul le chef est pénalement visé",
+      "Donner du lait ; la responsabilité revient aux parents"
+    ],
+    "src": "asjdossier_technique_v3-1msds_20180319.pdf, p. 48-49 ; RESPONSABILITE CIVILE ET PENALE.pdf, p. 5",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Seul avec deux blessés graves, un chef tient un point de compression sur la cuisse de l'un. Il doit aller alerter. Que prévoit le guide ?",
+    "a": "Poser un **garrot** : il remplace le point de compression du bras ou de la cuisse quand celui-ci **ne peut être maintenu par un sauveteur isolé** qui doit **donner l'alerte** ou **s'occuper d'une autre victime grave** (ou quand il est impossible ou inefficace).",
+    "ok": "Poser un garrot à la place du point de compression",
+    "no": [
+      "Lâcher la compression et revenir au plus vite",
+      "Remplacer le point par un tampon relais sur l'aine",
+      "Mettre le blessé en PLS puis partir alerter"
+    ],
+    "src": "Formation aux Premiers Secours.pdf, p. 49 ; Fascicule de premiers secours.pdf, p. 10",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "« Rien, et vos remerciements au propriétaire du terrain » : à qui et à quel moment rattacher cette formule ?",
+    "a": "À **Baden-Powell**, dans « Éclaireurs » : ce sont les **deux choses à laisser derrière soi en levant le camp**. Le dossier ASJ en tire des consignes : lieu propre, mottes d'herbe replacées, déchets évacués, départ courtois (inviter l'hôte, rendre un service, carte de remerciement).",
+    "ok": "B.-P., les deux choses à laisser en levant le camp",
+    "no": [
+      "B.-P., les deux choses à emporter au départ en raid",
+      "Le chef de groupe, les règles d'arrivée sur un terrain",
+      "La Croix-Rouge, les consignes après un accident au camp"
+    ],
+    "src": "asjdossier_technique_v3-1msds_20180319.pdf, p. 40",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un chef recopie dans la fiche de camp les numéros d'urgence du dossier technique ASJ (117, 118, 144). Bonne idée pour un camp au Sénégal ?",
+    "a": "Non : ce sont des **numéros suisses** (Police 117, Pompiers 118, Ambulance 144, hélicoptère REGA 1414). Pour le Sénégal, les sessions scoutes donnent **Sapeurs-pompiers 18, SAMU 1515, Police 17** et en campagne la **Gendarmerie 800 00 20 20**.",
+    "ok": "Non : numéros suisses ; au Sénégal 18, 1515, 17",
+    "no": [
+      "Oui : ces numéros sont valables dans toute l'Afrique",
+      "Oui : ce sont les numéros d'urgence internationaux",
+      "Non : ce sont les numéros français, valables partout"
+    ],
+    "src": "asjdossier_technique_v3-1msds_20180319.pdf, p. 4 et 52 ; Session Secourisme.docx, Alerter",
+    "note": "Le dossier vient de l'Association du Scoutisme Jurassien (Suisse). Numéros sénégalais à revérifier localement."
+  },
+  {
+    "tier": 3,
+    "q": "Un véhicule est accidenté juste après un virage. Où placer le triangle de pré-signalisation ?",
+    "a": "Dans les **deux sens de circulation**, mais surtout **avant le virage**, pour que les véhicules venant de ce côté soient prévenus **avant de tourner**. Si l'on doit dégager une victime, respecter l'axe **tête-cou-tronc**.",
+    "ok": "Dans les deux sens, surtout avant le virage",
+    "no": [
+      "Juste à côté du véhicule, dans le virage",
+      "Seulement après le virage, côté sortie",
+      "Sur le toit du véhicule, bien en vue"
+    ],
+    "src": "Secourisme Alexis 12e.pdf, p. 3 ; Session Secourisme.docx, Protéger",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un scout a une petite brûlure électrique, à peine plus grande qu'une pièce. Un chef la traite comme une brûlure simple. Erreur ?",
+    "a": "Oui : selon le guide national, une **brûlure électrique est toujours une brûlure grave** : allonger la victime, lui parler régulièrement, **appeler les secours médicalisés**. Avant tout, **ne pas la toucher** tant que le risque électrique n'est pas écarté.",
+    "ok": "Oui : une brûlure électrique est toujours grave",
+    "no": [
+      "Non : sous la moitié de la paume, elle reste simple",
+      "Non : sans cloque, elle n'est jamais grave",
+      "Oui : mais seulement si la victime perd connaissance"
+    ],
+    "src": "Formation aux Premiers Secours.pdf, p. 96 ; Session Secourisme.docx, Brûlures électriques",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Accident de car en sortie, un seul véhicule pour évacuer : A a une blessure du thorax, B une fracture du bassin, C une fracture fermée du bras. Quel ordre selon la DRPC Kayes ?",
+    "a": "**A** d'abord : les blessures thoraciques sont une **extrême urgence**. **B** relève de la **deuxième urgence** (évacuer dans les 3 heures) ; **C** est **sans urgence** (fracture fermée).",
+    "ok": "A (extrême urgence), puis B, puis C",
+    "no": [
+      "B (extrême urgence), puis A, puis C",
+      "C (première urgence), puis B, puis A",
+      "B (première urgence), puis C, puis A"
+    ],
+    "src": "Formaion Secourisme DRPCK.pdf, p. 6-7",
+    "note": ""
+  },
+  {
+    "tier": 3,
+    "q": "Un responsable a un malaise avec une douleur serrant la poitrine et refuse qu'on appelle un médecin. Que faire ?",
+    "a": "Appeler quand même : l'avis médical doit être obtenu **immédiatement** et **ne doit pas être différé, même à la demande de la victime**. En attendant : **repos**, position assise ou demi-assise s'il respire mal, surveillance et dialogue.",
+    "ok": "Appeler quand même : l'appel ne se diffère pas",
+    "no": [
+      "Respecter son refus et attendre que ça passe",
+      "Le faire marcher pour voir si la douleur cède",
+      "Attendre une heure et rappeler s'il insiste"
+    ],
+    "src": "Formation aux Premiers Secours.pdf, p. 86",
+    "note": ""
+  }
+]
