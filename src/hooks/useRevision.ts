@@ -8,6 +8,7 @@ import { clearGamification } from '../lib/gameKeys'
 import { clearGradesQueue, enqueueGrade, gradesBatch, readGradesQueue, removeSentGrades, utcDay } from '../lib/gradeQueue'
 import { applyGrade, cardsByZone, EMPTY_PROGRESS, validCards } from '../lib/srs'
 import { clearCardsCache, readCardsCache, writeCardsCache } from '../lib/cardsCache'
+import { clearPagesCache } from '../lib/docPagesApi'
 import { forgetKnownUser, readKnownUser, writeKnownUser, type KnownUser } from '../lib/knownUser'
 import { codeErrorMessage, isValidCode, sendErrorMessage } from '../lib/signin'
 import { isValidEmail, magicLinkRedirect, supabase } from '../lib/supabase'
@@ -167,6 +168,7 @@ function forgetDevice(userId: string | null): void {
   forgetKnownUser(store, id)
   clearCardsCache(store, id)
   clearGamification(store, id)
+  clearPagesCache(store, id)
 }
 
 /** Contenu de révision et progression personnelle (Supabase), enregistrée avec un léger délai et copiée en local. */

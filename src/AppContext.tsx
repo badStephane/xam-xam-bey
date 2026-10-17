@@ -11,7 +11,7 @@ import { clearSessionSnapshot, hasAnySessionSnapshot, readSessionSnapshot, saveS
 import { screenTitle } from './lib/screenTitle'
 import { allCards } from './lib/srs'
 import { CACHE_KEYS, LEGACY_KEYS, parseSeen, parseTheme } from './lib/cache'
-import { initialEntry, normalizeTarget, parseHash, type NavEntry } from './lib/navHistory'
+import { hasSel, initialEntry, normalizeTarget, parseHash, type NavEntry } from './lib/navHistory'
 import { loadPref, savePref } from './lib/storage'
 import type { Scope } from './lib/practice'
 import type { Card, Doc, Grade, Progress, QuizMode, Session, TypeFilter } from './lib/types'
@@ -21,6 +21,7 @@ import { useNow } from './hooks/useNow'
 import { useRevision, type Revision } from './hooks/useRevision'
 import { useScreenA11y } from './hooks/useScreenA11y'
 import { useIsMobile, useOnline } from './hooks/useViewport'
+import { useDocPages, type DocPages } from './hooks/useDocPages'
 
 export interface Ui {
   screen: Screen
@@ -52,6 +53,8 @@ interface AppValue {
   isAdmin: boolean
   /** Vrai tant que les droits admin de la personne connectée ne sont pas connus (UX-9). */
   adminChecking: boolean
+  /** Pages de révision des documents (2026-10-18). */
+  pages: DocPages
   docs: Doc[]
   catalogStatus: CatalogStatus
   reloadCatalog(): Promise<void>
@@ -108,9 +111,9 @@ function tabStore(): Storage | null {
 }
 
 /** Écrans d'où un document relié à une carte s'ouvre, et où RETOUR ramène (F2 : fiches). */
-const DOC_RETURN_SCREENS: readonly Screen[] = ['session', 'fin', 'fiches']
+const DOC_RETURN_SCREENS: readonly Screen[] = ['session', 'fin', 'fiches', 'page']
 
-const entryOf = (u: Pick<Ui, 'screen' | 'sel'>): NavEntry => ({ screen: u.screen, sel: u.screen === 'apercu' ? u.sel : null })
+const entryOf = (u: Pick<Ui, 'screen' | 'sel'>): NavEntry => ({ screen: u.screen, sel: hasSel(u.screen) ? u.sel : null })
 
 /** Droits admin vérifiés pour une adresse donnée : tant que l'adresse change, la vérification est en cours. */
 function useAdminCheck(email: string | null): { isAdmin: boolean; adminChecking: boolean } {
@@ -133,7 +136,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [start] = useState(() => initialEntry(PARAMS.frame ? '' : location.hash, PARAMS.screen, PARAMS.sel))
   const [ui, setUi] = useState<Ui>(() => ({
     screen: start.screen,
-    dark: initialDark(), q: PARAMS.q, type: 'all', ess: false, month: null, sel: start.screen === 'apercu' ? start.sel : PARAMS.sel,
+    dark: initialDark(), q: PARAMS.q, type: 'all', ess: false, month: null, sel: hasSel(start.screen) ? start.sel : PARAMS.sel,
     fiche: cur, practice: cur, scope: 'all', mode: PARAMS.mode, askName: '', askCount: ASK_COUNTS[0],
     session: null, checks: {}, hideAns: false, quitAsk: false, shared: false, seen: loadPref(CACHE_KEYS.seen, parseSeen, [], LEGACY_KEYS.seen),
   }))
@@ -142,6 +145,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const { isAdmin, adminChecking } = useAdminCheck(rev.email)
   const mobile = useIsMobile()
   const online = useOnline()
+  const pages = useDocPages(PARAMS.frame ? null : rev.userId, online)
   const uiRef = useRef(ui)
   uiRef.current = ui
 
@@ -217,6 +221,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const u = uiRef.current
     const from = docReturn.current
     if (from === 'fiches') return { screen: 'fiches', p: {} }
+    // Page de révision : le document lu est celui de la page (même `sel`).
+    if (from === 'page') return { screen: 'page', p: { sel: u.sel } }
     if (from === 'fin' && u.session) return { screen: 'fin', p: {} }
     if (u.session && !u.session.done) return from === 'session' ? { screen: 'session', p: {} } : null
     const saved = adoptTabSession()
@@ -298,17 +304,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
         // Retour en pleine séance : la séance se termine comme avec QUITTER (réponses gardées), on reste sur le site.
         if (s.mode === 'ask') { endSession(s); navHist.replace({ screen: 'fin', sel: null }); return }
         logSession(s)
-        go(t.screen, { session: null, ...(t.screen === 'apercu' ? { sel: t.sel } : {}) })
+        go(t.screen, { session: null, ...(hasSel(t.screen) ? { sel: t.sel } : {}) })
         return
       }
-      go(t.screen, t.screen === 'apercu' ? { sel: t.sel } : {})
+      go(t.screen, hasSel(t.screen) ? { sel: t.sel } : {})
     } finally {
       syncing.current = false
     }
   }
 
   const value: AppValue = {
-    ui, rev, isAdmin, adminChecking, today, cur, now, mobile, sessionStartProg: sessionStartProg.current,
+    ui, rev, pages, isAdmin, adminChecking, today, cur, now, mobile, sessionStartProg: sessionStartProg.current,
     docs: catalog.docs, catalogStatus: catalog.status, reloadCatalog: catalog.reload,
     docById: id => (id === null ? null : catalog.docs.find(d => d.id === id) || null), offline: PARAMS.lib === 'offline' || !online, patch, go,
     openDoc: id => {
@@ -393,7 +399,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       go('revision', { session: null })
     },
   }
-  const doc = ui.screen === 'apercu' ? value.docById(ui.sel) : null
+  const doc = hasSel(ui.screen) ? value.docById(ui.sel) : null
   useScreenA11y(!PARAMS.frame, ui.screen, screenTitle(ui.screen, doc?.title))
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }

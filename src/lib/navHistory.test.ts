@@ -26,6 +26,8 @@ describe('parseHash et hashFor', () => {
   test('lit un écran connu et un aperçu avec sa pièce', () => {
     expect(parseHash('#plan')).toEqual({ screen: 'plan', sel: null })
     expect(parseHash('#apercu/12')).toEqual(ap12)
+    expect(parseHash('#page/12')).toEqual({ screen: 'page', sel: 12 })
+    expect(parseHash('#page')).toBeNull()
   })
 
   test('ignore les jetons du lien magique, les écrans inconnus et un aperçu sans pièce', () => {
@@ -38,7 +40,7 @@ describe('parseHash et hashFor', () => {
   })
 
   test('aller-retour hash', () => {
-    for (const e of [lib, rev, ap12, { screen: 'admin' as const, sel: null }]) expect(parseHash(hashFor(e))).toEqual(e)
+    for (const e of [lib, rev, ap12, { screen: 'page' as const, sel: 7 }, { screen: 'admin' as const, sel: null }]) expect(parseHash(hashFor(e))).toEqual(e)
   })
 })
 
