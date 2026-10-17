@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { allCards, applyGrade, cardsByZone, bestStreak, dailyCards, EMPTY_PROGRESS, levelBuckets, readProgress, seenCurve, streak, streakState, validCards, validDocId, xpLevel, zoneStats } from './srs'
+import { allCards, applyGrade, cardsByZone, bestStreak, dailyCards, EMPTY_PROGRESS, levelBuckets, newCards, readProgress, seenCurve, streak, streakState, validCards, validDocId, xpLevel, zoneStats } from './srs'
 import type { Card, Progress } from './types'
 
 const T = 20000
@@ -190,5 +190,44 @@ describe('document relié à une carte (E4)', () => {
   test('validDocId', () => {
     expect(validDocId(7)).toBe(7)
     expect(validDocId(NaN)).toBeNull()
+  })
+})
+
+describe('paliers de difficulté', () => {
+  const tiered = (id: string, tier: number, th = 1): Card => ({ ...card(id, th), ...(tier > 1 ? { tier } : {}) })
+  const basics = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8', 'b9', 'b10'].map(id => tiered(id, 1))
+  const hard = [tiered('h1', 2), tiered('h2', 2), tiered('x1', 3)]
+  const atLevel = (ids: string[], lv: number): Progress =>
+    ({ cards: Object.fromEntries(ids.map(id => [id, [lv, T + 30, 3, 3, T - 30]])), sessions: [], xp: 0 })
+
+  test('validCards lit le palier (1 à 3) ; absent ou invalide : palier 1', () => {
+    const [a, b, c] = validCards([{ id: 'a', q: 'q', a: 'a', tier: 3 }, { id: 'b', q: 'q', a: 'a', tier: 9 }, { id: 'c', q: 'q', a: 'a' }], 1)
+    expect(a.tier).toBe(3)
+    expect(b.tier).toBeUndefined()
+    expect(c.tier).toBeUndefined()
+  })
+  test('cardsByZone garde le palier de la ligne', () => {
+    const row = { id: 'h1', zone: 1, document_id: null, position: 1, q: 'q', a: 'a', src: '', note: '', qcm: null, status: 'published' as const, tier: 2 }
+    expect(cardsByZone([row])[1][0].tier).toBe(2)
+  })
+  test('palier 2 fermé tant que moins de 70 % du palier 1 de la zone est au niveau 2', () => {
+    const prog = atLevel(['b1', 'b2', 'b3', 'b4', 'b5', 'b6'], 2)
+    expect(newCards([...basics, ...hard], prog, 1, 10).map(c => c.id)).toEqual(['b7', 'b8', 'b9', 'b10'])
+  })
+  test('palier 2 ouvert à 70 % ; palier 3 encore fermé', () => {
+    const prog = atLevel(['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7'], 2)
+    expect(newCards([...basics, ...hard], prog, 1, 10).map(c => c.id)).toEqual(['b8', 'b9', 'b10', 'h1', 'h2'])
+  })
+  test('palier 3 ouvert quand le palier 2 l’est aussi à 70 %', () => {
+    const prog = atLevel([...basics.map(c => c.id), 'h1', 'h2'], 3)
+    expect(newCards([...basics, ...hard], prog, 1, 10).map(c => c.id)).toEqual(['x1'])
+  })
+  test('chaque zone a ses propres paliers', () => {
+    const prog = atLevel(basics.map(c => c.id), 2)
+    const zone2 = [tiered('z2a', 1, 2), tiered('z2h', 2, 2)]
+    expect(newCards([...basics, ...hard, ...zone2], prog, 2, 10).map(c => c.id)).toEqual(['h1', 'h2', 'z2a'])
+  })
+  test('zone sans question de palier 1 : le palier 2 est ouvert', () => {
+    expect(newCards([tiered('h1', 2)], EMPTY_PROGRESS, 1, 10).map(c => c.id)).toEqual(['h1'])
   })
 })

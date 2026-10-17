@@ -13,8 +13,8 @@ from xml.sax.saxutils import escape
 import zipfile
 
 ROOT = Path(__file__).resolve().parent.parent
-HEADERS = ['Zone', 'Question', 'Réponse', 'Bonne proposition', 'Mauvaise 1', 'Mauvaise 2', 'Mauvaise 3', 'Source', 'Note']
-WIDTHS = [8, 50, 60, 30, 30, 30, 30, 30, 30]
+HEADERS = ['Zone', 'Question', 'Réponse', 'Bonne proposition', 'Mauvaise 1', 'Mauvaise 2', 'Mauvaise 3', 'Source', 'Note', 'Palier']
+WIDTHS = [8, 50, 60, 30, 30, 30, 30, 30, 30, 8]
 FIXED_DATE = (2026, 10, 13, 0, 0, 0)
 
 # IM-7 : seule la première feuille est lue à l'import. Elle ne porte que les en-têtes ; l'exemple vit dans la

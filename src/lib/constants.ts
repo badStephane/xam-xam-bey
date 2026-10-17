@@ -30,6 +30,10 @@ export const FREEZE_EVERY = 7
 export const FREEZE_MAX = 2
 /** Nouvelles questions demandées en plus (« 10 de plus »), une fois la session du jour terminée. */
 export const EXTRA_NEW = 10
+/** Paliers de difficulté : le palier suivant d'une zone s'ouvre quand TIER_UNLOCK_RATIO de ses cartes sont au niveau TIER_UNLOCK_LV. */
+export const MAX_TIER = 3
+export const TIER_UNLOCK_RATIO = 0.7
+export const TIER_UNLOCK_LV = 2
 export const ACQUIRED_LV = 4
 export const MAX_LV = 5
 /** Niveaux perdus par un « Raté » (plancher 0) : une carte bien connue oubliée une fois ne repart pas de zéro. */

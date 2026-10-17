@@ -689,3 +689,15 @@ Tableau de bord Supabase relevé par l'utilisateur : sessions sans limite (plan 
 ## Gel de série (2026-10-17)
 
 Calcul sur l'appareil, à partir des jours de séance de la progression (`srs.ts`, `streakState`) ; sans migration. Règle par défaut proposée à l'utilisateur, modifiable : +1 gel tous les `FREEZE_EVERY` = 7 jours révisés de suite, `FREEZE_MAX` = 2 en réserve ; chaque jour manqué consomme un gel (le jour gelé ne compte pas dans la série), sinon la série repart à zéro ; aujourd'hui n'est jamais manqué. `streak` et `bestStreak` (série actuelle, meilleure série, badges de série) suivent la même règle : un scout ne peut que gagner au déploiement. Aujourd'hui : « JOURS DE SUITE · ❄ n GEL(S) », bandeau « GEL UTILISÉ » si hier a été couvert, étape 04 de « La méthode ». `npm run check` vert (585 réussis, 1 échec attendu, 5 ignorés) ; `index` 114,24 Ko gzip (plafond 115 : marge 0,76 Ko) ; `npm run e2e` : 73 réussis.
+
+## Paliers de difficulté (2026-10-17)
+
+Choix de l'utilisateur : paliers de difficulté, zone 1 d'abord, environ 40 nouvelles questions.
+
+- **Base** : migration `20261017120000_card_tier.sql`, colonne `cards.tier` (1 à 3, défaut 1 : toutes les questions existantes restent au palier 1) ; test pgTAP `08_card_tier_test.sql`. **À appliquer avant le front**, qui lit la colonne `tier`.
+- **Règle** (`srs.ts`, `openTiers`, `newCards`) : dans une zone, les nouvelles cartes du palier t+1 n'entrent dans la quête du jour qu'une fois `TIER_UNLOCK_RATIO` = 70 % des cartes du palier t de la zone au niveau `TIER_UNLOCK_LV` = 2 ou plus. Un palier vide ne bloque pas. Entraînement, examen et « J'interroge » ne sont pas filtrés (révision libre).
+- **Admin** : champ « Palier de difficulté » dans l'éditeur ; colonne facultative « Palier » à l'import Excel (vide = 1 ; autre que 1, 2, 3 : ligne écartée) ; modèle `public/modele-questions.xlsx` régénéré.
+- **Séance** : tampon « APPROFONDI » (palier 2) ou « EXPERT » (palier 3) sur la carte.
+- **Contenu** : `data/import/zone1-paliers.json` et `.xlsx`, 20 questions de palier 2 et 20 de palier 3 rédigées à partir des 11 documents de la zone 1 (sources et pages citées). Écartées faute de certitude : nombre de Boers à Mafeking (9 000 ou 10 000 selon les pages), ajout des articles 9 et 10. À vérifier : la question du district (« 2 à 6 », le mot « groupes » est déduit, signalé en note). Classeur relu par l'import de l'appli : 40 lignes valides. Import en brouillon par un admin, relecture, puis publication.
+- **Bundle** : l'espace Admin passe en chargement à la demande (`App.tsx`) ; `index` 108,56 Ko gzip (avant : 114,62).
+- Commandes : tests ajoutés rouges puis verts ; `npm run check` (variables factices) vert, 595 réussis, 1 échec attendu, 5 ignorés ; `npm run e2e` : 73 réussis ; `supabase test db` en local : `08_card_tier_test.sql` vert, `06_lot5_social_test.sql` 2 échecs dus aux données laissées par d'anciens E2E dans la base locale (10 pseudos au lieu de 4), à confirmer par la CI sur base neuve.

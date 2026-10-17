@@ -48,7 +48,7 @@ function CardEditor({ initial, onSaved, onCancel, onDirtyChange }: { initial: Ed
     if (check.errors.length || !qcm.ok) { setMsg({ error: true, text: check.errors[0] ?? 'QCM incomplet.' }); return }
     setBusy(true)
     try {
-      await saveCard(st.id, { zone, documentId: st.documentId, src: st.src, q: st.draft.q, a: st.draft.a, note: st.draft.note, qcm: qcm.qcm, status })
+      await saveCard(st.id, { zone, documentId: st.documentId, src: st.src, q: st.draft.q, a: st.draft.a, note: st.draft.note, qcm: qcm.qcm, status, tier: st.tier })
       onSaved()
     } catch (err) {
       setMsg({ error: true, text: errorText(err) })
@@ -64,6 +64,14 @@ function CardEditor({ initial, onSaved, onCancel, onDirtyChange }: { initial: Ed
         <select id="ed-doc" className="field" value={st.documentId ?? ''} onChange={e => pickDoc(e.target.value ? Number(e.target.value) : null)}>
           <option value="">Aucun document lié</option>
           {zoneDocs.map(d => <option key={d.id} value={d.id}>{d.cote} · {d.title}</option>)}
+        </select>
+      </div>
+      <div className="col g6">
+        <label htmlFor="ed-tier" className="f-lbl">PALIER DE DIFFICULTÉ</label>
+        <select id="ed-tier" className="field" value={st.tier} onChange={e => setSt({ ...st, tier: Number(e.target.value) })}>
+          <option value={1}>1 · Base</option>
+          <option value={2}>2 · Approfondi (après 70 % du palier 1 de la zone)</option>
+          <option value={3}>3 · Expert (après 70 % du palier 2 de la zone)</option>
         </select>
       </div>
       <div className="col g6"><label htmlFor="ed-src" className="f-lbl">SOURCE AFFICHÉE</label><input id="ed-src" className="field" value={st.src} onChange={e => setSt({ ...st, src: e.target.value })} placeholder="Nom du ou des documents" /></div>

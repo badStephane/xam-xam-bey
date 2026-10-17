@@ -79,7 +79,7 @@ describe('uploadDocument, nettoyage après échec d’insertion', () => {
 
 describe('BE-5 / QA-5 : 0 ligne touchée lève une erreur visible', () => {
   const NONE = /Action refusée ou élément introuvable/
-  const input = { zone: 1, documentId: null, src: 's', q: 'q', a: 'a', note: '', qcm: { ok: 'o', no: ['n'] }, status: 'draft' as const }
+  const input = { zone: 1, documentId: null, src: 's', q: 'q', a: 'a', note: '', qcm: { ok: 'o', no: ['n'] }, status: 'draft' as const, tier: 1 }
 
   test('updateDocument', async () => {
     await expect(updateDocument(12, meta)).resolves.toBeUndefined()

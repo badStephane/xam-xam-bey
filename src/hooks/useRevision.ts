@@ -57,7 +57,7 @@ async function loadSeeds(): Promise<RevisionContent> {
   return toContent(docs)
 }
 
-const CARD_COLUMNS = 'id, zone, document_id, position, q, a, src, note, qcm, status'
+const CARD_COLUMNS = 'id, zone, document_id, position, q, a, src, note, qcm, status, tier'
 
 /** Plan et fiches (revision_content) et cartes publiées (table cards). */
 async function loadContent(): Promise<RevisionContent> {
