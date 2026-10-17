@@ -35,7 +35,7 @@ const fake = vi.hoisted(() => {
     authCb: null as ((event: string, session: unknown) => void) | null,
     progress: vi.fn<(userId: string) => Promise<{ data: unknown; error: unknown }>>(),
     rpc: vi.fn<(name: string, args: unknown) => Promise<{ data: unknown; error: unknown }>>(),
-    signOut: vi.fn(async () => ({ error: null })),
+    signOut: vi.fn(async (_args?: unknown) => ({ error: null })),
     signInWithOtp: vi.fn<(args: unknown) => Promise<{ error: unknown }>>(async () => ({ error: null })),
     verifyOtp: vi.fn<(args: unknown) => Promise<{ error: unknown }>>(async () => ({ error: null })),
   }
@@ -62,7 +62,7 @@ const fake = vi.hoisted(() => {
         state.authCb = cb
         return { data: { subscription: { unsubscribe: () => { state.authCb = null } } } }
       },
-      signOut: () => state.signOut(),
+      signOut: (args?: unknown) => state.signOut(args),
       signInWithOtp: (args: unknown) => state.signInWithOtp(args),
       verifyOtp: (args: unknown) => state.verifyOtp(args),
     },
@@ -232,6 +232,18 @@ describe('useRevision : note puis enregistrement', () => {
     expect(hook.current.saveErr).toBeNull()
   })
 
+  test('bonus de reprise : XP perso ajoutée et envoyée, sans carte notée ni note de ligue', async () => {
+    await signedInAndLoaded(A, row({}, 40))
+    fake.state.rpc.mockResolvedValue(ok(null))
+
+    act(() => hook.current.addXp(2))
+    expect(hook.current.prog.xp).toBe(42)
+    expect(hook.current.prog.cards).toEqual({})
+    expect(readGradesQueue(localStorage, A.id)).toEqual([])
+    await settle(SAVE_DELAY)
+    expect(fake.state.rpc).toHaveBeenCalledWith('save_progress', expect.objectContaining({ p_xp: 42 }))
+  })
+
   test('plusieurs notes rapprochées : un seul envoi', async () => {
     await signedInAndLoaded(A)
     fake.state.rpc.mockResolvedValue(ok([row({})]))
@@ -340,6 +352,28 @@ describe('useRevision : changement de compte et déconnexion', () => {
     expect(local(A)).toBeNull()
     expect(hook.current.status).toBe('signedout')
     expect(hook.current.prog.cards).toEqual({})
+  })
+
+  test('déconnexion choisie : seulement ce téléphone (scope local), sans bandeau de déconnexion imposée', async () => {
+    await signedInAndLoaded(A)
+    fake.state.rpc.mockResolvedValue(ok(null))
+    act(() => hook.current.signOut())
+    await settle()
+    expect(fake.state.signOut).toHaveBeenCalledWith({ scope: 'local' })
+    act(() => fake.state.authCb!('SIGNED_OUT', null))
+    expect(hook.current.forcedOut).toBe(false)
+  })
+
+  test('SIGNED_OUT imposé : forcedOut vrai, remis à faux à la reconnexion', async () => {
+    await signedInAndLoaded(A)
+    expect(hook.current.forcedOut).toBe(false)
+    act(() => fake.state.authCb!('SIGNED_OUT', null))
+    expect(hook.current.forcedOut).toBe(true)
+    fake.state.session = { user: A }
+    fake.state.progress.mockResolvedValueOnce(ok(null))
+    act(() => fake.state.authCb!('SIGNED_IN', { user: A }))
+    await settle()
+    expect(hook.current.forcedOut).toBe(false)
   })
 
   test('déconnexion hors réseau : copie locale gardée, plus aucun envoi ensuite', async () => {

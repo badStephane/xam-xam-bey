@@ -20,11 +20,17 @@ export const TYPE_OPTS: ReadonlyArray<readonly [TypeFilter, string]> = [['all', 
 export const INTERVAL = [1, 1, 3, 7, 21, 60]
 export const XP_SU = 10
 export const XP_HES = 5
+/** XP perso d'une carte sue pendant une reprise (« Refaire ces cartes ») : ni niveau, ni ligue. */
+export const XP_REDO = 2
 export const XP_PER_LEVEL = 200
 export const XP_BAR_SEGMENTS = 20
 export const NEW_PER_DAY = 10
+/** Nouvelles questions demandées en plus (« 10 de plus »), une fois la session du jour terminée. */
+export const EXTRA_NEW = 10
 export const ACQUIRED_LV = 4
 export const MAX_LV = 5
+/** Niveaux perdus par un « Raté » (plancher 0) : une carte bien connue oubliée une fois ne repart pas de zéro. */
+export const MISS_DROP = 2
 export const ZONE_REVIEW_SIZE = 20
 export const EXAM_SIZE = 10
 export const ASK_COUNTS = [10, 20, 30] as const

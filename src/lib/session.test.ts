@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { advance, answerCard, combo, gradeCounts, isLogged, isScored, missedCards, mkSession, REDO, replayCount, scoreCurrent, suggestedGrade } from './session'
+import { advance, answerCard, combo, gradeCounts, isLogged, isScored, missedCards, mkSession, positionXp, REDO, replayCount, scoreCurrent, suggestedGrade } from './session'
 import type { Card, Session } from './types'
 
 const cards: Card[] = ['a', 'b', 'c'].map(id => ({ id, q: 'q ' + id, a: 'a', src: '', note: '', th: 1 }))
@@ -48,11 +48,33 @@ describe('bilans', () => {
 })
 
 describe('reprise des cartes à retravailler', () => {
-  test('ne renote pas, ne rapporte pas d’XP et n’est pas journalisée', () => {
+  test('ne renote pas et n’est pas journalisée ; une carte sue rapporte un bonus d’XP perso', () => {
     const r = answerCard({ ...mkSession('self', REDO, '', cards), rev: true }, 2)!
     expect(r.graded).toBeNull()
-    expect(r.session.xp).toBe(0)
+    expect(r.bonus).toBe(2)
+    expect(r.session.xp).toBe(2)
     expect(isLogged(r.session)).toBe(false)
+  })
+  test('une carte encore ratée ou hésitante en reprise ne rapporte rien', () => {
+    for (const g of [0, 1] as const) {
+      const r = answerCard({ ...mkSession('self', REDO, '', cards), rev: true }, g)!
+      expect(r.bonus).toBe(0)
+      expect(r.session.xp).toBe(0)
+    }
+  })
+  test('hors reprise, aucun bonus : la note passe par la progression (graded)', () => {
+    expect(answerCard({ ...mkSession('self', 'daily', '', cards), rev: true }, 2)!.bonus).toBe(0)
+    expect(answerCard(mkSession('ask', 'ask', '', cards, 'Awa'), 2)!.bonus).toBe(0)
+  })
+  test('positionXp : XP réellement gagnée par la réponse affichée', () => {
+    const daily = scoreCurrent({ ...mkSession('self', 'daily', '', cards), rev: true }, 2)!.session
+    expect(positionXp(daily)).toBe(10)
+    const redo = scoreCurrent({ ...mkSession('self', REDO, '', cards), rev: true }, 2)!.session
+    expect(positionXp(redo)).toBe(2)
+    // Deuxième chance d'une carte ratée : affichée, jamais comptée.
+    const missed = answerCard({ ...mkSession('self', 'daily', '', cards.slice(0, 1)), rev: true }, 0)!.session
+    const second = scoreCurrent({ ...missed, rev: true }, 2)!.session
+    expect(positionXp(second)).toBe(0)
   })
   test('une session « Je réponds » interrompue après une réponse est journalisée', () => {
     const r = answerCard({ ...mkSession('self', 'daily', '', cards), rev: true }, 1)!

@@ -349,6 +349,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const ch = shown.queue[shown.i]?.ch
       const choice = ch && !isSelfCheck(ch) && shown.picked !== null ? ch.options[shown.picked] : undefined
       if (r?.graded) rev.grade(r.graded.card.id, r.graded.grade, today, choice)
+      if (r?.bonus) rev.addXp(r.bonus)
       setSession(r ? r.session : shown)
     },
     next: () => {
@@ -369,6 +370,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const r = s && answerCard(s, g)
       if (!r) return
       if (r.graded) rev.grade(r.graded.card.id, r.graded.grade, today)
+      if (r.bonus) rev.addXp(r.bonus)
       // Note gardée avant le changement de carte : un rechargement ne la rejoue pas.
       keepSession(r.session)
       if (r.finished) endSession(r.session)

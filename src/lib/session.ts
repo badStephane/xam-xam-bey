@@ -1,4 +1,5 @@
 import type { Card, Grade, QuizMode, Session } from './types'
+import { XP_REDO } from './constants'
 import { xpFor } from './srs'
 
 export const REDO = 'redo'
@@ -23,6 +24,15 @@ export interface ScoreResult {
   session: Session
   /** Carte à noter dans la progression (première réponse en mode « Je réponds », hors reprise). */
   graded: { card: Card; grade: Grade } | null
+  /** XP perso sans note (carte sue en reprise), à ajouter à la progression ; 0 sinon. */
+  bonus: number
+}
+
+/** XP gagnée par une réponse : note du jour (première réponse, « Je réponds »), bonus de reprise, ou rien. */
+function answerXp(s: Session, g: Grade, first: boolean): number {
+  if (!first || s.mode !== 'self') return 0
+  if (s.kind === REDO) return g === 2 ? XP_REDO : 0
+  return xpFor(g)
 }
 
 /**
@@ -37,12 +47,20 @@ export function scoreCurrent(s: Session, g: Grade): ScoreResult | null {
   // Les cartes « à retravailler » ont déjà été notées aujourd'hui : on s'entraîne sans renoter.
   const self = s.mode === 'self' && s.kind !== REDO
   const queue = first && self && g === 0 ? [...s.queue, { c: card, second: true, ch: item.ch }] : s.queue
+  const gain = answerXp(s, g, first)
   const session: Session = {
     ...s, queue, hist: [...s.hist, g],
     res: first ? { ...s.res, [card.id]: g } : s.res,
-    xp: s.xp + (first && self ? xpFor(g) : 0),
+    xp: s.xp + gain,
   }
-  return { session, graded: first && self ? { card, grade: g } : null }
+  return { session, graded: first && self ? { card, grade: g } : null, bonus: self ? 0 : gain }
+}
+
+/** XP gagnée par la réponse affichée (verdict du QCM) ; 0 si elle n'est pas encore notée ou en deuxième chance. */
+export function positionXp(s: Session): number {
+  const item = s.queue[s.i]
+  if (!isScored(s) || !item || item.second) return 0
+  return answerXp(s, s.hist[s.i], true)
 }
 
 /** Passe à la carte suivante, une fois la carte affichée notée. « Suivant » ne note rien (E1). */
@@ -58,10 +76,10 @@ export interface AnswerResult extends ScoreResult {
 
 /** Note la carte affichée si ce n'est pas déjà fait, puis passe à la suivante (interrogation, auto-évaluation). */
 export function answerCard(s: Session, g: Grade): AnswerResult | null {
-  const scored = isScored(s) ? { session: s, graded: null } : scoreCurrent(s, g)
+  const scored = isScored(s) ? { session: s, graded: null, bonus: 0 } : scoreCurrent(s, g)
   const moved = scored && advance(scored.session)
   if (!scored || !moved) return null
-  return { session: moved.session, graded: scored.graded, finished: moved.finished }
+  return { session: moved.session, graded: scored.graded, bonus: scored.bonus, finished: moved.finished }
 }
 
 export function gradeCounts(res: Record<string, Grade>): [number, number, number] {
