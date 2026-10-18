@@ -3,7 +3,7 @@ import { useApp } from '../../AppContext'
 import { ZONES } from '../../lib/constants'
 import { validDocPage } from '../../lib/docPage'
 import { matchPages, type PageImport } from '../../lib/docPageImport'
-import { insertPages, listPageRows, type PageRow } from '../../lib/docPagesAdminApi'
+import { insertPages, listPageRows, publishPages, type PageRow } from '../../lib/docPagesAdminApi'
 import { p2, plural } from '../../lib/format'
 import { PageEditor } from './PageEditor'
 
@@ -62,6 +62,42 @@ function ImportBox({ rows, onDone }: { rows: readonly PageRow[]; onDone(): void 
   )
 }
 
+/** Publie en une fois les brouillons de la zone, après confirmation. */
+function PublishZone({ ids, onDone }: { ids: readonly number[]; onDone(n: number): void }) {
+  const [ask, setAsk] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const n = ids.length
+  const publish = async () => {
+    setBusy(true)
+    setError(null)
+    try {
+      const done = await publishPages(ids)
+      setAsk(false)
+      onDone(done)
+    } catch (err) {
+      setError(errorText(err))
+    } finally {
+      setBusy(false)
+    }
+  }
+  if (!n) return null
+  return (
+    <div className="col g6">
+      {ask
+        ? (
+          <div className="two" role="group" aria-label="Confirmer la publication">
+            <button className="ink-btn" disabled={busy} onClick={() => void publish()}>{busy ? 'PUBLICATION…' : `Confirmer : publier ${plural(n, 'page', 'pages')}`}</button>
+            <button className="ink-line" disabled={busy} onClick={() => setAsk(false)}>Annuler</button>
+          </div>
+        )
+        : <button className="ink-btn" onClick={() => setAsk(true)}>Publier {n === 1 ? 'le brouillon' : `les ${n} brouillons`} de la zone</button>}
+      {ask && <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Elles deviennent visibles pour toutes les personnes connectées. Relisez-les avant.</p>}
+      {error && <p className="warn-inline" role="alert" style={{ margin: 0 }}>{error}</p>}
+    </div>
+  )
+}
+
 /** Onglet Pages (2026-10-18) : pages de révision des documents, par zone ; import JSON, édition, publication. */
 export function PagesAdmin() {
   const { docs } = useApp()
@@ -69,6 +105,7 @@ export function PagesAdmin() {
   const [rows, setRows] = useState<PageRow[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [editing, setEditing] = useState<number | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
   const refresh = useCallback(async () => {
     try { setRows(await listPageRows()); setError(null) } catch (err) { setError(errorText(err)) }
   }, [])
@@ -86,13 +123,15 @@ export function PagesAdmin() {
       {rows ? <ImportBox rows={rows} onDone={() => void refresh()} /> : null}
       <div className="col g6">
         <label htmlFor="pg-zone" className="f-lbl">ZONE</label>
-        <select id="pg-zone" className="field" value={zone} onChange={e => setZone(Number(e.target.value))}>
+        <select id="pg-zone" className="field" value={zone} onChange={e => { setZone(Number(e.target.value)); setNotice(null) }}>
           {ZONES.map(([, , theme], i) => {
             const n = docs.filter(d => d.th === i + 1 && byDoc.has(d.id)).length
             return <option key={i} value={i + 1}>Zone {p2(i + 1)} · {theme} · {plural(n, 'page', 'pages')}</option>
           })}
         </select>
       </div>
+      {rows && <PublishZone key={zone} ids={zoneDocs.filter(d => byDoc.get(d.id)?.status === 'draft').map(d => d.id)} onDone={n => { setNotice(`${plural(n, 'page publiée', 'pages publiées')}.`); void refresh() }} />}
+      {notice && <p className="note-box" role="status">{notice}</p>}
       {error && <p className="warn-inline" role="alert" style={{ margin: 0 }}>{error} <button className="btn-mono" onClick={() => void refresh()}>RÉESSAYER</button></p>}
       {!rows && !error && <p className="mono" role="status">CHARGEMENT…</p>}
       {rows && (
