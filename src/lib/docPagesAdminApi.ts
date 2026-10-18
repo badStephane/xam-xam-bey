@@ -32,3 +32,13 @@ export async function insertPages(rows: ReadonlyArray<{ docId: number; page: Doc
   if (error) throw new Error(adminError(error))
   return data?.length ?? 0
 }
+
+/** Publie d'un coup les brouillons désignés (bouton « Publier les brouillons de la zone ») ; renvoie le nombre publié. */
+export async function publishPages(docIds: readonly number[]): Promise<number> {
+  if (!docIds.length) return 0
+  const { data, error } = await client().from('doc_pages').update({ status: 'published' })
+    .in('document_id', [...docIds]).eq('status', 'draft').select('document_id')
+  if (error) throw new Error(adminError(error))
+  if (!data?.length) throw new Error(NOTHING_CHANGED)
+  return data.length
+}
