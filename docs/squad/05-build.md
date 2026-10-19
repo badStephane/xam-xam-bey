@@ -736,3 +736,12 @@ Demande de l'utilisateur : « une révision des documents… des pages de sessio
 ## Publier les brouillons de la zone (2026-10-18)
 
 Demande de l'utilisateur : « ajoute le bouton publier toute la zone ». Onglet PAGES : bouton « Publier les N brouillons de la zone » sous le choix de la zone, confirmation en deux temps (« Confirmer : publier N pages », avec rappel de relire avant), puis « N pages publiées. ». `publishPages` (`docPagesAdminApi.ts`) ne touche que les brouillons désignés (`status = 'draft'`), en une requête ; aucune ligne touchée = erreur visible (RLS). Les pages déjà publiées et les documents sans page ne bougent pas. Test E2E ajouté rouge puis vert (`doc-pages.spec.ts`, admin, 2 brouillons de la zone 1).
+
+## Pages de révision, 2e lot : documents non essentiels (2026-10-18)
+
+Choix de l'utilisateur : étendre les pages aux autres documents. 99 documents non essentiels, lisibles et présents sur le disque (scans, absents et copies identiques nom + taille écartés d'office), répartis entre 7 rédactions, mêmes règles que le 1er lot plus : modèle vide, doublon ou document sans intérêt pour réviser ignoré.
+
+- **Contenu** : `data/pages/pages-lot2.json`, 88 pages. Écartés par les rédactions : 4 modèles financiers .xlsx vides, ETAT NOMINATIF, canevas Badge de bois vide, « orientation sans boussole » (repris dans le document Lopy), Session Secourisme (= Secourisme Alexis). Retirés à l'assemblage : `secourisme(1).pdf` (même guide 2001 que « Formation aux Premiers Secours », déjà pourvu), « Education spirituelle V15 » (version antérieure de la V21, déjà pourvue), « Présentation_DEVOIR… » (copie aux soulignés du document déjà pourvu). Encadré de sécurité ajouté au jeu « Pilote perdu » (yeux bandés).
+- **Sécurité** : pratiques de secourisme dépassées (points de compression, pouls, 15/2 et 5/1, Schäfer, Sylvester, coup de poing, talc, mercurochrome, aspi-venin…) jamais en consigne, encadré « Pratique dépassée » ; scan des points et « à retenir » : seules des consignes négatives correctes (« ne pas faire vomir », « pas de corps gras »).
+- **Relu par `matchPages`** (documents du 1er lot comptés comme pourvus) : 87 prêtes, 1 erreur : le dossier ASJ existe deux fois en zone 5 sous le même nom de fichier exact ; retirer la copie en double de la bibliothèque, puis réimporter (les 87 autres seront sautées).
+- Contenu seul : ni code, ni migration, ni déploiement.
