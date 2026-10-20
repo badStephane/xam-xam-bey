@@ -1,0 +1,576 @@
+[
+ {
+  "zone": 2,
+  "tier": 1,
+  "q": "De quelle couleur est la chemise de la branche jaune (louveteaux) ?",
+  "a": "Une chemise **bleu ciel** (code #77B5FE) à **manches courtes**, avec deux poches à rabats et deux épaulettes, portée avec un **short kaki**.",
+  "ok": "Bleu ciel, à manches courtes",
+  "no": [
+   "Jaune, à manches courtes",
+   "Vert gazon, à manches longues",
+   "Gris plomb, à manches longues"
+  ],
+  "src": "OBJETS ET SYMBOLES SCOUTS PROTEGES.pdf, p. 3",
+  "note": ""
+ },
+ {
+  "zone": 2,
+  "tier": 1,
+  "q": "De quelle couleur est la chemise de la branche rouge ?",
+  "a": "Une chemise **gris plomb** (code #798081) à manches longues, portée avec un pantalon **kaki**.",
+  "ok": "Gris plomb",
+  "no": [
+   "Rouge vif",
+   "Vert gazon",
+   "Bleu de minuit"
+  ],
+  "src": "OBJETS ET SYMBOLES SCOUTS PROTEGES.pdf, p. 9",
+  "note": ""
+ },
+ {
+  "zone": 2,
+  "tier": 1,
+  "q": "Où se coud la bande « Scouts du Sénégal » sur la chemise ?",
+  "a": "**Au-dessus de la poche droite**. C'est la bande d'association : fond noir, drapeau du Sénégal et inscription en lettres d'or.",
+  "ok": "Au-dessus de la poche droite",
+  "no": [
+   "Au-dessus de la poche gauche",
+   "Sur la manche droite, près de l'épaule",
+   "Sur le rabat de la poche gauche"
+  ],
+  "src": "OBJETS ET SYMBOLES SCOUTS PROTEGES.pdf, p. 4",
+  "note": ""
+ },
+ {
+  "zone": 2,
+  "tier": 1,
+  "q": "À quoi ressemble l'insigne mondial (bureau mondial, OMMS) et où se porte-t-il ?",
+  "a": "Un **rond de 38 mm à fond violet** portant l'insigne mondial en blanc, cousu **au milieu de la poche droite**, entre le rabat et le fond.",
+  "ok": "Rond violet de 38 mm, au milieu de la poche droite",
+  "no": [
+   "Rond vert de 45 mm, au milieu de la poche gauche",
+   "Rond violet de 38 mm, sur la manche gauche",
+   "Rond bleu de 38 mm, au-dessus de la poche droite"
+  ],
+  "src": "OBJETS ET SYMBOLES SCOUTS PROTEGES.pdf, p. 4",
+  "note": ""
+ },
+ {
+  "zone": 2,
+  "tier": 1,
+  "q": "Un chef porte des tisons à 3 bûchettes. Quel est son niveau de formation ?",
+  "a": "Le nombre de bûchettes indique le niveau de formation : **2 = chef d'unité**, **3 = formateur adjoint**, **4 = formateur**.",
+  "ok": "Formateur adjoint",
+  "no": [
+   "Chef d'unité",
+   "Formateur",
+   "Commissaire de district"
+  ],
+  "src": "OBJETS ET SYMBOLES SCOUTS PROTEGES.pdf, p. 11-12",
+  "note": ""
+ },
+ {
+  "zone": 2,
+  "tier": 1,
+  "q": "Selon le tableau des couleurs de fonction, quelle couleur correspond au chef de troupe ?",
+  "a": "Le **vert**. Le chef de meute a le **jaune**, le chef de clan le **rouge** et le chef de groupe l'**orange**.",
+  "ok": "Vert",
+  "no": [
+   "Jaune",
+   "Rouge",
+   "Orange"
+  ],
+  "src": "OBJETS ET SYMBOLES SCOUTS PROTEGES.pdf, p. 2",
+  "note": "Couleurs lues sur le tableau illustré du document."
+ },
+ {
+  "zone": 2,
+  "tier": 2,
+  "q": "Dans le tableau des couleurs de fonction, comment distingue-t-on un assistant (ou un adjoint) du chef ?",
+  "a": "L'assistant porte **la même couleur que le chef**, avec un **carré rouge foncé au centre** de la bande (ex. vert avec carré rouge foncé pour l'assistant chef de troupe).",
+  "ok": "Même couleur que le chef, avec un carré rouge foncé au centre",
+  "no": [
+   "Même couleur que le chef, mais en bande plus étroite",
+   "Une couleur différente : blanc pour tous les assistants",
+   "Même couleur que le chef, avec un liseré doré autour"
+  ],
+  "src": "OBJETS ET SYMBOLES SCOUTS PROTEGES.pdf, p. 2",
+  "note": "Déduit de l'illustration du tableau (aucun texte ne le décrit)."
+ },
+ {
+  "zone": 2,
+  "tier": 2,
+  "q": "Comment un éclaireur porte-t-il officiellement les manches de sa chemise, et quand fait-il exception ?",
+  "a": "Officiellement, les manches sont **roulées proprement jusqu'au coude**. Exceptionnellement, elles sont **attachées au poignet** quand il porte des **gants blancs** (escorte du drapeau, montée des couleurs ou autre cérémonie). Pour les responsables, c'est l'inverse.",
+  "ok": "Roulées jusqu'au coude ; attachées au poignet s'il porte des gants blancs",
+  "no": [
+   "Attachées au poignet ; roulées jusqu'au coude pendant les jeux",
+   "Roulées jusqu'au coude ; déroulées seulement quand il pleut",
+   "Attachées au poignet ; roulées au coude pendant les camps"
+  ],
+  "src": "OBJETS ET SYMBOLES SCOUTS PROTEGES.pdf, p. 6 et 10",
+  "note": ""
+ },
+ {
+  "zone": 2,
+  "tier": 2,
+  "q": "Comment se porte le foulard selon les règles des Scouts du Sénégal ?",
+  "a": "**Par-dessus le col** de la chemise, attaché de préférence par un nœud en **tête de turc** (un nœud fait par le membre est permis), à hauteur du **deuxième bouton**.",
+  "ok": "Par-dessus le col, noué à hauteur du deuxième bouton",
+  "no": [
+   "Sous le col, noué à hauteur du premier bouton",
+   "Par-dessus le col, noué à hauteur du troisième bouton",
+   "Sous le col, noué juste sous la pomme d'Adam"
+  ],
+  "src": "OBJETS ET SYMBOLES SCOUTS PROTEGES.pdf, p. 4",
+  "note": ""
+ },
+ {
+  "zone": 2,
+  "tier": 2,
+  "q": "Quelles bandes blanches portent le SP, le CP et le CP principal sur la poche gauche ?",
+  "a": "Des bandes blanches de 1 cm : **une** pour le **SP**, **deux** pour le **CP** (entourant l'insigne de promesse), **trois** pour le **CP principal** (les deux du CP plus une centrale sous l'insigne).",
+  "ok": "SP : une ; CP : deux ; CP principal : trois",
+  "no": [
+   "SP : deux ; CP : trois ; CP principal : quatre",
+   "SP : une ; CP : deux ; CP principal : deux plus une étoile",
+   "SP : aucune ; CP : une ; CP principal : deux"
+  ],
+  "src": "OBJETS ET SYMBOLES SCOUTS PROTEGES.pdf, p. 7-8",
+  "note": ""
+ },
+ {
+  "zone": 2,
+  "tier": 2,
+  "q": "Quelle est la couleur des flots de communauté à la branche rouge, et où s'accrochent-ils ?",
+  "a": "**Marron pour les apprentis**, **gris pour les compagnons** ; ils s'accrochent à l'**épaulette gauche** de la chemise.",
+  "ok": "Marron (apprentis), gris (compagnons), à l'épaulette gauche",
+  "no": [
+   "Gris (apprentis), marron (compagnons), à l'épaulette gauche",
+   "Rouge (apprentis), noir (compagnons), à l'épaulette droite",
+   "Marron (apprentis), gris (compagnons), à la poche gauche"
+  ],
+  "src": "OBJETS ET SYMBOLES SCOUTS PROTEGES.pdf, p. 10",
+  "note": ""
+ },
+ {
+  "zone": 2,
+  "tier": 2,
+  "q": "Qui peut porter le foulard de Mbao et les tisons ?",
+  "a": "Ils sont **réservés aux chefs ayant validé le camp école de Mbao**. Le **foulard de Gilwell** peut, lui, être autorisé dans les **camps internationaux**.",
+  "ok": "Les chefs ayant validé le camp école de Mbao",
+  "no": [
+   "Tous les chefs d'unité en règle",
+   "Les membres de l'équipe nationale uniquement",
+   "Les chefs ayant fait un camp international"
+  ],
+  "src": "OBJETS ET SYMBOLES SCOUTS PROTEGES.pdf, p. 11",
+  "note": ""
+ },
+ {
+  "zone": 3,
+  "tier": 1,
+  "q": "Dans le salut scout, que rappellent les trois doigts levés et le pouce replié sur le petit doigt ?",
+  "a": "Les **trois doigts levés** (index, majeur, annulaire) rappellent les trois vertus scoutes : **franchise, dévouement, pureté**. Le **pouce sur le petit doigt** rappelle l'engagement chevaleresque : **le fort protège le faible**.",
+  "ok": "Franchise, dévouement, pureté ; le fort protège le faible",
+  "no": [
+   "Loyauté, courage, pureté ; le grand aide le petit",
+   "Franchise, obéissance, joie ; le chef guide la patrouille",
+   "Foi, espérance, charité ; le fort soutient le plus jeune"
+  ],
+  "src": "Système de fonctionnement .pdf, p. 5",
+  "note": ""
+ },
+ {
+  "zone": 3,
+  "tier": 1,
+  "q": "En quoi consiste le système de patrouille, et de combien de garçons se compose la patrouille ?",
+  "a": "Il consiste à attribuer à **chaque garçon une responsabilité, un rôle, une fonction** bien déterminés dans la patrouille ; c'est une **condition absolue**. La patrouille compte **six à huit garçons**.",
+  "ok": "Une fonction pour chaque garçon ; six à huit garçons",
+  "no": [
+   "Une fonction pour le CP et le SP seulement ; quatre à six garçons",
+   "Une fonction tirée au sort chaque mois ; dix à douze garçons",
+   "Une fonction pour les engagés seulement ; huit à dix garçons"
+  ],
+  "src": "Système de fonctionnement .pdf, p. 8",
+  "note": ""
+ },
+ {
+  "zone": 3,
+  "tier": 1,
+  "q": "Parmi les 10 nœuds de l'aspirant, lequel sert à attacher deux cordes de diamètres différents ?",
+  "a": "Le **nœud de tisserand**. Le **nœud plat (ou droit)** et le **nœud de pêcheur**, eux, attachent deux cordes de **même diamètre**.",
+  "ok": "Le nœud de tisserand",
+  "no": [
+   "Le nœud plat",
+   "Le nœud de pêcheur",
+   "Le nœud de cabestin"
+  ],
+  "src": "Système de fonctionnement .pdf, p. 4",
+  "note": ""
+ },
+ {
+  "zone": 3,
+  "tier": 1,
+  "q": "Selon la session « Les feux », quelle condition doit absolument être remplie avant d'allumer un feu ?",
+  "a": "Un feu ne doit **JAMAIS** être allumé si une **quantité d'eau suffisante pour l'éteindre** n'est pas **à côté**. Il faut aussi dégager les alentours, creuser le foyer, l'entourer de pierres, puis entretenir et surveiller le feu.",
+  "ok": "Avoir à côté assez d'eau pour l'éteindre",
+  "no": [
+   "Avoir l'accord écrit du propriétaire du terrain",
+   "Attendre que le vent soit complètement tombé",
+   "Avoir rassemblé tout le bois de la soirée"
+  ],
+  "src": "Système de fonctionnement .pdf, p. 13",
+  "note": ""
+ },
+ {
+  "zone": 3,
+  "tier": 2,
+  "q": "Dans la grille alimentaire, qu'est-ce qu'un plat « à risque », et combien en tolérer par repas ?",
+  "a": "C'est un plat que des jeunes **n'aiment potentiellement pas** (ex. domoda), **ne peuvent pas manger** à cause d'une allergie, ou qu'on **risque de rater** (ex. soupou kandia). Il faut éviter **plus d'un plat « à risque » par repas**.",
+  "ok": "Peu aimé, allergène ou facile à rater ; un au plus par repas",
+  "no": [
+   "Cher, rare ou long à préparer ; deux au plus par repas",
+   "Épicé, froid ou trop gras ; aucun pendant tout le camp",
+   "Peu aimé, allergène ou facile à rater ; trois au plus par repas"
+  ],
+  "src": "Système de fonctionnement .pdf, p. 10-11",
+  "note": ""
+ },
+ {
+  "zone": 3,
+  "tier": 2,
+  "q": "Pour harmoniser la semaine de camp, à quel moment prévoir des plats « réconfort », et quel écart laisser entre deux ingrédients principaux identiques ?",
+  "a": "Entre le **3e et le 4e jour**, à cause d'une **baisse de moral** des participants. Il est judicieux de laisser **3 jours d'écart** entre deux ingrédients principaux identiques. Le premier jour, on fait un repas **maîtrisé et plutôt rapide**.",
+  "ok": "Entre le 3e et le 4e jour ; 3 jours d'écart",
+  "no": [
+   "Le premier jour ; 2 jours d'écart",
+   "Le dernier jour ; 5 jours d'écart",
+   "Entre le 5e et le 6e jour ; 1 jour d'écart"
+  ],
+  "src": "Système de fonctionnement .pdf, p. 11",
+  "note": ""
+ },
+ {
+  "zone": 3,
+  "tier": 2,
+  "q": "Qu'est-ce que le « repas plan B » de la grille alimentaire, et quand sert-il ?",
+  "a": "Un repas de secours **sans cuisson et non périssable** (boîtes, petite réserve de fruits, **taboulé en boîte**), à sortir en cas de galère : **alerte orange, plus de gaz, déluge empêchant d'allumer le feu, repas raté**.",
+  "ok": "Un repas sans cuisson et non périssable, en cas de galère",
+  "no": [
+   "Un repas de fête préparé pour le dernier soir du camp",
+   "Un repas acheté au village quand l'intendant est absent",
+   "Un repas froid réservé aux jeunes qui ont un régime spécial"
+  ],
+  "src": "Système de fonctionnement .pdf, p. 11",
+  "note": ""
+ },
+ {
+  "zone": 3,
+  "tier": 2,
+  "q": "Quel feu fait le moins d'étincelles et économise le bois, et comment l'alimente-t-on ?",
+  "a": "Le **feu en étoile**. Il produit **peu de chaleur**, mais **économise le bois** et évite de couper les bûches longues : on **pousse le bois vers le centre** à mesure qu'il brûle. On l'allume avec du petit bois.",
+  "ok": "Le feu en étoile : on pousse le bois vers le centre",
+  "no": [
+   "Le feu en pyramide : on ajoute du bois léger au centre",
+   "Le feu en bûcher : on croise de nouvelles bûches dessus",
+   "Le feu polynésien : on remet du bois au fond du trou"
+  ],
+  "src": "Système de fonctionnement .pdf, p. 14",
+  "note": ""
+ },
+ {
+  "zone": 5,
+  "tier": 1,
+  "q": "Dans le montage d'une tente en 10 points, de quoi tient-on compte pour choisir l'emplacement idéal ?",
+  "a": "De la **pente**, du **relief** et du **vent**. C'est la toute première étape, pendant qu'un autre gars sort les sardines à un endroit précis.",
+  "ok": "La pente, le relief et le vent",
+  "no": [
+   "L'ombre, la distance à l'eau et le sol",
+   "La pluie, les arbres et les fourmis",
+   "Le soleil levant, le feu et les feuillées"
+  ],
+  "src": "Tente.pdf, p. 1",
+  "note": ""
+ },
+ {
+  "zone": 5,
+  "tier": 1,
+  "q": "Selon la fiche de montage de la tente, quelle règle concerne le CP ?",
+  "a": "Le **CP ne plante en principe aucune sardine de toit**.",
+  "ok": "Il ne plante en principe aucune sardine de toit",
+  "no": [
+   "Il plante lui-même les 4 sardines des coins",
+   "Il plante seul les 6 sardines du corps",
+   "Il plante les 2 sardines extrêmes du toit"
+  ],
+  "src": "Tente.pdf, p. 1",
+  "note": ""
+ },
+ {
+  "zone": 5,
+  "tier": 2,
+  "q": "Une fois le toit posé sur le corps, dans quel ordre plante-t-on ses sardines ?",
+  "a": "D'abord les **2 sardines extrêmes** (piquets verticaux), puis les **4 sardines des coins**, puis les **paires du milieu**, face à face, en vérifiant chaque fois la **tension symétrique** ; on finit par les **tendeurs intermédiaires**.",
+  "ok": "Les 2 extrêmes, les 4 coins, puis les paires du milieu",
+  "no": [
+   "Les 4 coins, les 2 extrêmes, puis les tendeurs",
+   "Les paires du milieu, les 4 coins, puis les extrêmes",
+   "Les tendeurs, les 2 extrêmes, puis les 4 coins"
+  ],
+  "src": "Tente.pdf, p. 1",
+  "note": ""
+ },
+ {
+  "zone": 5,
+  "tier": 1,
+  "q": "Dans le schéma ABCD de premiers secours, que désignent les quatre lettres ?",
+  "a": "**A = Airway** (voies respiratoires), **B = Breathing** (respiration), **C = Circulation**, **D = Défibrillation**.",
+  "ok": "Voies respiratoires, respiration, circulation, défibrillation",
+  "no": [
+   "Alerte, bilan, conscience, dégagement",
+   "Appel, blessure, contrôle, désinfection",
+   "Arrêt, brûlure, choc, détresse"
+  ],
+  "src": "09_abcd.pdf, p. 1",
+  "note": ""
+ },
+ {
+  "zone": 5,
+  "tier": 1,
+  "q": "Selon le schéma ABCD, dans quels cas arrête-t-on la réanimation ?",
+  "a": "Quand la victime montre des **signes de vie**, en cas d'**épuisement** ou de **mise en danger du sauveteur**. Sinon, on continue jusqu'au **relais** par d'autres sauveteurs, les secours ou un médecin.",
+  "ok": "Signes de vie, épuisement ou danger pour le sauveteur",
+  "no": [
+   "Au bout de 10 minutes sans résultat",
+   "Dès que la victime a reçu un premier choc",
+   "Après 5 cycles de 30 compressions"
+  ],
+  "src": "09_abcd.pdf, p. 1",
+  "note": ""
+ },
+ {
+  "zone": 5,
+  "tier": 2,
+  "q": "Un défibrillateur (DAE) est posé sur la victime. Que fait-on après le choc, ou si l'appareil n'indique pas de choc ?",
+  "a": "Dans les deux cas, on fait **5 cycles de 30 compressions pour 2 insufflations**, puis le défibrillateur **analyse à nouveau le rythme**.",
+  "ok": "5 cycles de 30:2, puis nouvelle analyse du rythme",
+  "no": [
+   "On arrête tout et on attend l'arrivée des secours",
+   "On met la victime en position latérale de sécurité",
+   "On redonne aussitôt un choc sans réanimer"
+  ],
+  "src": "09_abcd.pdf, p. 1",
+  "note": "Le document dit « AED » (sigle anglais) ; en français, défibrillateur automatisé externe (DAE)."
+ },
+ {
+  "zone": 5,
+  "tier": 2,
+  "q": "La victime présente des signes de vie spontanés. Que prévoit le schéma ABCD ?",
+  "a": "**Alarmer**, puis **évaluer** la victime (lésion dorsale, hémorragie, lésions internes) et prendre les **mesures** : position, **maîtriser les hémorragies**, protection, encadrement. Ensuite, **répéter ABCD**.",
+  "ok": "Alarmer, évaluer, prendre des mesures et répéter ABCD",
+  "no": [
+   "Commencer tout de suite les compressions thoraciques",
+   "La laisser seule et partir chercher le défibrillateur",
+   "La faire boire et l'aider à se relever"
+  ],
+  "src": "09_abcd.pdf, p. 1",
+  "note": ""
+ },
+ {
+  "zone": 5,
+  "tier": 1,
+  "q": "Sur un triangle de bandage, comment s'appellent l'angle droit, le grand côté et les deux autres pointes ?",
+  "a": "L'angle droit (90°) est le **sommet**, le grand côté la **base**, et les deux autres pointes les **chefs**.",
+  "ok": "Sommet, base et chefs",
+  "no": [
+   "Pointe, bord et ailes",
+   "Tête, côté et queues",
+   "Coin, ourlet et bouts"
+  ],
+  "src": "Bandage1.pdf, p. 1",
+  "note": ""
+ },
+ {
+  "zone": 5,
+  "tier": 1,
+  "q": "Pour un bandage de la tête avec un triangle, où placer la base et le sommet, et où nouer ?",
+  "a": "Le **milieu de la base sur le front**, le **sommet sur la nuque** ; les chefs passent au-dessus des oreilles et se **nouent sur la nuque**, puis on ramène le sommet dans le nœud.",
+  "ok": "Base sur le front, sommet sur la nuque, nœud sur la nuque",
+  "no": [
+   "Base sur la nuque, sommet sur le front, nœud sous le menton",
+   "Base sur une oreille, sommet sur l'autre, nœud sur le front",
+   "Base sur le front, sommet sous le menton, nœud sur le sommet du crâne"
+  ],
+  "src": "Bandage1.pdf, p. 1",
+  "note": "La fiche précise qu'on peut aussi commencer par la nuque."
+ },
+ {
+  "zone": 5,
+  "tier": 2,
+  "q": "Bandage de la main avec un triangle moyen : par où commence-t-on et que fait-on du sommet ?",
+  "a": "**Base au poignet**, sommet sur le devant ; on **rabat le sommet sur le dos de la main**, on replie les chefs, on les **croise sur le dos de la main** et on **ramène le sommet dans le nœud**, au poignet.",
+  "ok": "Base au poignet, sommet rabattu sur le dos de la main",
+  "no": [
+   "Base sur les doigts, sommet noué dans la paume",
+   "Base au coude, sommet enroulé autour du pouce",
+   "Base sur le dos de la main, sommet coupé au ras du poignet"
+  ],
+  "src": "Bandage1.pdf, p. 1",
+  "note": "Même méthode pour le pied selon la fiche."
+ },
+ {
+  "zone": 7,
+  "tier": 1,
+  "q": "Dans un programme trimestriel, que signifie l'équilibre « JARE » entre les activités ?",
+  "a": "Un équilibre entre le **Jeu**, l'**Apprentissage**, la **Réalisation manuelle** et l'**Éthique scoute** (le fait de pratiquer activement la loi scoute).",
+  "ok": "Jeu, apprentissage, réalisation manuelle, éthique scoute",
+  "no": [
+   "Jeu, animation, randonnée, expression",
+   "Joie, aventure, respect, engagement",
+   "Jeu, accueil, rencontre, évaluation"
+  ],
+  "src": "P-trim.pdf, p. 1-2",
+  "note": ""
+ },
+ {
+  "zone": 7,
+  "tier": 1,
+  "q": "Quand le programme trimestriel (p-trim) doit-il être rendu ?",
+  "a": "**Au début du trimestre** ; il doit parvenir au chef de troupe **avant la première séance de cadres** du trimestre.",
+  "ok": "Au début du trimestre, avant la première séance de cadres",
+  "no": [
+   "À la fin du trimestre, pour faire le bilan",
+   "Au milieu du trimestre, après les premières séances",
+   "La veille de chaque activité, séance par séance"
+  ],
+  "src": "P-trim.pdf, p. 1",
+  "note": "« ct » est compris comme chef de troupe (le document cite « chef de troupe, de brigade » dans la liste des acteurs)."
+ },
+ {
+  "zone": 7,
+  "tier": 2,
+  "q": "En préparant son p-trim, un chef n'a pas encore défini une séance de fin de mois. Que lui conseille le document ?",
+  "a": "N'inscrire que des activités **certaines** : écrire simplement **« séance de patrouille » ou « jeu de piste »**. Dans le doute, **mieux vaut une formulation un peu imprécise qu'une erreur grossière**.",
+  "ok": "Écrire « séance de patrouille » ou « jeu de piste »",
+  "no": [
+   "Inventer un thème précis, quitte à le changer ensuite",
+   "Laisser la date vide sans rien y inscrire",
+   "Supprimer la séance du programme du trimestre"
+  ],
+  "src": "P-trim.pdf, p. 2",
+  "note": ""
+ },
+ {
+  "zone": 8,
+  "tier": 1,
+  "q": "Selon la présentation sur la pédagogie des noms de jungle, quelles sont les trois raisons de donner un nom de jungle aux chefs ?",
+  "a": "**L'identification** (se relier à un personnage), **l'inspiration** (être un modèle vivant) et **la transmission des valeurs** : respect, loyauté, solidarité.",
+  "ok": "Identification, inspiration, transmission des valeurs",
+  "no": [
+   "Discipline, hiérarchie, obéissance",
+   "Tradition, secret, initiation",
+   "Jeu, imaginaire, déguisement"
+  ],
+  "src": "Nom de jungle.pdf, p. 2",
+  "note": ""
+ },
+ {
+  "zone": 8,
+  "tier": 1,
+  "q": "Dans la pédagogie des noms de jungle, quel personnage incarne l'amour et la sécurité, et que doit faire le chef qui le porte ?",
+  "a": "**Raksha, la Mère Louve**. Le chef crée un **environnement sûr et rassurant**, encourage la **confiance** et l'**autonomie progressive**, et reste **disponible** pour chaque louveteau.",
+  "ok": "Raksha : créer un cadre sûr et rassurant",
+  "no": [
+   "Akéla : donner des directives claires et fermes",
+   "Hathi : transmettre les traditions de la jungle",
+   "Chil : transmettre les messages à la meute"
+  ],
+  "src": "Nom de jungle.pdf, p. 4",
+  "note": "Texte de la diapositive partiellement déformé dans l'image ; le sens reste clair."
+ },
+ {
+  "zone": 8,
+  "tier": 1,
+  "q": "Selon la présentation sur les noms de jungle, quel est le rôle de Chil auprès de la meute ?",
+  "a": "**Chil, le Messager** (« Toujours prêt à servir ») : **transmettre les messages**, **veiller sur la meute** et être **prêt à aider**.",
+  "ok": "Transmettre les messages et veiller sur la meute",
+  "no": [
+   "Raconter les légendes et garder les traditions",
+   "Donner les ordres et faire respecter la loi",
+   "Soigner les blessés et rassurer les petits"
+  ],
+  "src": "Nom de jungle.pdf, p. 9",
+  "note": "Chez Kipling, Chil est le vautour ; la présentation le nomme « le Messager »."
+ },
+ {
+  "zone": 8,
+  "tier": 2,
+  "q": "Quel personnage de la jungle a pour phrase « Œil qui voit dans le noir, pattes qui ne font pas de bruit » ?",
+  "a": "**Bagheera, la Panthère Noire**. Le chef qui porte ce nom doit **observer avec attention**, **agir avec discrétion** et **enseigner avec sagesse**.",
+  "ok": "Bagheera, la Panthère Noire",
+  "no": [
+   "Kaa, le Python",
+   "Frère Gris, le Loup Fidèle",
+   "Akéla, le Chef de la Meute"
+  ],
+  "src": "Nom de jungle.pdf, p. 5",
+  "note": ""
+ },
+ {
+  "zone": 8,
+  "tier": 2,
+  "q": "À quel personnage la présentation attribue-t-elle « Ta chasse sera ma chasse, ton gîte mon gîte et ton dernier combat sera le mien » ?",
+  "a": "À **Frère Gris, le Loup Fidèle**, compagnon loyal de Mowgli. Le chef qui porte ce nom montre **loyauté et solidarité** et accompagne activement chaque louveteau.",
+  "ok": "Frère Gris, le Loup Fidèle",
+  "no": [
+   "Baloo, l'Ours Savant",
+   "Raksha, la Mère Louve",
+   "Hathi, l'Éléphant Sage"
+  ],
+  "src": "Nom de jungle.pdf, p. 8",
+  "note": "Phrase partiellement déformée dans l'image (« gitte », « dierrier ») ; lecture probable retenue."
+ },
+ {
+  "zone": 8,
+  "tier": 2,
+  "q": "Quel personnage dit « La rivière est là pour boire et non pour la salir », et quel exemple le chef qui le porte doit-il donner ?",
+  "a": "**Hathi, l'Éléphant Sage**, gardien des traditions et légendes de la jungle. Le chef donne l'**exemple du respect de la nature et des autres**, avec patience et calme.",
+  "ok": "Hathi : le respect de la nature et des autres",
+  "no": [
+   "Baloo : la patience dans l'apprentissage",
+   "Bagheera : la discrétion dans l'action",
+   "Kaa : la prudence avant d'agir"
+  ],
+  "src": "Nom de jungle.pdf, p. 10",
+  "note": ""
+ },
+ {
+  "zone": 8,
+  "tier": 2,
+  "q": "Quelles trois activités pratiques la présentation sur les noms de jungle propose-t-elle aux chefs ?",
+  "a": "**Choisir son personnage**, une **étude de cas** (« veiller sur la meute ») et une **mise en situation** (« appliquer les valeurs en action »).",
+  "ok": "Choisir son personnage, étude de cas, mise en situation",
+  "no": [
+   "Lire le Livre de la jungle, dessiner, jouer une scène",
+   "Grand jeu, veillée, conseil du Rocher",
+   "Fabriquer un masque, chanter, raconter une histoire"
+  ],
+  "src": "Nom de jungle.pdf, p. 11",
+  "note": ""
+ },
+ {
+  "zone": 8,
+  "tier": 3,
+  "q": "Avant un grand jeu, une sizaine fonce sans préparer sa stratégie. Selon la présentation, quel personnage le chef doit-il incarner pour l'aider ?",
+  "a": "**Kaa, le Python**, patient et méthodique : il **encourage la réflexion avant l'action**, aide à bâtir des **stratégies simples** et favorise **la prudence et la préparation**.",
+  "ok": "Kaa, qui fait réfléchir et planifier avant d'agir",
+  "no": [
+   "Chil, qui transmet vite les consignes à tous",
+   "Akéla, qui impose sa décision sans discussion",
+   "Frère Gris, qui court aux côtés des louveteaux"
+  ],
+  "src": "Nom de jungle.pdf, p. 7",
+  "note": "Texte de la diapositive déformé dans l'image (« refilixien », « planilfer ») ; sens confirmé par le maître-mot de Kaa du Guide du louvetier."
+ }
+]
