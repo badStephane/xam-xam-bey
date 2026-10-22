@@ -50,18 +50,27 @@ export function buildDocIndex(docs: readonly ImportDocument[]): DocIndex {
 /** Nom de fichier en tête d'un morceau de source, extension comprise (« x.pdf, p. 3 » → « x.pdf »). */
 const FILE_HEAD = /^\s*(.+?\.(?:pdf|docx?|pptx?|xlsx?))(?=$|[\s,(])/i
 
+/** Clé de correspondance et texte tel qu'écrit dans la source (pour départager des noms proches). */
+interface SourceKey { raw: string; key: string }
+
 /**
  * Clés essayées dans l'ordre : la source entière, puis le fichier en tête de chaque morceau séparé par « ; »
  * (« Bases du scoutisme.pdf, p. 16 ; fiches-BP.pdf »). Sans extension, pas de découpe : un titre peut contenir une virgule.
  */
-function sourceKeys(src: string): string[] {
+function sourceKeys(src: string): SourceKey[] {
   const heads = src.split(';').map(part => FILE_HEAD.exec(part)?.[1] ?? '')
-  return [...new Set([src, ...heads].map(docKey).filter(Boolean))]
+  const keys = [src, ...heads].map(raw => ({ raw: raw.trim(), key: docKey(raw) })).filter(k => k.key)
+  return keys.filter((k, i) => keys.findIndex(x => x.key === k.key) === i)
 }
 
-function linkKey(key: string, zone: number, index: DocIndex): DocLink {
+const sameName = (a: string, b: string): boolean => a.normalize('NFC') === b.normalize('NFC')
+
+function linkKey({ raw, key }: SourceKey, zone: number, index: DocIndex): DocLink {
   const found = index.get(indexKey(zone, key)) ?? []
-  if (found.length === 1) return { kind: 'linked', id: found[0].id, title: found[0].title }
+  // Noms proches (« Systeme de Fonctionnement.pdf », « Système de fonctionnement .pdf ») : le nom de fichier écrit à l'identique départage.
+  const exact = found.filter(d => sameName(d.file_name, raw))
+  const pick = found.length === 1 ? found[0] : exact.length === 1 ? exact[0] : null
+  if (pick) return { kind: 'linked', id: pick.id, title: pick.title }
   return found.length ? { kind: 'ambiguous', titles: found.map(d => d.title) } : { kind: 'unknown' }
 }
 

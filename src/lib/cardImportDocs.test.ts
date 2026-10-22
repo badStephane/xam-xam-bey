@@ -44,12 +44,25 @@ describe('linkDocument', () => {
     // titre d'un document = nom de fichier d'un autre
     expect(linkDocument('Veillée', 3, index)).toEqual({ kind: 'ambiguous', titles: ['Carnet', 'veillee'] })
   })
+  test('noms proches (accents, casse, espace avant l’extension) : le nom de fichier exact départage', () => {
+    const z3 = buildDocIndex([
+      { id: 28, zone: 3, title: 'Systeme de Fonctionnement', file_name: 'Systeme de Fonctionnement.pdf' },
+      { id: 29, zone: 3, title: 'Système de fonctionnement ', file_name: 'Système de fonctionnement .pdf' },
+    ])
+    expect(linkDocument('Système de fonctionnement .pdf, p. 4', 3, z3)).toMatchObject({ kind: 'linked', id: 29 })
+    expect(linkDocument('Systeme de Fonctionnement.pdf, p. 2', 3, z3)).toMatchObject({ kind: 'linked', id: 28 })
+    // accents décomposés (NFD, noms de fichiers macOS) : même nom
+    expect(linkDocument('Système de fonctionnement .pdf'.normalize('NFD'), 3, z3)).toMatchObject({ kind: 'linked', id: 29 })
+    expect(linkDocument('systeme de fonctionnement', 3, z3)).toEqual({ kind: 'ambiguous', titles: ['Systeme de Fonctionnement', 'Système de fonctionnement '] })
+  })
   test('fichier suivi de pages ou d’un passage, ou plusieurs sources : premier fichier de la zone reconnu', () => {
     expect(linkDocument('Bases du scoutisme.pdf, p. 16-17 et 26', 1, index)).toMatchObject({ kind: 'linked', id: 1 })
     expect(linkDocument('inconnu.pdf, p. 3 ; Bases du scoutisme.pdf, p. 25', 1, index)).toMatchObject({ kind: 'linked', id: 1 })
     expect(linkDocument('la devise, l_esprit et les élements fondamentaux du scoutismes.docx (devise) ; x', 1, index)).toMatchObject({ kind: 'linked', id: 4 })
     expect(linkDocument('Les-7-éléments-de-la-méthode-scoute-version-courte.pdf, p. 1-2', 1, index)).toMatchObject({ kind: 'linked', id: 5 })
-    expect(linkDocument('Veillée.pdf, p. 2', 3, index)).toEqual({ kind: 'ambiguous', titles: ['Carnet', 'veillee'] })
+    // nom de fichier écrit à l'identique : il départage
+    expect(linkDocument('Veillée.pdf, p. 2', 3, index)).toMatchObject({ kind: 'linked', id: 32 })
+    expect(linkDocument('veillee.pdf, p. 2', 3, index)).toEqual({ kind: 'ambiguous', titles: ['Carnet', 'veillee'] })
     expect(linkDocument('inconnu.pdf, p. 3 ; autre.docx', 1, index)).toEqual({ kind: 'unknown' })
     const slides = buildDocIndex([{ id: 70, zone: 7, title: 'leadership SDS', file_name: 'leadership SDS.pptx' }, { id: 71, zone: 7, title: 'Suivi', file_name: 'Suivi financier.xlsx' }])
     expect(linkDocument('leadership SDS.pptx, diapo 7', 7, slides)).toMatchObject({ kind: 'linked', id: 70 })

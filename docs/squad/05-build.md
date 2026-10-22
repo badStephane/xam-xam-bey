@@ -745,3 +745,13 @@ Choix de l'utilisateur : étendre les pages aux autres documents. 99 documents n
 - **Sécurité** : pratiques de secourisme dépassées (points de compression, pouls, 15/2 et 5/1, Schäfer, Sylvester, coup de poing, talc, mercurochrome, aspi-venin…) jamais en consigne, encadré « Pratique dépassée » ; scan des points et « à retenir » : seules des consignes négatives correctes (« ne pas faire vomir », « pas de corps gras »).
 - **Relu par `matchPages`** (documents du 1er lot comptés comme pourvus) : 87 prêtes, 1 erreur : le dossier ASJ existe deux fois en zone 5 sous le même nom de fichier exact ; retirer la copie en double de la bibliothèque, puis réimporter (les 87 autres seront sautées).
 - Contenu seul : ni code, ni migration, ni déploiement.
+- Import en production (2026-10-19) : 88 prêtes, 0 erreur (le doublon ASJ n'existe plus dans la bibliothèque en ligne).
+
+## Documents scannés : pages et questions (2026-10-20)
+
+Choix de l'utilisateur : « Documents scannés ». Les 7 documents du catalogue marqués `scan` (52 pages, sans texte pour pdftotext) n'avaient ni page ni question. Pages rendues en images (`pdftoppm`), lues à l'image par 3 rédactions (transcription page par page, puis page de révision et questions, mêmes règles que les lots précédents).
+
+- **Pages** : `data/pages/pages-scans.json`, 7 pages (OBJETS ET SYMBOLES SCOUTS PROTEGES, Système de fonctionnement, Tente, 09_abcd, Bandage1, P-trim, Nom de jungle). Relu par `matchPages` (lots 1 et 2 comptés comme pourvus) : 7 prêtes, 0 erreur.
+- **Questions** : `data/import/scans-questions.xlsx` (et `.json`), 41 questions : 21 au palier 1, 19 au palier 2, 1 au palier 3 ; zones 2, 3, 5, 7 et 8. Toutes reliées à leur document par `linkDocument`.
+- **Sécurité** : 09_abcd (fiche suisse 2006) fait donner 2 insufflations avant les compressions : encadré « Pratique dépassée » (adulte : 30 compressions d'abord), aucune question là-dessus ; numéro 144 signalé comme suisse. Bandage1 : encadré « compression directe d'abord ».
+- **Correctif d'import** (`cardImportDocs.ts`) : quand plusieurs documents de la zone répondent à la même clé (« Systeme de Fonctionnement.pdf » et « Système de fonctionnement .pdf », zone 3), le nom de fichier écrit à l'identique dans la Source départage (comparaison NFC), comme pour l'import des pages. Sur les questions de paliers des zones 1 à 11 : 431 reliées, 4 ambiguës (le doublon ASJ du catalogue local) au lieu de 8. Tests ajoutés rouges puis verts.
