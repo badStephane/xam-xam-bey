@@ -524,45 +524,46 @@
   },
   {
    "id": "t5-38",
-   "q": "Quel rythme de RCP (compressions/insufflations) donne le guide national pour un adulte et pour un enfant ?",
-   "a": "Adulte : **15 compressions pour 2 insufflations**. Enfant et nourrisson : **5 compressions pour 1 insufflation**. Fréquence : **100 compressions par minute**.",
-   "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
-   "note": "Formaion Secourisme DRPCK.pdf donne 30 compressions pour 2 insufflations chez l'adulte et chez l'enfant (15/2 chez le nourrisson). Le Fascicule de la Croix-Rouge donne 15/2 pour un secouriste seul et 5/1 à deux secouristes.",
+   "q": "Quel rythme de RCP (compressions/insufflations) applique-t-on aujourd'hui chez l'adulte ?",
+   "a": "**30 compressions pour 2 insufflations**, à **100 à 120 compressions par minute**. Le guide national enseigne 15/2 chez l'adulte et 5/1 chez l'enfant, à 100 par minute : pratique dépassée.",
+   "src": "Formaion Secourisme DRPCK.pdf, Formation aux Premiers Secours.pdf, Session Secourisme.docx",
+   "note": "Chez l'enfant et le nourrisson, les secouristes formés font **15/2** ; un témoin non formé peut garder 30/2. Formaion Secourisme DRPCK.pdf donne déjà 30/2 chez l'adulte. Le Fascicule de la Croix-Rouge donne 15/2 pour un secouriste seul et 5/1 à deux secouristes.",
    "qcm": {
-    "ok": "Adulte 15/2, enfant 5/1, à 100 par minute",
+    "ok": "30/2, à 100–120 par minute",
     "no": [
-     "Adulte 5/1, enfant 15/2, à 60 par minute",
-     "Adulte 10/1, enfant 3/1, à 120 par minute",
-     "Adulte 15/2, enfant 15/2, à 80 par minute"
+     "15/2, à 100 par minute",
+     "5/1, à 60 par minute",
+     "30/2, à 60–80 par minute"
     ]
    }
   },
   {
    "id": "t5-39",
-   "q": "Combien d'insufflations initiales avant de commencer la RCP ?",
-   "a": "Le guide national et la session scoute : **2 insufflations** efficaces. Les autres documents diffèrent (voir la note).",
+   "q": "Chez l'adulte en arrêt cardiaque, par quoi commence-t-on la RCP aujourd'hui ?",
+   "a": "Par **30 compressions thoraciques**, sans insufflation initiale, puis **2 insufflations**, et ainsi de suite (30/2). Le guide national et la session scoute enseignent **2 insufflations initiales** : pratique dépassée chez l'adulte.",
    "src": "Formation aux Premiers Secours.pdf, Session Secourisme.docx",
-   "note": "Le Fascicule de premiers secours (Croix-Rouge) indique 4 insufflations ; Formaion Secourisme DRPCK.pdf indique 10 ventilations initiales chez l'adulte et 5 chez le nourrisson.",
+   "note": "Chez l'enfant, le nourrisson et le noyé, les recommandations actuelles (ERC 2021) gardent **5 insufflations initiales**. Les anciens documents diffèrent : 4 dans le Fascicule de la Croix-Rouge ; 10 chez l'adulte et 5 chez le nourrisson dans Formaion Secourisme DRPCK.pdf.",
    "qcm": {
-    "ok": "2 insufflations",
+    "ok": "30 compressions d'emblée, sans insufflation",
     "no": [
-     "4 insufflations",
-     "10 insufflations",
-     "Aucune, compressions d'emblée"
+     "2 insufflations, puis les compressions",
+     "4 insufflations, puis les compressions",
+     "10 insufflations, puis les compressions"
     ]
    }
   },
   {
    "id": "t5-40",
    "q": "De combien enfonce-t-on le sternum lors des compressions thoraciques ?",
-   "a": "Adulte : **4 à 5 cm** (deux mains) ; enfant de 1 à 8 ans : **3 à 4 cm** (une main) ; nourrisson : **2 à 3 cm** (deux doigts).",
+   "a": "Adulte : **5 à 6 cm** (deux mains) ; enfant : **environ 5 cm** (une ou deux mains) ; nourrisson : **environ 4 cm** (deux doigts ou deux pouces). Chez l'enfant et le nourrisson : **un tiers de l'épaisseur du thorax**.",
    "src": "Formation aux Premiers Secours.pdf",
+   "note": "Le guide national (Formation aux Premiers Secours.pdf) donne 4 à 5 cm chez l'adulte, 3 à 4 cm chez l'enfant et 2 à 3 cm chez le nourrisson : valeurs dépassées.",
    "qcm": {
-    "ok": "Adulte 4–5 cm, enfant 3–4 cm, nourrisson 2–3 cm",
+    "ok": "Adulte 5–6 cm, enfant ~5 cm, nourrisson ~4 cm",
     "no": [
+     "Adulte 4–5 cm, enfant 3–4 cm, nourrisson 2–3 cm",
      "Adulte 2–3 cm, enfant 1–2 cm, nourrisson 1 cm",
-     "Adulte 6–8 cm, enfant 5–6 cm, nourrisson 4 cm",
-     "Adulte 4–5 cm, enfant 4–5 cm, nourrisson 3–4 cm"
+     "Adulte 8–10 cm, enfant 6–7 cm, nourrisson 5 cm"
     ]
    }
   },
