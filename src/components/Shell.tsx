@@ -23,6 +23,7 @@ function AccountPanel({ pieces, onClose }: { pieces: string; onClose(): void }) 
       <span className="lbl">CONNECTÉ AVEC</span>
       <b className="account-mail">{rev.email}</b>
       <span className="lbl">{pieces}</span>
+      <span className="muted" style={{ fontSize: '0.8125rem' }}>Les responsables de la plateforme (administrateurs) peuvent consulter votre progression ; chaque consultation est notée.</span>
       <div className="row">
         {isAdmin && <button className="btn-mono" onClick={() => { onClose(); go('admin') }} aria-current={ui.screen === 'admin' ? 'page' : undefined}>ESPACE ADMIN</button>}
         <button className="btn-mono" onClick={() => { onClose(); rev.signOut() }}>SE DÉCONNECTER</button>

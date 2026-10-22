@@ -98,6 +98,7 @@ export function SignInForms() {
   return (
     <GateCard tag="CONNEXION NÉCESSAIRE" stamp="OUVERTE À TOUS" title="Connectez-vous pour réviser">
       <p>La révision enregistre vos progrès avec votre compte. Saisissez votre e-mail : vous recevrez un lien et un code de connexion, sans mot de passe. La bibliothèque reste ouverte à tous.</p>
+      <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Les responsables de la plateforme (administrateurs) peuvent consulter votre progression ; chaque consultation est notée.</p>
       <form className="col g8" style={{ width: '100%' }} onSubmit={submit} noValidate>
         <label htmlFor="signin-email" className="f-lbl">ADRESSE E-MAIL</label>
         <input ref={input} id="signin-email" className="field" type="email" inputMode="email" autoComplete="email" required value={email}

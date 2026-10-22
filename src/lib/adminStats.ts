@@ -6,11 +6,11 @@ export interface ZoneStat { zone: number; scouts: number; seen: number; acquired
 export interface HardQuestion { id: string; zone: number; q: string; answers: number; correct: number }
 export interface AdminStats { accounts: number; weeks: WeekStat[]; zones: ZoneStat[]; hardest: HardQuestion[] }
 
-type Row = Record<string, unknown>
+export type Row = Record<string, unknown>
 
-const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/
-const isCount = (v: unknown): v is number => typeof v === 'number' && Number.isInteger(v) && v >= 0
-const isRow = (v: unknown): v is Row => !!v && typeof v === 'object' && !Array.isArray(v)
+export const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/
+export const isCount = (v: unknown): v is number => typeof v === 'number' && Number.isInteger(v) && v >= 0
+export const isRow = (v: unknown): v is Row => !!v && typeof v === 'object' && !Array.isArray(v)
 
 const toWeek = (r: Row): WeekStat[] =>
   typeof r.week === 'string' && ISO_DAY.test(r.week) && isCount(r.scouts) && isCount(r.answers) && isCount(r.correct) && r.correct <= r.answers
@@ -25,7 +25,8 @@ const toHard = (r: Row): HardQuestion[] =>
     && isCount(r.correct) && r.correct <= r.answers
     ? [{ id: r.id, zone: r.zone, q: r.q, answers: r.answers, correct: r.correct }] : []
 
-const rows = <T>(v: unknown, to: (r: Row) => T[]): T[] | null => (Array.isArray(v) ? v.filter(isRow).flatMap(to) : null)
+/** Liste validée ligne à ligne (lignes invalides écartées), ou null si ce n'est pas une liste. */
+export const rows = <T>(v: unknown, to: (r: Row) => T[]): T[] | null => (Array.isArray(v) ? v.filter(isRow).flatMap(to) : null)
 
 /** Réponse du serveur validée ; une ligne mal formée est écartée, une réponse sans sa structure est refusée (null). */
 export function parseAdminStats(d: unknown): AdminStats | null {

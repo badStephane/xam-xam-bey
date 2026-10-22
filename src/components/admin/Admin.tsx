@@ -5,7 +5,7 @@ import { SignInGate, UnavailableGate } from '../revision/Gate'
 import { CardsAdmin } from './CardsAdmin'
 import { DocsAdmin } from './DocsAdmin'
 
-type Tab = 'docs' | 'cards' | 'pages' | 'pseudos' | 'stats'
+type Tab = 'docs' | 'cards' | 'pages' | 'pseudos' | 'stats' | 'suivi'
 
 /** Pages de révision des documents (2026-10-18), chargées à la demande. */
 const PagesAdmin = lazy(() => import('./PagesAdmin').then(m => ({ default: m.PagesAdmin }), () => ({
@@ -19,6 +19,11 @@ const PseudosAdmin = lazy(() => import('./PseudosAdmin').then(m => ({ default: m
 
 /** Statistiques globales (2026-10-22), chargées à la demande. */
 const StatsAdmin = lazy(() => import('./StatsAdmin').then(m => ({ default: m.StatsAdmin }), () => ({
+  default: () => <p className="muted" role="status">Cet onglet n’a pas pu se charger. Vérifiez la connexion puis rechargez la page.</p>,
+})))
+
+/** Suivi d'un scout (2026-10-22), chargé à la demande. */
+const ScoutsAdmin = lazy(() => import('./ScoutsAdmin').then(m => ({ default: m.ScoutsAdmin }), () => ({
   default: () => <p className="muted" role="status">Cet onglet n’a pas pu se charger. Vérifiez la connexion puis rechargez la page.</p>,
 })))
 
@@ -49,10 +54,11 @@ export function Admin() {
         <button className="chip" aria-current={tab === 'pages' ? 'page' : undefined} onClick={() => { if (confirmLeaveDraft()) setTab('pages') }}>PAGES</button>
         <button className="chip" aria-current={tab === 'pseudos' ? 'page' : undefined} onClick={() => { if (confirmLeaveDraft()) setTab('pseudos') }}>PSEUDOS</button>
         <button className="chip" aria-current={tab === 'stats' ? 'page' : undefined} onClick={() => { if (confirmLeaveDraft()) setTab('stats') }}>STATS</button>
+        <button className="chip" aria-current={tab === 'suivi' ? 'page' : undefined} onClick={() => { if (confirmLeaveDraft()) setTab('suivi') }}>SUIVI</button>
       </nav>
       {tab === 'docs' ? <DocsAdmin /> : tab === 'cards' ? <CardsAdmin /> : (
         <Suspense fallback={<p className="mono" role="status">CHARGEMENT…</p>}>
-          {tab === 'pages' ? <PagesAdmin /> : tab === 'pseudos' ? <PseudosAdmin /> : <StatsAdmin />}
+          {tab === 'pages' ? <PagesAdmin /> : tab === 'pseudos' ? <PseudosAdmin /> : tab === 'stats' ? <StatsAdmin /> : <ScoutsAdmin />}
         </Suspense>
       )}
     </div>
