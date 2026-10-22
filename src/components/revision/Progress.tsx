@@ -106,6 +106,7 @@ export function Progress() {
         <span className="eyebrow">NIV. {lvl.lv} · {grade.name.toUpperCase()} · {lvl.xp} XP</span>
         <h1 className="h-screen">Progression</h1>
         <p style={{ margin: 0 }} className="muted">{acq} cartes acquises sur {cards.length} publiées. Une carte est acquise au niveau {ACQUIRED_LV}.</p>
+        <p style={{ margin: 0, fontSize: '0.8125rem' }} className="muted">Les responsables de la plateforme (administrateurs) peuvent consulter votre progression ; chaque consultation est notée.</p>
       </div>
       <div className="kpis k4">
         <div className="kpi"><b style={{ color: 'var(--amber)' }}>{streak(rev.prog, today)}</b><span>SÉRIE ACTUELLE</span></div>

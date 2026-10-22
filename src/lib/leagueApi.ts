@@ -1,3 +1,4 @@
+import { parseAdminViews, parseScoutHits, parseScoutProgress, type AdminView, type ScoutHit, type ScoutProgress } from './adminScout'
 import { parseAdminStats, type AdminStats } from './adminStats'
 import { parseLeagueState, type LeagueState } from './league'
 import { supabase } from './supabase'
@@ -77,6 +78,14 @@ export const adminSetBlockedWord = (word: string, exact: boolean): Promise<RpcRe
 export const adminRemoveBlockedWord = (word: string): Promise<RpcResult<true>> => call('admin_remove_blocked_word', { p_word: word }, done)
 
 export const adminStats = (): Promise<RpcResult<AdminStats>> => call('admin_stats', {}, parseAdminStats)
+
+/** Suivi d'un scout : 3 caractères au moins (sinon 22023 SEARCH_TOO_SHORT). */
+export const adminFindScouts = (search: string): Promise<RpcResult<ScoutHit[]>> => call('admin_find_scouts', { p_search: search.trim() }, parseScoutHits)
+
+/** Ouvre la fiche d'un compte ; le serveur note la consultation dans le journal. */
+export const adminScoutProgress = (userId: string): Promise<RpcResult<ScoutProgress>> => call('admin_scout_progress', { p_user: userId }, parseScoutProgress)
+
+export const adminListViews = (): Promise<RpcResult<AdminView[]>> => call('admin_list_views', {}, parseAdminViews)
 
 export const adminModeratePseudo = (userId: string, action: ModerationAction): Promise<RpcResult<true>> =>
   call('admin_moderate_pseudo', { p_user: userId, p_action: action }, done)
