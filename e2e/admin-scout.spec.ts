@@ -4,7 +4,7 @@ import { sql } from './qa-import-helpers'
 
 /**
  * Onglet Admin SUIVI (2026-10-22), pile Supabase LOCALE : recherche par pseudo, fiche du scout (semaines, zones, séances),
- * retour à la recherche et journal des consultations qui note l'ouverture.
+ * retour à la recherche et journal qui note la recherche et l'ouverture.
  */
 test('admin : SUIVI retrouve un scout par pseudo, ouvre sa fiche et note la consultation', async ({ page }) => {
   test.setTimeout(60_000)
@@ -50,6 +50,7 @@ test('admin : SUIVI retrouve un scout par pseudo, ouvre sa fiche et note la cons
     await expect(hit).toHaveCount(1)
     await panel.getByText('JOURNAL DES CONSULTATIONS', { exact: true }).click()
     await expect(panel.getByText(`${email.toLowerCase()} a consulté ${scoutMail}`)).toBeVisible()
+    await expect(panel.getByText(`${email.toLowerCase()} a cherché « ${pseudo.toLowerCase()} »`)).toBeVisible()
   } finally {
     sql(`delete from auth.users where id = '${scout}'`)
   }

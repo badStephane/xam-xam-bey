@@ -10,7 +10,10 @@ export interface ScoutProgress {
   email: string; pseudo: string | null; createdAt: string | null; lastActive: string | null; xp: number
   weeks: ScoutWeek[]; zones: ScoutZone[]; sessions: ScoutSession[]
 }
-export interface AdminView { viewedAt: string; adminEmail: string | null; targetEmail: string }
+/** Entrée du journal : une fiche ouverte (targetEmail) ou une recherche (search). */
+export interface AdminView { viewedAt: string; adminEmail: string; targetEmail: string | null; search: string | null }
+
+const LABEL_MAX = 60
 
 const text = (v: unknown): string | null => (typeof v === 'string' ? v : null)
 
@@ -27,11 +30,14 @@ const toZone = (r: Row): ScoutZone[] =>
     ? [{ zone: r.zone, total: r.total, seen: r.seen, acquired: r.acquired }] : []
 
 const toSession = (r: Row): ScoutSession[] =>
-  isCount(r.d) && isCount(r.n) && isCount(r.ok) && r.ok <= r.n ? [{ d: r.d, n: r.n, ok: r.ok, l: text(r.l) ?? '' }] : []
+  isCount(r.d) && isCount(r.n) && isCount(r.ok) && r.ok <= r.n ? [{ d: r.d, n: r.n, ok: r.ok, l: (text(r.l) ?? '').slice(0, LABEL_MAX) }] : []
 
-const toView = (r: Row): AdminView[] =>
-  typeof r.viewed_at === 'string' && typeof r.target_email === 'string'
-    ? [{ viewedAt: r.viewed_at, adminEmail: text(r.admin_email), targetEmail: r.target_email }] : []
+const toView = (r: Row): AdminView[] => {
+  const targetEmail = text(r.target_email)
+  const search = text(r.search)
+  return typeof r.viewed_at === 'string' && typeof r.admin_email === 'string' && (targetEmail === null) !== (search === null)
+    ? [{ viewedAt: r.viewed_at, adminEmail: r.admin_email, targetEmail, search }] : []
+}
 
 export const parseScoutHits = (d: unknown): ScoutHit[] | null => rows(d, toHit)
 

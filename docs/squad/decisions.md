@@ -63,7 +63,7 @@ Date : 2026-10-22. Statut : acceptée (choix de l'utilisateur).
 
 **Contexte.** La progression n'était lisible que par la personne (RLS de `progress`). Les statistiques globales (onglet STATS) ne suffisent pas : l'utilisateur veut suivre l'évolution d'un scout en particulier. Beaucoup de scouts sont mineurs.
 
-**Décision.** Onglet SUIVI : recherche par une partie de l'e-mail ou du pseudo (3 caractères au moins, 20 résultats), fiche nominative (identité, 7 semaines de réponses, zones, 10 dernières séances). Accès par RPC security definer réservées aux admins ; la table `progress` reste fermée. Chaque ouverture de fiche est notée dans `admin_views` (admin, compte, date ; un an), visible des admins. Les scouts sont prévenus sur l'écran de connexion, dans le panneau du compte et sur l'écran Progression.
+**Décision.** Onglet SUIVI : recherche par une partie de l'e-mail ou du pseudo (3 caractères au moins, 20 résultats), fiche nominative (identité, 7 semaines de réponses, zones, 10 dernières séances). Accès par RPC security definer réservées aux admins ; la table `progress` reste fermée. Chaque recherche (elle affiche jusqu'à 20 e-mails) et chaque ouverture de fiche sont notées dans `admin_views` (e-mail de l'admin, e-mail du compte ou texte cherché, date ; recopiés pour survivre à la suppression d'un compte, purgés après un an), visibles des admins. Les scouts sont prévenus sur l'écran de connexion, dans le panneau du compte et sur l'écran Progression.
 
 **Conséquences.** Les e-mails des comptes trouvés sont visibles des admins ; l'onglet PSEUDOS reste sans e-mail. La liste complète des comptes n'est pas proposée.
 

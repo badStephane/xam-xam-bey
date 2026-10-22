@@ -42,7 +42,7 @@ function ViewsJournal() {
         {journal.kind === 'ready' && (journal.views.length
           ? (
             <ul className="col g6" style={{ margin: 0, paddingLeft: 18, fontSize: '0.875rem' }}>
-              {journal.views.map((v, i) => <li key={`${v.viewedAt}-${i}`} style={{ overflowWrap: 'anywhere' }}>{dateLabel(v.viewedAt)} · {v.adminEmail ?? 'admin supprimé'} a consulté {v.targetEmail}</li>)}
+              {journal.views.map((v, i) => <li key={`${v.viewedAt}-${i}`} style={{ overflowWrap: 'anywhere' }}>{dateLabel(v.viewedAt)} · {v.adminEmail} {v.search !== null ? `a cherché « ${v.search} »` : `a consulté ${v.targetEmail}`}</li>)}
             </ul>
           )
           : <p className="muted" style={{ margin: 0 }}>Aucune consultation.</p>)}
@@ -59,7 +59,7 @@ export function ScoutsAdmin() {
   const [open, setOpen] = useState<string | null>(null)
 
   if (offline) return <p className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: '0.875rem' }}>Hors réseau : le suivi demande du réseau.</span></p>
-  if (open) return <ScoutDetail userId={open} onBack={() => setOpen(null)} />
+  if (open) return <ScoutDetail key={open} userId={open} onBack={() => setOpen(null)} />
 
   const submit = async (e: FormEvent) => {
     e.preventDefault()
@@ -70,7 +70,7 @@ export function ScoutsAdmin() {
   }
   return (
     <section className="col g12" aria-label="Suivi d’un scout">
-      <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Retrouvez un compte par une partie de son e-mail ou de son pseudo. Chaque fiche ouverte est notée dans le journal des consultations ; les scouts savent que les responsables peuvent voir leur progression.</p>
+      <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Retrouvez un compte par une partie de son e-mail ou de son pseudo. Chaque recherche et chaque fiche ouverte sont notées dans le journal des consultations ; les scouts savent que les responsables peuvent voir leur progression.</p>
       <form className="row" onSubmit={e => void submit(e)} role="search">
         <label className="sr" htmlFor="adm-sc-q">E-mail ou pseudo</label>
         <input id="adm-sc-q" className="pseudo-input" value={query} onChange={e => setQuery(e.target.value)} placeholder="E-mail ou pseudo" autoComplete="off" />

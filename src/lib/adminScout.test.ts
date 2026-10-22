@@ -54,21 +54,32 @@ describe('parseScoutProgress', () => {
     })).toEqual(PROGRESS)
   })
 
+  it('coupe un libellé de séance trop long', () => {
+    expect(parseScoutProgress({ ...PROGRESS, sessions: [{ d: 20748, n: 5, ok: 4, l: 'x'.repeat(200) }] })?.sessions[0].l).toHaveLength(60)
+  })
+
   it('garde une séance sans libellé', () => {
     expect(parseScoutProgress({ ...PROGRESS, sessions: [{ d: 20748, n: 5, ok: 4 }] })?.sessions).toEqual([{ d: 20748, n: 5, ok: 4, l: '' }])
   })
 })
 
 describe('parseAdminViews', () => {
-  it('lit le journal, admin supprimé compris', () => {
+  it('lit les fiches ouvertes et les recherches du journal', () => {
     expect(parseAdminViews([
-      { viewed_at: '2026-10-22T08:00:00+00:00', admin_email: 'chef@test.sn', target_email: 'a@test.sn' },
-      { viewed_at: '2026-10-21T08:00:00+00:00', admin_email: null, target_email: 'b@test.sn' },
-      { viewed_at: null, admin_email: 'chef@test.sn', target_email: 'c@test.sn' },
+      { viewed_at: '2026-10-22T08:00:00+00:00', admin_email: 'chef@test.sn', target_email: 'a@test.sn', search: null },
+      { viewed_at: '2026-10-21T08:00:00+00:00', admin_email: 'chef@test.sn', target_email: null, search: 'gma' },
     ])).toEqual([
-      { viewedAt: '2026-10-22T08:00:00+00:00', adminEmail: 'chef@test.sn', targetEmail: 'a@test.sn' },
-      { viewedAt: '2026-10-21T08:00:00+00:00', adminEmail: null, targetEmail: 'b@test.sn' },
+      { viewedAt: '2026-10-22T08:00:00+00:00', adminEmail: 'chef@test.sn', targetEmail: 'a@test.sn', search: null },
+      { viewedAt: '2026-10-21T08:00:00+00:00', adminEmail: 'chef@test.sn', targetEmail: null, search: 'gma' },
     ])
+  })
+
+  it('écarte une entrée sans date, sans admin, ou à la fois fiche et recherche', () => {
+    expect(parseAdminViews([
+      { viewed_at: null, admin_email: 'chef@test.sn', target_email: 'c@test.sn', search: null },
+      { viewed_at: '2026-10-21T08:00:00+00:00', admin_email: null, target_email: 'c@test.sn', search: null },
+      { viewed_at: '2026-10-21T08:00:00+00:00', admin_email: 'chef@test.sn', target_email: 'c@test.sn', search: 'gma' },
+    ])).toEqual([])
     expect(parseAdminViews(null)).toBeNull()
   })
 })

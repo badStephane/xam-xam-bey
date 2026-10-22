@@ -1,8 +1,8 @@
--- Suivi d'un scout par l'admin (2026-10-22) : recherche par e-mail ou pseudo, fiche de progression, journal des consultations.
+-- Suivi d'un scout par l'admin (2026-10-22) : recherche par e-mail ou pseudo, fiche de progression, journal des recherches et fiches.
 -- Tout est annulé en fin de fichier.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(18);
+select plan(22);
 
 insert into auth.users (id, email, email_confirmed_at, aud, role, created_at) values
   ('00000000-0000-0000-0000-000000000b01', 'suivi-amadou@test.sn', now(), 'authenticated', 'authenticated', now() - interval '30 days'),
@@ -34,12 +34,13 @@ create table scout_tests.res (label text primary key, s jsonb not null);
 grant select on scout_tests.ids to authenticated;
 grant select, insert on scout_tests.res to authenticated;
 
--- Amadou : A acquise, B vue ; 2 séances ; 3 réponses cette semaine sur 2 jours, dont 2 réussies.
+-- Amadou : A acquise, B vue ; 3 séances (la plus ancienne avec un libellé trop long) ; 3 réponses cette semaine sur 2 jours, dont 2 réussies.
 insert into public.progress (user_id, cards, sessions, xp)
   select '00000000-0000-0000-0000-000000000b01',
          jsonb_build_object(i.a, jsonb_build_array(4, i.day + 9, 6, 5, i.day - 20), i.b, jsonb_build_array(1, i.day, 2, 0, i.day - 3)),
          jsonb_build_array(jsonb_build_object('d', i.day - 1, 'n', 10, 'ok', 7, 'k', 'day', 'l', 'Jour'),
-                           jsonb_build_object('d', i.day, 'n', 5, 'ok', 5, 'k', 'day', 'l', 'Jour')), 120
+                           jsonb_build_object('d', i.day, 'n', 5, 'ok', 5, 'k', 'day', 'l', 'Jour'),
+                           jsonb_build_object('d', i.day - 2, 'n', 3, 'ok', 1, 'k', 'day', 'l', repeat('x', 200))), 120
     from scout_tests.ids i;
 insert into public.grade_events (user_id, day, card_id, week_start, grade, xp, received_at)
   select '00000000-0000-0000-0000-000000000b01', i.day - x.n, x.card, i.week, x.grade, 0, now()
@@ -77,17 +78,24 @@ select is((select z from scout_tests.res, scout_tests.ids i, jsonb_array_element
           (select jsonb_build_object('zone', i.zone, 'total', i.total, 'seen', 2, 'acquired', 1) from scout_tests.ids i),
           'fiche : zone avec cartes vues, acquises et total publié');
 select is((select jsonb_agg(x -> 'n') from scout_tests.res, jsonb_array_elements(s -> 'sessions') x where label = 'amadou'),
-          '[5, 10]'::jsonb, 'fiche : séances de la plus récente à la plus ancienne');
+          '[5, 10, 3]'::jsonb, 'fiche : séances de la plus récente à la plus ancienne');
+select is((select char_length(s -> 'sessions' -> 2 ->> 'l') from scout_tests.res where label = 'amadou'), 60, 'fiche : libellé de séance coupé à 60 caractères');
 select is((select jsonb_build_object('xp', s -> 'xp', 'sessions', s -> 'sessions', 'lastActive', s -> 'lastActive')
              from scout_tests.res where label = 'fatou'),
           '{"xp": 0, "sessions": [], "lastActive": null}'::jsonb, 'fiche : compte sans progression');
 select throws_ok($$select public.admin_scout_progress('00000000-0000-0000-0000-0000000000ff')$$, 'P0002', 'NOT_FOUND', 'fiche : compte inconnu');
 
-select results_eq($$select admin_email, target_email from public.admin_list_views() limit 2$$,
+select results_eq($$select admin_email, target_email from public.admin_list_views() where search is null limit 2$$,
   $$values ('suivi-admin@test.sn'::text, 'suivi-fatou@test.sn'::text), ('suivi-admin@test.sn'::text, 'suivi-amadou@test.sn'::text)$$,
   'journal : chaque fiche ouverte est notée, la plus récente en premier');
+select results_eq($$select search from public.admin_list_views() where search is not null$$,
+  $$values ('suivi-fatou'::text), ('lion rap'), ('suivi-amad')$$, 'journal : chaque recherche est notée (pas celle refusée)');
 
 select set_config('role', 'postgres', true);
+select ok(not has_sequence_privilege('authenticated', 'public.admin_views_id_seq', 'usage'), 'journal : compteur interne fermé');
+delete from auth.users where id = '00000000-0000-0000-0000-000000000b02';
+select is((select count(*) from public.admin_views where target_email = 'suivi-fatou@test.sn' and target_id is null), 1::bigint,
+  'journal : la trace reste après la suppression du compte');
 select is((select count(*) from public.admin_views where target_id = '00000000-0000-0000-0000-0000000000ff'), 0::bigint,
   'journal : rien de noté pour un compte inconnu');
 
