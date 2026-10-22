@@ -1,3 +1,4 @@
+import { parseAdminStats, type AdminStats } from './adminStats'
 import { parseLeagueState, type LeagueState } from './league'
 import { supabase } from './supabase'
 
@@ -75,5 +76,7 @@ export const adminSetBlockedWord = (word: string, exact: boolean): Promise<RpcRe
 
 export const adminRemoveBlockedWord = (word: string): Promise<RpcResult<true>> => call('admin_remove_blocked_word', { p_word: word }, done)
 
-export const adminModeratePseudo = (userId: string, action: ModerationAction): Promise<RpcResult<true>> =>
+export const adminStats = (): Promise<RpcResult<AdminStats>> => call('admin_stats', {}, parseAdminStats)
+
+export const adminModeratePseudo =(userId: string, action: ModerationAction): Promise<RpcResult<true>> =>
   call('admin_moderate_pseudo', { p_user: userId, p_action: action }, done)
