@@ -5,7 +5,7 @@ import { SignInGate, UnavailableGate } from '../revision/Gate'
 import { CardsAdmin } from './CardsAdmin'
 import { DocsAdmin } from './DocsAdmin'
 
-type Tab = 'docs' | 'cards' | 'pages' | 'pseudos'
+type Tab = 'docs' | 'cards' | 'pages' | 'pseudos' | 'stats'
 
 /** Pages de révision des documents (2026-10-18), chargées à la demande. */
 const PagesAdmin = lazy(() => import('./PagesAdmin').then(m => ({ default: m.PagesAdmin }), () => ({
@@ -14,6 +14,11 @@ const PagesAdmin = lazy(() => import('./PagesAdmin').then(m => ({ default: m.Pag
 
 /** Modération des pseudos (lot 5), chargée à la demande. */
 const PseudosAdmin = lazy(() => import('./PseudosAdmin').then(m => ({ default: m.PseudosAdmin }), () => ({
+  default: () => <p className="muted" role="status">Cet onglet n’a pas pu se charger. Vérifiez la connexion puis rechargez la page.</p>,
+})))
+
+/** Statistiques globales (2026-10-22), chargées à la demande. */
+const StatsAdmin = lazy(() => import('./StatsAdmin').then(m => ({ default: m.StatsAdmin }), () => ({
   default: () => <p className="muted" role="status">Cet onglet n’a pas pu se charger. Vérifiez la connexion puis rechargez la page.</p>,
 })))
 
@@ -43,9 +48,12 @@ export function Admin() {
         <button className="chip" aria-current={tab === 'cards' ? 'page' : undefined} onClick={() => { if (confirmLeaveDraft()) setTab('cards') }}>QUESTIONS</button>
         <button className="chip" aria-current={tab === 'pages' ? 'page' : undefined} onClick={() => { if (confirmLeaveDraft()) setTab('pages') }}>PAGES</button>
         <button className="chip" aria-current={tab === 'pseudos' ? 'page' : undefined} onClick={() => { if (confirmLeaveDraft()) setTab('pseudos') }}>PSEUDOS</button>
+        <button className="chip" aria-current={tab === 'stats' ? 'page' : undefined} onClick={() => { if (confirmLeaveDraft()) setTab('stats') }}>STATS</button>
       </nav>
       {tab === 'docs' ? <DocsAdmin /> : tab === 'cards' ? <CardsAdmin /> : (
-        <Suspense fallback={<p className="mono" role="status">CHARGEMENT…</p>}>{tab === 'pages' ? <PagesAdmin /> : <PseudosAdmin />}</Suspense>
+        <Suspense fallback={<p className="mono" role="status">CHARGEMENT…</p>}>
+          {tab === 'pages' ? <PagesAdmin /> : tab === 'pseudos' ? <PseudosAdmin /> : <StatsAdmin />}
+        </Suspense>
       )}
     </div>
   )
