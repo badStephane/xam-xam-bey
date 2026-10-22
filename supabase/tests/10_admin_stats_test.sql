@@ -3,7 +3,7 @@
 -- Tout est annulé en fin de fichier.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(14);
+select plan(15);
 
 insert into auth.users (id, email, email_confirmed_at, aud, role) values
   ('00000000-0000-0000-0000-000000000a01', 'stats-un@test.sn', now(), 'authenticated', 'authenticated'),
@@ -22,17 +22,19 @@ end $$;
 grant usage on schema stats_tests to anon, authenticated;
 grant execute on all functions in schema stats_tests to anon, authenticated;
 
--- Deux cartes publiées d'une même zone (A ratée, B réussie), sans note antérieure.
+-- Deux cartes publiées d'une même zone (A ratée, B réussie) et une troisième (C, ratée par un seul scout), sans note antérieure.
 create table stats_tests.ids as
   select k.zone, min(k.id) as a, max(k.id) as b, public.league_week_of(now()) as week, public.day_num(now()) as day
     from (select zone, id from public.cards where status = 'published'
            and zone = (select min(zone) from public.cards where status = 'published')
            order by position limit 2) k
    group by k.zone;
+alter table stats_tests.ids add column c text;
+update stats_tests.ids i set c = (select min(k.id) from public.cards k where k.status = 'published' and k.id not in (i.a, i.b));
 create table stats_tests.snap (label text primary key, s jsonb not null);
 grant select on stats_tests.ids to authenticated;
 grant select, insert on stats_tests.snap to authenticated;
-delete from public.grade_events e using stats_tests.ids i where e.card_id in (i.a, i.b);
+delete from public.grade_events e using stats_tests.ids i where e.card_id in (i.a, i.b, i.c);
 
 select stats_tests.login(null);
 select throws_ok('select public.admin_stats()', '42501', null, 'anon : refusé');
@@ -60,6 +62,9 @@ insert into public.grade_events (user_id, day, card_id, week_start, grade, xp, r
    cross join (values ('00000000-0000-0000-0000-000000000a01'::uuid), ('00000000-0000-0000-0000-000000000a02'), ('00000000-0000-0000-0000-000000000a03')) u(id)
    cross join (values (0), (1)) d(n)
    cross join lateral (values (i.a), (i.b)) c(card);
+-- C : 5 réponses ratées, toutes du même scout.
+insert into public.grade_events (user_id, day, card_id, week_start, grade, xp, received_at)
+  select '00000000-0000-0000-0000-000000000a01', i.day - n, i.c, i.week, 0, 0, now() from stats_tests.ids i, generate_series(0, 4) n;
 
 select stats_tests.login('00000000-0000-0000-0000-000000000a0c');
 insert into stats_tests.snap select 'apres', public.admin_stats();
@@ -86,7 +91,7 @@ select is((select jsonb_array_length(s -> 'weeks') from stats_tests.snap where l
 select is((select (s -> 'weeks' -> 6 ->> 'week')::date from stats_tests.snap where label = 'apres'), (select week from stats_tests.ids), 'la dernière semaine est la semaine en cours');
 select is(stats_tests.delta('{accounts}'), 2::numeric, 'comptes : seuls ceux qui ont vu une carte');
 select is(stats_tests.week_delta('scouts'), 3::numeric, 'semaine : 3 scouts actifs de plus');
-select is(stats_tests.week_delta('answers'), 12::numeric, 'semaine : 12 réponses de plus');
+select is(stats_tests.week_delta('answers'), 17::numeric, 'semaine : 17 réponses de plus');
 select is(stats_tests.week_delta('correct'), 7::numeric, 'semaine : 7 réussites de plus');
 select is(stats_tests.zone_delta('scouts'), 2::numeric, 'zone : 2 scouts de plus');
 select is(stats_tests.zone_delta('seen'), 3::numeric, 'zone : 3 cartes vues de plus');
@@ -95,6 +100,9 @@ select is((select h - 'q' from stats_tests.snap, stats_tests.ids i, jsonb_array_
             where label = 'apres' and h ->> 'id' = i.a),
           (select jsonb_build_object('id', i.a, 'zone', i.zone, 'answers', 6, 'correct', 1) from stats_tests.ids i),
           'questions ratées : A avec 6 réponses dont 1 réussie');
+select ok(not exists (select 1 from stats_tests.snap, stats_tests.ids i, jsonb_array_elements(s -> 'hardest') h
+                      where label = 'apres' and h ->> 'id' = i.c),
+          'questions ratées : jamais une question répondue par un seul scout');
 select ok((select coalesce(bool_and(r.rate >= coalesce(r.prev, 0)), true)
              from (select (h ->> 'correct')::numeric / (h ->> 'answers')::numeric as rate,
                           lag((h ->> 'correct')::numeric / (h ->> 'answers')::numeric) over (order by n) as prev

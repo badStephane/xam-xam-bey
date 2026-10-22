@@ -1,14 +1,15 @@
 -- Statistiques globales de l'Admin (2026-10-22) : évolution de l'activité, avancement par zone, questions les plus ratées.
 -- Décision PM : agrégats seulement. Aucun user_id, e-mail ni pseudo ne sort de la fonction (vie privée de mineurs, lot 5).
--- Sources : grade_events (notes vérifiées par le serveur, tous les scouts, gardées 7 semaines par league_close_week)
+-- Sources : grade_events (notes vérifiées par le serveur, tous les scouts, gardées 8 semaines par league_close_week)
 -- et progress.cards ({ id: [niveau, échéance, vues, réussites, premier jour] }).
 create function public.admin_stats() returns jsonb
   language plpgsql stable security definer set search_path = ''
 as $$
 declare
-  c_weeks constant integer := 7;         -- durée de conservation de grade_events (week_start < semaine - 49 jours supprimé)
+  c_weeks constant integer := 7;         -- semaines affichées, toutes encore présentes dans grade_events (8 gardées)
   c_acquired_lv constant integer := 4;   -- = ACQUIRED_LV (src/lib/constants.ts) : carte « acquise »
   c_min_answers constant integer := 5;   -- en dessous, un taux de réussite ne dit rien
+  c_min_scouts constant integer := 3;    -- une ligne ne décrit jamais un seul scout
   c_hardest constant integer := 20;
   v_week date := public.league_week_of(now());
 begin
@@ -39,8 +40,9 @@ begin
                      row_number() over (order by count(*) filter (where g.grade = 2)::numeric / count(*), count(*) desc, k.id) as n
                 from public.grade_events g
                 join public.cards k on k.id = g.card_id
+               where g.week_start > v_week - 7 * c_weeks
                group by k.id, k.zone, k.q
-              having count(*) >= c_min_answers) h
+              having count(*) >= c_min_answers and count(distinct g.user_id) >= c_min_scouts) h
        where h.n <= c_hardest)
   );
 end $$;

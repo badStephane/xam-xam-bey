@@ -78,5 +78,5 @@ export const adminRemoveBlockedWord = (word: string): Promise<RpcResult<true>> =
 
 export const adminStats = (): Promise<RpcResult<AdminStats>> => call('admin_stats', {}, parseAdminStats)
 
-export const adminModeratePseudo =(userId: string, action: ModerationAction): Promise<RpcResult<true>> =>
+export const adminModeratePseudo = (userId: string, action: ModerationAction): Promise<RpcResult<true>> =>
   call('admin_moderate_pseudo', { p_user: userId, p_action: action }, done)

@@ -5,7 +5,7 @@ import { ZONES } from '../../lib/constants'
 import { p2, plain, plural } from '../../lib/format'
 import { adminStats } from '../../lib/leagueApi'
 
-type Load = { kind: 'loading' } | { kind: 'error' } | { kind: 'ready'; stats: AdminStats }
+type Load = { kind: 'loading' } | { kind: 'error' } | { kind: 'ready'; stats: AdminStats; refreshing: boolean }
 
 const cell = { padding: '8px 6px', borderBottom: '1px solid var(--line)', textAlign: 'left' as const, fontVariantNumeric: 'tabular-nums' as const }
 const caption = { textAlign: 'left' as const, paddingBottom: 6 }
@@ -46,7 +46,7 @@ function ZonesTable({ zones }: { zones: ZoneStat[] }) {
   return (
     <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: '0.9375rem' }}>
       <caption className="f-lbl" style={caption}>AVANCEMENT PAR ZONE</caption>
-      <thead><tr><th scope="col" style={cell}>Zone</th><th scope="col" style={cell}>Scouts</th><th scope="col" style={cell}>Cartes vues</th><th scope="col" style={cell}>Acquises</th></tr></thead>
+      <thead><tr><th scope="col" style={cell}>Zone</th><th scope="col" style={cell}>Scouts</th><th scope="col" style={cell}>Cartes vues</th><th scope="col" style={cell}>Part acquise</th></tr></thead>
       <tbody>
         {zones.map(z => (
           <tr key={z.zone}>
@@ -65,7 +65,7 @@ function Hardest({ list }: { list: HardQuestion[] }) {
   return (
     <section className="col g8" aria-labelledby="st-hard-h">
       <h2 id="st-hard-h" className="f-lbl" style={{ margin: 0 }}>QUESTIONS LES PLUS RATÉES</h2>
-      <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Sur les 7 dernières semaines, parmi les questions qui ont au moins 5 réponses. Un taux très bas signale souvent une question ou une réponse à revoir.</p>
+      <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Sur les 7 dernières semaines, parmi les questions qui ont au moins 5 réponses de 3 scouts différents. Un taux très bas signale souvent une question ou une réponse à revoir.</p>
       {list.length
         ? (
           <ol className="col g8" style={{ margin: 0, paddingLeft: 22 }}>
@@ -89,9 +89,10 @@ export function StatsAdmin() {
   const [load, setLoad] = useState<Load>({ kind: 'loading' })
 
   const fetchStats = useCallback(async () => {
-    setLoad({ kind: 'loading' })
+    // ACTUALISER garde l'écran affiché (et le focus sur le bouton) pendant le rechargement.
+    setLoad(prev => (prev.kind === 'ready' ? { ...prev, refreshing: true } : { kind: 'loading' }))
     const r = await adminStats()
-    setLoad(r.ok ? { kind: 'ready', stats: r.data } : { kind: 'error' })
+    setLoad(r.ok ? { kind: 'ready', stats: r.data, refreshing: false } : { kind: 'error' })
   }, [])
 
   useEffect(() => { if (!offline) void fetchStats() }, [offline, fetchStats])
@@ -103,12 +104,12 @@ export function StatsAdmin() {
   if (load.kind === 'loading') {
     return <div className="col g6" role="status" aria-label="Chargement des statistiques">{Array.from({ length: 6 }, (_, i) => <div key={i} className="skel-line" style={{ height: 36 }} />)}</div>
   }
-  const { stats } = load
+  const { stats, refreshing } = load
   return (
     <section className="col g16" aria-label="Statistiques">
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <p style={{ margin: 0 }}><b style={{ fontSize: '1.5rem' }}>{stats.accounts}</b> {stats.accounts > 1 ? 'comptes ont' : 'compte a'} commencé à réviser.</p>
-        <button className="btn-mono" onClick={() => void fetchStats()}>ACTUALISER</button>
+        <button className="btn-mono" disabled={refreshing} aria-busy={refreshing} onClick={() => void fetchStats()}>{refreshing ? 'ACTUALISATION…' : 'ACTUALISER'}</button>
       </div>
       <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Chiffres globaux, sans aucun nom ni pseudo. Une réponse compte au plus une fois par question et par jour, 30 par scout et par jour.</p>
       <WeeksTable weeks={stats.weeks} />
