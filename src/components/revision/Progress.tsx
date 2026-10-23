@@ -79,7 +79,7 @@ function GapsBox() {
         {rows.map(r => (
           <li key={r.zone} className="gap-row">
             <span className="row mono" style={{ gap: 6, fontWeight: 700, fontSize: '0.6875rem', flexWrap: 'nowrap' }}><span aria-hidden="true" style={{ width: 8, height: 8, transform: 'rotate(45deg)', background: zoneColor(r.zone) }} />{p2(r.zone)} {ZONES[r.zone - 1][0].toUpperCase()}</span>
-            <span className="mono muted" style={{ fontSize: '0.6875rem' }}>{r.seen}/{r.cards} VUES</span>
+            <span className="mono muted" style={{ fontSize: '0.6875rem' }}>{r.seen}/{r.cards} VUES · {r.acquired} ACQUISE{r.acquired > 1 ? 'S' : ''}</span>
             <b className="mono" style={{ fontSize: '0.8125rem', color: rateColor(r.rate) }}>{pct(r.rate)}</b>
             {r.gaps > 0
               ? <button className="btn-mono" onClick={() => revise(r.zone)} aria-label={`Réviser les ${r.gaps} lacunes de la zone ${r.zone}`}>{r.gaps} LACUNE{r.gaps > 1 ? 'S' : ''} →</button>
