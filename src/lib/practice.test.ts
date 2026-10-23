@@ -43,8 +43,9 @@ describe('selectCards', () => {
 })
 
 describe('zoneReport', () => {
-  test('compte les cartes vues, les lacunes et le taux de réussite', () => {
-    expect(zoneReport(cards, prog, 1)).toEqual({ zone: 1, cards: 4, seen: 4, gaps: 2, rate: 11 / 17 })
+  test('compte les cartes vues, acquises, les lacunes et le taux de réussite', () => {
+    expect(zoneReport(cards, prog, 1)).toEqual({ zone: 1, cards: 4, seen: 4, acquired: 1, gaps: 2, rate: 11 / 17 })
+    expect(zoneReport(cards, prog, 2).acquired).toBe(0)
     expect(zoneReport(cards, { cards: {}, sessions: [], xp: 0 }, 2).rate).toBeNull()
   })
 })

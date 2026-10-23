@@ -3,6 +3,9 @@ import { ZONES } from '../../lib/constants'
 import { p2, plain, plural } from '../../lib/format'
 import { allCards, dailyCards, zoneStats } from '../../lib/srs'
 
+/** Même compte que « Cartes acquises » de la progression : 4 bonnes réponses données à la date prévue (1, 3 puis 7 jours). */
+const ACQUIRED_HINT = 'Une carte est acquise après 4 bonnes réponses espacées.'
+
 /** Fiche « ce mois-ci » : la zone en cours et la quête du jour. */
 export function ZoneCard() {
   const { ui, rev, docs: allDocs, cur, today, patch, go, startSession } = useApp()
@@ -17,7 +20,7 @@ export function ZoneCard() {
     <section className="sheet zone-card punch">
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <span className="cote" style={{ fontSize: '0.6875rem' }}>CE MOIS-CI · ZONE {p2(cur)} · {month.toUpperCase()}</span>
-        {ready && st.cards > 0 && <span className="stamp">QUÊTE {st.acq}/{st.cards}</span>}
+        {ready && st.cards > 0 && <span className="stamp" title={ACQUIRED_HINT}>{st.acq}/{st.cards} ACQUISE{st.acq > 1 ? 'S' : ''}</span>}
       </div>
       <h2>{theme}</h2>
       {goal && <p style={{ margin: 0, fontSize: '0.90625rem', lineHeight: 1.5, color: 'var(--ink2)', maxWidth: 560 }}>{plain(goal)}</p>}
