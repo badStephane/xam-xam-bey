@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import {
-  buildVersion, cachedPdfOf, evictionsFor, KEEP_PDF_MESSAGE, keepRequestUrl, cssAssetUrls, declaredSize, htmlAssetUrls, isHashedAsset, isKeepableFile, pageUrl,
+  buildVersion, cachedPdfOf, isPageCurrent, isShellQuery, evictionsFor, KEEP_PDF_MESSAGE, keepRequestUrl, cssAssetUrls, declaredSize, htmlAssetUrls, isHashedAsset, isKeepableFile, pageUrl,
   PDF_CACHE, PDF_CACHE_LIMIT, pdfChanged, pdfValidators, pickEvictions, SIZE_HEADER, type PdfValidators,
   readerAssets, resolveRelative, routeRequest, RUNTIME_CACHE, shellCacheName, shellManifest, sitePath, staleAssets, staleCaches,
   type RouteInput, type Scope,
@@ -294,5 +294,25 @@ describe('écrans préchargés hors ligne (lot 5)', () => {
       { fileName: 'assets/PseudosAdmin-e.js', facadeModuleId: '/r/src/components/admin/PseudosAdmin.tsx', imports: ['assets/leagueApi-d.js'] },
     ]
     expect(offlineScreenAssets(chunks, ['index.html', 'assets/index-a.js', 'assets/client-b.js'])).toEqual(['assets/Gamification-c.js', 'assets/leagueApi-d.js'])
+  })
+})
+
+describe('version de la page affichée (bouton RECHARGER)', () => {
+  const SHELL = ['index.html', 'assets/index-B2.css', 'assets/index-B2.js']
+  test('scripts et styles de la page dans la coquille du worker : page à jour, rien à proposer', () => {
+    expect(isPageCurrent(['assets/index-B2.js', 'assets/index-B2.css'], SHELL)).toBe(true)
+  })
+  test('un seul fichier d’une autre version (script ou style) : page périmée', () => {
+    expect(isPageCurrent(['assets/index-A1.js', 'assets/index-B2.css'], SHELL)).toBe(false)
+    expect(isPageCurrent(['assets/index-B2.js', 'assets/index-A1.css'], SHELL)).toBe(false)
+  })
+  test('page sans fichier reconnu : tenue pour périmée (mieux vaut proposer de recharger)', () => {
+    expect(isPageCurrent([], SHELL)).toBe(false)
+  })
+  test('isShellQuery : seule la demande de la page, rien d’autre', () => {
+    expect(isShellQuery({ type: 'xxb-shell?' })).toBe(true)
+    expect(isShellQuery({ type: 'xxb-keep-pdf', url: 'x' })).toBe(false)
+    expect(isShellQuery('xxb-shell?')).toBe(false)
+    expect(isShellQuery(null)).toBe(false)
   })
 })

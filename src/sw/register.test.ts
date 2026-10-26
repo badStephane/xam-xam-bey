@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test, vi } from 'vitest'
-import { LATE_PURGE_DELAYS_MS, unregisterAll } from './register'
+import { isCheckDue, LATE_PURGE_DELAYS_MS, unregisterAll, UPDATE_CHECK_MS } from './register'
 
 /** Faux CacheStorage : un ensemble de noms, et une écriture tardive simulée entre deux purges. */
 function fakeCaches(initial: string[]) {
@@ -51,5 +51,16 @@ describe('unregisterAll (secours VITE_SW=off)', () => {
     vi.stubGlobal('navigator', { serviceWorker: { getRegistrations: async () => [] } })
     await unregisterAll(async () => undefined)
     expect(storage.get('xxb.progress.v1.u1')).toBe('{"cards":{}}')
+  })
+})
+
+describe('isCheckDue (nouvelle version cherchée au retour sur l’appli)', () => {
+  test('au plus une vérification par heure', () => {
+    const last = 1_000_000
+    expect(isCheckDue(last, last + UPDATE_CHECK_MS - 1)).toBe(false)
+    expect(isCheckDue(last, last + UPDATE_CHECK_MS)).toBe(true)
+  })
+  test('horloge reculée (réglage du téléphone) : vérification permise', () => {
+    expect(isCheckDue(1_000_000, 0)).toBe(true)
   })
 })

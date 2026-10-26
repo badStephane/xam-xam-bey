@@ -15,10 +15,31 @@ export function registerServiceWorker(): void {
     }
     // updateViaCache « none » : sw.js est toujours revérifié au réseau, une nouvelle version n'est jamais masquée.
     navigator.serviceWorker.register('./sw.js', { scope: './', updateViaCache: 'none' })
+      .then(checkOnReturn)
       .catch(err => console.warn('[xxb] Service worker non inscrit : le site fonctionne sans copie hors ligne', err))
   }
   if (document.readyState === 'complete') run()
   else window.addEventListener('load', run, { once: true })
+}
+
+/** Délai minimal entre deux recherches d'une nouvelle version au retour sur l'appli (sw.js en no-cache : 304 si inchangé). */
+export const UPDATE_CHECK_MS = 60 * 60 * 1000
+
+/** Vérification due : une heure écoulée, ou horloge du téléphone reculée depuis la dernière. */
+export const isCheckDue = (last: number, now: number): boolean => now - last >= UPDATE_CHECK_MS || now < last
+
+/**
+ * L'appli installée peut rester ouverte des jours sans navigation, donc sans que le navigateur revérifie sw.js :
+ * au retour sur l'appli, on cherche une nouvelle version (au plus une fois par heure). Trouvée, elle prend la main et
+ * la page propose de recharger (useSwUpdate).
+ */
+function checkOnReturn(reg: ServiceWorkerRegistration): void {
+  let last = Date.now()
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible' || !navigator.onLine || !isCheckDue(last, Date.now())) return
+    last = Date.now()
+    reg.update().catch(err => console.warn('[xxb] Recherche de mise à jour impossible', err))
+  })
 }
 
 /**

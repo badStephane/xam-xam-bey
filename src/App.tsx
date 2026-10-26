@@ -12,6 +12,7 @@ import { Today } from './components/revision/Today'
 import { LazyBadges, LazyLeague } from './components/league/lazy'
 import { Shell } from './components/Shell'
 import { Topo } from './components/Topo'
+import { UpdateBanner } from './components/UpdateBanner'
 import { PARAMS } from './lib/params'
 import type { Grade } from './lib/types'
 
@@ -85,7 +86,7 @@ export function App() {
   return (
     <div id="app" data-xt={theme}>
       <Topo />
-      <div id="view"><Screen /></div>
+      <div id="view"><UpdateBanner /><Screen /></div>
     </div>
   )
 }

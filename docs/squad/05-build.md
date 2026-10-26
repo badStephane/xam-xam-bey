@@ -792,3 +792,13 @@ La CI de `main` (fusion de la PR #31) et celle de la PR #32 ont échoué le mêm
 
 - Correction du test seul : les dates des parties B à D passent par `tests.day` et `tests.at`, qui les décalent de 4 semaines en 4 semaines (même rang de défi, partie D) pour que la semaine du voyage arrive au moins deux semaines après la semaine réelle. Décalage nul jusqu'au 2026-10-25 : comportement inchangé là où le test passait.
 - Vérifié en local le 2026-10-26 : `05_lot5_league_test.sql` 57/57. `07_qa_lot5_test.sql` n'appelle jamais l'heure réelle : pas concerné.
+
+## Bouton RECHARGER après une mise à jour (2026-10-26)
+
+Demande de l'utilisateur : « ajouté un bouton pour reload si nécessaire ». Dans l'appli installée, ni barre d'adresse ni bouton du navigateur. Or après un déploiement, le nouveau worker prend la main tout de suite (`skipWaiting`, `clients.claim`), mais la page ouverte garde l'ancien code et ses écrans chargés à la demande sont purgés du cache.
+
+- **Bandeau** `src/components/UpdateBanner.tsx`, au-dessus de tous les écrans (séance comprise : elle reprend après rechargement, `sessionStore`) : « NOUVELLE VERSION · Le site a été mis à jour. Une séance en cours reprendra où vous en êtes. · RECHARGER ».
+- **Quand** (`src/hooks/useSwUpdate.ts`) : un nouveau worker prend la main sur une page qui en avait déjà un (première visite exclue). Pages servies réseau d'abord : la page ouverte a souvent déjà le nouveau code. La page demande donc sa coquille au nouveau worker (message `xxb-shell?`, réponse sur un `MessageChannel`, 3 s au plus) et le bandeau ne s'affiche que si ses scripts ou styles n'y figurent pas (`isPageCurrent`). Sans réponse à temps : bandeau.
+- **Appli restée ouverte** (`src/sw/register.ts`) : au retour sur l'appli (`visibilitychange`), en ligne, `registration.update()` au plus une fois par heure (`sw.js` en `no-cache`, 304 si inchangé).
+- **Tests** : `rules.test.ts` (+4), `register.test.ts` (+2), `src/hooks/useSwUpdate.test.ts` (5). E2E `offline.spec.ts` : rechargement pendant un déploiement sans bandeau, et page restée ouverte avec bandeau, puis RECHARGER qui charge le nouveau script principal. `npm run check` vert (653) ; `offline.spec.ts` 9/9 en local. Rendu vérifié à 360 px. Index 112,3 Ko gzip (budget 115).
+- Le premier déploiement de ce changement ne montre aucun bandeau aux pages ouvertes avant lui (leur code ne l'a pas encore) ; il servira à partir du déploiement suivant.
