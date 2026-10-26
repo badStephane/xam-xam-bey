@@ -1,3 +1,4 @@
+import { ACQUIRED_LV } from './constants'
 import { shuffle } from './format'
 import type { Card, CardProgress, Progress } from './types'
 
@@ -38,13 +39,14 @@ export function selectCards(cards: readonly Card[], prog: Progress, zone: number
   return shuffle(pool, rand).slice(0, count)
 }
 
-export interface ZoneReport { zone: number; cards: number; seen: number; gaps: number; rate: number | null }
+export interface ZoneReport { zone: number; cards: number; seen: number; acquired: number; gaps: number; rate: number | null }
 
-/** Bilan par zone : cartes vues, lacunes, taux de réussite sur l'ensemble des réponses. */
+/** Bilan par zone : cartes vues, acquises (niveau ACQUIRED_LV ou plus), lacunes, taux de réussite sur l'ensemble des réponses. */
 export function zoneReport(cards: readonly Card[], prog: Progress, zone: number): ZoneReport {
   const list = inZone(cards, zone)
   const seenList = list.map(c => prog.cards[c.id]).filter((p): p is CardProgress => !!p && p[2] > 0)
   const answers = seenList.reduce((a, p) => a + p[2], 0)
   const ok = seenList.reduce((a, p) => a + p[3], 0)
-  return { zone, cards: list.length, seen: seenList.length, gaps: seenList.filter(p => isGap(p)).length, rate: answers ? ok / answers : null }
+  const acquired = seenList.filter(p => p[0] >= ACQUIRED_LV).length
+  return { zone, cards: list.length, seen: seenList.length, acquired, gaps: seenList.filter(p => isGap(p)).length, rate: answers ? ok / answers : null }
 }
