@@ -5,6 +5,7 @@ import { isRevScreen, PROGRESS_SCREENS, type Screen } from '../lib/params'
 import { levelFill } from '../lib/grades'
 import { xpLevel } from '../lib/srs'
 import { useGrade } from '../hooks/useGrade'
+import { useInstallPrompt } from '../hooks/useInstallPrompt'
 import { BottomNav } from './BottomNav'
 import { Segments } from './Segments'
 
@@ -30,6 +31,14 @@ function AccountPanel({ pieces, onClose }: { pieces: string; onClose(): void }) 
       </div>
     </div>
   )
+}
+
+/** Ajout à l'écran d'accueil (UX-37) : bouton du navigateur s'il le permet, marche à suivre sur iPhone et iPad. */
+function InstallApp() {
+  const { offer, install } = useInstallPrompt()
+  if (offer === 'prompt') return <button className="btn-mono install" onClick={install}>INSTALLER L’APPLI SUR CET APPAREIL</button>
+  if (offer === 'ios') return <p className="install">Pour l’avoir sur l’écran d’accueil : touchez Partager, puis « Sur l’écran d’accueil ».</p>
+  return null
 }
 
 export function Shell({ children }: { children: ReactNode }) {
@@ -78,7 +87,7 @@ export function Shell({ children }: { children: ReactNode }) {
         )}
       </header>
       <main>{children}</main>
-      <footer className="foot">Plateforme de révision indépendante, construite sur les documents du dossier Xam Xam Bëy. Ce n’est pas un site officiel de l’association.</footer>
+      <footer className="foot"><InstallApp />Plateforme de révision indépendante, construite sur les documents du dossier Xam Xam Bëy. Ce n’est pas un site officiel de l’association.</footer>
       <BottomNav />
     </div>
   )
