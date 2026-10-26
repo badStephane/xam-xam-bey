@@ -215,6 +215,21 @@ test.describe('hors ligne (E3)', () => {
     })
   })
 
+  test('UX-37 : installable selon Chrome (manifeste, icônes, worker) ; manifeste et icônes hors de la coquille', async ({ page }) => {
+    await visitAndWaitForWorker(page)
+    const cdp = await page.context().newCDPSession(page)
+    const { url, errors } = await cdp.send('Page.getAppManifest')
+    expect(url).toBe(`${ORIGIN}/manifest.webmanifest`)
+    expect(errors).toEqual([])
+    expect((await cdp.send('Page.getInstallabilityErrors')).installabilityErrors).toEqual([])
+    const shell = await page.evaluate(async () => {
+      const name = (await caches.keys()).find(n => n.startsWith('xxb-shell-'))
+      return name ? (await (await caches.open(name)).keys()).map(r => new URL(r.url).pathname) : []
+    })
+    expect(shell).toContain('/index.html')
+    expect(shell.filter(p => /manifest|\/icons\//.test(p))).toEqual([])
+  })
+
   test('L3-3 et L3-4 : page HTML de repli jamais gardée comme script ; lien avec paramètres de suivi servi hors réseau', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 })
     await visitAndWaitForWorker(page)

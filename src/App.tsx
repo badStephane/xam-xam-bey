@@ -77,7 +77,11 @@ export function App() {
   const { ui } = useApp()
   useKeyboard()
   const theme = ui.dark ? 'dark' : 'light'
-  useEffect(() => { document.body.style.background = BG[theme] }, [theme])
+  useEffect(() => {
+    document.body.style.background = BG[theme]
+    // Barre d'état de l'application installée (et barre d'adresse sur Android) : même fond que la carte.
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', BG[theme])
+  }, [theme])
   return (
     <div id="app" data-xt={theme}>
       <Topo />

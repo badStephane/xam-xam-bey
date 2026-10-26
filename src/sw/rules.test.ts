@@ -162,6 +162,11 @@ describe('manifeste de la coquille', () => {
       './assets/chakra-petch-latin-700-normal-AbC.woff2', './assets/index-DknuMg_5.js', './assets/client-C9yhCDaK.js', './assets/index-BbDwp0dL.css',
     ])
   })
+  test('htmlAssetUrls ignore le manifeste et les icônes de l’application installée (jamais servis hors ligne par le worker)', () => {
+    const head = '<link rel="manifest" href="./manifest.webmanifest"><link rel="icon" type="image/png" href="./icons/favicon-32.png">' +
+      '<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png"><link href="./assets/a-1.css" rel="stylesheet">'
+    expect(htmlAssetUrls(head)).toEqual(['./assets/a-1.css'])
+  })
   test('cssAssetUrls ignore les données intégrées', () => {
     expect(cssAssetUrls(CSS)).toEqual(['./chakra-petch-latin-700-normal-AbC.woff2', './jetbrains-mono-latin-wght-normal-Xy.woff2'])
   })

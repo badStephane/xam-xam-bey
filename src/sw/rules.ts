@@ -212,11 +212,16 @@ export function sitePath(url: string, scope: Scope): string | null {
 
 const ATTR_URL = /<(?:script|link)\b[^>]*?\b(?:src|href)="([^"]+)"[^>]*>/g
 const CSS_URL = /url\(\s*['"]?([^'")]+)['"]?\s*\)/g
+/**
+ * Manifeste et icônes de l'application installée : lus par le navigateur à l'installation, jamais servis hors ligne
+ * par le worker (route « network »). Hors de la coquille, sinon retéléchargés à chaque déploiement pour rien.
+ */
+const INSTALL_LINK = /\brel="(?:manifest|icon|apple-touch-icon)"/
 const isLocalAsset = (u: string): boolean => !/^(?:[a-z]+:)?\/\//i.test(u) && !u.startsWith('data:') && !u.startsWith('#')
 
 /** Fichiers du site cités par une page HTML construite (scripts, modulepreload, styles, préchargements). */
 export function htmlAssetUrls(html: string): string[] {
-  return [...html.matchAll(ATTR_URL)].map(m => m[1]).filter(isLocalAsset)
+  return [...html.matchAll(ATTR_URL)].filter(m => !INSTALL_LINK.test(m[0])).map(m => m[1]).filter(isLocalAsset)
 }
 
 /** Fichiers cités par une feuille de style (polices, images), relatifs à la feuille. */
