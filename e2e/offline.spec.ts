@@ -305,10 +305,30 @@ test.describe('hors ligne (E3)', () => {
     // Nouvelle coquille installée puis ancienne purgée à l'activation : un seul cache, différent du premier.
     await expect.poll(async () => { const now = await shells(); return now.length === 1 && now[0] !== before[0] }, { timeout: 20_000 }).toBe(true)
     await isKept(page)
+    // Page rechargée pendant le déploiement : déjà le nouveau code (réseau d'abord), rien à recharger.
+    await page.waitForTimeout(1_000)
+    await expect(page.getByText('NOUVELLE VERSION')).toHaveCount(0)
     // Après la mise à jour, le PDF gardé reste lisible hors réseau (lecteur gardé d'une version à l'autre).
     await goOfflineAndReload(page)
     await openTestDocOffline(page, '.pdf-thumb')
     await page.context().setOffline(false)
+  })
+
+  test('mise à jour, page restée ouverte : bandeau NOUVELLE VERSION, RECHARGER charge le nouveau code', async ({ page }) => {
+    test.setTimeout(120_000)
+    const mainScript = (): Promise<string | null> => page.locator('script[type="module"]').getAttribute('src')
+    await visitAndWaitForWorker(page)
+    const before = await mainScript()
+    await expect(page.getByText('NOUVELLE VERSION')).toHaveCount(0)
+    // Nouveau déploiement pendant que la page (ou l'appli installée) reste ouverte, puis retour sur l'appli.
+    execFileSync('npx', ['vite', 'build', '--outDir', OUT_DIR, '--emptyOutDir'], { env: { ...BUILD_ENV, VITE_SUPABASE_ANON_KEY: `${LOCAL_ANON_KEY}-v3` }, stdio: 'ignore' })
+    await page.evaluate(async () => { await (await navigator.serviceWorker.getRegistration())?.update() })
+    const banner = page.getByRole('status').filter({ hasText: 'NOUVELLE VERSION' })
+    await expect(banner).toBeVisible({ timeout: 20_000 })
+    await banner.getByRole('button', { name: 'RECHARGER' }).click()
+    await expect(page.getByRole('heading', { name: 'Toutes les ressources du mouvement.' })).toBeVisible()
+    expect(await mainScript()).not.toBe(before)
+    await expect(page.getByText('NOUVELLE VERSION')).toHaveCount(0)
   })
 
   test('secours : un build VITE_SW=off désinscrit le worker et purge les caches du site', async ({ page }) => {

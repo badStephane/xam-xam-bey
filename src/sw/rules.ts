@@ -25,6 +25,8 @@ export const NAV_TIMEOUT_MS = 3500
 export const PDF_CACHED_MESSAGE = 'xxb-pdf-cached'
 /** Message d'une page au worker : garder ce PDF (ouvert dans le lecteur du téléphone, hors de portée du worker). */
 export const KEEP_PDF_MESSAGE = 'xxb-keep-pdf'
+/** Message d'une page au worker qui vient de prendre la main : la liste de sa coquille, renvoyée sur le port joint. */
+export const SHELL_QUERY_MESSAGE = 'xxb-shell?'
 
 /** Paramètres d'URL propres à l'application (src/lib/params.ts) : toute autre clé passe directement au réseau. */
 export const APP_PARAMS: readonly string[] = ['frame', 'demo', 'layout', 'lib', 'screen', 'theme', 'mode', 'sel', 'q', 'phase']
@@ -291,4 +293,17 @@ export function offlineScreenAssets(chunks: readonly BuiltChunk[], shell: readon
   chunks.filter(c => c.facadeModuleId && entry.test(c.facadeModuleId)).forEach(c => visit(c.fileName))
   const inShell = new Set(shell)
   return [...out].filter(p => !inShell.has(p)).sort()
+}
+
+export const isShellQuery = (data: unknown): boolean =>
+  !!data && typeof data === 'object' && (data as { type?: unknown }).type === SHELL_QUERY_MESSAGE
+
+/**
+ * La page affichée est-elle de la version du worker ? Ses scripts et styles (chemins relatifs au site) sont tous dans
+ * la coquille. Pages servies réseau d'abord : après un déploiement, la page ouverte a souvent déjà le nouveau code
+ * quand le nouveau worker prend la main ; rien à recharger alors. Aucun fichier reconnu : tenue pour périmée.
+ */
+export function isPageCurrent(pageFiles: readonly string[], shell: readonly string[]): boolean {
+  const kept = new Set(shell)
+  return pageFiles.length > 0 && pageFiles.every(p => kept.has(p))
 }

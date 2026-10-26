@@ -16,7 +16,7 @@
 import { isCostlyNetwork, type ConnectionHint } from '../lib/openMode'
 import {
   CACHED_AT_HEADER, NAV_TIMEOUT_MS, PDF_CACHE, PDF_CACHED_MESSAGE, RUNTIME_CACHE, SIZE_HEADER, cachedPdfOf, declaredSize, evictionsFor, isHashedAsset,
-  isKeepableFile, keepRequestUrl, pageUrl, pdfChanged, pdfValidators, readerAssets, routeRequest, shellCacheName, sitePath,
+  isKeepableFile, isShellQuery, keepRequestUrl, pageUrl, pdfChanged, pdfValidators, readerAssets, routeRequest, shellCacheName, sitePath,
   staleAssets, staleCaches, type CachedPdf, type Scope,
 } from './rules'
 
@@ -32,7 +32,7 @@ declare const __XXB_SW_PRECACHE__: string[]
 interface ExtendableEvent extends Event { waitUntil(p: Promise<unknown>): void }
 interface FetchEvent extends ExtendableEvent { request: Request; respondWith(r: Promise<Response> | Response): void }
 interface SwClient { postMessage(message: unknown): void }
-interface ExtendableMessageEvent extends ExtendableEvent { data: unknown }
+interface ExtendableMessageEvent extends ExtendableEvent { data: unknown; ports: readonly MessagePort[] }
 interface SwScope {
   location: Location
   navigator: { onLine: boolean; connection?: ConnectionHint }
@@ -173,6 +173,11 @@ async function pdf(event: FetchEvent): Promise<Response> {
  * Seuls les PDF du bucket public sont acceptés ; déjà gardé : rien n'est téléchargé.
  */
 sw.addEventListener('message', event => {
+  // Page ouverte avant ce worker : sa version est-elle la nôtre ? (bouton RECHARGER, src/hooks/useSwUpdate.ts)
+  if (isShellQuery(event.data)) {
+    event.ports[0]?.postMessage(__XXB_SW_SHELL__)
+    return
+  }
   const url = keepRequestUrl(event.data, SCOPE, __XXB_SW_STORAGE__)
   if (!url) return
   event.waitUntil((async () => {
