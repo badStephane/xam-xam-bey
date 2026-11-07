@@ -51,7 +51,7 @@ function ViewsJournal() {
   )
 }
 
-/** Onglet SUIVI de l'admin (2026-10-22) : retrouver un compte par e-mail ou pseudo et ouvrir sa fiche de progression. */
+/** Onglet SUIVI de l'admin (2026-10-22) : retrouver un compte par e-mail, numéro ou pseudo et ouvrir sa fiche de progression. */
 export function ScoutsAdmin() {
   const { offline } = useApp()
   const [query, setQuery] = useState('')
@@ -72,8 +72,8 @@ export function ScoutsAdmin() {
     <section className="col g12" aria-label="Suivi d’un scout">
       <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Retrouvez un compte par une partie de son e-mail ou de son pseudo. Chaque recherche et chaque fiche ouverte sont notées dans le journal des consultations ; les scouts savent que les responsables peuvent voir leur progression.</p>
       <form className="row" onSubmit={e => void submit(e)} role="search">
-        <label className="sr" htmlFor="adm-sc-q">E-mail ou pseudo</label>
-        <input id="adm-sc-q" className="pseudo-input" value={query} onChange={e => setQuery(e.target.value)} placeholder="E-mail ou pseudo" autoComplete="off" />
+        <label className="sr" htmlFor="adm-sc-q">E-mail, numéro ou pseudo</label>
+        <input id="adm-sc-q" className="pseudo-input" value={query} onChange={e => setQuery(e.target.value)} placeholder="E-mail, numéro ou pseudo" autoComplete="off" />
         <button className="btn-mono" type="submit" disabled={search.kind === 'loading'}>RECHERCHER</button>
       </form>
       {search.kind === 'loading' && <p className="mono" role="status">RECHERCHE…</p>}

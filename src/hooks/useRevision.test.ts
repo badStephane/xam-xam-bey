@@ -549,6 +549,71 @@ describe('useRevision : connexion par lien ou code (D4)', () => {
   })
 })
 
+describe('useRevision : connexion par SMS (numéro du Sénégal)', () => {
+  async function sentSms(): Promise<void> {
+    render()
+    act(() => hook.current.init())
+    await settle()
+    act(() => hook.current.requestSms('77 123 45 67'))
+    await settle()
+  }
+
+  test('numéro mis au format +221, canal SMS, écran « Code envoyé »', async () => {
+    await sentSms()
+    expect(fake.state.signInWithOtp).toHaveBeenCalledWith({ phone: '+221771234567', options: { shouldCreateUser: true, channel: 'sms' } })
+    expect(hook.current.signIn).toMatchObject({ step: 'sent', via: 'phone', phone: '+221771234567' })
+  })
+
+  test('numéro invalide (fixe, autre pays) : erreur sans appel', async () => {
+    render()
+    act(() => hook.current.requestSms('33 821 00 00'))
+    expect(hook.current.signIn).toMatchObject({ step: 'error', via: 'phone' })
+    expect(hook.current.signIn.message).toMatch(/Numéro invalide/)
+    expect(fake.state.signInWithOtp).not.toHaveBeenCalled()
+  })
+
+  test('connexion par numéro fermée côté serveur : message qui renvoie vers l’e-mail', async () => {
+    render()
+    fake.state.signInWithOtp.mockResolvedValueOnce({ error: { status: 400, code: 'phone_provider_disabled', message: 'Unsupported phone provider' } })
+    act(() => hook.current.requestSms('771234567'))
+    await settle()
+    expect(hook.current.signIn).toMatchObject({ step: 'error', via: 'phone', phone: '+221771234567' })
+    expect(hook.current.signIn.message).toMatch(/Utilisez votre adresse e-mail/)
+  })
+
+  test('code vérifié avec le numéro (type sms) ; code faux : message du SMS', async () => {
+    await sentSms()
+    fake.state.verifyOtp.mockResolvedValueOnce({ error: { status: 403, code: 'otp_expired', message: 'Token has expired or is invalid' } })
+    act(() => hook.current.verifyCode('123456'))
+    await settle()
+    expect(fake.state.verifyOtp).toHaveBeenCalledWith({ phone: '+221771234567', token: '123456', type: 'sms' })
+    expect(hook.current.signIn.code?.message).toMatch(/6 chiffres du SMS/)
+  })
+
+  test('renvoi au même numéro ; « Modifier le numéro » garde la saisie et le moyen choisi', async () => {
+    await sentSms()
+    act(() => hook.current.resendLink())
+    await settle()
+    expect(fake.state.signInWithOtp).toHaveBeenCalledTimes(2)
+    expect(fake.state.signInWithOtp).toHaveBeenLastCalledWith({ phone: '+221771234567', options: { shouldCreateUser: true, channel: 'sms' } })
+    expect(hook.current.signIn.notice).toEqual({ kind: 'ok', text: 'Nouveau code envoyé au +221 77 123 45 67.' })
+    act(() => hook.current.changeEmail())
+    expect(hook.current.signIn).toEqual({ step: 'idle', via: 'phone', phone: '+221771234567' })
+    act(() => hook.current.changeEmail('email'))
+    expect(hook.current.signIn).toEqual({ step: 'idle', phone: '+221771234567' })
+  })
+
+  test('compte sans e-mail : le numéro mis en forme sert d’identifiant affiché', async () => {
+    await sentSms()
+    fake.state.progress.mockResolvedValueOnce(ok(null))
+    act(() => hook.current.verifyCode('123456'))
+    act(() => fake.state.authCb!('SIGNED_IN', { user: { id: 'user-p', email: '', phone: '221771234567' } as unknown as User }))
+    await settle()
+    expect(hook.current.signIn).toEqual({ step: 'idle' })
+    expect(hook.current.email).toBe('+221 77 123 45 67')
+  })
+})
+
 describe('useRevision : révision hors ligne (lot 4, F1)', () => {
   const CARD_ROWS = [
     { id: 'c1', zone: 1, document_id: 7, position: 1, q: 'Q1', a: 'R1', src: '', note: '', qcm: null, status: 'published' },

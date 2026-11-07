@@ -10,7 +10,8 @@ import { applyGrade, cardsByZone, EMPTY_PROGRESS, validCards } from '../lib/srs'
 import { clearCardsCache, readCardsCache, writeCardsCache } from '../lib/cardsCache'
 import { clearPagesCache } from '../lib/docPagesApi'
 import { forgetKnownUser, readKnownUser, writeKnownUser, type KnownUser } from '../lib/knownUser'
-import { codeErrorMessage, isValidCode, sendErrorMessage } from '../lib/signin'
+import { accountLabel, formatPhone, normalizePhone } from '../lib/phone'
+import { codeErrorMessage, isValidCode, sendErrorMessage, type SignInVia } from '../lib/signin'
 import { isValidEmail, magicLinkRedirect, supabase } from '../lib/supabase'
 import type { CardRow, Fiche, Grade, Plan, Progress, RevisionContent, RevStatus, SessionLog } from '../lib/types'
 
@@ -74,14 +75,18 @@ async function loadContent(): Promise<RevisionContent> {
 }
 
 /**
- * Connexion par lien magique ou code à 6 chiffres (D4).
- * - idle / sending / error : formulaire d'adresse (`message` : erreur du formulaire) ;
- * - sent : lien envoyé à `email` à `sentAt` ; `code` suit la saisie du code, `notice` le dernier renvoi.
+ * Connexion par lien magique ou code à 6 chiffres (D4), par e-mail ou par SMS.
+ * - idle / sending / error : formulaire d'adresse ou de numéro (`message` : erreur du formulaire) ;
+ * - sent : lien envoyé à `email` (ou SMS envoyé à `phone`) à `sentAt` ; `code` suit la saisie du code, `notice` le dernier renvoi.
+ * `via` vaut 'phone' pour la connexion par numéro ; absent : e-mail.
  */
 export interface SignInState {
   step: 'idle' | 'sending' | 'sent' | 'error'
+  via?: SignInVia
   message?: string
   email?: string
+  /** Numéro au format international (+221…). */
+  phone?: string
   sentAt?: number
   resending?: boolean
   notice?: { kind: 'ok' | 'error'; text: string }
@@ -111,12 +116,14 @@ export interface Revision {
   init(): void
   retry(): void
   requestLink(email: string): void
-  /** Renvoie le lien (et le code) à la même adresse, depuis l'écran « Lien envoyé ». */
+  /** Envoie un code à 6 chiffres par SMS au numéro saisi (mobile sénégalais). */
+  requestSms(phone: string): void
+  /** Renvoie le lien (et le code), ou le SMS, au même destinataire, depuis l'écran « Lien envoyé » ou « Code envoyé ». */
   resendLink(): void
-  /** Vérifie le code à 6 chiffres reçu dans l'e-mail. */
+  /** Vérifie le code à 6 chiffres reçu par e-mail ou par SMS. */
   verifyCode(code: string): void
-  /** Retour au formulaire d'adresse (« Modifier l'adresse »). */
-  changeEmail(): void
+  /** Retour au formulaire (« Modifier l'adresse », « Modifier le numéro ») ; `via` : changer de moyen de connexion. */
+  changeEmail(via?: SignInVia): void
   signOut(): void
   /** `choice` : texte de la proposition choisie pour un QCM (A11), absent en auto-évaluation. */
   grade(cardId: string, g: Grade, today: number, choice?: string): void
@@ -136,6 +143,19 @@ async function sendLink(email: string): Promise<unknown> {
     return error
   } catch (err) {
     console.error('[xxb] Envoi du lien impossible', err)
+    return err
+  }
+}
+
+/** Envoie le code par SMS (Send SMS hook de Supabase Auth → Orange) ; renvoie l'erreur, ou null. */
+async function sendSms(phone: string): Promise<unknown> {
+  if (!supabase) return new Error('Supabase non configuré')
+  try {
+    const { error } = await supabase.auth.signInWithOtp({ phone, options: { shouldCreateUser: true, channel: 'sms' } })
+    if (error) console.error('[xxb] Envoi du SMS impossible', error)
+    return error
+  } catch (err) {
+    console.error('[xxb] Envoi du SMS impossible', err)
     return err
   }
 }
@@ -436,7 +456,7 @@ export function useRevision(demo: boolean): Revision {
         setStat('signedout')
         return
       }
-      setMail(user.email || null)
+      setMail(accountLabel(user))
       void loadFor(user.id)
     }).catch(err => { console.error('[xxb] Session illisible', err); startFromDevice(true) })
   }, [demo, loadFor, setMail, setStat, startFromDevice])
@@ -466,7 +486,7 @@ export function useRevision(demo: boolean): Revision {
           setLocal(false)
         }
         logAuth('signed_in')
-        setMail(user.email || null)
+        setMail(accountLabel(user))
         setSignIn({ step: 'idle' })
         // Différé : on ne rappelle pas Supabase depuis le rappel d'authentification lui-même.
         setTimeout(() => void loadFor(user.id), 0)
@@ -532,32 +552,56 @@ export function useRevision(demo: boolean): Revision {
         setSignIn(error ? { step: 'error', email, message: sendErrorMessage(error) } : { step: 'sent', email, sentAt: Date.now() })
       })
     },
+    requestSms: input => {
+      if (!supabase) return
+      const phone = normalizePhone(input)
+      if (!phone) { setSignIn({ step: 'error', via: 'phone', message: 'Numéro invalide. Saisissez un mobile du Sénégal, par exemple 77 123 45 67.' }); return }
+      setSignIn({ step: 'sending', via: 'phone', phone })
+      void sendSms(phone).then(error => {
+        setSignIn(error ? { step: 'error', via: 'phone', phone, message: sendErrorMessage(error, 'phone') } : { step: 'sent', via: 'phone', phone, sentAt: Date.now() })
+      })
+    },
     resendLink: () => {
-      const email = signIn.email
-      if (!supabase || signIn.step !== 'sent' || !email || signIn.resending) return
+      const via: SignInVia = signIn.via ?? 'email'
+      const to = via === 'phone' ? signIn.phone : signIn.email
+      if (!supabase || signIn.step !== 'sent' || !to || signIn.resending) return
       setSignIn(s => ({ ...s, resending: true, notice: undefined }))
-      void sendLink(email).then(error => {
-        setSignIn(s => (s.step !== 'sent' || s.email !== email ? s : error
-          ? { ...s, resending: false, notice: { kind: 'error', text: sendErrorMessage(error) } }
-          : { ...s, resending: false, sentAt: Date.now(), code: undefined, notice: { kind: 'ok', text: `Nouveau lien envoyé à ${email}.` } }))
+      void (via === 'phone' ? sendSms(to) : sendLink(to)).then(error => {
+        setSignIn(s => (s.step !== 'sent' || (via === 'phone' ? s.phone : s.email) !== to ? s : error
+          ? { ...s, resending: false, notice: { kind: 'error', text: sendErrorMessage(error, via) } }
+          : { ...s, resending: false, sentAt: Date.now(), code: undefined,
+              notice: { kind: 'ok', text: via === 'phone' ? `Nouveau code envoyé au ${formatPhone(to)}.` : `Nouveau lien envoyé à ${to}.` } }))
       })
     },
     verifyCode: raw => {
-      const email = signIn.email
-      if (!supabase || signIn.step !== 'sent' || !email || signIn.code?.status === 'verifying') return
+      const via: SignInVia = signIn.via ?? 'email'
+      const to = via === 'phone' ? signIn.phone : signIn.email
+      if (!supabase || signIn.step !== 'sent' || !to || signIn.code?.status === 'verifying') return
       if (!isValidCode(raw)) { setSignIn(s => ({ ...s, code: { status: 'error', message: 'Le code compte 6 chiffres.' } })); return }
       setSignIn(s => ({ ...s, code: { status: 'verifying' } }))
+      const same = (s: SignInState): boolean => (via === 'phone' ? s.phone : s.email) === to
       // Succès : l'événement SIGNED_IN charge la progression et remet la connexion à zéro.
-      supabase.auth.verifyOtp({ email, token: raw, type: 'email' }).then(({ error }) => {
+      const check = via === 'phone'
+        ? supabase.auth.verifyOtp({ phone: to, token: raw, type: 'sms' })
+        : supabase.auth.verifyOtp({ email: to, token: raw, type: 'email' })
+      check.then(({ error }) => {
         if (!error) return
         console.error('[xxb] Code refusé', error)
-        setSignIn(s => (s.email === email ? { ...s, code: { status: 'error', message: codeErrorMessage(error) } } : s))
+        setSignIn(s => (same(s) ? { ...s, code: { status: 'error', message: codeErrorMessage(error, via) } } : s))
       }, (err: unknown) => {
         console.error('[xxb] Vérification du code impossible', err)
-        setSignIn(s => (s.email === email ? { ...s, code: { status: 'error', message: codeErrorMessage(err) } } : s))
+        setSignIn(s => (same(s) ? { ...s, code: { status: 'error', message: codeErrorMessage(err, via) } } : s))
       })
     },
-    changeEmail: () => setSignIn(s => ({ step: 'idle', email: s.email })),
+    changeEmail: via => setSignIn(s => {
+      const next: SignInVia = via ?? s.via ?? 'email'
+      // Les deux saisies sont gardées : passer de l'e-mail au numéro (et retour) ne les efface pas.
+      const kept: SignInState = { step: 'idle', email: s.email, phone: s.phone }
+      if (next === 'phone') kept.via = 'phone'
+      if (!kept.email) delete kept.email
+      if (!kept.phone) delete kept.phone
+      return kept
+    }),
     signOut: () => {
       if (!supabase) return
       const owner = ownerRef.current

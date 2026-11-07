@@ -28,11 +28,11 @@ test('admin : SUIVI retrouve un scout par pseudo, ouvre sa fiche et note la cons
     await page.getByRole('navigation', { name: 'Administration' }).getByRole('button', { name: 'SUIVI' }).click()
 
     const panel = page.getByRole('region', { name: 'Suivi d’un scout' })
-    await panel.getByLabel('E-mail ou pseudo').fill('ab')
+    await panel.getByLabel('E-mail, numéro ou pseudo').fill('ab')
     await panel.getByRole('button', { name: 'RECHERCHER' }).click()
     await expect(panel.getByRole('alert')).toHaveText('Saisissez au moins 3 caractères.')
 
-    await panel.getByLabel('E-mail ou pseudo').fill(pseudo.toLowerCase())
+    await panel.getByLabel('E-mail, numéro ou pseudo').fill(pseudo.toLowerCase())
     await panel.getByRole('button', { name: 'RECHERCHER' }).click()
     const hit = panel.getByRole('list', { name: 'Comptes trouvés' }).getByRole('button')
     await expect(hit).toHaveCount(1)

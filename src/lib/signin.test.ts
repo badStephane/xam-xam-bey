@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { codeErrorMessage, isValidCode, normalizeCode, resendRemaining, sendErrorMessage, TOO_MANY } from './signin'
+import { codeErrorMessage, isValidCode, normalizeCode, PHONE_UNAVAILABLE, resendRemaining, sendErrorMessage, TOO_MANY } from './signin'
 
 describe('resendRemaining (minuteur de renvoi)', () => {
   const sentAt = 1_000_000
@@ -50,5 +50,12 @@ describe('messages d’erreur', () => {
   test('code expiré ou faux, et erreur inconnue', () => {
     expect(codeErrorMessage({ status: 403, code: 'otp_expired', message: 'Token has expired or is invalid' })).toMatch(/incorrect ou expiré.*déjà servi par le lien : demandez-en un nouveau/)
     expect(sendErrorMessage(null)).toMatch(/n’a pas pu être envoyé/)
+  })
+
+  test('SMS : limite d’envoi, connexion par numéro fermée, échec d’envoi, code faux', () => {
+    expect(sendErrorMessage({ code: 'over_sms_send_rate_limit' }, 'phone')).toBe(TOO_MANY)
+    expect(sendErrorMessage({ code: 'phone_provider_disabled', message: 'Unsupported phone provider' }, 'phone')).toBe(PHONE_UNAVAILABLE)
+    expect(sendErrorMessage({ status: 500, code: 'unexpected_failure' }, 'phone')).toMatch(/SMS n’a pas pu être envoyé/)
+    expect(codeErrorMessage({ status: 403, code: 'otp_expired' }, 'phone')).toMatch(/6 chiffres du SMS/)
   })
 })
