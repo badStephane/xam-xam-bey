@@ -1,4 +1,4 @@
-/** Délai avant de pouvoir renvoyer un lien (aligné sur la limite d'un envoi par minute de Supabase Auth). */
+/** Délai avant de pouvoir renvoyer un lien ou un SMS (aligné sur la limite d'un envoi par minute de Supabase Auth). */
 export const RESEND_DELAY_MS = 60_000
 export const CODE_LENGTH = 6
 
@@ -18,7 +18,8 @@ interface AuthErrorLike { status?: number; code?: string; message?: string; name
 const asAuthError = (e: unknown): AuthErrorLike => (e && typeof e === 'object' ? e as AuthErrorLike : {})
 
 const isRateLimited = (e: AuthErrorLike): boolean =>
-  e.status === 429 || e.code === 'over_email_send_rate_limit' || e.code === 'over_request_rate_limit' || /rate limit/i.test(e.message || '')
+  e.status === 429 || e.code === 'over_email_send_rate_limit' || e.code === 'over_sms_send_rate_limit' || e.code === 'over_request_rate_limit'
+  || /rate limit/i.test(e.message || '')
 
 const isNetwork = (e: AuthErrorLike): boolean =>
   e.name === 'AuthRetryableFetchError' || e.name === 'TimeoutError' || e.name === 'AbortError' || /fetch|network|timeout|abort/i.test(e.message || '')
@@ -26,18 +27,29 @@ const isNetwork = (e: AuthErrorLike): boolean =>
 export const TOO_MANY = 'Trop de demandes. Réessaie dans quelques minutes.'
 const NETWORK = 'Le réseau ne répond pas. Vérifie la connexion puis réessaie.'
 
-/** Message d'échec de l'envoi du lien (premier envoi ou renvoi). */
-export function sendErrorMessage(error: unknown): string {
+/** Moyen de connexion : lien et code par e-mail, ou code par SMS. */
+export type SignInVia = 'email' | 'phone'
+
+/** Connexion par numéro pas encore ouverte côté Supabase (fournisseur SMS absent ou désactivé). */
+export const PHONE_UNAVAILABLE = 'La connexion par numéro n’est pas encore disponible. Utilise une adresse e-mail.'
+
+/** Message d'échec de l'envoi du lien ou du SMS (premier envoi ou renvoi). */
+export function sendErrorMessage(error: unknown, via: SignInVia = 'email'): string {
   const e = asAuthError(error)
   if (isRateLimited(e)) return TOO_MANY
   if (isNetwork(e)) return NETWORK
+  if (via === 'phone') {
+    if (e.code === 'phone_provider_disabled' || e.code === 'sms_provider_disabled') return PHONE_UNAVAILABLE
+    return 'Le SMS n’a pas pu être envoyé. Vérifie le numéro puis réessaie.'
+  }
   return 'L’e-mail n’a pas pu être envoyé. Réessaie.'
 }
 
 /** Message d'échec de la vérification du code. */
-export function codeErrorMessage(error: unknown): string {
+export function codeErrorMessage(error: unknown, via: SignInVia = 'email'): string {
   const e = asAuthError(error)
   if (isRateLimited(e)) return TOO_MANY
   if (isNetwork(e)) return NETWORK
+  if (via === 'phone') return 'Code incorrect ou expiré. Vérifie les 6 chiffres du SMS, ou demandes-en un nouveau.'
   return 'Code incorrect ou expiré. Vérifie les 6 chiffres. Si tu as déjà touché le bouton de l’e-mail, ce code a servi : renvoie l’e-mail pour en avoir un nouveau.'
 }

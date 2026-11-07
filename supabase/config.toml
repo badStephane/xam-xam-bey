@@ -274,17 +274,21 @@ content_path = "./supabase/templates/confirmation.html"
 
 [auth.sms]
 # Allow/disallow new user signups via SMS to your project.
-enable_signup = false
+# Xam Xam Bey : connexion par numéro (mobile du Sénégal), en plus de l'e-mail ; le code crée le compte (shouldCreateUser).
+# En production, l'envoi passe par le Send SMS hook → fonction send-sms → API SMS d'Orange (docs/sms-orange.md).
+enable_signup = true
 # If enabled, users need to confirm their phone number before signing in.
 enable_confirmations = false
 # Template for sending OTP to users
-template = "Your code is {{ `{{ .Code }}` }}"
+# Ignoré quand le Send SMS hook est actif (production) : le texte est alors celui de supabase/functions/send-sms/orange.ts.
+template = "Xam Xam Bey : votre code de connexion est {{ `{{ .Code }}` }}"
 # Controls the minimum amount of time that must pass before sending another sms otp.
 max_frequency = "5s"
 
 # Use pre-defined map of phone number to OTP for testing.
-# [auth.sms.test_otp]
-# 4152127777 = "123456"
+# Xam Xam Bey : numéros de test de la pile locale (E2E). Aucun SMS n'est envoyé pour eux : Supabase Auth prend ce code.
+[auth.sms.test_otp]
+221770000001 = "123456"
 
 # Configure logged in session timeouts.
 # [auth.sessions]
@@ -304,12 +308,14 @@ max_frequency = "5s"
 # uri = "pg-functions://<database>/<schema>/<hook_name>"
 
 # Configure one of the supported SMS providers: `twilio`, `twilio_verify`, `messagebird`, `textlocal`, `vonage`.
+# Xam Xam Bey : PILE LOCALE SEULEMENT. Un fournisseur doit être déclaré pour ouvrir la connexion par numéro ; ces valeurs
+# factices (pas des secrets) ne servent jamais : seuls les numéros de [auth.sms.test_otp] fonctionnent en local, sans envoi.
+# La production n'utilise pas Twilio mais le Send SMS hook (fonction send-sms, API SMS d'Orange) : docs/sms-orange.md.
 [auth.sms.twilio]
-enabled = false
-account_sid = ""
-message_service_sid = ""
-# DO NOT commit your Twilio auth token to git. Use environment variable substitution instead:
-auth_token = "env(SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN)"
+enabled = true
+account_sid = "AC00000000000000000000000000000000"
+message_service_sid = "MG00000000000000000000000000000000"
+auth_token = "pile-locale-factice"
 
 # Multi-factor-authentication is available to Supabase Pro plan.
 [auth.mfa]
@@ -388,6 +394,10 @@ enabled = false
 authorization_url_path = "/oauth/consent"
 # Allow dynamic client registration
 allow_dynamic_registration = false
+
+# Xam Xam Bey : Send SMS hook appelé par Supabase Auth, authentifié par sa signature (Standard Webhooks), pas par un JWT.
+[functions.send-sms]
+verify_jwt = false
 
 [edge_runtime]
 enabled = false
