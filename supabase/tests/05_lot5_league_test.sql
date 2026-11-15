@@ -169,7 +169,8 @@ select is(public.league_close_due(public.week_deadline(public.league_week_of(now
 create temp table snap as select user_id, tier, tier_from from public.scout_profiles;
 create temp table snap_badges as select * from public.user_badges;
 select is(public.league_close_week(tests.day('2026-11-02'), tests.at('2026-11-09 07:00Z')), false, 'clôture rejouée : sans effet');
-select is(public.league_close_due('2026-11-09 08:00Z'), 0, 'league_close_due rejouée : rien à fermer');
+select is(public.league_close_due(public.week_deadline(public.league_week_of(now())) + interval '2 hours'), 0,
+  'league_close_due rejouée : rien à fermer');
 -- Rejeu forcé (closed_at effacé à la main) : les ligues sont affectées, jamais incrémentées.
 update public.league_weeks set closed_at = null where week_start = tests.day('2026-11-02');
 select is(public.league_close_week(tests.day('2026-11-02'), tests.at('2026-11-09 09:00Z')), true, 'rejeu forcé exécuté');
