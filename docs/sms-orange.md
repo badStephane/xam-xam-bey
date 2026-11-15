@@ -52,7 +52,7 @@ Tant que les étapes ci-dessous ne sont pas faites, l'onglet « NUMÉRO » affic
 
 ## Local et tests
 
-- Pile locale (`supabase start`) : aucun SMS n'est envoyé. Le numéro de test **77 000 00 01** reçoit toujours le code **123456** (`[auth.sms.test_otp]`). Le bloc Twilio de `config.toml` porte des valeurs factices qui ne servent qu'à ouvrir la connexion par numéro en local.
+- Pile locale (`supabase start`) : aucun SMS n'est envoyé. Les numéros de test **77 000 00 01** et **77 000 00 02** (un par test E2E) reçoivent toujours le code **123456** (`[auth.sms.test_otp]`). Le bloc Twilio de `config.toml` porte des valeurs factices qui ne servent qu'à ouvrir la connexion par numéro en local.
 - Tests unitaires de la fonction : `supabase/functions/send-sms/orange.test.ts` (lancés par `npm test`).
 - Test de bout en bout : `e2e/signin-phone.spec.ts`.
 - Base : `supabase/tests/12_admin_scout_phone_test.sql`. La recherche admin trouve un compte par une partie de son numéro.

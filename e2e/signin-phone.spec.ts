@@ -31,11 +31,12 @@ test.describe('Connexion par numéro de téléphone (SMS)', () => {
   test('« Changer de numéro » garde la saisie ; retour à l’e-mail possible', async ({ page }) => {
     await page.goto('/?screen=revision')
     await page.getByRole('radio', { name: 'NUMÉRO' }).click()
-    await page.getByLabel('TON NUMÉRO (SÉNÉGAL)').fill('770000001')
+    // Autre numéro de test que le premier test : deux SMS vers le même numéro à moins de 5 s sont refusés (max_frequency).
+    await page.getByLabel('TON NUMÉRO (SÉNÉGAL)').fill('770000002')
     await page.getByRole('button', { name: 'Recevoir mon code par SMS' }).click()
     await expect(page.getByRole('heading', { name: 'Entre ton code' })).toBeVisible({ timeout: 20_000 })
     await page.getByRole('button', { name: 'Changer de numéro' }).click()
-    await expect(page.getByLabel('TON NUMÉRO (SÉNÉGAL)')).toHaveValue('77 000 00 01')
+    await expect(page.getByLabel('TON NUMÉRO (SÉNÉGAL)')).toHaveValue('77 000 00 02')
     await page.getByRole('radio', { name: 'E-MAIL' }).click()
     await expect(page.getByLabel('TON ADRESSE E-MAIL')).toBeVisible()
   })
