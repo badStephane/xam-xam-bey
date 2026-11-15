@@ -8,7 +8,7 @@ export function UpdateBanner() {
     <div className="update-wrap">
       <div className="banner update" role="status">
         <b>NOUVELLE VERSION</b>
-        <span style={{ fontSize: '0.875rem' }}>Le site a été mis à jour. Une séance en cours reprendra où vous en êtes.</span>
+        <span style={{ fontSize: '0.875rem' }}>Le site a été mis à jour. Une séance en cours reprendra où tu en es.</span>
         <button className="btn-mono" onClick={reload}>RECHARGER</button>
       </div>
     </div>

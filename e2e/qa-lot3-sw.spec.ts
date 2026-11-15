@@ -53,7 +53,7 @@ test.afterAll(async () => {
 })
 
 async function visitAndWaitForWorker(page: Page): Promise<void> {
-  await page.goto(`${ORIGIN}/`)
+  await page.goto(`${ORIGIN}/#bibliotheque`)
   await expect(page.getByRole('heading', { name: 'Toutes les ressources du mouvement.' })).toBeVisible()
   await page.waitForFunction(() => !!navigator.serviceWorker?.controller, undefined, { timeout: 20_000 })
 }

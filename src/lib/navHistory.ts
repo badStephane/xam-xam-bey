@@ -14,7 +14,11 @@ export interface NavState {
 
 export type NavAction = 'none' | 'push' | 'replace' | 'back'
 
-const DEFAULT_ENTRY: NavEntry = { screen: 'bibliotheque', sel: null }
+/**
+ * Arrivée sur le site (parcours jeunes) : la révision. Connecté, l'écran du jour ; sinon, l'accueil avec l'e-mail et la
+ * bibliothèque à un geste. La bibliothèque n'est plus l'entrée : 170 PDF ne disent pas à un jeune de 12 ans quoi faire.
+ */
+const DEFAULT_ENTRY: NavEntry = { screen: 'revision', sel: null }
 const SESSION_SCREENS: readonly Screen[] = ['session', 'fin']
 
 const isScreen = (s: unknown): s is Screen => typeof s === 'string' && (SCREENS as readonly string[]).includes(s)
@@ -51,7 +55,7 @@ export function readState(state: unknown): NavState | null {
   return { xxb: { screen: s.xxb.screen, sel }, idx: s.idx }
 }
 
-/** Écran de départ : le hash d'abord (rechargement), puis ?screen= (lien magique, planches), puis la bibliothèque. */
+/** Écran de départ : le hash d'abord (rechargement), puis ?screen= (lien magique, planches), puis la révision. */
 export function initialEntry(hash: string, paramScreen: Screen | null, paramSel: number | null): NavEntry {
   const fromHash = parseHash(hash)
   const e = fromHash ?? (paramScreen ? { screen: paramScreen, sel: hasSel(paramScreen) ? paramSel : null } : DEFAULT_ENTRY)

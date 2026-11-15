@@ -34,15 +34,15 @@ function LeagueLine({ data, previous, load, redo, capped }: { data: LeagueState 
   const before = previous && previous.weekStart === data.weekStart ? myRow(previous) : null
   const gain = me && before ? before.rank - me.rank : 0
   let line: JSX.Element
-  if (offline) line = <span>Hors réseau : votre place sera mise à jour au retour du réseau.</span>
-  else if (load === 'loading') line = <span className="skel-line" style={{ height: 18, width: '70%' }} aria-label="Chargement de votre place" />
+  if (offline) line = <span>Hors réseau : ta place sera mise à jour au retour du réseau.</span>
+  else if (load === 'loading') line = <span className="skel-line" style={{ height: 18, width: '70%' }} aria-label="Chargement de ta place" />
   else if (load === 'error') line = <span>Place non disponible pour le moment.</span>
   else line = <b className="mono">{leagueName(data.tier).toUpperCase()} · {data.weekXp} XP CETTE SEMAINE{me ? ` · ${ordinal(me.rank).toUpperCase()} SUR ${data.groupSize ?? data.group.length}` : ''}{gain > 0 ? ` ▲${gain}` : ''}</b>
   return (
     <div className="col g6">
       {line}
       {redo && <span className="muted" style={{ fontSize: '0.875rem' }}>Cartes déjà comptées aujourd’hui pour la ligue.</span>}
-      {!redo && capped && <span className="muted" style={{ fontSize: '0.875rem' }}>Plafond du jour atteint (300 XP) : les cartes suivantes comptent pour votre niveau, pas pour la ligue.</span>}
+      {!redo && capped && <span className="muted" style={{ fontSize: '0.875rem' }}>Plafond du jour atteint (300 XP) : les cartes suivantes comptent pour ton niveau, pas pour la ligue.</span>}
     </div>
   )
 }
@@ -74,7 +74,7 @@ function Invite({ tier, onJoined }: { tier: number; onJoined(): void }) {
   return (
     <section className="box" aria-labelledby="fin-join">
       <h2 id="fin-join" className="h-sec">REJOINDRE LES LIGUES ?</h2>
-      <p style={{ margin: 0 }}>Comparez votre semaine avec une vingtaine de scouts. Seul votre pseudo est visible, jamais votre nom ni votre e-mail.</p>
+      <p style={{ margin: 0 }}>Compare ta semaine avec une vingtaine de scouts. Seul ton pseudo est visible, jamais ton nom ni ton e-mail.</p>
       {step === 'form'
         ? <PseudoForm onDone={p => { setPseudo(p); setStep('done'); onJoined() }} />
         : <div className="row two-btn"><button className="btn acc" onClick={() => setStep('form')}>CHOISIR UN PSEUDO</button><button className="btn" onClick={refuse}>NON MERCI</button></div>}

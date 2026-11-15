@@ -18,7 +18,7 @@ const LOCAL_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmF
 const BUILD_ENV = { ...process.env, VITE_SUPABASE_URL: LOCAL_API, VITE_SUPABASE_ANON_KEY: LOCAL_ANON_KEY }
 /** Clé de session de supabase-js pour la pile locale (`sb-<premier label de l'hôte>-auth-token`). */
 const AUTH_KEY = 'sb-127-auth-token'
-const NOTICE = 'Hors réseau : vos réponses seront envoyées au retour du réseau.'
+const NOTICE = 'Hors réseau : tes réponses seront envoyées au retour du réseau.'
 
 const sql = (query: string): string =>
   execFileSync('docker', ['exec', DB_CONTAINER, 'psql', '-U', 'postgres', '-d', 'postgres', '-tAc', query], { encoding: 'utf8' }).trim()
@@ -78,7 +78,7 @@ async function gradeCurrent(page: Page): Promise<string> {
 
 /** Séance du jour hors réseau : 2 cartes notées, puis QUITTER (la séance est journalisée). */
 async function offlineSessionWithTwoGrades(page: Page): Promise<string[]> {
-  await page.getByRole('button', { name: /DÉMARRER LA SESSION DU JOUR/ }).click()
+  await page.getByRole('button', { name: /^C’EST PARTI · / }).click()
   await expect(page.getByText(NOTICE)).toBeVisible()
   const ids = [await gradeCurrent(page), await gradeCurrent(page)]
   await page.getByRole('button', { name: '✕ QUITTER' }).click()
@@ -141,13 +141,13 @@ test.describe('Révision hors ligne (lot 4, F1)', () => {
     expect(serverProgress(email, ids)).toEqual({ views: [1, 1], sessions: 1 })
   })
 
-  test('jamais connecté sur l’appareil, hors réseau : « Connectez-vous une première fois avec du réseau »', async ({ page }) => {
+  test('jamais connecté sur l’appareil, hors réseau : « Connecte-toi une première fois avec du réseau »', async ({ page }) => {
     await page.goto(`${ORIGIN}/?screen=revision`)
-    await expect(page.getByRole('heading', { name: 'Connectez-vous pour réviser' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Révise le scoutisme en jouant' })).toBeVisible()
     await page.waitForFunction(() => !!navigator.serviceWorker?.controller, undefined, { timeout: 20_000 })
     await reloadOffline(page)
-    await expect(page.getByRole('heading', { name: 'Connectez-vous une première fois avec du réseau' })).toBeVisible()
-    await expect(page.getByLabel('ADRESSE E-MAIL')).toHaveCount(0)
+    await expect(page.getByRole('heading', { name: 'Connecte-toi une première fois avec du réseau' })).toBeVisible()
+    await expect(page.getByLabel('TON ADRESSE E-MAIL')).toHaveCount(0)
     await page.context().setOffline(false)
   })
 
@@ -164,11 +164,11 @@ test.describe('Révision hors ligne (lot 4, F1)', () => {
     expect(idA).toBeTruthy()
     expect(await keysOf()).toEqual(expect.arrayContaining([`xxb.cards.v1.${idA}`, 'xxb.user.v1']))
     await page.getByRole('button', { name: 'SE DÉCONNECTER' }).first().click()
-    await expect(page.getByRole('heading', { name: 'Connectez-vous pour réviser' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Révise le scoutisme en jouant' })).toBeVisible()
     await expect.poll(keysOf).toEqual([])
 
     await reloadOffline(page)
-    await expect(page.getByRole('heading', { name: 'Connectez-vous une première fois avec du réseau' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Connecte-toi une première fois avec du réseau' })).toBeVisible()
     await page.context().setOffline(false)
 
     await signInWithCode(page, emailB)

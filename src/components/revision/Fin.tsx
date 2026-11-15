@@ -20,7 +20,7 @@ export function Fin() {
   const name = s.name || 'la personne'
   const stamps = ask ? [['FAUX', 'var(--stamp)'], ['PARTIEL', 'var(--ochre)']] : [['FAUSSE', 'var(--stamp)'], ['HÉSITANT', 'var(--ochre)']]
   const f = ask
-    ? { tag: 'INTERROGATION TERMINÉE · NE COMPTE PAS DANS VOTRE PROGRESSION', title: `Bilan de ${name}`, list: 'Questions à reprendre', redo: 'REPOSER CES QUESTIONS',
+    ? { tag: 'INTERROGATION TERMINÉE · NE COMPTE PAS DANS TA PROGRESSION', title: `Bilan de ${name}`, list: 'Questions à reprendre', redo: 'REPOSER CES QUESTIONS',
         stats: [[`${String(juste + partiel / 2).replace('.', ',')}/${n}`, 'SCORE', 'var(--hud)'], [pct(juste), 'RÉPONSES JUSTES', 'var(--acc)'], [String(partiel), 'PARTIELLES', 'var(--amber)']],
         chips: [[`✓ JUSTE ${juste}`, 'var(--acc)'], [`~ PARTIEL ${partiel}`, 'var(--amber)'], [`✕ FAUX ${faux}`, 'var(--err)']] }
     : { tag: s.kind === REDO ? `REPRISE TERMINÉE · +${XP_REDO} XP PAR CARTE SUE, NIVEAUX INCHANGÉS` : 'SESSION TERMINÉE', title: 'Quête accomplie', list: 'À retravailler', redo: 'REFAIRE CES CARTES',

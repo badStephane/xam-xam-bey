@@ -10,15 +10,15 @@ export const PSEUDO_MESSAGES = {
   short: '3 caractères au moins.',
   long: '20 caractères au plus.',
   chars: 'Lettres, chiffres, tiret (-) et tiret bas (_) seulement, sans espace.',
-  start: 'Commencez par une lettre.',
+  start: 'Commence par une lettre.',
   contact: 'Pas de numéro ni d’adresse dans un pseudo.',
-  refused: 'Ce pseudo n’est pas accepté. Choisissez-en un autre.',
-  tooSoon: 'Un seul changement de pseudo par jour. Réessayez demain.',
-  rate: 'Trop d’essais. Réessayez dans une minute.',
-  unknown: 'Le pseudo n’a pas pu être enregistré. Vérifiez la connexion puis réessayez.',
+  refused: 'Ce pseudo n’est pas accepté. Choisis-en un autre.',
+  tooSoon: 'Un seul changement de pseudo par jour. Réessaie demain.',
+  rate: 'Trop d’essais. Réessaie dans une minute.',
+  unknown: 'Le pseudo n’a pas pu être enregistré. Vérifie la connexion puis réessaie.',
 } as const
 
-export const takenMessage = (suggestion: string): string => `Ce pseudo est déjà pris. Essayez ${suggestion}.`
+export const takenMessage = (suggestion: string): string => `Ce pseudo est déjà pris. Essaie ${suggestion}.`
 
 const LETTER = /\p{L}/u
 const ALLOWED = /^[\p{L}\p{M}0-9_-]+$/u

@@ -43,7 +43,7 @@ const FIN = () => /Quête accomplie/
 
 /** Termine la séance du jour : QCM (première proposition) ou auto-évaluation (Su), jusqu'au bilan. */
 async function finishDailySession(page: Page): Promise<void> {
-  await page.getByRole('button', { name: /DÉMARRER LA SESSION DU JOUR/ }).click()
+  await page.getByRole('button', { name: /^C’EST PARTI · / }).click()
   for (let i = 0; i < MAX_CARDS; i++) {
     if (await page.getByRole('heading', { name: FIN() }).isVisible()) return
     await answerAny(page)
@@ -70,7 +70,7 @@ test('bilan : badge débloqué, pseudo choisi, ligue affichée ; puis Ligue et B
   // Invitation proposée une fois (P-A), formulaire en ligne, pas de modale.
   await expect(page.getByRole('heading', { name: 'REJOINDRE LES LIGUES ?' })).toBeVisible()
   await page.getByRole('button', { name: 'CHOISIR UN PSEUDO' }).click()
-  const field = page.getByLabel('Votre pseudo')
+  const field = page.getByLabel('Ton pseudo')
   await field.fill('ab')
   await field.blur()
   await expect(page.getByText('3 caractères au moins.')).toBeVisible()
@@ -82,7 +82,7 @@ test('bilan : badge débloqué, pseudo choisi, ligue affichée ; puis Ligue et B
   await page.getByRole('button', { name: 'VOIR MA LIGUE' }).click()
   await expect(page.getByRole('heading', { level: 1, name: /Ligue Piste/ })).toBeVisible()
   await expect(page).toHaveTitle(/^Ligue · /)
-  await expect(page.getByRole('listitem', { name: new RegExp(`^\\d+(er|e), ${pseudo}, \\d+ XP, vous$`) })).toBeVisible()
+  await expect(page.getByRole('listitem', { name: new RegExp(`^\\d+(er|e), ${pseudo}, \\d+ XP, toi$`) })).toBeVisible()
   await expect(page.getByText(/XP CETTE SEMAINE/).first()).toBeVisible()
 
   // Retour Android : l'écran précédent du site (le bilan est remplacé par Aujourd'hui).
@@ -96,7 +96,7 @@ test('bilan : badge débloqué, pseudo choisi, ligue affichée ; puis Ligue et B
   const res = await page.reload()
   expect(res?.fromServiceWorker(), 'page servie par le service worker').toBe(true)
   await expect(page.getByText(/^Hors réseau : classement de la dernière connexion \(/)).toBeVisible()
-  await expect(page.getByRole('listitem', { name: new RegExp(`${pseudo}.*vous$`) })).toBeVisible()
+  await expect(page.getByRole('listitem', { name: new RegExp(`${pseudo}.*toi$`) })).toBeVisible()
   await page.getByRole('navigation', { name: 'Progrès' }).getByRole('button', { name: 'BADGES' }).click()
   await expect(page.getByText('Hors réseau : badges de ligue et de défi de la dernière connexion.')).toBeVisible()
   await expect(page.getByRole('button', { name: /Premier pas/ })).toBeVisible()
@@ -110,9 +110,9 @@ test('écrans Ligue et Badges préchargés par le worker : ouverts hors ligne sa
   await page.context().setOffline(true)
   await page.goto(`${ORIGIN}/#badges`)
   await expect(page.getByRole('heading', { level: 1, name: 'Badges' })).toBeVisible()
-  await expect(page.getByText('Votre premier badge : notez une carte.')).toBeVisible()
+  await expect(page.getByText('Ton premier badge : réponds à une question.')).toBeVisible()
   await page.getByRole('navigation', { name: 'Progrès' }).getByRole('button', { name: 'LIGUE' }).click()
-  await expect(page.getByText('Cet écran n’est pas encore sur votre téléphone.')).toHaveCount(0)
+  await expect(page.getByText('Cet écran n’est pas encore sur ton téléphone.')).toHaveCount(0)
   await expect(page.getByText(/^Hors réseau : (classement de la dernière connexion|le classement s’affichera au retour du réseau)/)).toBeVisible()
   await page.context().setOffline(false)
 })

@@ -31,18 +31,18 @@ export function codeOf(mail: { subject: string; text: string }): string {
 /** Demande un lien depuis l'écran de connexion de la révision. */
 export async function requestLink(page: Page, email: string): Promise<void> {
   await page.goto('/?screen=revision')
-  await page.getByLabel('ADRESSE E-MAIL').fill(email)
-  await page.getByRole('button', { name: 'Recevoir le lien de connexion' }).click()
+  await page.getByLabel('TON ADRESSE E-MAIL').fill(email)
+  await page.getByRole('button', { name: 'Recevoir mon code' }).click()
   // L'envoi passe par le SMTP de la pile locale : jusqu'à plusieurs secondes au premier envoi.
-  await expect(page.getByRole('heading', { name: 'Ouvrez le lien reçu' })).toBeVisible({ timeout: 20_000 })
+  await expect(page.getByRole('heading', { name: 'Entre ton code' })).toBeVisible({ timeout: 20_000 })
 }
 
 /** Connexion complète par code ; renvoie quand l'écran du jour est affiché. */
 export async function signInWithCode(page: Page, email: string, mailIndex = 1): Promise<void> {
   await requestLink(page, email)
   const code = codeOf(await waitForMail(email, mailIndex))
+  // Le code part tout seul au 6ᵉ chiffre (parcours jeunes) : aucun bouton à toucher.
   await page.getByLabel('CODE À 6 CHIFFRES').fill(code)
-  await page.getByRole('button', { name: 'Valider le code' }).click()
   await expect(page.getByRole('heading', { name: 'Aujourd’hui' })).toBeVisible()
 }
 

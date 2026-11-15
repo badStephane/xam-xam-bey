@@ -10,8 +10,8 @@ import { LeagueBoard } from './LeagueBoard'
 import { PseudoForm } from './PseudoForm'
 
 const SMALL_GROUP = 10
-const INVITE = 'Comparez votre semaine avec une vingtaine de scouts. Seul votre pseudo est visible, jamais votre nom ni votre e-mail.'
-export const welcomeText = (tier: number, pseudo: string): string => `Bienvenue en ${leagueName(tier)}, ${pseudo}. Vos prochaines cartes comptent pour la semaine.`
+const INVITE = 'Compare ta semaine avec une vingtaine de scouts. Seul ton pseudo est visible, jamais ton nom ni ton e-mail.'
+export const welcomeText = (tier: number, pseudo: string): string => `Bienvenue en ${leagueName(tier)}, ${pseudo}. Tes prochaines réponses comptent pour la semaine.`
 
 function localStore(): Storage | null {
   try { return window.localStorage } catch { return null }
@@ -51,7 +51,7 @@ function Rules() {
         <li>La semaine va du lundi au dimanche 20 h. Chaque semaine repart de 0 XP.</li>
         <li>Une carte notée rapporte de l’XP de ligue une fois par jour : 10 XP pour un QCM réussi, 5 XP pour une carte en auto-évaluation. 30 cartes par jour au plus.</li>
         <li>Les premiers du groupe (50 XP au moins) montent ; les derniers descendent, sauf avec 100 XP ou plus dans la semaine.</li>
-        <li>Une semaine sans révision ne change pas votre ligue.</li>
+        <li>Une semaine sans révision ne change pas ta ligue.</li>
       </ul>
     </details>
   )
@@ -70,8 +70,8 @@ function Quit({ onDone }: { onDone(): void }) {
   if (!ask) return <button className="btn-mono" style={{ alignSelf: 'flex-start' }} disabled={offline} onClick={() => setAsk(true)}>QUITTER LES LIGUES</button>
   return (
     <div className="box col g8" role="group" aria-label="Quitter les ligues">
-      <p style={{ margin: 0 }}>Quitter les ligues ? Votre pseudo disparaît des classements tout de suite. Vos XP, niveaux, badges et défis restent à vous.</p>
-      {err && <span className="field-err" role="alert">La demande n’a pas pu être envoyée. Vérifiez la connexion puis réessayez.</span>}
+      <p style={{ margin: 0 }}>Quitter les ligues ? Ton pseudo disparaît des classements tout de suite. Tes XP, niveaux, badges et défis restent à toi.</p>
+      {err && <span className="field-err" role="alert">La demande n’a pas pu être envoyée. Vérifie la connexion puis réessaie.</span>}
       <div className="row"><button className="btn" onClick={() => setAsk(false)}>RESTER</button><button className="btn acc" onClick={quit}>QUITTER</button></div>
     </div>
   )
@@ -86,7 +86,7 @@ function Body({ state, onJoined }: { state: LeagueState; onJoined(p: string): vo
     case 'reset':
       return (
         <section className="box" aria-label="Rejoindre les ligues">
-          <p style={{ margin: 0 }}>{state.status === 'reset' ? 'Votre pseudo a été retiré par un responsable. Choisissez-en un autre pour réapparaître dans les ligues.' : INVITE}</p>
+          <p style={{ margin: 0 }}>{state.status === 'reset' ? 'Ton pseudo a été retiré par un responsable. Choisis-en un autre pour réapparaître dans les ligues.' : INVITE}</p>
           <PseudoForm onDone={onJoined} />
         </section>
       )
@@ -94,14 +94,14 @@ function Body({ state, onJoined }: { state: LeagueState; onJoined(p: string): vo
       // L5-2 : quitter libère le pseudo ; revenir = en choisir un (retour dans la dernière ligue atteinte).
       return (
         <section className="box" aria-label="Revenir dans les ligues">
-          <p style={{ margin: 0 }}>Vous ne participez pas aux ligues. Vos XP, niveaux, badges et défis restent à vous. Choisissez un pseudo pour revenir.</p>
+          <p style={{ margin: 0 }}>Tu ne participes pas aux ligues. Tes XP, niveaux, badges et défis restent à toi. Choisis un pseudo pour revenir.</p>
           <PseudoForm onDone={onJoined} />
         </section>
       )
     case 'not_started':
       return (
         <section className="box">
-          <p style={{ margin: 0 }}>Notez une carte pour entrer dans un groupe de cette semaine.</p>
+          <p style={{ margin: 0 }}>Réponds à une question pour entrer dans un groupe de cette semaine.</p>
           <button className="btn acc" style={{ alignSelf: 'flex-start' }} onClick={() => go('revision', { session: null })}>DÉMARRER LA SESSION DU JOUR</button>
         </section>
       )
@@ -136,11 +136,11 @@ export function LeagueScreen() {
       {lg.load === 'offline' && (
         <p className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: '0.875rem' }}>{lg.at
           ? `Hors réseau : classement de la dernière connexion (${cacheTimeLabel(lg.at)}).`
-          : 'Hors réseau : le classement s’affichera au retour du réseau. Vos révisions comptent quand même.'}</span></p>
+          : 'Hors réseau : le classement s’affichera au retour du réseau. Tes révisions comptent quand même.'}</span></p>
       )}
       {lg.load === 'error' && (
         <div className="warn-inline" role="alert">
-          <span>Le classement n’a pas pu être chargé. Vérifiez la connexion puis touchez Réessayer.</span>
+          <span>Le classement n’a pas pu être chargé. Vérifie la connexion puis touche Réessayer.</span>
           <button className="btn-mono" onClick={() => void lg.reload()}>RÉESSAYER</button>
         </div>
       )}

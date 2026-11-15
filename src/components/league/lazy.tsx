@@ -55,8 +55,8 @@ function Missing({ title }: { title: string }) {
       <ProgressChips />
       <h1 className="h-screen">{title}</h1>
       <p role="status" style={{ margin: 0 }}>{offline
-        ? 'Cet écran n’est pas encore sur votre téléphone. Il s’ouvrira au retour du réseau.'
-        : 'Cet écran n’a pas pu se charger. Vérifiez la connexion puis rechargez la page.'}</p>
+        ? 'Cet écran n’est pas encore sur ton téléphone. Il s’ouvrira au retour du réseau.'
+        : 'Cet écran n’a pas pu se charger. Vérifie la connexion puis recharge la page.'}</p>
       <button className="btn" style={{ alignSelf: 'flex-start' }} onClick={() => go('progression')}>RETOUR AUX PROGRÈS</button>
     </div>
   )

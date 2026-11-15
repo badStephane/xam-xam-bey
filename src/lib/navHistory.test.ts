@@ -59,10 +59,10 @@ describe('readState', () => {
 })
 
 describe('initialEntry', () => {
-  test('le hash prime sur ?screen=, qui prime sur la bibliothèque', () => {
+  test('le hash prime sur ?screen=, qui prime sur la révision (arrivée par défaut)', () => {
     expect(initialEntry('#plan', 'revision', null)).toEqual({ screen: 'plan', sel: null })
     expect(initialEntry('#access_token=x', 'revision', null)).toEqual(rev)
-    expect(initialEntry('', null, null)).toEqual(lib)
+    expect(initialEntry('', null, null)).toEqual(rev)
     expect(initialEntry('', 'apercu', 12)).toEqual(ap12)
   })
 

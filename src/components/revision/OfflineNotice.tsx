@@ -1,6 +1,6 @@
 import { useApp } from '../../AppContext'
 
-export const OFFLINE_NOTICE = 'Hors réseau : vos réponses seront envoyées au retour du réseau.'
+export const OFFLINE_NOTICE = 'Hors réseau : tes réponses seront envoyées au retour du réseau.'
 
 /** Vrai si la révision tourne sans réseau : navigateur hors ligne, ou révision lue depuis l'appareil (F1). */
 export function useRevisionOffline(): boolean {
@@ -14,7 +14,7 @@ export function OfflineNotice() {
   return <div className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: '0.875rem' }}>{OFFLINE_NOTICE}</span></div>
 }
 
-export const FORCED_OUT_NOTICE = 'Vous avez été déconnecté. Vos réponses restent sur ce téléphone : reconnectez-vous à la fin de la séance pour les envoyer.'
+export const FORCED_OUT_NOTICE = 'Tu as été déconnecté. Tes réponses restent sur ce téléphone : reconnecte-toi à la fin de la séance pour les envoyer.'
 
 /** Bandeau de séance après une déconnexion imposée (jeton refusé) : les notes vont dans la copie locale du compte. */
 export function ForcedOutNotice() {

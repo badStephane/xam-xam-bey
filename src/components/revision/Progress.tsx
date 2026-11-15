@@ -74,7 +74,7 @@ function GapsBox() {
       </div>
       <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Une lacune est une carte ratée récemment, ou réussie moins de 6 fois sur 10.</p>
       {all.gaps > 0 && <button className="go" style={{ minHeight: 56 }} onClick={() => revise(ALL_ZONES)}><b>RÉVISER MES {all.gaps} LACUNES</b><span>TOUTES ZONES · {Math.min(all.gaps, GAP_SESSION_SIZE)} QUESTIONS AU PLUS</span></button>}
-      {!all.seen && <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Répondez à quelques cartes : vos lacunes apparaîtront ici, zone par zone.</p>}
+      {!all.seen && <p className="muted" style={{ margin: 0, fontSize: '0.875rem' }}>Réponds à quelques questions : tes lacunes apparaîtront ici, zone par zone.</p>}
       <ul className="col g8" style={{ listStyle: 'none', margin: 0, padding: 0 }}>
         {rows.map(r => (
           <li key={r.zone} className="gap-row">
@@ -106,7 +106,7 @@ export function Progress() {
         <span className="eyebrow">NIV. {lvl.lv} · {grade.name.toUpperCase()} · {lvl.xp} XP</span>
         <h1 className="h-screen">Progression</h1>
         <p style={{ margin: 0 }} className="muted">{acq} cartes acquises sur {cards.length} publiées. Une carte est acquise au niveau {ACQUIRED_LV}.</p>
-        <p style={{ margin: 0, fontSize: '0.8125rem' }} className="muted">Les responsables de la plateforme (administrateurs) peuvent consulter votre progression ; chaque consultation est notée.</p>
+        <p style={{ margin: 0, fontSize: '0.8125rem' }} className="muted">Les responsables de la plateforme (administrateurs) peuvent consulter ta progression ; chaque consultation est notée.</p>
       </div>
       <div className="kpis k4">
         <div className="kpi"><b style={{ color: 'var(--amber)' }}>{streak(rev.prog, today)}</b><span>SÉRIE ACTUELLE</span></div>

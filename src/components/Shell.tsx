@@ -24,7 +24,7 @@ function AccountPanel({ pieces, onClose }: { pieces: string; onClose(): void }) 
       <span className="lbl">CONNECTÉ AVEC</span>
       <b className="account-mail">{rev.email}</b>
       <span className="lbl">{pieces}</span>
-      <span className="muted" style={{ fontSize: '0.8125rem' }}>Les responsables de la plateforme (administrateurs) peuvent consulter votre progression ; chaque consultation est notée.</span>
+      <span className="muted" style={{ fontSize: '0.8125rem' }}>Les responsables de la plateforme (administrateurs) peuvent consulter ta progression ; chaque consultation est notée.</span>
       <div className="row">
         {isAdmin && <button className="btn-mono" onClick={() => { onClose(); go('admin') }} aria-current={ui.screen === 'admin' ? 'page' : undefined}>ESPACE ADMIN</button>}
         <button className="btn-mono" onClick={() => { onClose(); rev.signOut() }}>SE DÉCONNECTER</button>
@@ -37,7 +37,7 @@ function AccountPanel({ pieces, onClose }: { pieces: string; onClose(): void }) 
 function InstallApp() {
   const { offer, install } = useInstallPrompt()
   if (offer === 'prompt') return <button className="btn-mono install" onClick={install}>INSTALLER L’APPLI SUR CET APPAREIL</button>
-  if (offer === 'ios') return <p className="install">Pour l’avoir sur l’écran d’accueil : touchez Partager, puis « Sur l’écran d’accueil ».</p>
+  if (offer === 'ios') return <p className="install">Pour l’avoir sur l’écran d’accueil : touche Partager, puis « Sur l’écran d’accueil ».</p>
   return null
 }
 

@@ -43,11 +43,11 @@ export function PseudoForm({ onDone }: Props) {
   const describedBy = `${id}-help${error ? ` ${id}-err` : ''}${offline ? ` ${id}-off` : ''}`
   return (
     <form className="col g8 pseudo-form" onSubmit={submit} noValidate>
-      <label htmlFor={`${id}-in`} className="lbl">Votre pseudo</label>
+      <label htmlFor={`${id}-in`} className="lbl">Ton pseudo</label>
       <input id={`${id}-in`} className="pseudo-input" value={value} maxLength={40} autoComplete="off" autoCapitalize="off" spellCheck={false}
         onChange={e => { setValue(e.target.value); setError(null) }} onBlur={check}
         aria-invalid={error ? true : undefined} aria-describedby={describedBy} />
-      <span id={`${id}-help`} className="muted" style={{ fontSize: '0.8125rem' }}>Visible des autres scouts. Pas votre vrai nom ni votre prénom.</span>
+      <span id={`${id}-help`} className="muted" style={{ fontSize: '0.8125rem' }}>Visible des autres scouts. Pas ton vrai nom ni ton prénom.</span>
       {error && <span id={`${id}-err`} className="field-err" role="alert">{error}</span>}
       {offline && <span id={`${id}-off`} className="muted" role="status" style={{ fontSize: '0.8125rem' }}>Le choix du pseudo demande du réseau.</span>}
       <div className="row">

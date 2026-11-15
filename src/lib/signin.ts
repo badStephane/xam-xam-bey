@@ -23,15 +23,15 @@ const isRateLimited = (e: AuthErrorLike): boolean =>
 const isNetwork = (e: AuthErrorLike): boolean =>
   e.name === 'AuthRetryableFetchError' || e.name === 'TimeoutError' || e.name === 'AbortError' || /fetch|network|timeout|abort/i.test(e.message || '')
 
-export const TOO_MANY = 'Trop de demandes. Réessayez dans quelques minutes.'
-const NETWORK = 'Le réseau ne répond pas. Vérifiez la connexion puis réessayez.'
+export const TOO_MANY = 'Trop de demandes. Réessaie dans quelques minutes.'
+const NETWORK = 'Le réseau ne répond pas. Vérifie la connexion puis réessaie.'
 
 /** Message d'échec de l'envoi du lien (premier envoi ou renvoi). */
 export function sendErrorMessage(error: unknown): string {
   const e = asAuthError(error)
   if (isRateLimited(e)) return TOO_MANY
   if (isNetwork(e)) return NETWORK
-  return 'Le lien n’a pas pu être envoyé. Réessayez.'
+  return 'L’e-mail n’a pas pu être envoyé. Réessaie.'
 }
 
 /** Message d'échec de la vérification du code. */
@@ -39,5 +39,5 @@ export function codeErrorMessage(error: unknown): string {
   const e = asAuthError(error)
   if (isRateLimited(e)) return TOO_MANY
   if (isNetwork(e)) return NETWORK
-  return 'Code incorrect ou expiré. Vérifiez les 6 chiffres. Ce code a peut-être déjà servi par le lien : demandez-en un nouveau.'
+  return 'Code incorrect ou expiré. Vérifie les 6 chiffres. Si tu as déjà touché le bouton de l’e-mail, ce code a servi : renvoie l’e-mail pour en avoir un nouveau.'
 }

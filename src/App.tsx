@@ -20,11 +20,11 @@ const BG = { dark: '#0D1512', light: '#EEE8DA' }
 
 /** Espace Admin (moins de 5 personnes), chargé à la demande : hors du premier affichage (budget du bundle initial). */
 const Admin = lazy(() => import('./components/admin/Admin').then(m => ({ default: m.Admin }), () => ({
-  default: () => <p className="muted" role="status">L’espace Admin n’a pas pu se charger. Vérifiez la connexion puis rechargez la page.</p>,
+  default: () => <p className="muted" role="status">L’espace Admin n’a pas pu se charger. Vérifie la connexion puis recharge la page.</p>,
 })))
 /** Page de révision d'un document (2026-10-18), chargée à la demande. */
 const DocPageView = lazy(() => import('./components/revision/DocPageView').then(m => ({ default: m.DocPageView }), () => ({
-  default: () => <p className="muted" role="status">Cette page n’a pas pu se charger. Vérifiez la connexion puis rechargez la page.</p>,
+  default: () => <p className="muted" role="status">Cette page n’a pas pu se charger. Vérifie la connexion puis recharge la page.</p>,
 })))
 const ADMIN_LOADING = <p className="mono" role="status" style={{ color: 'var(--acc)' }}>CHARGEMENT…</p>
 

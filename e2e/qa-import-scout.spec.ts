@@ -16,6 +16,8 @@ test.afterAll(cleanup)
 test('IM-6 corrigé : carte sans QCM seule dans sa zone, leurres pris dans les autres zones (4 propositions)', async ({ page }) => {
   expect(sql("select count(*) from public.cards where zone = 12 and status = 'published'")).toBe('1')
   await signInWithCode(page, freshEmail('qa-scout'))
+  // Entraînement à la carte replié sous « Plus d'options » (ADR-6).
+  await page.getByText('PLUS D’OPTIONS').click()
   await page.getByLabel('ZONE').selectOption('12')
   await page.getByRole('button', { name: 'Réviser · 1 question' }).click()
   await expect(page.getByText('[QA import] Scout sans QCM')).toBeVisible()
@@ -40,6 +42,7 @@ test.describe('IM-6 : auto-évaluation quand aucun leurre n’existe', () => {
   test('seule carte publiée du site, sans QCM : « Voir la réponse » puis « Je savais »', async ({ page }) => {
     expect(sql("select count(*) from public.cards where status = 'published'")).toBe('1')
     await signInWithCode(page, freshEmail('qa-self'))
+    await page.getByText('PLUS D’OPTIONS').click()
     await page.getByLabel('ZONE').selectOption('12')
     await page.getByRole('button', { name: 'Réviser · 1 question' }).click()
     await expect(page.getByText('[QA import] Scout sans QCM')).toBeVisible()

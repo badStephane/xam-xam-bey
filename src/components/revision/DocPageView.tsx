@@ -82,7 +82,7 @@ export function DocPageView() {
           {!page && load === 'loading' && <p className="mono" role="status" style={{ color: 'var(--acc)' }}>CHARGEMENT…</p>}
           {!page && load === 'error' && (
             <p className="warn-inline" role="alert" style={{ margin: 0 }}>
-              <span>La page n’a pas pu être chargée. Vérifiez la connexion.</span>
+              <span>La page n’a pas pu être chargée. Vérifie la connexion.</span>
               <button className="btn-mono" onClick={() => setAttempt(a => a + 1)}>RÉESSAYER</button>
             </p>
           )}

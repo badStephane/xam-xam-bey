@@ -544,7 +544,7 @@ describe('useRevision : connexion par lien ou code (D4)', () => {
     act(() => hook.current.resendLink())
     await settle()
     expect(fake.state.signInWithOtp).toHaveBeenCalledTimes(2)
-    expect(hook.current.signIn.notice).toEqual({ kind: 'ok', text: 'Nouveau lien envoyé à a@example.com.' })
+    expect(hook.current.signIn.notice).toEqual({ kind: 'ok', text: 'Nouvel e-mail envoyé à a@example.com.' })
     expect(hook.current.signIn.code).toBeUndefined()
   })
 })

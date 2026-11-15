@@ -48,5 +48,5 @@ test('retour sur l’onglet, jeton expiré, réponse de rafraîchissement lente 
   await page.unroute('**/auth/v1/token?grant_type=refresh_token')
   await page.reload()
   await expect(page.getByRole('heading', { name: 'Aujourd’hui' })).toBeVisible()
-  await expect(page.getByRole('heading', { name: 'Connectez-vous pour réviser' })).toHaveCount(0)
+  await expect(page.getByRole('heading', { name: 'Révise le scoutisme en jouant' })).toHaveCount(0)
 })

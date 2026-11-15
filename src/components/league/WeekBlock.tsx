@@ -1,6 +1,7 @@
 import { useApp } from '../../AppContext'
 import { useLeague } from '../../hooks/useLeague'
 import { challengeCount, leagueName, myRow, ordinal } from '../../lib/league'
+import { PseudoForm } from './PseudoForm'
 
 const MAX_AGE = 5 * 60_000
 
@@ -11,6 +12,17 @@ export function WeekBlock() {
   const s = lg.data
   if (!s) return lg.load === 'loading' ? <div className="skel-line" style={{ height: 52 }} role="status" aria-label="Chargement de la semaine" /> : null
   const offline = lg.load === 'offline'
+  // Parcours jeunes : le pseudo se choisit ici, juste après la première connexion, sans chercher l'écran Ligue.
+  // Seulement s'il n'a jamais été choisi : un pseudo retiré ou une sortie des ligues se règlent sur l'écran Ligue.
+  if (s.status === 'no_pseudo' && !offline) {
+    return (
+      <section className="box week-block" aria-labelledby="wk-h">
+        <h2 id="wk-h" className="h-sec" style={{ fontSize: '1.0625rem' }}>CHOISIS TON PSEUDO</h2>
+        <p style={{ margin: 0 }}>Chaque semaine, compare tes points avec une vingtaine de scouts. Les autres ne voient que ton pseudo.</p>
+        <PseudoForm onDone={() => { void lg.reload() }} />
+      </section>
+    )
+  }
   const me = myRow(s)
   const ch = s.challenge
   const league = s.status === 'active' || s.status === 'not_started' || s.status === 'pending'

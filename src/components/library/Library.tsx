@@ -77,7 +77,7 @@ function Results({ items, filtering, env }: { items: Doc[]; filtering: boolean; 
       <div className="empty">
         <span className="f-lbl" style={{ color: 'var(--amber)' }}>AUCUNE PIÈCE TROUVÉE</span>
         <h3>{q ? `Rien pour « ${q} »` : 'Aucune pièce avec ces filtres'}</h3>
-        <p style={{ margin: 0, fontSize: '0.9375rem' }} className="muted">Essayez un mot plus court, ou l’un de ceux-ci :</p>
+        <p style={{ margin: 0, fontSize: '0.9375rem' }} className="muted">Essaie un mot plus court, ou l’un de ceux-ci :</p>
         <div className="row" style={{ gap: 6 }}>
           {SUGGESTIONS.map(w => <button key={w} className="chip" onClick={() => patch({ q: w, type: 'all', ess: false, month: null })}>{w.toUpperCase()}</button>)}
         </div>
@@ -132,7 +132,7 @@ export function Library() {
     <div className="col g16">
       <div className="col g8" style={{ maxWidth: 720 }}>
         <h1 className="intro-h">Toutes les ressources du mouvement.</h1>
-        <p style={{ margin: 0, fontSize: '0.96875rem' }} className="muted">Trouvez un document en quelques secondes. Révisez une zone par mois, toute l’année.</p>
+        <p style={{ margin: 0, fontSize: '0.96875rem' }} className="muted">Trouve un document en quelques secondes. Révise une zone par mois, toute l’année.</p>
       </div>
       <dl className="stats">
         {[[stats.count, 'PIÈCES'], [ZONES.length, 'ZONES'], [stats.ess, 'ESSENTIELS'], [stats.mo, 'MO']].map(([v, l]) => <div key={l}><dd>{v}</dd><dt>{l}</dt></div>)}
@@ -142,7 +142,7 @@ export function Library() {
         <div className="banner" role="status"><b>HORS RÉSEAU</b><span style={{ fontSize: '0.875rem' }}>{kept.active
           // E3 : promesse tenue par le service worker ; sans lui (navigateur ancien, worker désactivé), l'ancien texte honnête.
           ? 'Le réseau est coupé. Les documents déjà ouverts sur cet appareil restent lisibles : ils portent la mention HORS LIGNE.'
-          : 'Le réseau est coupé. Les documents s’ouvriront dès son retour. Téléchargez à l’avance ceux dont vous aurez besoin.'}</span></div>
+          : 'Le réseau est coupé. Les documents s’ouvriront dès son retour. Télécharge à l’avance ceux dont tu auras besoin.'}</span></div>
       )}
       <ZoneRoute counts={counts} />
       <div className="lib-cols">

@@ -48,7 +48,7 @@ describe('messages d’erreur', () => {
   })
 
   test('code expiré ou faux, et erreur inconnue', () => {
-    expect(codeErrorMessage({ status: 403, code: 'otp_expired', message: 'Token has expired or is invalid' })).toMatch(/incorrect ou expiré.*déjà servi par le lien : demandez-en un nouveau/)
+    expect(codeErrorMessage({ status: 403, code: 'otp_expired', message: 'Token has expired or is invalid' })).toMatch(/incorrect ou expiré.*ce code a servi : renvoie l’e-mail/)
     expect(sendErrorMessage(null)).toMatch(/n’a pas pu être envoyé/)
   })
 })

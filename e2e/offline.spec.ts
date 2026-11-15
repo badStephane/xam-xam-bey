@@ -103,7 +103,7 @@ test.afterAll(async () => {
 
 /** Première visite : le service worker s'installe après le chargement, puis prend la main sur la page. */
 async function visitAndWaitForWorker(page: Page): Promise<void> {
-  await page.goto(`${ORIGIN}/`)
+  await page.goto(`${ORIGIN}/#bibliotheque`)
   await expect(page.getByRole('heading', { name: 'Toutes les ressources du mouvement.' })).toBeVisible()
   await page.waitForFunction(() => !!navigator.serviceWorker?.controller, undefined, { timeout: 20_000 })
 }
@@ -246,7 +246,8 @@ test.describe('hors ligne (E3)', () => {
     await page.context().setOffline(true)
     const shared = await page.goto(`${ORIGIN}/?utm_source=whatsapp&utm_medium=social&fbclid=IwAR0e2e`)
     expect(shared?.fromServiceWorker(), 'lien partagé servi par le worker').toBe(true)
-    await expect(page.getByRole('heading', { name: 'Toutes les ressources du mouvement.' })).toBeVisible()
+    // Arrivée sur la révision ; jamais connecté ici et hors réseau : l'écran de première connexion, bibliothèque à un geste.
+    await expect(page.getByRole('heading', { name: 'Connecte-toi une première fois avec du réseau' })).toBeVisible()
     // Paramètres de suivi et retour du lien magique ensemble : toujours le réseau (ici coupé).
     await expect(page.goto(`${ORIGIN}/?utm_source=whatsapp&code=e2e-l34`)).rejects.toThrow(/ERR_INTERNET_DISCONNECTED/)
     await page.context().setOffline(false)

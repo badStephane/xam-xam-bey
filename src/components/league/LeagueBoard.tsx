@@ -33,8 +33,8 @@ function Report({ row }: { row: LeagueRow }) {
     <div className="col g6 lg-note">
       <button className="btn-mono" onClick={send} disabled={offline || state === 'busy'}>SIGNALER CE PSEUDO</button>
       {offline && <span className="muted" style={{ fontSize: '0.8125rem' }}>Le signalement demande du réseau.</span>}
-      {state === 'limit' && <span role="alert" className="field-err">Trop de signalements aujourd’hui. Réessayez demain.</span>}
-      {state === 'error' && <span role="alert" className="field-err">Le signalement n’a pas pu être envoyé. Réessayez.</span>}
+      {state === 'limit' && <span role="alert" className="field-err">Trop de signalements aujourd’hui. Réessaie demain.</span>}
+      {state === 'error' && <span role="alert" className="field-err">Le signalement n’a pas pu être envoyé. Réessaie.</span>}
     </div>
   )
 }
@@ -45,7 +45,7 @@ function Row({ row, open, toggle }: { row: LeagueRow; open: boolean; toggle(): v
       <span className="lg-rank mono">{row.rank}</span>
       <span className="lg-ava" aria-hidden="true" style={{ background: `oklch(0.62 0.1 ${pseudoHue(row.pseudo)})` }}>{[...row.pseudo][0]?.toUpperCase()}</span>
       <span className="lg-name">{row.pseudo}</span>
-      <span className="lg-xp mono">{row.xp} XP{row.isMe && <b className="lg-me"> VOUS</b>}</span>
+      <span className="lg-xp mono">{row.xp} XP{row.isMe && <b className="lg-me"> TOI</b>}</span>
     </>
   )
   if (row.isMe) return <li className="lg-row me" aria-label={rowName(row)}>{body}</li>
