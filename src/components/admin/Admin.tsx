@@ -40,7 +40,9 @@ export function Admin() {
   if (!isAdmin) {
     return (
       <div className="col g12" style={{ alignItems: 'flex-start' }}>
-        <p className="muted" role="status" style={{ margin: 0 }}>Cet espace est réservé aux administrateurs. Demandez à un administrateur d’ajouter votre adresse ({rev.email}).</p>
+        <p className="muted" role="status" style={{ margin: 0 }}>{rev.email.includes('@')
+          ? `Cet espace est réservé aux administrateurs. Demandez à un administrateur d’ajouter votre adresse (${rev.email}).`
+          : 'Cet espace est réservé aux administrateurs, connectés avec leur adresse e-mail. Déconnectez-vous, puis reconnectez-vous avec l’adresse ajoutée par un administrateur.'}</p>
         <button className="btn" onClick={() => go('bibliotheque')}>RETOUR À LA BIBLIOTHÈQUE</button>
       </div>
     )
