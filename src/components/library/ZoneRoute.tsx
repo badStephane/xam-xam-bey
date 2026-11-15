@@ -6,7 +6,7 @@ export function ZoneRoute({ counts }: { counts: Record<number, number> }) {
   const { ui, mobile, cur, patch } = useApp()
   return (
     <div className="col g8">
-      <span className="lbl" style={{ letterSpacing: '.1em' }}>ITINÉRAIRE {YEAR0} · {YEAR0 + 1} · TOUCHEZ UNE ZONE POUR FILTRER</span>
+      <span className="lbl" style={{ letterSpacing: '.1em' }}>ITINÉRAIRE {YEAR0} · {YEAR0 + 1} · TOUCHE UNE ZONE POUR FILTRER</span>
       <div className={`route${mobile ? ' m' : ''}`} role="group" aria-label="Zones mensuelles">
         {ZONES.map(([abbr, month, theme], i) => {
           const n = i + 1

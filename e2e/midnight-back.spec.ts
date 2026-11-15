@@ -13,12 +13,12 @@ function eveningBefore(): Date {
 
 const FR_DAYS = ['DIMANCHE', 'LUNDI', 'MARDI', 'MERCREDI', 'JEUDI', 'VENDREDI', 'SAMEDI']
 const label = (d: Date): RegExp => new RegExp(`^${FR_DAYS[d.getUTCDay()]} ${d.getUTCDate()} `)
-const dueCount = (page: Page) => page.locator('.kpi', { hasText: 'CARTES À REVOIR' }).locator('b')
+const dueCount = (page: Page) => page.locator('.kpi', { hasText: 'À REVOIR' }).locator('b')
 const eyebrow = (page: Page) => page.locator('.head .eyebrow').first()
 
 /** Répond à une carte de la session du jour puis quitte : cette carte devient due le lendemain (J+1). */
 async function answerOneCardThenQuit(page: Page): Promise<void> {
-  await page.getByRole('button', { name: /DÉMARRER LA SESSION DU JOUR/ }).click()
+  await page.getByRole('button', { name: /^C’EST PARTI · / }).click()
   await answerAny(page)
   await page.getByRole('button', { name: '✕ QUITTER' }).click()
   // Confirmation en ligne (UX-14, lot 3).

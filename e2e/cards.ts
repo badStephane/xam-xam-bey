@@ -42,7 +42,7 @@ export async function answerAny(page: Page): Promise<void> {
  * savais »). Renvoie la position de ce QCM dans la séance (1 si la première carte en est un).
  */
 export async function startDailyOnQcm(page: Page): Promise<number> {
-  await page.getByRole('button', { name: /DÉMARRER LA SESSION DU JOUR/ }).click()
+  await page.getByRole('button', { name: /^C’EST PARTI · / }).click()
   for (let i = 0; i < MAX_SKIPPED; i++) {
     if (await cardKind(page) === 'qcm') return Number(((await counter(page).textContent()) || '').slice(0, 2))
     await answerSelfCheck(page)

@@ -68,3 +68,21 @@ Date : 2026-10-22. Statut : acceptée (choix de l'utilisateur).
 **Conséquences.** Les e-mails des comptes trouvés sont visibles des admins ; l'onglet PSEUDOS reste sans e-mail. La liste complète des comptes n'est pas proposée.
 
 **À revoir si :** des responsables non admins doivent suivre leur seule unité (il faudrait des groupes et des droits par unité), ou si une demande de suppression du journal arrive.
+
+## ADR-6 : Parcours d'arrivée pensé pour les jeunes dès 12 ans
+
+Date : 2026-11-15. Statut : acceptée (choix de l'utilisateur : « Azy balance »).
+
+**Contexte.** Il fallait 6 à 7 étapes avant la première question : arrivée sur la bibliothèque (170 PDF, vocabulaire d'archiviste : pièces, cote, Mo), recherche de l'onglet AUJOURD'HUI, écran de connexion long et au vouvoiement, puis un écran du jour chargé (XP, J+1/J+21, gels, deux modes, trois portées). Le pseudo n'était proposé qu'à la fin d'une séance ou dans Progrès → Ligue.
+
+**Décision.**
+- L'arrivée par défaut (sans hash ni `?screen=`) est la révision : connecté, l'écran du jour ; sinon, l'écran de connexion devenu accueil (« Révise le scoutisme en jouant », 3 promesses, e-mail, bouton « Je cherche juste un document » vers la bibliothèque).
+- Le code à 6 chiffres part tout seul dès qu'il est complet (saisi ou collé) ; le bouton « Valider le code » reste.
+- L'avertissement de l'ADR-5 reste sur l'écran de connexion, replié sous « Qui voit mes progrès ? » ; il reste affiché en clair dans le panneau du compte et sur l'écran Progression.
+- Écran du jour : le gros bouton « C'est parti · N questions » d'abord, puis 3 chiffres ; l'entraînement à la carte et la méthode sont repliés sous « Plus d'options ».
+- Le bloc de la semaine propose le pseudo tant qu'il n'a jamais été choisi (`no_pseudo`).
+- Tutoiement sur tous les écrans des scouts ; l'espace Admin reste au vouvoiement. « Questions » remplace « cartes » sur les écrans d'entrée.
+
+**Conséquences.** Une personne qui ne vient que pour un document fait un geste de plus (bouton de l'accueil ou onglet BIBLIOTHÈQUE). Hors réseau et jamais connecté, un lien partagé ouvre l'écran « Connecte-toi une première fois avec du réseau », avec la bibliothèque à un geste. Les e-mails de connexion (modèles Supabase) restent au vouvoiement.
+
+**À revoir si :** les responsables se plaignent du geste en plus vers la bibliothèque, ou si l'on veut laisser essayer quelques questions sans compte (à vérifier côté RLS), ou une connexion sans e-mail (pseudo + code d'unité).

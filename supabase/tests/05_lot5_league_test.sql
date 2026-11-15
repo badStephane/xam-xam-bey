@@ -162,11 +162,15 @@ select is((select count(*)::integer from public.league_members where user_id = t
 -- C. Clôture.
 select is(public.league_close_week(tests.day('2026-11-02'), tests.at('2026-11-09 05:59Z')), false, 'clôture refusée avant lundi 06:00');
 select is(public.league_close_week(tests.day('2026-11-02'), tests.at('2026-11-09 06:05Z')), true, 'clôture faite à 06:05');
-select is(public.league_close_due('2026-11-09 06:30Z'), 1, 'league_close_due : ferme seulement la semaine réelle restée ouverte (partie A)');
+-- Heure calculée depuis la semaine réelle (jamais une date fixe) : 30 min après sa date limite. Les semaines du voyage
+-- arrivent au moins deux semaines plus tard (tests.day) : seule la semaine réelle est échue.
+select is(public.league_close_due(public.week_deadline(public.league_week_of(now())) + interval '30 minutes'), 1,
+  'league_close_due : ferme seulement la semaine réelle restée ouverte (partie A)');
 create temp table snap as select user_id, tier, tier_from from public.scout_profiles;
 create temp table snap_badges as select * from public.user_badges;
 select is(public.league_close_week(tests.day('2026-11-02'), tests.at('2026-11-09 07:00Z')), false, 'clôture rejouée : sans effet');
-select is(public.league_close_due('2026-11-09 08:00Z'), 0, 'league_close_due rejouée : rien à fermer');
+select is(public.league_close_due(public.week_deadline(public.league_week_of(now())) + interval '2 hours'), 0,
+  'league_close_due rejouée : rien à fermer');
 -- Rejeu forcé (closed_at effacé à la main) : les ligues sont affectées, jamais incrémentées.
 update public.league_weeks set closed_at = null where week_start = tests.day('2026-11-02');
 select is(public.league_close_week(tests.day('2026-11-02'), tests.at('2026-11-09 09:00Z')), true, 'rejeu forcé exécuté');

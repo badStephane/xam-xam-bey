@@ -12,7 +12,7 @@ test.describe('Connexion par code à 6 chiffres (D4)', () => {
 
     // 2. Déconnexion, puis même adresse : modèle « Magic Link ».
     await page.getByRole('button', { name: 'SE DÉCONNECTER' }).click()
-    await expect(page.getByRole('heading', { name: 'Connectez-vous pour réviser' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Révise le scoutisme en jouant' })).toBeVisible()
     await context.clearCookies()
     await signInWithCode(page, email, 2)
     const magic = await waitForMail(email, 2)
@@ -25,22 +25,20 @@ test.describe('Connexion par code à 6 chiffres (D4)', () => {
     await requestLink(page, email)
     const code = codeOf(await waitForMail(email))
     const wrong = code === '000000' ? '111111' : '000000'
+    // Envoi automatique au 6ᵉ chiffre, y compris quand un code collé remplace le code faux.
     await page.getByLabel('CODE À 6 CHIFFRES').fill(wrong)
-    await page.getByRole('button', { name: 'Valider le code' }).click()
     await expect(page.getByRole('alert')).toContainText('Code incorrect ou expiré')
     await page.getByLabel('CODE À 6 CHIFFRES').fill(code)
-    await page.getByRole('button', { name: 'Valider le code' }).click()
     await expect(page.getByRole('heading', { name: 'Aujourd’hui' })).toBeVisible()
   })
 
-  test('« Renvoyer » attend 60 s ; code collé avec espaces accepté', async ({ page }) => {
+  test('« Renvoyer » attend 60 s ; code collé avec espaces accepté et envoyé tout seul', async ({ page }) => {
     const email = freshEmail('resend')
     await requestLink(page, email)
     await expect(page.getByRole('button', { name: /^Renvoyer dans \d+ s$/ })).toBeDisabled()
     const code = codeOf(await waitForMail(email))
     await page.getByLabel('CODE À 6 CHIFFRES').fill(`${code.slice(0, 3)} ${code.slice(3)}`)
     await expect(page.getByLabel('CODE À 6 CHIFFRES')).toHaveValue(code)
-    await page.getByRole('button', { name: 'Valider le code' }).click()
     await expect(page.getByRole('heading', { name: 'Aujourd’hui' })).toBeVisible()
   })
 })

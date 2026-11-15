@@ -10,7 +10,7 @@ function ViewerUnavailable({ file }: PdfViewerProps) {
     <div className="pdf-msg col g10" role="alert" style={{ alignItems: 'center' }}>
       <span>{offline
         ? 'Le lecteur intégré n’est pas encore sur cet appareil. Il s’ouvrira au retour de la connexion.'
-        : 'Le lecteur intégré n’a pas pu se charger. Rechargez la page, ou ouvrez le PDF dans le lecteur de l’appareil.'}</span>
+        : 'Le lecteur intégré n’a pas pu se charger. Recharge la page, ou ouvre le PDF dans le lecteur du téléphone.'}</span>
       {!offline && <a className="pdf-open" href={file} target="_blank" rel="noopener">Ouvrir le PDF ↗</a>}
     </div>
   )

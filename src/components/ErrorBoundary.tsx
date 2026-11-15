@@ -37,7 +37,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 <div className="band" style={{ background: 'var(--stamp)' }}>PROBLÈME D’AFFICHAGE</div>
                 <div className="gate-body">
                   <h1>Cette page n’a pas pu s’afficher</h1>
-                  <p>Un problème est survenu sur cet appareil. Touchez « Recharger » : les données gardées par le site sont remises à zéro. Votre progression de révision est conservée.</p>
+                  <p>Un problème est survenu sur cet appareil. Touche « Recharger » : les données gardées par le site sont remises à zéro. Ta progression de révision est conservée.</p>
                   <button className="ink-btn big" style={{ minHeight: 50, padding: '0 20px' }} onClick={purgeAndReload}>Recharger</button>
                 </div>
               </div>

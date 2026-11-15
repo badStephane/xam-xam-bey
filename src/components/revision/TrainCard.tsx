@@ -5,9 +5,9 @@ import { ALL_ZONES, inZone, SCOPES, selectCards } from '../../lib/practice'
 import { allCards } from '../../lib/srs'
 
 const EMPTY_TEXT = {
-  all: 'Les cartes de cette zone seront publiées au début du mois. Les documents sont déjà dans la bibliothèque.',
-  gaps: 'Aucune lacune ici : toutes les cartes déjà vues sont bien sues. Choisissez « Tout » ou une autre zone.',
-  new: 'Toutes les cartes de cette sélection ont déjà été vues. Choisissez « Mes lacunes » ou « Tout ».',
+  all: 'Les questions de cette zone seront publiées au début du mois. Les documents sont déjà dans la bibliothèque.',
+  gaps: 'Aucune lacune ici : toutes les questions déjà vues sont bien sues. Choisis « Tout » ou une autre zone.',
+  new: 'Toutes les questions de cette sélection ont déjà été vues. Choisis « Mes lacunes » ou « Tout ».',
 }
 
 /** Entraînement libre : n'importe quelle zone (ou toutes), tout / mes lacunes / jamais vues, en QCM ou en interrogation. */

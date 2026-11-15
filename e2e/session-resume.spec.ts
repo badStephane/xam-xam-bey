@@ -84,7 +84,7 @@ test.describe('Quitter une séance et changer d’écran (UX-13, UX-14)', () => 
     const question = page.locator('.qcard h1')
     await expect(question).toBeFocused()
 
-    const ask = page.getByRole('group', { name: 'Quitter ? Vos réponses déjà données sont gardées.' })
+    const ask = page.getByRole('group', { name: 'Quitter ? Tes réponses déjà données sont gardées.' })
     await page.getByRole('button', { name: '✕ QUITTER' }).click()
     await expect(ask).toBeVisible()
     await expect(page.getByRole('button', { name: 'CONTINUER' })).toBeFocused()

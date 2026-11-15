@@ -28,9 +28,9 @@ export function GateCard({ tag, stamp, title, titleRef, children }: GateCardProp
 function OfflineSignInGate() {
   const { go } = useApp()
   return (
-    <GateCard tag="HORS RÉSEAU" stamp="CONNEXION" title="Connectez-vous une première fois avec du réseau">
-      <p>La connexion demande du réseau. Ensuite, la révision reste disponible sur cet appareil, même sans réseau.</p>
-      <button className="ink-btn big" style={BIG_BTN} onClick={() => go('bibliotheque')}>Aller à la bibliothèque</button>
+    <GateCard tag="HORS RÉSEAU" stamp="CONNEXION" title="Connecte-toi une première fois avec du réseau">
+      <p>Pour te connecter, il faut du réseau. Ensuite, tu pourras réviser sur ce téléphone, même sans réseau.</p>
+      <button className="ink-btn big" style={BIG_BTN} onClick={() => go('bibliotheque')}>Voir la bibliothèque</button>
     </GateCard>
   )
 }
@@ -74,14 +74,14 @@ export function UnavailableGate() {
     // F1 : compte connu, mais aucune copie valide de la révision sur l'appareil.
     return (
       <GateCard tag="RÉVISION HORS RÉSEAU" stamp="HORS RÉSEAU" title="Révision pas encore gardée sur cet appareil">
-        <p>Ouvrez la révision une fois avec du réseau : vos cartes seront ensuite gardées ici pour réviser sans réseau.</p>
+        <p>Ouvre la révision une fois avec du réseau : tes questions seront ensuite gardées ici pour réviser sans réseau.</p>
         <button className="ink-btn big" style={BIG_BTN} onClick={() => { rev.retry(); go('revision') }}>Réessayer</button>
       </GateCard>
     )
   }
   return (
     <GateCard tag="RÉVISION INDISPONIBLE" stamp="HORS RÉSEAU" title="Révision indisponible pour le moment">
-      <p>La révision a besoin d’une connexion pour charger vos progrès. Vérifiez le réseau puis réessayez. La liste de la bibliothèque reste consultable.</p>
+      <p>La révision a besoin du réseau pour charger tes progrès. Vérifie le réseau puis réessaie. La bibliothèque reste ouverte.</p>
       <button className="ink-btn big" style={BIG_BTN} onClick={() => { rev.retry(); go('revision') }}>Réessayer</button>
     </GateCard>
   )
@@ -91,8 +91,8 @@ export function EmptyGate() {
   const { go } = useApp()
   return (
     <GateCard tag="RÉVISION" stamp="À PARAÎTRE" title="Les cartes arrivent">
-      <p>Aucune fiche ni carte n’est encore publiée. Elles sont ajoutées chaque mois avec la fiche de la zone. Les documents sont déjà dans la bibliothèque.</p>
-      <button className="ink-btn big" style={BIG_BTN} onClick={() => go('bibliotheque')}>Aller à la bibliothèque</button>
+      <p>Aucune question n’est encore publiée. Elles arrivent chaque mois avec la fiche de la zone. Les documents sont déjà dans la bibliothèque.</p>
+      <button className="ink-btn big" style={BIG_BTN} onClick={() => go('bibliotheque')}>Voir la bibliothèque</button>
     </GateCard>
   )
 }

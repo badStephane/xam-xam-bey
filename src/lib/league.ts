@@ -185,15 +185,15 @@ export function challengeCount(c: Pick<Challenge, 'kind' | 'target' | 'progress'
 /** Carte « Semaine passée » : jamais « relégué » ni « perdu » (16-design §7). */
 export function lastResultText(r: LastResult): string {
   const where = `${r.rank === 1 ? '1er' : `${r.rank}e`}${r.size ? ` sur ${r.size}` : ''} en ${leagueName(r.tierBefore)}.`
-  if (r.outcome > 0) return `${where} Vous passez en ${leagueName(r.tierAfter)} !`
-  if (r.outcome < 0) return `${where} Vous continuez en ${leagueName(r.tierAfter)}.`
-  return `${where} Vous restez en ${leagueName(r.tierAfter)}.`
+  if (r.outcome > 0) return `${where} Tu passes en ${leagueName(r.tierAfter)} !`
+  if (r.outcome < 0) return `${where} Tu continues en ${leagueName(r.tierAfter)}.`
+  return `${where} Tu restes en ${leagueName(r.tierAfter)}.`
 }
 
 export const ordinal = (n: number): string => (n === 1 ? '1er' : `${n}e`)
 
-/** Nom accessible d'une ligne : « 6e, CalaoAgile27, 240 XP, vous ». */
-export const rowName = (r: LeagueRow): string => `${ordinal(r.rank)}, ${r.pseudo}, ${r.xp} XP${r.isMe ? ', vous' : ''}`
+/** Nom accessible d'une ligne : « 6e, CalaoAgile27, 240 XP, toi ». */
+export const rowName = (r: LeagueRow): string => `${ordinal(r.rank)}, ${r.pseudo}, ${r.xp} XP${r.isMe ? ', toi' : ''}`
 
 /** Teinte stable déduite du pseudo, pour l'avatar (initiale sur carré teinté). */
 export function pseudoHue(pseudo: string): number {

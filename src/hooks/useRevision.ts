@@ -392,7 +392,7 @@ export function useRevision(demo: boolean): Revision {
   const startFromDevice = useCallback((failed: boolean) => {
     const known = canWrite() ? readKnownUser(localStore()) : null
     if (known && fromDevice(known)) return
-    // Jamais connecté ici et hors réseau : écran « connectez-vous une première fois avec du réseau ».
+    // Jamais connecté ici et hors réseau : écran « connecte-toi une première fois avec du réseau ».
     setStat(known || failed ? 'unavailable' : 'signedout')
   }, [fromDevice, setStat])
 
@@ -539,7 +539,7 @@ export function useRevision(demo: boolean): Revision {
       void sendLink(email).then(error => {
         setSignIn(s => (s.step !== 'sent' || s.email !== email ? s : error
           ? { ...s, resending: false, notice: { kind: 'error', text: sendErrorMessage(error) } }
-          : { ...s, resending: false, sentAt: Date.now(), code: undefined, notice: { kind: 'ok', text: `Nouveau lien envoyé à ${email}.` } }))
+          : { ...s, resending: false, sentAt: Date.now(), code: undefined, notice: { kind: 'ok', text: `Nouvel e-mail envoyé à ${email}.` } }))
       })
     },
     verifyCode: raw => {

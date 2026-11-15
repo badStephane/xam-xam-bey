@@ -78,7 +78,7 @@ export function BadgesScreen() {
         </section>
       )}
       <h2 className="h-sec" style={{ margin: 0 }}>{earned} BADGE{earned > 1 ? 'S' : ''} SUR {all.length}</h2>
-      {!earned && <p className="muted" style={{ margin: 0 }}>Votre premier badge : notez une carte.</p>}
+      {!earned && <p className="muted" style={{ margin: 0 }}>Ton premier badge : réponds à une question.</p>}
       {loadingFirst
         ? <ul className="badge-grid" role="status" aria-label="Chargement des badges">{Array.from({ length: 6 }, (_, i) => <li key={i} className="skel-line" style={{ height: 112 }} />)}</ul>
         : <ul className="badge-grid">{all.map(b => <Tile key={b.id} b={b} date={dateOf(b)} />)}</ul>}
@@ -87,7 +87,7 @@ export function BadgesScreen() {
         <ol className="grade-ladder">
           {GRADES.map((g, i) => (
             <li key={g.name} aria-current={i === grade.index ? 'step' : undefined}>
-              <span>{g.name}</span><span className="mono muted">{g.from} XP</span>{i === grade.index && <b className="lbl" style={{ color: 'var(--acc)' }}>VOUS ÊTES ICI</b>}
+              <span>{g.name}</span><span className="mono muted">{g.from} XP</span>{i === grade.index && <b className="lbl" style={{ color: 'var(--acc)' }}>TU ES ICI</b>}
             </li>
           ))}
         </ol>

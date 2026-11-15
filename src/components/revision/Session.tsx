@@ -21,11 +21,11 @@ function Examiner({ c, kps, checked }: { c: Card; kps: string[]; checked: number
   return (
     <div className="examiner">
       <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'nowrap' }}>
-        <span className="f-lbl" style={{ color: 'var(--green)' }}>RÉPONSE ATTENDUE · POUR VOUS SEUL</span>
+        <span className="f-lbl" style={{ color: 'var(--green)' }}>RÉPONSE ATTENDUE · POUR TOI SEUL</span>
         <button className="ink-line" style={{ padding: '0 10px', font: '700 0.6875rem/1 var(--f-mono)' }} onClick={() => patch({ hideAns: !ui.hideAns })} aria-pressed={ui.hideAns}>{ui.hideAns ? 'AFFICHER' : 'MASQUER'}</button>
       </div>
       {ui.hideAns
-        ? <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ink2)' }}>Réponse masquée. Touchez « Afficher » quand la personne ne voit plus l’écran.</p>
+        ? <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ink2)' }}>Réponse masquée. Touche « Afficher » quand la personne ne voit plus l’écran.</p>
         : (
           <>
             <p style={{ margin: 0, fontSize: '0.96875rem', lineHeight: 1.55 }}><Md text={c.a} /></p>
@@ -95,7 +95,7 @@ function SelfCheckBlock({ c }: { c: Card }) {
   if (!s.rev) {
     return (
       <>
-        <p style={{ margin: 0, fontSize: '0.9375rem', color: 'var(--ink2)' }}>Pas de propositions pour cette question : répondez de tête, puis vérifiez.</p>
+        <p style={{ margin: 0, fontSize: '0.9375rem', color: 'var(--ink2)' }}>Pas de propositions pour cette question : réponds de tête, puis vérifie.</p>
         <button className="flip" onClick={reveal}>Voir la réponse</button>
       </>
     )
@@ -107,7 +107,7 @@ function SelfCheckBlock({ c }: { c: Card }) {
       {c.note && <Vigilance note={c.note} size={14.5} />}
       {c.src && <span className="src">SOURCE · {c.src}</span>}
       <CardDocLink card={c} />
-      <div className="row" role="group" aria-label="Notez-vous">
+      <div className="row" role="group" aria-label="Note-toi">
         <button ref={knewRef} className="ink-btn big" onClick={() => answer(2)}>✓ Je savais</button>
         <button className="ink-line big" onClick={() => answer(0)}>✕ Je ne savais pas</button>
       </div>
@@ -116,7 +116,7 @@ function SelfCheckBlock({ c }: { c: Card }) {
 }
 
 const QUIT_TEXT = {
-  self: { q: 'Quitter ? Vos réponses déjà données sont gardées.', yes: 'QUITTER' },
+  self: { q: 'Quitter ? Tes réponses déjà données sont gardées.', yes: 'QUITTER' },
   ask: { q: 'Terminer l’interrogation ? Les réponses déjà notées sont gardées.', yes: 'TERMINER' },
 }
 
@@ -219,7 +219,7 @@ export function Session() {
         </article>
       </div>
       {ask && (
-        <div className="rates" role="group" aria-label="Notez la réponse">
+        <div className="rates" role="group" aria-label="Note la réponse">
           {GRADE_ASK.map(([label, hint], g) => (
             <button key={g} className={`rate r${g}${hot(g as Grade) ? ' hot' : ''}`} style={{ minHeight: 68 }}
               onClick={() => answer(g as Grade)} aria-label={`${label.slice(2).toLowerCase()}, touche ${g + 1}`}>{label}<span>{hint}</span></button>

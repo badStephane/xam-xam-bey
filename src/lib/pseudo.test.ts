@@ -22,7 +22,7 @@ describe('pseudo (C5)', () => {
     expect(nextPseudo('CalaoAgile27')).toBe('CalaoAgile28')
     expect(nextPseudo('Calao09')).toBe('Calao10')
     expect(nextPseudo('Calao')).toBe('Calao2')
-    expect(takenMessage('CalaoAgile28')).toBe('Ce pseudo est déjà pris. Essayez CalaoAgile28.')
+    expect(takenMessage('CalaoAgile28')).toBe('Ce pseudo est déjà pris. Essaie CalaoAgile28.')
   })
 
   test('tirage : animal + adjectif + 2 chiffres, toujours valide', () => {
@@ -33,7 +33,7 @@ describe('pseudo (C5)', () => {
 
   test('erreurs du serveur traduites, jamais affichées telles quelles', () => {
     expect(pseudoErrorMessage({ code: '22023', message: 'PSEUDO_REFUSED' }, 'x')).toBe(PSEUDO_MESSAGES.refused)
-    expect(pseudoErrorMessage({ code: '23505', message: 'PSEUDO_TAKEN' }, 'Lion07')).toBe('Ce pseudo est déjà pris. Essayez Lion08.')
+    expect(pseudoErrorMessage({ code: '23505', message: 'PSEUDO_TAKEN' }, 'Lion07')).toBe('Ce pseudo est déjà pris. Essaie Lion08.')
     expect(pseudoErrorMessage({ code: 'P0001', message: 'PSEUDO_TOO_SOON' }, 'x')).toBe(PSEUDO_MESSAGES.tooSoon)
     expect(pseudoErrorMessage({ code: 'P0001', message: 'RATE_LIMITED' }, 'x')).toBe(PSEUDO_MESSAGES.rate)
     expect(pseudoErrorMessage({ code: 'network', message: 'NETWORK' }, 'x')).toBe(PSEUDO_MESSAGES.unknown)
@@ -46,8 +46,8 @@ describe('contrat final L5-2', () => {
     const { allowTry } = await import('./pseudo')
     expect(pseudoErrorMessage({ code: '22023', message: 'PSEUDO_INVALID', details: 'first_char' }, 'x')).toBe(PSEUDO_MESSAGES.start)
     expect(pseudoErrorMessage({ code: '22023', message: 'PSEUDO_INVALID', details: 'digits' }, 'x')).toBe(PSEUDO_MESSAGES.contact)
-    expect(pseudoErrorMessage({ code: '23505', message: 'PSEUDO_TAKEN', hint: 'LionVif42' }, 'Lion07')).toBe('Ce pseudo est déjà pris. Essayez LionVif42.')
-    expect(pseudoErrorMessage({ code: '23505', message: 'PSEUDO_TAKEN', hint: '' }, 'Lion07')).toBe('Ce pseudo est déjà pris. Essayez Lion08.')
+    expect(pseudoErrorMessage({ code: '23505', message: 'PSEUDO_TAKEN', hint: 'LionVif42' }, 'Lion07')).toBe('Ce pseudo est déjà pris. Essaie LionVif42.')
+    expect(pseudoErrorMessage({ code: '23505', message: 'PSEUDO_TAKEN', hint: '' }, 'Lion07')).toBe('Ce pseudo est déjà pris. Essaie Lion08.')
     expect(pseudoFormatError('Ŋaañ')).toBeNull()
     const five = [1, 2, 3, 4, 5].map(i => i * 1000)
     expect(allowTry(five, 10_000)).toBeNull()
