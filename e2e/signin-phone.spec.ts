@@ -36,7 +36,8 @@ test.describe('Connexion par numéro de téléphone (SMS)', () => {
     await page.getByRole('button', { name: 'Recevoir mon code par SMS' }).click()
     await expect(page.getByRole('heading', { name: 'Entre ton code' })).toBeVisible({ timeout: 20_000 })
     await page.getByRole('button', { name: 'Changer de numéro' }).click()
-    await expect(page.getByLabel('TON NUMÉRO (SÉNÉGAL)')).toHaveValue('77 000 00 02')
+    // Le champ garde exactement ce qui avait été tapé (le formulaire reste monté pendant l'écran du code).
+    await expect(page.getByLabel('TON NUMÉRO (SÉNÉGAL)')).toHaveValue('770000002')
     await page.getByRole('radio', { name: 'E-MAIL' }).click()
     await expect(page.getByLabel('TON ADRESSE E-MAIL')).toBeVisible()
   })
