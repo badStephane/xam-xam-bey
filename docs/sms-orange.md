@@ -15,7 +15,7 @@ App (signInWithOtp({ phone }))
   → API SMS d'Orange (expéditeur tel:+2210000)
 ```
 
-Tant que les étapes ci-dessous ne sont pas faites, l'onglet « NUMÉRO » affiche : « La connexion par numéro n'est pas encore disponible. Utilisez votre adresse e-mail. »
+Tant que les étapes ci-dessous ne sont pas faites, l'onglet « NUMÉRO » affiche : « La connexion par numéro n'est pas encore disponible. Utilise une adresse e-mail. »
 
 ## 1. Côté Orange Developer
 

@@ -578,7 +578,7 @@ describe('useRevision : connexion par SMS (numéro du Sénégal)', () => {
     act(() => hook.current.requestSms('771234567'))
     await settle()
     expect(hook.current.signIn).toMatchObject({ step: 'error', via: 'phone', phone: '+221771234567' })
-    expect(hook.current.signIn.message).toMatch(/Utilisez votre adresse e-mail/)
+    expect(hook.current.signIn.message).toMatch(/Utilise une adresse e-mail/)
   })
 
   test('code vérifié avec le numéro (type sms) ; code faux : message du SMS', async () => {
